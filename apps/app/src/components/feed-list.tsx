@@ -1,0 +1,92 @@
+import type { ReactElement } from 'react';
+import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { BottomTabInset, Spacing } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
+
+import { Button } from './button';
+import { screenStyles } from './screen';
+import { ThemedText } from './themed-text';
+
+/** The parts of a TanStack infinite query over paginated results that a feed needs. */
+type FeedQuery<T> = {
+  data?: { pages: { results: T[] }[] };
+  isPending: boolean;
+  isError: boolean;
+  isRefetching: boolean;
+  isFetchingNextPage: boolean;
+  hasNextPage: boolean;
+  fetchNextPage: () => unknown;
+  refetch: () => unknown;
+};
+
+type FeedListProps<T> = {
+  query: FeedQuery<T>;
+  renderItem: (item: T) => ReactElement;
+  keyExtractor: (item: T) => string;
+  header?: ReactElement;
+  emptyText: string;
+};
+
+/** Infinite-scrolling, pull-to-refresh list for any of the feeds. */
+export function FeedList<T>({ query, renderItem, keyExtractor, header, emptyText }: FeedListProps<T>) {
+  const theme = useTheme();
+  const insets = useSafeAreaInsets();
+  const items = query.data?.pages.flatMap((page) => page.results) ?? [];
+
+  return (
+    <FlatList
+      data={items}
+      renderItem={({ item }) => renderItem(item)}
+      keyExtractor={keyExtractor}
+      ListHeaderComponent={header}
+      ListEmptyComponent={
+        query.isPending ? (
+          <ActivityIndicator style={styles.status} />
+        ) : query.isError ? (
+          <View style={styles.status}>
+            <ThemedText themeColor="textSecondary">Couldn&apos;t load this feed.</ThemedText>
+            <Button title="Try again" variant="secondary" onPress={() => query.refetch()} />
+          </View>
+        ) : (
+          <ThemedText themeColor="textSecondary" style={styles.status}>
+            {emptyText}
+          </ThemedText>
+        )
+      }
+      ListFooterComponent={query.isFetchingNextPage ? <ActivityIndicator /> : undefined}
+      onEndReached={() => {
+        if (query.hasNextPage && !query.isFetchingNextPage) {
+          query.fetchNextPage();
+        }
+      }}
+      onEndReachedThreshold={0.5}
+      refreshControl={
+        <RefreshControl
+          refreshing={query.isRefetching && !query.isFetchingNextPage}
+          onRefresh={() => {
+            query.refetch();
+          }}
+        />
+      }
+      style={{ backgroundColor: theme.background }}
+      contentContainerStyle={[
+        screenStyles.content,
+        {
+          paddingTop: insets.top + Spacing.four,
+          paddingBottom: insets.bottom + BottomTabInset + Spacing.four,
+        },
+      ]}
+    />
+  );
+}
+
+const styles = StyleSheet.create({
+  status: {
+    alignItems: 'center',
+    gap: Spacing.three,
+    paddingVertical: Spacing.six,
+    textAlign: 'center',
+  },
+});

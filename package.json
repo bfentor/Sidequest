@@ -1,0 +1,17 @@
+{
+  "name": "sidequest",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "app": "npm run start -w @sidequest/app --",
+    "api:generate": "npm run generate -w @sidequest/api",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

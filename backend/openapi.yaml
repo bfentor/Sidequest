@@ -1,0 +1,770 @@
+openapi: 3.0.3
+info:
+  title: Sidequest API
+  version: 0.1.0
+paths:
+  /api/events/:
+    post:
+      operationId: events_create
+      description: Create and manage single events. Listing happens through the feeds.
+      tags:
+      - events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EventRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EventRequest'
+        required: true
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: ''
+  /api/events/{id}/:
+    get:
+      operationId: events_retrieve
+      description: Create and manage single events. Listing happens through the feeds.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this event.
+        required: true
+      tags:
+      - events
+      security:
+      - XSessionTokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: ''
+    patch:
+      operationId: events_partial_update
+      description: Create and manage single events. Listing happens through the feeds.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this event.
+        required: true
+      tags:
+      - events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEventRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEventRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEventRequest'
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: ''
+    delete:
+      operationId: events_destroy
+      description: Create and manage single events. Listing happens through the feeds.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this event.
+        required: true
+      tags:
+      - events
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/feeds/following/:
+    get:
+      operationId: feeds_following_list
+      description: Posts from profiles the signed-in user follows (and their own),
+        newest first.
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
+      tags:
+      - feeds
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPostList'
+          description: ''
+  /api/feeds/nearby/:
+    get:
+      operationId: feeds_nearby_list
+      description: |-
+        Ongoing and future events within a radius of the given position, nearest first.
+
+        The position is only used for this query and is never stored.
+      parameters:
+      - in: query
+        name: lat
+        schema:
+          type: number
+          format: double
+          maximum: 90
+          minimum: -90
+        required: true
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: lng
+        schema:
+          type: number
+          format: double
+          maximum: 180
+          minimum: -180
+        required: true
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: radius_km
+        schema:
+          type: number
+          format: double
+          maximum: 100
+          minimum: 0.1
+          default: 10.0
+      tags:
+      - feeds
+      security:
+      - XSessionTokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNearbyEventList'
+          description: ''
+  /api/feeds/upcoming/:
+    get:
+      operationId: feeds_upcoming_list
+      description: Ongoing and future events, soonest first.
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
+      tags:
+      - feeds
+      security:
+      - XSessionTokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEventList'
+          description: ''
+  /api/me/:
+    get:
+      operationId: me_retrieve
+      description: The signed-in user's own profile.
+      tags:
+      - me
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+          description: ''
+    patch:
+      operationId: me_partial_update
+      description: The signed-in user's own profile.
+      tags:
+      - me
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProfileRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProfileRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProfileRequest'
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+          description: ''
+  /api/posts/:
+    post:
+      operationId: posts_create
+      description: Create, view and delete single posts. Listing happens through the
+        feeds.
+      tags:
+      - posts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PostRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PostRequest'
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+          description: ''
+  /api/posts/{id}/:
+    get:
+      operationId: posts_retrieve
+      description: Create, view and delete single posts. Listing happens through the
+        feeds.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this post.
+        required: true
+      tags:
+      - posts
+      security:
+      - XSessionTokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+          description: ''
+    delete:
+      operationId: posts_destroy
+      description: Create, view and delete single posts. Listing happens through the
+        feeds.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this post.
+        required: true
+      tags:
+      - posts
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/profiles/{handle}/:
+    get:
+      operationId: profiles_retrieve
+      parameters:
+      - in: path
+        name: handle
+        schema:
+          type: string
+        required: true
+      tags:
+      - profiles
+      security:
+      - XSessionTokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+          description: ''
+  /api/profiles/{handle}/follow/:
+    post:
+      operationId: profiles_follow_create
+      parameters:
+      - in: path
+        name: handle
+        schema:
+          type: string
+        required: true
+      tags:
+      - profiles
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '204':
+          description: No response body
+    delete:
+      operationId: profiles_follow_destroy
+      parameters:
+      - in: path
+        name: handle
+        schema:
+          type: string
+        required: true
+      tags:
+      - profiles
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    Event:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        organizer:
+          allOf:
+          - $ref: '#/components/schemas/ProfileSummary'
+          readOnly: true
+        title:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        starts_at:
+          type: string
+          format: date-time
+        ends_at:
+          type: string
+          format: date-time
+        venue_name:
+          type: string
+          maxLength: 200
+        address:
+          type: string
+          maxLength: 300
+        location:
+          allOf:
+          - $ref: '#/components/schemas/LatLng'
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - ends_at
+      - id
+      - organizer
+      - starts_at
+      - title
+      - updated_at
+    EventRequest:
+      type: object
+      properties:
+        organizer_handle:
+          type: string
+          minLength: 1
+          writeOnly: true
+          description: Publish as this profile (yourself or an organization you belong
+            to). Defaults to your own profile. Only used on create.
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description:
+          type: string
+        starts_at:
+          type: string
+          format: date-time
+        ends_at:
+          type: string
+          format: date-time
+        venue_name:
+          type: string
+          maxLength: 200
+        address:
+          type: string
+          maxLength: 300
+        location:
+          allOf:
+          - $ref: '#/components/schemas/LatLngRequest'
+          nullable: true
+      required:
+      - ends_at
+      - starts_at
+      - title
+    KindEnum:
+      enum:
+      - person
+      - organization
+      type: string
+      description: |-
+        * `person` - Person
+        * `organization` - Organization
+    LatLng:
+      type: object
+      properties:
+        lat:
+          type: number
+          format: double
+          maximum: 90
+          minimum: -90
+        lng:
+          type: number
+          format: double
+          maximum: 180
+          minimum: -180
+      required:
+      - lat
+      - lng
+    LatLngRequest:
+      type: object
+      properties:
+        lat:
+          type: number
+          format: double
+          maximum: 90
+          minimum: -90
+        lng:
+          type: number
+          format: double
+          maximum: 180
+          minimum: -180
+      required:
+      - lat
+      - lng
+    NearbyEvent:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        organizer:
+          allOf:
+          - $ref: '#/components/schemas/ProfileSummary'
+          readOnly: true
+        title:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        starts_at:
+          type: string
+          format: date-time
+        ends_at:
+          type: string
+          format: date-time
+        venue_name:
+          type: string
+          maxLength: 200
+        address:
+          type: string
+          maxLength: 300
+        location:
+          allOf:
+          - $ref: '#/components/schemas/LatLng'
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        distance_m:
+          type: number
+          format: double
+          readOnly: true
+      required:
+      - created_at
+      - distance_m
+      - ends_at
+      - id
+      - organizer
+      - starts_at
+      - title
+      - updated_at
+    PaginatedEventList:
+      type: object
+      required:
+      - results
+      properties:
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+    PaginatedNearbyEventList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/NearbyEvent'
+    PaginatedPostList:
+      type: object
+      required:
+      - results
+      properties:
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Post'
+    PatchedEventRequest:
+      type: object
+      properties:
+        organizer_handle:
+          type: string
+          minLength: 1
+          writeOnly: true
+          description: Publish as this profile (yourself or an organization you belong
+            to). Defaults to your own profile. Only used on create.
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description:
+          type: string
+        starts_at:
+          type: string
+          format: date-time
+        ends_at:
+          type: string
+          format: date-time
+        venue_name:
+          type: string
+          maxLength: 200
+        address:
+          type: string
+          maxLength: 300
+        location:
+          allOf:
+          - $ref: '#/components/schemas/LatLngRequest'
+          nullable: true
+    PatchedProfileRequest:
+      type: object
+      description: Full profile. Expects a queryset annotated with `with_social_stats`.
+      properties:
+        handle:
+          type: string
+          minLength: 1
+          pattern: ^[a-z0-9_]+$
+          maxLength: 30
+        display_name:
+          type: string
+          minLength: 1
+          maxLength: 80
+        bio:
+          type: string
+          maxLength: 500
+        avatar:
+          type: string
+          format: binary
+    Post:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        author:
+          allOf:
+          - $ref: '#/components/schemas/ProfileSummary'
+          readOnly: true
+        body:
+          type: string
+          maxLength: 2000
+        event:
+          allOf:
+          - $ref: '#/components/schemas/Event'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - author
+      - created_at
+      - event
+      - id
+    PostRequest:
+      type: object
+      properties:
+        author_handle:
+          type: string
+          minLength: 1
+          writeOnly: true
+          description: Post as this profile (yourself or an organization you belong
+            to). Defaults to your own profile.
+        body:
+          type: string
+          maxLength: 2000
+        event_id:
+          type: integer
+          writeOnly: true
+          nullable: true
+          description: Attach (share) an existing event.
+    Profile:
+      type: object
+      description: Full profile. Expects a queryset annotated with `with_social_stats`.
+      properties:
+        handle:
+          type: string
+          pattern: ^[a-z0-9_]+$
+          maxLength: 30
+        display_name:
+          type: string
+          maxLength: 80
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/KindEnum'
+          readOnly: true
+        bio:
+          type: string
+          maxLength: 500
+        avatar:
+          type: string
+          format: uri
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        follower_count:
+          type: integer
+          readOnly: true
+        following_count:
+          type: integer
+          readOnly: true
+        is_followed:
+          type: boolean
+          readOnly: true
+      required:
+      - created_at
+      - display_name
+      - follower_count
+      - following_count
+      - handle
+      - is_followed
+      - kind
+    ProfileSummary:
+      type: object
+      description: Compact profile representation embedded in events and posts.
+      properties:
+        handle:
+          type: string
+          readOnly: true
+        display_name:
+          type: string
+          readOnly: true
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/KindEnum'
+          readOnly: true
+        avatar:
+          type: string
+          format: uri
+          nullable: true
+          readOnly: true
+      required:
+      - avatar
+      - display_name
+      - handle
+      - kind
+  securitySchemes:
+    XSessionTokenAuth:
+      type: apiKey
+      in: header
+      name: X-Session-Token
+      description: X-Session-Token authentication
