@@ -72,14 +72,15 @@ export default function ReportScreen() {
         maxLength={1000}
         style={styles.details}
       />
-      {report.isError ? <ThemedText themeColor="danger">{t('errors.unexpected')}</ThemedText> : null}
+      {report.isError ? (
+        <ThemedText themeColor="danger">{t('errors.unexpected')}</ThemedText>
+      ) : null}
       <Button
         title={t('moderation.send')}
         disabled={!reason}
         loading={report.isPending}
         onPress={() =>
-          reason &&
-          report.mutate({ body: { target_type: type, target_id: id, reason, details } })
+          reason && report.mutate({ body: { target_type: type, target_id: id, reason, details } })
         }
       />
     </Screen>

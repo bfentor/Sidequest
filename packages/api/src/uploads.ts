@@ -18,7 +18,10 @@ export async function uploadImage(file: Blob | NativeFile): Promise<UploadResult
   // React Native's FormData accepts { uri, name, type } in place of a Blob.
   form.append('file', file as Blob);
 
-  const { data, error } = await client.post<{ 201: Image }, Record<number, Record<string, string[]>>>({
+  const { data, error } = await client.post<
+    { 201: Image },
+    Record<number, Record<string, string[]>>
+  >({
     url: '/api/images/',
     body: form,
     bodySerializer: null,

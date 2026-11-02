@@ -13,9 +13,11 @@ export default function EventScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { t } = useTranslation();
   const format = useFormat();
-  const { data: event, isPending, isError } = useQuery(
-    eventsRetrieveOptions({ path: { id: Number(id) } }),
-  );
+  const {
+    data: event,
+    isPending,
+    isError,
+  } = useQuery(eventsRetrieveOptions({ path: { id: Number(id) } }));
 
   return (
     <Screen hasHeader>

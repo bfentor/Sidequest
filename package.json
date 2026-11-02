@@ -10,9 +10,14 @@
     "app": "npm run start -w @sidequest/app --",
     "api:generate": "npm run generate -w @sidequest/api",
     "typecheck": "npm run typecheck --workspaces --if-present",
-    "lint": "npm run lint --workspaces --if-present"
+    "lint": "npm run lint --workspaces --if-present",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "engines": {
     "node": ">=22"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.10"
   }
 }

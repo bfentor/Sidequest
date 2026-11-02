@@ -117,8 +117,10 @@ CI fails if `openapi.yaml` or the generated client is out of date.
 
 ```sh
 cd backend && uv run pytest && uv run ruff check . && uv run ruff format --check .
-npm run typecheck && npm run lint
+npm run format:check && npm run typecheck && npm run lint
 ```
+
+TypeScript, JSON and YAML are formatted with Prettier (`npm run format`); Python with ruff (`uv run ruff format .`).
 
 ## Releasing
 

@@ -34,53 +34,64 @@ export function ActionMenu({ visible, onClose, actions, title }: ActionMenuProps
 
   return (
     <>
-    <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
-      <Pressable style={styles.backdrop} onPress={onClose} accessibilityLabel={t('common.cancel')}>
-        <ThemedView
-          style={[styles.sheet, { paddingBottom: insets.bottom + Spacing.two }]}
-          onStartShouldSetResponder={() => true}>
-          {title ? (
-            <ThemedText type="smallBold" themeColor="textSecondary" style={styles.title}>
-              {title}
-            </ThemedText>
-          ) : null}
-          {actions.map((action) => (
+      <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
+        <Pressable
+          style={styles.backdrop}
+          onPress={onClose}
+          accessibilityLabel={t('common.cancel')}>
+          <ThemedView
+            style={[styles.sheet, { paddingBottom: insets.bottom + Spacing.two }]}
+            onStartShouldSetResponder={() => true}>
+            {title ? (
+              <ThemedText type="smallBold" themeColor="textSecondary" style={styles.title}>
+                {title}
+              </ThemedText>
+            ) : null}
+            {actions.map((action) => (
+              <Pressable
+                key={action.label}
+                role="menuitem"
+                onPress={() => {
+                  onClose();
+                  if (action.confirm) {
+                    setConfirming(action);
+                  } else {
+                    action.onPress();
+                  }
+                }}
+                style={({ pressed }) => [
+                  styles.item,
+                  pressed && { backgroundColor: theme.backgroundElement },
+                ]}>
+                <ThemedText style={action.destructive && { color: theme.danger }}>
+                  {action.label}
+                </ThemedText>
+              </Pressable>
+            ))}
+            <View style={[styles.separator, { backgroundColor: theme.backgroundElement }]} />
             <Pressable
-              key={action.label}
-              role="menuitem"
-              onPress={() => {
-                onClose();
-                if (action.confirm) {
-                  setConfirming(action);
-                } else {
-                  action.onPress();
-                }
-              }}
-              style={({ pressed }) => [styles.item, pressed && { backgroundColor: theme.backgroundElement }]}>
-              <ThemedText style={action.destructive && { color: theme.danger }}>{action.label}</ThemedText>
+              role="button"
+              onPress={onClose}
+              style={({ pressed }) => [
+                styles.item,
+                pressed && { backgroundColor: theme.backgroundElement },
+              ]}>
+              <ThemedText themeColor="textSecondary">{t('common.cancel')}</ThemedText>
             </Pressable>
-          ))}
-          <View style={[styles.separator, { backgroundColor: theme.backgroundElement }]} />
-          <Pressable
-            role="button"
-            onPress={onClose}
-            style={({ pressed }) => [styles.item, pressed && { backgroundColor: theme.backgroundElement }]}>
-            <ThemedText themeColor="textSecondary">{t('common.cancel')}</ThemedText>
-          </Pressable>
-        </ThemedView>
-      </Pressable>
-    </Modal>
-    {confirming?.confirm ? (
-      <ConfirmDialog
-        visible
-        title={confirming.confirm.title}
-        message={confirming.confirm.message}
-        confirmLabel={confirming.confirm.confirmLabel}
-        destructive={confirming.destructive}
-        onConfirm={confirming.onPress}
-        onCancel={() => setConfirming(null)}
-      />
-    ) : null}
+          </ThemedView>
+        </Pressable>
+      </Modal>
+      {confirming?.confirm ? (
+        <ConfirmDialog
+          visible
+          title={confirming.confirm.title}
+          message={confirming.confirm.message}
+          confirmLabel={confirming.confirm.confirmLabel}
+          destructive={confirming.destructive}
+          onConfirm={confirming.onPress}
+          onCancel={() => setConfirming(null)}
+        />
+      ) : null}
     </>
   );
 }

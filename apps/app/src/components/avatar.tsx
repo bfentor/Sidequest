@@ -42,7 +42,9 @@ export function Avatar({ name, image, size = 40 }: AvatarProps) {
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
       style={[styles.fallback, shape, { backgroundColor: theme.backgroundSelected }]}>
-      <ThemedText style={{ fontSize: size * 0.4, lineHeight: size * 0.5 }} themeColor="textSecondary">
+      <ThemedText
+        style={{ fontSize: size * 0.4, lineHeight: size * 0.5 }}
+        themeColor="textSecondary">
         {initials(name)}
       </ThemedText>
     </View>

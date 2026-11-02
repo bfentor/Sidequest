@@ -54,7 +54,9 @@ function MyProfile() {
       {me.bio ? <ThemedText>{me.bio}</ThemedText> : null}
       <View style={styles.stats}>
         <ThemedText type="small">{t('profile.followers', { count: me.follower_count })}</ThemedText>
-        <ThemedText type="small">{t('profile.following', { count: me.following_count })}</ThemedText>
+        <ThemedText type="small">
+          {t('profile.following', { count: me.following_count })}
+        </ThemedText>
       </View>
       <Button title={t('common.signOut')} variant="secondary" onPress={signOut} />
     </>

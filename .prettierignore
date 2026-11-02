@@ -1,0 +1,10 @@
+# Generated
+packages/api/src/generated/
+apps/app/dist/
+apps/app/.expo/
+apps/app/expo-env.d.ts
+# Formatted by ruff
+backend/
+# Prose is formatted by hand
+*.md
+package-lock.json

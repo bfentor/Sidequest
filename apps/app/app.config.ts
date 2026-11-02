@@ -16,7 +16,9 @@ type Variant = keyof typeof VARIANTS;
 function currentVariant(): Variant {
   const variant = process.env.APP_VARIANT ?? 'development';
   if (!(variant in VARIANTS)) {
-    throw new Error(`Unknown APP_VARIANT "${variant}"; use one of ${Object.keys(VARIANTS).join(', ')}.`);
+    throw new Error(
+      `Unknown APP_VARIANT "${variant}"; use one of ${Object.keys(VARIANTS).join(', ')}.`,
+    );
   }
   return variant as Variant;
 }

@@ -54,5 +54,6 @@ jobs:
         run: |
           npm run api:generate
           git diff --exit-code packages/api/src/generated
+      - run: npm run format:check
       - run: npm run typecheck
       - run: npm run lint

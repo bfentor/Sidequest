@@ -31,7 +31,13 @@ type FeedListProps<T> = {
 };
 
 /** Infinite-scrolling, pull-to-refresh list for any of the feeds. */
-export function FeedList<T>({ query, renderItem, keyExtractor, header, emptyText }: FeedListProps<T>) {
+export function FeedList<T>({
+  query,
+  renderItem,
+  keyExtractor,
+  header,
+  emptyText,
+}: FeedListProps<T>) {
   const theme = useTheme();
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
@@ -49,7 +55,11 @@ export function FeedList<T>({ query, renderItem, keyExtractor, header, emptyText
         ) : query.isError ? (
           <View style={styles.status}>
             <ThemedText themeColor="textSecondary">{t('feed.loadFailed')}</ThemedText>
-            <Button title={t('common.tryAgain')} variant="secondary" onPress={() => query.refetch()} />
+            <Button
+              title={t('common.tryAgain')}
+              variant="secondary"
+              onPress={() => query.refetch()}
+            />
           </View>
         ) : (
           <ThemedText themeColor="textSecondary" style={styles.status}>

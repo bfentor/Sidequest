@@ -68,11 +68,19 @@ type ProfileSectionProps = {
   onAction: (handle: string) => void;
 };
 
-function ProfileSection({ title, emptyText, profiles, actionLabel, onAction }: ProfileSectionProps) {
+function ProfileSection({
+  title,
+  emptyText,
+  profiles,
+  actionLabel,
+  onAction,
+}: ProfileSectionProps) {
   return (
     <View style={styles.section}>
       <ThemedText type="heading">{title}</ThemedText>
-      {profiles?.length === 0 ? <ThemedText themeColor="textSecondary">{emptyText}</ThemedText> : null}
+      {profiles?.length === 0 ? (
+        <ThemedText themeColor="textSecondary">{emptyText}</ThemedText>
+      ) : null}
       {profiles?.map((profile) => (
         <View key={profile.handle} style={styles.profileRow}>
           <Avatar name={profile.display_name} image={profile.avatar} size={36} />
@@ -82,7 +90,11 @@ function ProfileSection({ title, emptyText, profiles, actionLabel, onAction }: P
               @{profile.handle}
             </ThemedText>
           </View>
-          <Button title={actionLabel} variant="secondary" onPress={() => onAction(profile.handle)} />
+          <Button
+            title={actionLabel}
+            variant="secondary"
+            onPress={() => onAction(profile.handle)}
+          />
         </View>
       ))}
     </View>
