@@ -11,6 +11,7 @@ import {
 } from '@sidequest/api';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link, router, Stack, useLocalSearchParams } from 'expo-router';
+import type { GenerateMetadataFunction } from 'expo-server';
 import type { TFunction } from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Linking, Pressable, StyleSheet, View } from 'react-native';
@@ -31,8 +32,13 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
 import { useFormat } from '@/lib/format';
+import { eventMetadata } from '@/lib/metadata';
 import { goBack } from '@/lib/navigation';
 import { saveTextFile } from '@/lib/save-file';
+
+/** Link previews and search engine tags, rendered on the server. */
+export const generateMetadata: GenerateMetadataFunction = (_request, params) =>
+  eventMetadata(String(params.id));
 
 /** Downloads (or shares, on phones) everyone who answered as a CSV file. */
 async function exportAttendees(id: number) {
