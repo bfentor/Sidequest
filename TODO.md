@@ -47,20 +47,20 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 
 ## 5. Creating and editing events
 
-- [ ] **[API ready]** Create, edit and delete events
-- [ ] Location picker: address search plus a map pin
-- [ ] Cover image
+- [x] **[API ready]** Create, edit and delete events
+- [ ] Location picker: address search plus a map pin (address search done; map pin comes with the map view)
+- [x] Cover image
 - [ ] Categories and tags (party, sports, academic, career, culture and so on)
-- [ ] Online events with a meeting link
+- [x] Online events with a meeting link
 - [ ] Recurring events (weekly club meetings)
-- [ ] Price or "free", and a link to buy tickets
-- [ ] Capacity limit and waitlist
+- [x] Price or "free", and a link to buy tickets
+- [x] Capacity limit and waitlist
 - [ ] Visibility: public, followers only, invite only, or unlisted
 - [ ] Audience restrictions: only students of a given university, or 18+
 - [ ] Drafts and scheduled publishing
 - [ ] Mark an event as cancelled or postponed, and notify people who are going
 - [ ] Co-hosts, so several organizations run one event
-- [ ] Duplicate an event
+- [x] Duplicate an event
 
 ## 6. Going to events
 

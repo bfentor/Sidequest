@@ -13,7 +13,8 @@ import { ThemedText } from './themed-text';
 
 function describe(notification: Notification, t: TFunction) {
   const name = notification.actor?.display_name ?? '';
-  const title = notification.event?.title ?? '';
+  // A deleted event's title is kept in the message.
+  const title = notification.event?.title ?? notification.message ?? '';
   switch (notification.kind) {
     case 'new_follower':
       return t('notifications.newFollower', { name });

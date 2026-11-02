@@ -74,6 +74,13 @@ export type Event = {
     location?: LatLng | null;
     categories?: Array<string>;
     capacity?: number | null;
+    cover: Image | null;
+    online_url?: string | string;
+    /**
+     * In euros; empty for free events.
+     */
+    price?: string | null;
+    ticket_url?: string | string;
     attendance: AttendanceSummary;
     readonly created_at: string;
     readonly updated_at: string;
@@ -89,6 +96,12 @@ export type EventRequest = {
     location?: LatLngRequest | null;
     categories?: Array<string>;
     capacity?: number | null;
+    online_url?: string | string;
+    /**
+     * In euros; empty for free events.
+     */
+    price?: string | null;
+    ticket_url?: string | string;
 };
 
 export type FollowStatus = {
@@ -108,6 +121,12 @@ export type FollowStatus = {
  * * `none` - none
  */
 export type FollowStatusStatusEnum = 'following' | 'requested' | 'none';
+
+export type GeocodeResult = {
+    label: string;
+    lat: number;
+    lng: number;
+};
 
 /**
  * How images appear inside other resources.
@@ -200,6 +219,13 @@ export type NearbyEvent = {
     location?: LatLng | null;
     categories?: Array<string>;
     capacity?: number | null;
+    cover: Image | null;
+    online_url?: string | string;
+    /**
+     * In euros; empty for free events.
+     */
+    price?: string | null;
+    ticket_url?: string | string;
     attendance: AttendanceSummary;
     readonly created_at: string;
     readonly updated_at: string;
@@ -305,6 +331,12 @@ export type PatchedEventRequest = {
     location?: LatLngRequest | null;
     categories?: Array<string>;
     capacity?: number | null;
+    online_url?: string | string;
+    /**
+     * In euros; empty for free events.
+     */
+    price?: string | null;
+    ticket_url?: string | string;
 };
 
 export type PatchedMemberRoleRequest = {
@@ -483,6 +515,12 @@ export type EventWritable = {
     location?: LatLng | null;
     categories?: Array<string>;
     capacity?: number | null;
+    online_url?: string | string;
+    /**
+     * In euros; empty for free events.
+     */
+    price?: string | null;
+    ticket_url?: string | string;
 };
 
 export type EventRequestWritable = {
@@ -499,6 +537,16 @@ export type EventRequestWritable = {
     location?: LatLngRequest | null;
     categories?: Array<string>;
     capacity?: number | null;
+    /**
+     * An image uploaded with POST /api/images/.
+     */
+    cover_id?: number | null;
+    online_url?: string | string;
+    /**
+     * In euros; empty for free events.
+     */
+    price?: string | null;
+    ticket_url?: string | string;
 };
 
 export type MemberWritable = {
@@ -515,6 +563,12 @@ export type NearbyEventWritable = {
     location?: LatLng | null;
     categories?: Array<string>;
     capacity?: number | null;
+    online_url?: string | string;
+    /**
+     * In euros; empty for free events.
+     */
+    price?: string | null;
+    ticket_url?: string | string;
 };
 
 export type PaginatedEventListWritable = {
@@ -562,6 +616,16 @@ export type PatchedEventRequestWritable = {
     location?: LatLngRequest | null;
     categories?: Array<string>;
     capacity?: number | null;
+    /**
+     * An image uploaded with POST /api/images/.
+     */
+    cover_id?: number | null;
+    online_url?: string | string;
+    /**
+     * In euros; empty for free events.
+     */
+    price?: string | null;
+    ticket_url?: string | string;
 };
 
 /**
@@ -831,6 +895,24 @@ export type FeedsUpcomingListResponses = {
 
 export type FeedsUpcomingListResponse = FeedsUpcomingListResponses[keyof FeedsUpcomingListResponses];
 
+export type GeocodeListData = {
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * What to look for.
+         */
+        q: string;
+    };
+    url: '/api/geocode/';
+};
+
+export type GeocodeListResponses = {
+    200: Array<GeocodeResult>;
+};
+
+export type GeocodeListResponse = GeocodeListResponses[keyof GeocodeListResponses];
+
 export type ImagesCreateData = {
     body: ImageUploadRequest;
     path?: never;
@@ -882,6 +964,29 @@ export type MeBlockedListResponses = {
 };
 
 export type MeBlockedListResponse = MeBlockedListResponses[keyof MeBlockedListResponses];
+
+export type MeEventsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        when?: 'past' | 'upcoming';
+    };
+    url: '/api/me/events/';
+};
+
+export type MeEventsListResponses = {
+    200: PaginatedEventList;
+};
+
+export type MeEventsListResponse = MeEventsListResponses[keyof MeEventsListResponses];
 
 export type MeFollowRequestsListData = {
     body?: never;

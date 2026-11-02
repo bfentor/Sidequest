@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useAuth } from '@/auth/auth-provider';
-import { useMe } from '@/hooks/use-me';
+import { useActingProfiles } from '@/hooks/use-acting-profiles';
 
 import { ActionMenu, type MenuAction } from './action-menu';
 import { IconButton } from './icon-button';
@@ -25,7 +25,8 @@ type ContentMenuProps = {
 export function ContentMenu({ target, owner, ownActions = [] }: ContentMenuProps) {
   const { t } = useTranslation();
   const { status } = useAuth();
-  const me = useMe();
+  // Your own content, or an organization's you belong to.
+  const mine = useActingProfiles().some((profile) => profile.handle === owner.handle);
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
 
@@ -38,32 +39,31 @@ export function ContentMenu({ target, owner, ownActions = [] }: ContentMenuProps
     status === 'signed-in' ? action() : router.push('/sign-in');
   const path = { handle: owner.handle };
 
-  const actions: MenuAction[] =
-    me?.handle === owner.handle
-      ? ownActions
-      : [
-          {
-            label: t('moderation.report'),
-            onPress: whenSignedIn(() => router.push({ pathname: '/report', params: target })),
-          },
-          {
-            label: t('moderation.mute', { handle: owner.handle }),
-            onPress: whenSignedIn(() => mute.mutate({ path })),
-          },
-          {
-            label: t('moderation.block', { handle: owner.handle }),
-            destructive: true,
-            onPress: whenSignedIn(() => block.mutate({ path })),
-            confirm:
-              status === 'signed-in'
-                ? {
-                    title: t('moderation.blockConfirmTitle', { handle: owner.handle }),
-                    message: t('moderation.blockConfirmMessage'),
-                    confirmLabel: t('moderation.blockAction'),
-                  }
-                : undefined,
-          },
-        ];
+  const actions: MenuAction[] = mine
+    ? ownActions
+    : [
+        {
+          label: t('moderation.report'),
+          onPress: whenSignedIn(() => router.push({ pathname: '/report', params: target })),
+        },
+        {
+          label: t('moderation.mute', { handle: owner.handle }),
+          onPress: whenSignedIn(() => mute.mutate({ path })),
+        },
+        {
+          label: t('moderation.block', { handle: owner.handle }),
+          destructive: true,
+          onPress: whenSignedIn(() => block.mutate({ path })),
+          confirm:
+            status === 'signed-in'
+              ? {
+                  title: t('moderation.blockConfirmTitle', { handle: owner.handle }),
+                  message: t('moderation.blockConfirmMessage'),
+                  confirmLabel: t('moderation.blockAction'),
+                }
+              : undefined,
+        },
+      ];
 
   if (actions.length === 0) {
     return null;

@@ -145,6 +145,13 @@ MAILERS = {
         "BACKEND": env("MAILER_BACKEND", default="django.core.mail.backends.console.EmailBackend"),
     },
 }
+# Address search for the event form (events/geocoding.py).
+GEOCODER_URL = env("GEOCODER_URL", default="https://nominatim.openstreetmap.org/search")
+GEOCODER_USER_AGENT = env(
+    "GEOCODER_USER_AGENT", default=f"Sidequest/{APP_VERSION} ({FRONTEND_URL})"
+)
+GEOCODER_COUNTRY_CODES = env("GEOCODER_COUNTRY_CODES", default="fi")
+
 # Optional: Expo's "enhanced push security" access token.
 EXPO_ACCESS_TOKEN = env("EXPO_ACCESS_TOKEN", default="")
 
@@ -170,6 +177,7 @@ REST_FRAMEWORK = {
         "blocks": "60/hour",
         "reports": "20/hour",
         "uploads": "60/hour",
+        "geocode": "120/hour",
     },
 }
 

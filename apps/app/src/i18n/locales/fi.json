@@ -70,7 +70,10 @@
   "event": {
     "title": "Tapahtuma",
     "loadFailed": "Tapahtuman lataaminen epäonnistui.",
-    "byOrganizerWithHandle": "Järjestäjä: {{name}} (@{{handle}})"
+    "byOrganizerWithHandle": "Järjestäjä: {{name}} (@{{handle}})",
+    "joinOnline": "Osallistu verkossa",
+    "free": "Maksuton",
+    "tickets": "Liput"
   },
   "auth": {
     "signInTitle": "Tervetuloa takaisin",
@@ -224,5 +227,33 @@
     "verificationMessage": "Viesti moderaattoreille",
     "requestVerification": "Pyydä vahvistusta",
     "verificationSent": "Pyyntö lähetetty. Moderaattorit ovat yhteydessä."
+  },
+  "eventForm": {
+    "newEvent": "Uusi tapahtuma",
+    "edit": "Muokkaa tapahtumaa",
+    "duplicate": "Kopioi",
+    "delete": "Poista tapahtuma",
+    "deleteConfirmTitle": "Poistetaanko tapahtuma?",
+    "deleteConfirmMessage": "Osallistujille ja kiinnostuneille kerrotaan, että tapahtuma peruttiin. Tätä ei voi perua.",
+    "publish": "Julkaise",
+    "publishAs": "Julkaisija",
+    "cover": "Lisää kansikuva",
+    "uploading": "Ladataan…",
+    "title": "Otsikko",
+    "description": "Kuvaus",
+    "startsAt": "Alkaa",
+    "endsAt": "Päättyy",
+    "venue": "Paikka",
+    "address": "Osoite",
+    "locationSet": "Näkyy Lähellä-syötteessä.",
+    "locationHint": "Valitse ehdotus, niin tapahtuma näkyy Lähellä-syötteessä.",
+    "online": "Verkkotapahtuma",
+    "onlineUrl": "Kokouslinkki",
+    "categories": "Kategoriat",
+    "capacity": "Osallistujamäärä",
+    "capacityPlaceholder": "Ei rajaa",
+    "free": "Maksuton",
+    "price": "Hinta (€)",
+    "ticketUrl": "Lippulinkki"
   }
 }

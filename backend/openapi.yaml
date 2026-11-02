@@ -277,6 +277,30 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedEventList'
           description: ''
+  /api/geocode/:
+    get:
+      operationId: geocode_list
+      description: Search for an address or place, for the event form's location.
+      parameters:
+      - in: query
+        name: q
+        schema:
+          type: string
+        description: What to look for.
+        required: true
+      tags:
+      - geocode
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GeocodeResult'
+          description: ''
   /api/images/:
     post:
       operationId: images_create
@@ -355,6 +379,43 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ProfileSummary'
+          description: ''
+  /api/me/events/:
+    get:
+      operationId: me_events_list
+      description: 'Events organized by the signed-in user or their organizations:
+        upcoming, or past.'
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: when
+        schema:
+          type: string
+          enum:
+          - past
+          - upcoming
+          default: upcoming
+      tags:
+      - me
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEventList'
           description: ''
   /api/me/follow-requests/:
     get:
@@ -1372,6 +1433,31 @@ components:
           type: integer
           minimum: 1
           nullable: true
+        cover:
+          allOf:
+          - $ref: '#/components/schemas/Image'
+          readOnly: true
+          nullable: true
+        online_url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,6}(?:\.\d{0,2})?$
+          nullable: true
+          description: In euros; empty for free events.
+        ticket_url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
         attendance:
           allOf:
           - $ref: '#/components/schemas/AttendanceSummary'
@@ -1386,6 +1472,7 @@ components:
           readOnly: true
       required:
       - attendance
+      - cover
       - created_at
       - ends_at
       - id
@@ -1433,6 +1520,31 @@ components:
           type: integer
           minimum: 1
           nullable: true
+        cover_id:
+          type: integer
+          writeOnly: true
+          nullable: true
+          description: An image uploaded with POST /api/images/.
+        online_url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,6}(?:\.\d{0,2})?$
+          nullable: true
+          description: In euros; empty for free events.
+        ticket_url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
       required:
       - ends_at
       - starts_at
@@ -1461,6 +1573,21 @@ components:
         * `following` - following
         * `requested` - requested
         * `none` - none
+    GeocodeResult:
+      type: object
+      properties:
+        label:
+          type: string
+        lat:
+          type: number
+          format: double
+        lng:
+          type: number
+          format: double
+      required:
+      - label
+      - lat
+      - lng
     Image:
       type: object
       description: How images appear inside other resources.
@@ -1667,6 +1794,31 @@ components:
           type: integer
           minimum: 1
           nullable: true
+        cover:
+          allOf:
+          - $ref: '#/components/schemas/Image'
+          readOnly: true
+          nullable: true
+        online_url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,6}(?:\.\d{0,2})?$
+          nullable: true
+          description: In euros; empty for free events.
+        ticket_url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
         attendance:
           allOf:
           - $ref: '#/components/schemas/AttendanceSummary'
@@ -1685,6 +1837,7 @@ components:
           readOnly: true
       required:
       - attendance
+      - cover
       - created_at
       - distance_m
       - ends_at
@@ -1970,6 +2123,31 @@ components:
           type: integer
           minimum: 1
           nullable: true
+        cover_id:
+          type: integer
+          writeOnly: true
+          nullable: true
+          description: An image uploaded with POST /api/images/.
+        online_url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,6}(?:\.\d{0,2})?$
+          nullable: true
+          description: In euros; empty for free events.
+        ticket_url:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
     PatchedMemberRoleRequest:
       type: object
       properties:

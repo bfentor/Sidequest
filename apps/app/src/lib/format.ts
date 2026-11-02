@@ -13,6 +13,7 @@ function createFormatters(locale: string) {
   });
   const timeOnly = new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' });
   const decimal = new Intl.NumberFormat(locale, { maximumFractionDigits: 1 });
+  const euros = new Intl.NumberFormat(locale, { style: 'currency', currency: 'EUR' });
 
   return {
     /** "Fri 10 Jan, 18:00 – 22:00", or with both dates if the event spans days. */
@@ -24,6 +25,10 @@ function createFormatters(locale: string) {
     },
     dateTime(value: string | Date) {
       return dateTime.format(new Date(value));
+    },
+    /** A decimal string from the API, e.g. "12.50" → "12,50 €". */
+    price(amount: string) {
+      return euros.format(Number(amount));
     },
     distance(meters: number) {
       return meters < 1000

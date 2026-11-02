@@ -34,6 +34,11 @@ def followers_of(profile):
     )
 
 
+def attendees_of(event):
+    """Everyone going, interested or waitlisted: whoever should hear about changes."""
+    return Profile.objects.filter(attendances__event=event).select_related("user")
+
+
 def going_to(event):
     return Profile.objects.filter(
         attendances__event=event, attendances__status=Attendance.Status.GOING

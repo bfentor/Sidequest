@@ -131,3 +131,74 @@ def test_feeds_include_attendance(auth_client, user, make_user, make_event):
 def test_rsvp_requires_sign_in(api_client, make_user, make_event):
     event = make_event(make_user().profile)
     assert rsvp(api_client, event, "going").status_code in (401, 403)
+
+
+def test_online_paid_event_fields(auth_client):
+    response = auth_client.post(
+        "/api/events/",
+        {
+            **EVENT,
+            "online_url": "https://meet.example.com/abc",
+            "price": "12.50",
+            "ticket_url": "https://tickets.example.com",
+        },
+        format="json",
+    )
+    body = response.json()
+    assert (body["online_url"], body["price"]) == ("https://meet.example.com/abc", "12.50")
+    assert (
+        auth_client.post("/api/events/", {**EVENT, "price": "-1"}, format="json").status_code == 400
+    )
+
+
+def test_changing_time_or_place_notifies_attendees(auth_client, api_client, make_user):
+    from notifications.models import Notification
+
+    event_id = auth_client.post("/api/events/", EVENT, format="json").json()["id"]
+    fan = make_user()
+    api_client.force_authenticate(fan)
+    api_client.put(f"/api/events/{event_id}/attendance/", {"status": "going"}, format="json")
+
+    auth_client.patch(f"/api/events/{event_id}/", {"description": "Bring snacks"}, format="json")
+    assert not Notification.objects.filter(recipient=fan).exists()
+
+    auth_client.patch(
+        f"/api/events/{event_id}/", {"starts_at": "2030-01-10T19:00:00Z"}, format="json"
+    )
+    assert Notification.objects.get(recipient=fan).kind == "event_changed"
+
+    auth_client.delete(f"/api/events/{event_id}/")
+    cancelled = Notification.objects.get(recipient=fan, kind="event_cancelled")
+    assert cancelled.message == EVENT["title"]
+
+
+def test_geocode(auth_client, monkeypatch):
+    import io
+    import json
+
+    from events import geocoding
+
+    def fake_urlopen(request, timeout):
+        assert "countrycodes=fi" in request.full_url
+        places = [
+            {"display_name": "Skinnarilankatu 34, Lappeenranta", "lat": "61.06", "lon": "28.09"}
+        ]
+        return io.BytesIO(json.dumps(places).encode())
+
+    monkeypatch.setattr(geocoding.urllib.request, "urlopen", fake_urlopen)
+
+    response = auth_client.get("/api/geocode/", {"q": "Skinnarilankatu 34"})
+
+    assert response.json() == [
+        {"label": "Skinnarilankatu 34, Lappeenranta", "lat": 61.06, "lng": 28.09}
+    ]
+
+
+def test_managed_events_include_organizations(auth_client, user, make_organization, make_event):
+    club = make_organization("club", members=[user])
+    make_event(user.profile, title="mine")
+    make_event(club, title="club's")
+
+    events = auth_client.get("/api/me/events/").json()["results"]
+
+    assert sorted(e["title"] for e in events) == ["club's", "mine"]

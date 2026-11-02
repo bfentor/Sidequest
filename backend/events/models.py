@@ -91,6 +91,18 @@ class Event(models.Model):
     # Empty for online events, which then don't appear in the nearby feed.
     location = gis_models.PointField(geography=True, srid=4326, null=True, blank=True)
     categories = models.ManyToManyField(Category, blank=True, related_name="events")
+    cover = models.ForeignKey(
+        "images.Image",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="cover_of_event",
+    )
+    # For online (or hybrid) events.
+    online_url = models.URLField(blank=True)
+    # Empty for free events.
+    price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+    ticket_url = models.URLField(blank=True)
     # How many can attend; empty for no limit. Beyond it, people join the waitlist.
     capacity = models.PositiveIntegerField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

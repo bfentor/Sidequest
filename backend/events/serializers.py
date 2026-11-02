@@ -2,6 +2,9 @@ from django.utils.translation import gettext_lazy as _
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
+from images.serializers import ImageSerializer, OwnImageField
+from notifications.models import Kind
+from notifications.services import attendees_of, notify
 from profiles.serializers import ActingProfileField, ProfileSummarySerializer
 
 from .fields import LatLngField
@@ -55,6 +58,12 @@ def attendance_summary(event, viewer):
     }
 
 
+class GeocodeResultSerializer(serializers.Serializer):
+    label = serializers.CharField()
+    lat = serializers.FloatField()
+    lng = serializers.FloatField()
+
+
 class RsvpSerializer(serializers.Serializer):
     status = serializers.ChoiceField(
         choices=[Attendance.Status.GOING, Attendance.Status.INTERESTED],
@@ -74,6 +83,22 @@ class EventSerializer(serializers.ModelSerializer):
         slug_field="slug", many=True, queryset=Category.objects.all(), required=False
     )
     capacity = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    cover = ImageSerializer(read_only=True, allow_null=True)
+    cover_id = OwnImageField(
+        source="cover",
+        write_only=True,
+        required=False,
+        allow_null=True,
+        help_text="An image uploaded with POST /api/images/.",
+    )
+    price = serializers.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        min_value=0,
+        allow_null=True,
+        required=False,
+        help_text="In euros; empty for free events.",
+    )
     attendance = serializers.SerializerMethodField()
 
     class Meta:
@@ -91,6 +116,11 @@ class EventSerializer(serializers.ModelSerializer):
             "location",
             "categories",
             "capacity",
+            "cover",
+            "cover_id",
+            "online_url",
+            "price",
+            "ticket_url",
             "attendance",
             "created_at",
             "updated_at",
@@ -115,10 +145,20 @@ class EventSerializer(serializers.ModelSerializer):
         event.categories.set(categories)
         return event
 
+    # Changing any of these tells everyone going or interested.
+    NOTIFY_ON_CHANGE = ("starts_at", "ends_at", "location", "venue_name", "address", "online_url")
+
     def update(self, instance, validated_data):
         # An event's organizer is fixed once it has been published.
         validated_data.pop("organizer", None)
-        return super().update(instance, validated_data)
+        changed = any(
+            field in validated_data and validated_data[field] != getattr(instance, field)
+            for field in self.NOTIFY_ON_CHANGE
+        )
+        event = super().update(instance, validated_data)
+        if changed:
+            notify(attendees_of(event), Kind.EVENT_CHANGED, actor=event.organizer, event=event)
+        return event
 
 
 class NearbyEventSerializer(EventSerializer):

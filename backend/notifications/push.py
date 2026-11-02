@@ -29,7 +29,8 @@ def render(notification) -> tuple[str, str]:
     """Title and body of a push, in the active language."""
     actor = notification.actor.display_name if notification.actor else ""
     event = notification.event
-    title = event.title if event else "Sidequest"
+    # A deleted event's title is kept in the message.
+    title = event.title if event else (notification.message or "Sidequest")
     match notification.kind:
         case Kind.NEW_FOLLOWER:
             return "Sidequest", _("%(name)s started following you.") % {"name": actor}

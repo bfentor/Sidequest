@@ -70,7 +70,10 @@
   "event": {
     "title": "Evenemang",
     "loadFailed": "Evenemanget kunde inte laddas.",
-    "byOrganizerWithHandle": "av {{name}} (@{{handle}})"
+    "byOrganizerWithHandle": "av {{name}} (@{{handle}})",
+    "joinOnline": "Delta online",
+    "free": "Gratis",
+    "tickets": "Biljetter"
   },
   "auth": {
     "signInTitle": "Välkommen tillbaka",
@@ -224,5 +227,33 @@
     "verificationMessage": "Meddelande till moderatorerna",
     "requestVerification": "Begär verifiering",
     "verificationSent": "Begäran skickad. Moderatorerna hör av sig."
+  },
+  "eventForm": {
+    "newEvent": "Nytt evenemang",
+    "edit": "Redigera evenemang",
+    "duplicate": "Duplicera",
+    "delete": "Ta bort evenemang",
+    "deleteConfirmTitle": "Ta bort evenemanget?",
+    "deleteConfirmMessage": "Alla som kommer eller är intresserade får veta att det är inställt. Det går inte att ångra.",
+    "publish": "Publicera",
+    "publishAs": "Publicera som",
+    "cover": "Lägg till en omslagsbild",
+    "uploading": "Laddar upp…",
+    "title": "Titel",
+    "description": "Beskrivning",
+    "startsAt": "Börjar",
+    "endsAt": "Slutar",
+    "venue": "Plats",
+    "address": "Adress",
+    "locationSet": "Visas i flödet I närheten.",
+    "locationHint": "Välj ett förslag så visas evenemanget i flödet I närheten.",
+    "online": "Onlineevenemang",
+    "onlineUrl": "Möteslänk",
+    "categories": "Kategorier",
+    "capacity": "Antal platser",
+    "capacityPlaceholder": "Ingen gräns",
+    "free": "Gratis",
+    "price": "Pris (€)",
+    "ticketUrl": "Biljettlänk"
   }
 }

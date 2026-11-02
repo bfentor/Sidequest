@@ -45,7 +45,9 @@ function RootStack() {
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="events/[id]" options={{ title: t('event.title') }} />
+      <Stack.Screen name="events/[id]/index" options={{ title: t('event.title') }} />
+      <Stack.Screen name="events/[id]/edit" options={{ title: t('eventForm.edit') }} />
+      <Stack.Screen name="events/new" options={{ title: t('eventForm.newEvent') }} />
       <Stack.Screen name="sign-in" options={{ title: t('common.signIn'), presentation: 'modal' }} />
       <Stack.Screen name="settings" options={{ title: t('common.settings') }} />
       <Stack.Screen name="edit-profile" options={{ title: t('profile.edit') }} />

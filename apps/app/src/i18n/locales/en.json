@@ -70,7 +70,10 @@
   "event": {
     "title": "Event",
     "loadFailed": "This event couldn't be loaded.",
-    "byOrganizerWithHandle": "by {{name}} (@{{handle}})"
+    "byOrganizerWithHandle": "by {{name}} (@{{handle}})",
+    "joinOnline": "Join online",
+    "free": "Free",
+    "tickets": "Tickets"
   },
   "auth": {
     "signInTitle": "Welcome back",
@@ -224,5 +227,33 @@
     "verificationMessage": "Message to moderators",
     "requestVerification": "Request verification",
     "verificationSent": "Request sent. Moderators will get back to you."
+  },
+  "eventForm": {
+    "newEvent": "New event",
+    "edit": "Edit event",
+    "duplicate": "Duplicate",
+    "delete": "Delete event",
+    "deleteConfirmTitle": "Delete this event?",
+    "deleteConfirmMessage": "Everyone going or interested is told it was cancelled. This can't be undone.",
+    "publish": "Publish",
+    "publishAs": "Publish as",
+    "cover": "Add a cover picture",
+    "uploading": "Uploading…",
+    "title": "Title",
+    "description": "Description",
+    "startsAt": "Starts",
+    "endsAt": "Ends",
+    "venue": "Venue",
+    "address": "Address",
+    "locationSet": "Shown in the nearby feed.",
+    "locationHint": "Pick a suggestion to show the event in the nearby feed.",
+    "online": "Online event",
+    "onlineUrl": "Meeting link",
+    "categories": "Categories",
+    "capacity": "Capacity",
+    "capacityPlaceholder": "No limit",
+    "free": "Free",
+    "price": "Price (€)",
+    "ticketUrl": "Ticket link"
   }
 }
