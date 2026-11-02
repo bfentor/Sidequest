@@ -19,6 +19,7 @@ class EventViewSet(
     serializer_class = EventSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, CanActAsOwner]
     owner_field = "organizer"
+    throttle_scope = "events"
     http_method_names = ["get", "post", "patch", "delete", "options"]
 
     def get_queryset(self):

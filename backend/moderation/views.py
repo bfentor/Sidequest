@@ -27,6 +27,7 @@ class _ProfileRelationView(APIView):
     """POST to start blocking/muting a profile, DELETE to stop."""
 
     permission_classes = [permissions.IsAuthenticated]
+    throttle_scope = "blocks"
 
     def target(self, request, handle):
         target = get_object_or_404(

@@ -18,6 +18,7 @@ class PostViewSet(
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, CanActAsOwner]
     owner_field = "author"
+    throttle_scope = "posts"
 
     def get_queryset(self):
         return Post.objects.visible_to(viewer_profile(self.request)).select_related(

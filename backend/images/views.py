@@ -10,3 +10,4 @@ class ImageUploadView(generics.CreateAPIView):
     serializer_class = ImageUploadSerializer
     parser_classes = [MultiPartParser]
     permission_classes = [permissions.IsAuthenticated]
+    throttle_scope = "uploads"

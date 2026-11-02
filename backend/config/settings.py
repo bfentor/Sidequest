@@ -96,6 +96,10 @@ TEMPLATES = [
 DATABASES = {"default": env.db("DATABASE_URL")}
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# Rate limits are counted in the cache, so deployments share one across
+# processes: CACHE_URL=dbcache://django_cache (the entrypoint creates the table).
+CACHES = {"default": env.cache("CACHE_URL", default="locmemcache://")}
+
 
 # Authentication
 
@@ -120,6 +124,10 @@ ACCOUNT_EMAIL_VERIFICATION = env("ACCOUNT_EMAIL_VERIFICATION", default="optional
 
 # Every frontend (iOS, Android and web) authenticates with the X-Session-Token
 # header, so only allauth's "app" client is enabled.
+# Behind Cloudflare, the visitor's address is in CF-Connecting-IP; allauth's
+# sign-in rate limits need it.
+ALLAUTH_TRUSTED_CLIENT_IP_HEADER = env("ALLAUTH_TRUSTED_CLIENT_IP_HEADER", default=None)
+
 HEADLESS_ONLY = True
 HEADLESS_CLIENTS = ("app",)
 HEADLESS_SERVE_SPECIFICATION = DEBUG
@@ -148,6 +156,16 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticatedOrReadOnly"],
     "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_THROTTLE_CLASSES": ["config.throttling.WriteRateThrottle"],
+    # Per signed-in user. Views opt in with `throttle_scope`.
+    "DEFAULT_THROTTLE_RATES": {
+        "posts": "30/hour",
+        "events": "20/hour",
+        "follows": "200/hour",
+        "blocks": "60/hour",
+        "reports": "20/hour",
+        "uploads": "60/hour",
+    },
 }
 
 SPECTACULAR_SETTINGS = {

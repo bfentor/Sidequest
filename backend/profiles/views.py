@@ -16,6 +16,7 @@ from .serializers import ProfileSerializer
 class ProfileViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     serializer_class = ProfileSerializer
     lookup_field = "handle"
+    throttle_scope = "follows"
 
     def get_queryset(self):
         viewer = viewer_profile(self.request)

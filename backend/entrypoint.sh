@@ -11,6 +11,8 @@ set -e
 if [ "$1" = "gunicorn" ]; then
     # If this fails, the container stops and the previous release keeps serving.
     python manage.py migrate --noinput
+    # Only acts when CACHE_URL points at a database cache.
+    python manage.py createcachetable
 fi
 
 exec "$@"

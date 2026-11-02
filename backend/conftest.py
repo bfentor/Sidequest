@@ -3,6 +3,7 @@ from itertools import count
 
 import pytest
 from django.contrib.gis.geos import Point
+from django.core.cache import cache
 from django.utils import timezone
 from rest_framework.test import APIClient
 
@@ -11,6 +12,12 @@ from events.models import Event
 from profiles.models import Membership, Profile
 
 _ids = count()
+
+
+@pytest.fixture(autouse=True)
+def clear_cache():
+    """Rate limits are counted in the cache; start each test from zero."""
+    cache.clear()
 
 
 @pytest.fixture
