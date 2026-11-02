@@ -1113,6 +1113,14 @@ export type FeedsNearbyListData = {
     body?: never;
     path?: never;
     query: {
+        /**
+         * Category slugs; events in any of them.
+         */
+        category?: Array<string>;
+        /**
+         * Free events only.
+         */
+        free?: boolean;
         lat: number;
         /**
          * Number of results to return per page.
@@ -1124,6 +1132,14 @@ export type FeedsNearbyListData = {
          */
         offset?: number;
         radius_km?: number;
+        /**
+         * Events still going on after this time.
+         */
+        starts_after?: string;
+        /**
+         * Events starting before this time.
+         */
+        starts_before?: string;
     };
     url: '/api/feeds/nearby/';
 };
@@ -1139,9 +1155,25 @@ export type FeedsUpcomingListData = {
     path?: never;
     query?: {
         /**
+         * Category slugs; events in any of them.
+         */
+        category?: Array<string>;
+        /**
          * The pagination cursor value.
          */
         cursor?: string;
+        /**
+         * Free events only.
+         */
+        free?: boolean;
+        /**
+         * Events still going on after this time.
+         */
+        starts_after?: string;
+        /**
+         * Events starting before this time.
+         */
+        starts_before?: string;
     };
     url: '/api/feeds/upcoming/';
 };

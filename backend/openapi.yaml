@@ -279,6 +279,21 @@ paths:
         The position is only used for this query and is never stored.
       parameters:
       - in: query
+        name: category
+        schema:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            pattern: ^[-a-zA-Z0-9_]+$
+        description: Category slugs; events in any of them.
+      - in: query
+        name: free
+        schema:
+          type: boolean
+          default: false
+        description: Free events only.
+      - in: query
         name: lat
         schema:
           type: number
@@ -314,6 +329,18 @@ paths:
           maximum: 100
           minimum: 0.1
           default: 10.0
+      - in: query
+        name: starts_after
+        schema:
+          type: string
+          format: date-time
+        description: Events still going on after this time.
+      - in: query
+        name: starts_before
+        schema:
+          type: string
+          format: date-time
+        description: Events starting before this time.
       tags:
       - feeds
       security:
@@ -331,12 +358,39 @@ paths:
       operationId: feeds_upcoming_list
       description: Ongoing and future events, soonest first.
       parameters:
+      - in: query
+        name: category
+        schema:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            pattern: ^[-a-zA-Z0-9_]+$
+        description: Category slugs; events in any of them.
       - name: cursor
         required: false
         in: query
         description: The pagination cursor value.
         schema:
           type: string
+      - in: query
+        name: free
+        schema:
+          type: boolean
+          default: false
+        description: Free events only.
+      - in: query
+        name: starts_after
+        schema:
+          type: string
+          format: date-time
+        description: Events still going on after this time.
+      - in: query
+        name: starts_before
+        schema:
+          type: string
+          format: date-time
+        description: Events starting before this time.
       tags:
       - feeds
       security:

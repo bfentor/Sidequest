@@ -34,7 +34,8 @@
     "askPermission": "Share your location to see events around you. It is only used to sort events and is never stored.",
     "permissionDenied": "Location access is turned off for Sidequest. Enable it in your settings to see events around you.",
     "useMyLocation": "Use my location",
-    "empty": "No events near you right now."
+    "empty": "No events near you right now.",
+    "within": "{{km}} km"
   },
   "following": {
     "signInPrompt": "Sign in to see posts and events from the people and organizations you follow.",
@@ -410,5 +411,12 @@
     "nothing": "Nothing matches “{{query}}”.",
     "people": "People and organizations",
     "events": "Events"
+  },
+  "filters": {
+    "today": "Today",
+    "tonight": "Tonight",
+    "weekend": "This weekend",
+    "free": "Free",
+    "nothing": "No events match these filters."
   }
 }

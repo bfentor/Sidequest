@@ -17,6 +17,34 @@ from posts.serializers import PostSerializer
 from .pagination import NearbyPagination, NewestFirstCursorPagination, UpcomingCursorPagination
 
 
+class FeedFilterSerializer(serializers.Serializer):
+    category = serializers.ListField(
+        child=serializers.SlugField(),
+        required=False,
+        help_text="Category slugs; events in any of them.",
+    )
+    starts_after = serializers.DateTimeField(
+        required=False, help_text="Events still going on after this time."
+    )
+    starts_before = serializers.DateTimeField(
+        required=False, help_text="Events starting before this time."
+    )
+    free = serializers.BooleanField(required=False, default=False, help_text="Free events only.")
+
+
+def filter_events(events, query_params):
+    filters = FeedFilterSerializer(data=query_params)
+    filters.is_valid(raise_exception=True)
+    data = filters.validated_data
+    return events.filtered(
+        categories=data.get("category", []),
+        starts_after=data.get("starts_after"),
+        starts_before=data.get("starts_before"),
+        free=data["free"],
+    )
+
+
+@extend_schema(parameters=[FeedFilterSerializer])
 class UpcomingFeedView(generics.ListAPIView):
     """Ongoing and future events, soonest first."""
 
@@ -26,7 +54,8 @@ class UpcomingFeedView(generics.ListAPIView):
 
     def get_queryset(self):
         viewer = viewer_profile(self.request)
-        return Event.objects.not_ended().in_feeds_of(viewer).for_display(viewer)
+        events = Event.objects.not_ended().in_feeds_of(viewer)
+        return filter_events(events, self.request.query_params).for_display(viewer)
 
 
 class NearbyQuerySerializer(serializers.Serializer):
@@ -35,7 +64,7 @@ class NearbyQuerySerializer(serializers.Serializer):
     radius_km = serializers.FloatField(min_value=0.1, max_value=100, default=10)
 
 
-@extend_schema(parameters=[NearbyQuerySerializer])
+@extend_schema(parameters=[NearbyQuerySerializer, FeedFilterSerializer])
 class NearbyFeedView(generics.ListAPIView):
     """Ongoing and future events within a radius of the given position, nearest first.
 
@@ -51,9 +80,9 @@ class NearbyFeedView(generics.ListAPIView):
         params.is_valid(raise_exception=True)
         point = Point(params.validated_data["lng"], params.validated_data["lat"], srid=4326)
         viewer = viewer_profile(self.request)
+        events = Event.objects.not_ended().in_feeds_of(viewer)
         return (
-            Event.objects.not_ended()
-            .in_feeds_of(viewer)
+            filter_events(events, self.request.query_params)
             .near(point, params.validated_data["radius_km"])
             .for_display(viewer)
         )

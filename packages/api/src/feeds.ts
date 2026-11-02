@@ -21,12 +21,22 @@ import {
 import type { LatLng } from './generated/types.gen';
 import { queryParam } from './pagination';
 
-export function useUpcomingFeed() {
+/** Narrows the upcoming and nearby feeds. */
+export type FeedFilters = {
+  /** Category slugs; events in any of them. */
+  category?: string[];
+  /** ISO times: events going on during this window. */
+  starts_after?: string;
+  starts_before?: string;
+  free?: boolean;
+};
+
+export function useUpcomingFeed(filters: FeedFilters = {}) {
   return useInfiniteQuery({
-    queryKey: feedsUpcomingListInfiniteQueryKey(),
+    queryKey: feedsUpcomingListInfiniteQueryKey({ query: filters }),
     queryFn: async ({ pageParam, signal }) => {
       const { data } = await feedsUpcomingList({
-        query: { cursor: pageParam },
+        query: { ...filters, cursor: pageParam },
         signal,
         throwOnError: true,
       });
@@ -37,8 +47,8 @@ export function useUpcomingFeed() {
   });
 }
 
-export function useNearbyFeed(position: LatLng, radiusKm?: number) {
-  const query = { lat: position.lat, lng: position.lng, radius_km: radiusKm };
+export function useNearbyFeed(position: LatLng, radiusKm?: number, filters: FeedFilters = {}) {
+  const query = { lat: position.lat, lng: position.lng, radius_km: radiusKm, ...filters };
   return useInfiniteQuery({
     queryKey: feedsNearbyListInfiniteQueryKey({ query }),
     queryFn: async ({ pageParam, signal }) => {

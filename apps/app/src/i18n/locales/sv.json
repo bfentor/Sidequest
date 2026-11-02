@@ -34,7 +34,8 @@
     "askPermission": "Dela din plats för att se evenemang omkring dig. Den används bara för att sortera evenemang och sparas aldrig.",
     "permissionDenied": "Platsåtkomst är avstängd för Sidequest. Slå på den i inställningarna för att se evenemang omkring dig.",
     "useMyLocation": "Använd min plats",
-    "empty": "Inga evenemang nära dig just nu."
+    "empty": "Inga evenemang nära dig just nu.",
+    "within": "{{km}} km"
   },
   "following": {
     "signInPrompt": "Logga in för att se inlägg och evenemang från personer och organisationer du följer.",
@@ -410,5 +411,12 @@
     "nothing": "Inget matchar ”{{query}}”.",
     "people": "Personer och organisationer",
     "events": "Evenemang"
+  },
+  "filters": {
+    "today": "I dag",
+    "tonight": "I kväll",
+    "weekend": "I helgen",
+    "free": "Gratis",
+    "nothing": "Inga evenemang matchar filtren."
   }
 }

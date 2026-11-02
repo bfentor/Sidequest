@@ -70,6 +70,23 @@ class EventQuerySet(models.QuerySet):
             .prefetch_related("categories", "co_host_links__profile__avatar")
         )
 
+    def filtered(self, *, categories=(), starts_after=None, starts_before=None, free=False):
+        """Feed filters: any of the categories, overlapping a time window, free only."""
+        queryset = self
+        if categories:
+            in_category = Event.categories.through.objects.filter(
+                event=models.OuterRef("pk"), category__slug__in=categories
+            )
+            queryset = queryset.filter(models.Exists(in_category))
+        # Overlapping the window, so events already going on count too.
+        if starts_after is not None:
+            queryset = queryset.filter(ends_at__gt=starts_after)
+        if starts_before is not None:
+            queryset = queryset.filter(starts_at__lt=starts_before)
+        if free:
+            queryset = queryset.filter(models.Q(price__isnull=True) | models.Q(price=0))
+        return queryset
+
     def not_ended(self):
         """Events that are ongoing or yet to start."""
         return self.filter(ends_at__gte=timezone.now())

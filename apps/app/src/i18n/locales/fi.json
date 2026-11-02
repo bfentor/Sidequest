@@ -34,7 +34,8 @@
     "askPermission": "Jaa sijaintisi nähdäksesi lähelläsi olevat tapahtumat. Sijaintia käytetään vain tapahtumien järjestämiseen, eikä sitä tallenneta.",
     "permissionDenied": "Sidequestin sijaintioikeus on pois päältä. Salli se asetuksista nähdäksesi lähelläsi olevat tapahtumat.",
     "useMyLocation": "Käytä sijaintiani",
-    "empty": "Lähelläsi ei ole nyt tapahtumia."
+    "empty": "Lähelläsi ei ole nyt tapahtumia.",
+    "within": "{{km}} km"
   },
   "following": {
     "signInPrompt": "Kirjaudu sisään nähdäksesi seuraamiesi ihmisten ja järjestöjen julkaisut ja tapahtumat.",
@@ -410,5 +411,12 @@
     "nothing": "Mikään ei vastaa hakua ”{{query}}”.",
     "people": "Ihmiset ja järjestöt",
     "events": "Tapahtumat"
+  },
+  "filters": {
+    "today": "Tänään",
+    "tonight": "Tänä iltana",
+    "weekend": "Viikonloppuna",
+    "free": "Maksuton",
+    "nothing": "Mikään tapahtuma ei vastaa suodattimia."
   }
 }

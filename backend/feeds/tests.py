@@ -60,3 +60,24 @@ def test_following_feed_shows_own_and_followed_posts_newest_first(
 
 def test_following_feed_requires_sign_in(api_client, db):
     assert api_client.get("/api/feeds/following/").status_code in (401, 403)
+
+
+def test_upcoming_filters(api_client, user, make_event):
+    from django.utils import timezone
+
+    from events.models import Category
+
+    games = Category.objects.get(slug="games")
+    board = make_event(user.profile, title="board games", starts_in=timedelta(hours=2), price=0)
+    board.categories.add(games)
+    make_event(user.profile, title="paid concert", starts_in=timedelta(hours=3), price=15)
+    make_event(user.profile, title="next week", starts_in=timedelta(days=7))
+
+    def titles_for(**params):
+        return titles(api_client.get("/api/feeds/upcoming/", params))
+
+    assert titles_for(category=["games"]) == ["board games"]
+    assert titles_for(category=["games", "music"]) == ["board games"]
+    assert titles_for(free="true") == ["board games", "next week"]
+    tomorrow = (timezone.now() + timedelta(days=1)).isoformat()
+    assert titles_for(starts_before=tomorrow) == ["board games", "paid concert"]

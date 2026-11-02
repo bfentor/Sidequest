@@ -81,10 +81,10 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 ## 7. Feeds, search and discovery
 
 - [x] Search for events, people and organizations
-- [ ] Filters: date range, category, free only, distance
-- [ ] Quick filters: today, tonight, this weekend
+- [x] Filters: date range, category, free only, distance
+- [x] Quick filters: today, tonight, this weekend
 - [ ] Map view for the nearby feed
-- [ ] Browse by category
+- [x] Browse by category
 - [ ] Trending or popular events
 - [ ] Algorithmic "For you" feed, ranked by interests, who you follow, which friends are going, popularity and how close the event is
 - [ ] "Who to follow" suggestions
