@@ -282,7 +282,7 @@
     "venue": "Paikka",
     "address": "Osoite",
     "locationSet": "Näkyy Lähellä-syötteessä.",
-    "locationHint": "Valitse ehdotus, niin tapahtuma näkyy Lähellä-syötteessä.",
+    "locationHint": "Valitse ehdotus tai aseta paikka kartalle, niin tapahtuma näkyy Lähellä-syötteessä.",
     "online": "Verkkotapahtuma",
     "onlineUrl": "Kokouslinkki",
     "categories": "Kategoriat",
@@ -320,7 +320,9 @@
     "adultsOnlyHint": "Vain 18 vuotta täyttäneet voivat ilmoittautua.",
     "whoCanJoin": "Kuka voi osallistua",
     "anyone": "Kuka tahansa",
-    "studentsOf": "Opiskelijat: {{university}}"
+    "studentsOf": "Opiskelijat: {{university}}",
+    "placeOnMap": "Aseta kartalle",
+    "mapHint": "Siirrä nastaa napauttamalla karttaa."
   },
   "eventStatus": {
     "active": "Käynnissä",

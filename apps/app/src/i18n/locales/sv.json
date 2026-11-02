@@ -282,7 +282,7 @@
     "venue": "Plats",
     "address": "Adress",
     "locationSet": "Visas i flödet I närheten.",
-    "locationHint": "Välj ett förslag så visas evenemanget i flödet I närheten.",
+    "locationHint": "Välj ett förslag eller placera platsen på kartan så visas evenemanget i flödet I närheten.",
     "online": "Onlineevenemang",
     "onlineUrl": "Möteslänk",
     "categories": "Kategorier",
@@ -320,7 +320,9 @@
     "adultsOnlyHint": "Bara personer som fyllt 18 kan anmäla sig.",
     "whoCanJoin": "Vem kan delta",
     "anyone": "Vem som helst",
-    "studentsOf": "Studenter vid {{university}}"
+    "studentsOf": "Studenter vid {{university}}",
+    "placeOnMap": "Placera på kartan",
+    "mapHint": "Tryck på kartan för att flytta nålen."
   },
   "eventStatus": {
     "active": "Blir av",

@@ -282,7 +282,7 @@
     "venue": "Venue",
     "address": "Address",
     "locationSet": "Shown in the nearby feed.",
-    "locationHint": "Pick a suggestion to show the event in the nearby feed.",
+    "locationHint": "Pick a suggestion or place it on the map to show the event in the nearby feed.",
     "online": "Online event",
     "onlineUrl": "Meeting link",
     "categories": "Categories",
@@ -320,7 +320,9 @@
     "adultsOnlyHint": "Only people aged 18 or over can RSVP.",
     "whoCanJoin": "Who can join",
     "anyone": "Anyone",
-    "studentsOf": "{{university}} students"
+    "studentsOf": "{{university}} students",
+    "placeOnMap": "Place on map",
+    "mapHint": "Tap the map to move the pin."
   },
   "eventStatus": {
     "active": "On",

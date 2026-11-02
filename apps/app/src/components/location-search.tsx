@@ -7,6 +7,8 @@ import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 import { Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
+import { Button } from './button';
+import { LocationPin } from './location-pin';
 import { TextField } from './text-field';
 import { ThemedText } from './themed-text';
 
@@ -17,13 +19,19 @@ type LocationSearchProps = {
   onChange: (place: Place) => void;
 };
 
-/** Address field that suggests places as you type and stores the chosen one's coordinates. */
+/**
+ * Address field that suggests places as you type and stores the chosen one's
+ * coordinates, with a map to place or adjust the pin by hand.
+ */
 export function LocationSearch({ value, onChange }: LocationSearchProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const [query, setQuery] = useState(value.address);
   const [debounced, setDebounced] = useState('');
   const [open, setOpen] = useState(false);
+  // Where the map looks: the picked suggestion, not every move of the pin.
+  const [mapCenter, setMapCenter] = useState<LatLng | null>(value.location);
+  const [mapOpen, setMapOpen] = useState(value.location !== null);
 
   useEffect(() => {
     const timer = setTimeout(() => setDebounced(query.trim()), 400);
@@ -66,9 +74,12 @@ export function LocationSearch({ value, onChange }: LocationSearchProps) {
               key={`${place.lat},${place.lng}`}
               role="option"
               onPress={() => {
+                const location = { lat: place.lat, lng: place.lng };
                 setQuery(place.label);
                 setOpen(false);
-                onChange({ address: place.label, location: { lat: place.lat, lng: place.lng } });
+                setMapCenter(location);
+                setMapOpen(true);
+                onChange({ address: place.label, location });
               }}
               style={({ pressed }) => [styles.result, pressed && { opacity: 0.6 }]}>
               <ThemedText type="small">{place.label}</ThemedText>
@@ -76,6 +87,24 @@ export function LocationSearch({ value, onChange }: LocationSearchProps) {
           ))}
         </View>
       ) : null}
+      {mapOpen ? (
+        <>
+          <LocationPin
+            value={value.location}
+            center={mapCenter}
+            onChange={(location) => onChange({ address: value.address, location })}
+          />
+          <ThemedText type="small" themeColor="textSecondary">
+            {t('eventForm.mapHint')}
+          </ThemedText>
+        </>
+      ) : (
+        <Button
+          title={t('eventForm.placeOnMap')}
+          variant="secondary"
+          onPress={() => setMapOpen(true)}
+        />
+      )}
     </View>
   );
 }
