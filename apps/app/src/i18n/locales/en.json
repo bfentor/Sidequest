@@ -536,5 +536,8 @@
     "count_other": "{{count}} ratings",
     "comments": "Comments",
     "empty": "No feedback yet. Everyone who was going is asked for it when the event ends."
+  },
+  "hashtags": {
+    "empty": "No posts with this hashtag yet."
   }
 }

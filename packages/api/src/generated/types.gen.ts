@@ -1592,6 +1592,26 @@ export type FeedsForYouListResponses = {
 
 export type FeedsForYouListResponse = FeedsForYouListResponses[keyof FeedsForYouListResponses];
 
+export type FeedsHashtagListData = {
+    body?: never;
+    path: {
+        tag: string;
+    };
+    query?: {
+        /**
+         * The pagination cursor value.
+         */
+        cursor?: string;
+    };
+    url: '/api/feeds/hashtag/{tag}/';
+};
+
+export type FeedsHashtagListResponses = {
+    200: PaginatedPostList;
+};
+
+export type FeedsHashtagListResponse = FeedsHashtagListResponses[keyof FeedsHashtagListResponses];
+
 export type FeedsNearbyListData = {
     body?: never;
     path?: never;

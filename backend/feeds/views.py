@@ -13,6 +13,7 @@ from events.serializers import EventSerializer, NearbyEventSerializer
 from moderation.visibility import viewer_profile
 from posts.models import Post
 from posts.serializers import PostSerializer
+from posts.text import hashtag_pattern
 
 from .pagination import (
     NearbyPagination,
@@ -164,4 +165,19 @@ class FollowingFeedView(generics.ListAPIView):
         posts = Post.objects.following_feed_for(viewer).in_feeds_of(viewer).latest_per_event()
         if params.validated_data["hide_past"]:
             posts = posts.without_past_events()
+        return posts.for_display(viewer)
+
+
+class HashtagFeedView(generics.ListAPIView):
+    """Posts with a #hashtag (without the #, any case), newest first."""
+
+    serializer_class = PostSerializer
+    pagination_class = NewestFirstCursorPagination
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        viewer = viewer_profile(self.request)
+        posts = Post.objects.in_feeds_of(viewer).filter(
+            body__iregex=hashtag_pattern(self.kwargs["tag"])
+        )
         return posts.for_display(viewer)

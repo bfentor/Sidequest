@@ -536,5 +536,8 @@
     "count_other": "{{count}} arviota",
     "comments": "Kommentit",
     "empty": "Palautetta ei ole vielä. Kaikilta osallistujiksi ilmoittautuneilta pyydetään palautetta tapahtuman päätyttyä."
+  },
+  "hashtags": {
+    "empty": "Tällä aihetunnisteella ei ole vielä julkaisuja."
   }
 }

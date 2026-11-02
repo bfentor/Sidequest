@@ -9,6 +9,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import {
   feedsFollowingListInfiniteQueryKey,
   feedsForYouListInfiniteQueryKey,
+  feedsHashtagListInfiniteQueryKey,
   feedsNearbyListInfiniteQueryKey,
   feedsTrendingListInfiniteQueryKey,
   feedsUpcomingListInfiniteQueryKey,
@@ -16,6 +17,7 @@ import {
 import {
   feedsFollowingList,
   feedsForYouList,
+  feedsHashtagList,
   feedsNearbyList,
   feedsTrendingList,
   feedsUpcomingList,
@@ -119,5 +121,23 @@ export function useFollowingFeed({ enabled = true, hidePast = false } = {}) {
     initialPageParam: undefined as string | undefined,
     getNextPageParam: (page) => queryParam(page.next, 'cursor'),
     enabled,
+  });
+}
+
+/** Posts with a #hashtag (`tag` without the #), newest first. */
+export function useHashtagFeed(tag: string) {
+  return useInfiniteQuery({
+    queryKey: feedsHashtagListInfiniteQueryKey({ path: { tag } }),
+    queryFn: async ({ pageParam, signal }) => {
+      const { data } = await feedsHashtagList({
+        path: { tag },
+        query: { cursor: pageParam },
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    initialPageParam: undefined as string | undefined,
+    getNextPageParam: (page) => queryParam(page.next, 'cursor'),
   });
 }

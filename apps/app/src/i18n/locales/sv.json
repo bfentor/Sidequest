@@ -536,5 +536,8 @@
     "count_other": "{{count}} betyg",
     "comments": "Kommentarer",
     "empty": "Ingen respons än. Alla som skulle gå ombeds lämna respons när evenemanget är slut."
+  },
+  "hashtags": {
+    "empty": "Inga inlägg med den här hashtaggen än."
   }
 }

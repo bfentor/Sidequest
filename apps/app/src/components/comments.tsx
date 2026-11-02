@@ -20,6 +20,7 @@ import { Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { useFormat } from '@/lib/format';
 
+import { RichText } from './rich-text';
 import { ActingAsPicker } from './acting-as-picker';
 import { Avatar } from './avatar';
 import { Button } from './button';
@@ -54,7 +55,7 @@ function CommentRow({ comment, onDelete }: { comment: Comment; onDelete: () => v
             · {format.dateTime(comment.created_at)}
           </ThemedText>
         </ThemedText>
-        <ThemedText>{comment.body}</ThemedText>
+        <RichText>{comment.body}</RichText>
       </View>
       <ContentMenu
         target={{ type: 'comment', id: String(comment.id) }}

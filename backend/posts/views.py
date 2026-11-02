@@ -15,6 +15,7 @@ from profiles.permissions import CanActAsOwner
 
 from .models import Comment, Post, PostImage, PostLike
 from .serializers import CommentSerializer, EventPhotoSerializer, PostSerializer
+from .text import notify_mentions
 
 
 class PostViewSet(
@@ -35,6 +36,15 @@ class PostViewSet(
     def get_queryset(self):
         viewer = viewer_profile(self.request)
         return Post.objects.visible_to(viewer).for_display(viewer)
+
+    def perform_create(self, serializer):
+        post = serializer.save()
+        notify_mentions(post.body, author=post.author, post=post)
+
+    def perform_update(self, serializer):
+        before = serializer.instance.body
+        post = serializer.save()
+        notify_mentions(post.body, author=post.author, before=before, post=post)
 
     @extend_schema(request=None, responses={204: None}, methods=["PUT", "DELETE"])
     @action(
@@ -102,6 +112,7 @@ class CommentListView(generics.ListCreateAPIView):
             actor=comment.author,
             **{self.parent_field: parent},
         )
+        notify_mentions(comment.body, author=comment.author, **{self.parent_field: parent})
 
 
 class PostCommentsView(CommentListView):

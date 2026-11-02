@@ -14,6 +14,7 @@ import { ContentMenu } from './content-menu';
 import { EventCard } from './event-card';
 import { LikeButton } from './like-button';
 import { RemoteImage } from './remote-image';
+import { RichText } from './rich-text';
 import { ThemedText } from './themed-text';
 
 export function PostCard({ post }: { post: Post }) {
@@ -64,7 +65,7 @@ export function PostCard({ post }: { post: Post }) {
           ]}
         />
       </View>
-      {post.body ? <ThemedText>{post.body}</ThemedText> : null}
+      {post.body ? <RichText>{post.body}</RichText> : null}
       {post.images.length ? (
         <View style={styles.images}>
           {post.images.map((image) => (
