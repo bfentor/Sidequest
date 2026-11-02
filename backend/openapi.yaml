@@ -433,6 +433,44 @@ paths:
               schema:
                 $ref: '#/components/schemas/Comment'
           description: ''
+  /api/events/{id}/photos/:
+    get:
+      operationId: events_photos_list
+      description: |-
+        Pictures from posts sharing an event, newest first: the event's photo gallery.
+
+        Adding a photo is posting it with the event attached, so photos can be
+        liked, commented on and reported like any post.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      tags:
+      - events
+      security:
+      - XSessionTokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEventPhotoList'
+          description: ''
   /api/events/{id}/save/:
     put:
       operationId: events_save_update
@@ -2515,6 +2553,25 @@ components:
       - students_of
       - title
       - updated_at
+    EventPhoto:
+      type: object
+      description: A picture from a post that shares an event, for the event's gallery.
+      properties:
+        image:
+          allOf:
+          - $ref: '#/components/schemas/Image'
+          readOnly: true
+        post_id:
+          type: integer
+          readOnly: true
+        author:
+          allOf:
+          - $ref: '#/components/schemas/ProfileSummary'
+          readOnly: true
+      required:
+      - author
+      - image
+      - post_id
     EventRequest:
       type: object
       properties:
@@ -3155,6 +3212,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Event'
+    PaginatedEventPhotoList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventPhoto'
     PaginatedNearbyEventList:
       type: object
       required:

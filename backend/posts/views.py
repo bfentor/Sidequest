@@ -3,7 +3,7 @@ from drf_spectacular.utils import extend_schema
 from rest_framework import generics, mixins, permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
-from rest_framework.pagination import CursorPagination
+from rest_framework.pagination import CursorPagination, LimitOffsetPagination
 from rest_framework.response import Response
 
 from events.models import Event
@@ -13,8 +13,8 @@ from notifications.services import managers_of, notify
 from profiles.models import Profile
 from profiles.permissions import CanActAsOwner
 
-from .models import Comment, Post, PostLike
-from .serializers import CommentSerializer, PostSerializer
+from .models import Comment, Post, PostImage, PostLike
+from .serializers import CommentSerializer, EventPhotoSerializer, PostSerializer
 
 
 class PostViewSet(
@@ -122,6 +122,33 @@ class EventCommentsView(CommentListView):
     def parent(self):
         viewer = viewer_profile(self.request)
         return get_object_or_404(Event.objects.visible_to(viewer), pk=self.kwargs["pk"])
+
+
+class EventPhotosPagination(LimitOffsetPagination):
+    default_limit = 30
+    max_limit = 100
+
+
+class EventPhotosView(generics.ListAPIView):
+    """Pictures from posts sharing an event, newest first: the event's photo gallery.
+
+    Adding a photo is posting it with the event attached, so photos can be
+    liked, commented on and reported like any post.
+    """
+
+    serializer_class = EventPhotoSerializer
+    pagination_class = EventPhotosPagination
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        viewer = viewer_profile(self.request)
+        event = get_object_or_404(Event.objects.visible_to(viewer), pk=self.kwargs["pk"])
+        posts = Post.objects.visible_to(viewer).filter(event=event)
+        return (
+            PostImage.objects.filter(post__in=posts)
+            .select_related("image", "post__author__avatar")
+            .order_by("-post__created_at", "post_id", "position")
+        )
 
 
 class CommentView(generics.DestroyAPIView):

@@ -513,5 +513,11 @@
     "next": "Seuraava",
     "back": "Takaisin",
     "finish": "Aloitetaan"
+  },
+  "eventPhotos": {
+    "title": "Kuvat",
+    "by": "Kuva: {{name}}",
+    "empty": "Kuvia ei ole vielä.",
+    "add": "Lisää kuvia"
   }
 }

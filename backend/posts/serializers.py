@@ -145,3 +145,15 @@ class CommentSerializer(serializers.ModelSerializer):
         if not body.strip():
             raise serializers.ValidationError(_("Write something first."))
         return body.strip()
+
+
+class EventPhotoSerializer(serializers.ModelSerializer):
+    """A picture from a post that shares an event, for the event's gallery."""
+
+    image = ImageSerializer(read_only=True)
+    post_id = serializers.IntegerField(source="post.pk", read_only=True)
+    author = ProfileSummarySerializer(source="post.author", read_only=True)
+
+    class Meta:
+        model = PostImage
+        fields = ["image", "post_id", "author"]

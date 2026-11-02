@@ -1,4 +1,7 @@
+from datetime import timedelta
+
 import pytest
+from django.utils import timezone
 from rest_framework.test import APIClient
 
 from images.models import Image
@@ -129,3 +132,25 @@ def test_comments_on_posts_and_events(auth_client, api_client, user, make_user, 
     assert stranger.delete(f"/api/comments/{comment_id}/").status_code == 403
     assert api_client.delete(f"/api/comments/{comment_id}/").status_code == 204
     assert auth_client.get(f"/api/posts/{post.pk}/").json()["comment_count"] == 0
+
+
+def test_event_photos_come_from_posts_sharing_it(
+    auth_client, api_client, user, make_user, make_event
+):
+    event = make_event(make_user().profile, starts_in=timedelta(hours=-3))
+    first, second = (upload(auth_client, photo(gps=False)).json()["id"] for _ in range(2))
+    auth_client.post("/api/posts/", {"event_id": event.pk, "image_ids": [first]}, format="json")
+    later = auth_client.post(
+        "/api/posts/", {"event_id": event.pk, "image_ids": [second]}, format="json"
+    ).json()
+    auth_client.post("/api/posts/", {"body": "Not about the event"}, format="json")
+
+    photos = api_client.get(f"/api/events/{event.pk}/photos/").json()["results"]
+    assert [p["image"]["id"] for p in photos] == [second, first]
+    assert photos[0]["post_id"] == later["id"]
+    assert photos[0]["author"]["handle"] == user.profile.handle
+
+    # Removed posts take their pictures out of the gallery.
+    Post.objects.filter(pk=later["id"]).update(removed_at=timezone.now())
+    photos = api_client.get(f"/api/events/{event.pk}/photos/").json()["results"]
+    assert [p["image"]["id"] for p in photos] == [first]

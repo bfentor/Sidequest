@@ -513,5 +513,11 @@
     "next": "Nästa",
     "back": "Tillbaka",
     "finish": "Kom igång"
+  },
+  "eventPhotos": {
+    "title": "Bilder",
+    "by": "Foto: {{name}}",
+    "empty": "Inga bilder än.",
+    "add": "Lägg till bilder"
   }
 }

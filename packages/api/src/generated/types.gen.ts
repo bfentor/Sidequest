@@ -157,6 +157,15 @@ export type Event = {
     readonly updated_at: string;
 };
 
+/**
+ * A picture from a post that shares an event, for the event's gallery.
+ */
+export type EventPhoto = {
+    image: Image;
+    readonly post_id: number;
+    author: ProfileSummary;
+};
+
 export type EventRequest = {
     title: string;
     description?: string;
@@ -412,6 +421,13 @@ export type PaginatedEventList = {
     next?: string | null;
     previous?: string | null;
     results: Array<Event>;
+};
+
+export type PaginatedEventPhotoList = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<EventPhoto>;
 };
 
 export type PaginatedNearbyEventList = {
@@ -875,6 +891,13 @@ export type PaginatedEventListWritable = {
     next?: string | null;
     previous?: string | null;
     results: Array<EventWritable>;
+};
+
+export type PaginatedEventPhotoListWritable = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
+    results: Array<unknown>;
 };
 
 export type PaginatedNearbyEventListWritable = {
@@ -1352,6 +1375,30 @@ export type EventsCommentsCreateResponses = {
 };
 
 export type EventsCommentsCreateResponse = EventsCommentsCreateResponses[keyof EventsCommentsCreateResponses];
+
+export type EventsPhotosListData = {
+    body?: never;
+    path: {
+        id: number;
+    };
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+    };
+    url: '/api/events/{id}/photos/';
+};
+
+export type EventsPhotosListResponses = {
+    200: PaginatedEventPhotoList;
+};
+
+export type EventsPhotosListResponse = EventsPhotosListResponses[keyof EventsPhotosListResponses];
 
 export type EventsSaveDestroyData = {
     body?: never;

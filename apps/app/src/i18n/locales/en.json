@@ -513,5 +513,11 @@
     "next": "Next",
     "back": "Back",
     "finish": "Get started"
+  },
+  "eventPhotos": {
+    "title": "Photos",
+    "by": "Photo by {{name}}",
+    "empty": "No photos yet.",
+    "add": "Add photos"
   }
 }
