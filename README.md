@@ -118,9 +118,4 @@ npm run typecheck && npm run lint
 
 ## Next steps
 
-- Email verification (`ACCOUNT_EMAIL_VERIFICATION=mandatory`), optionally limited to university email domains.
-- Sign in with Apple and Google. Apple requires Sign in with Apple if you offer other social logins.
-- Screens for creating events and posts, and profile pages with follow buttons. The API endpoints already exist.
-- Reporting and blocking. Both app stores require moderation tools for user-generated content.
-- Push notifications (`expo-notifications`) and a background worker for reminders.
-- A map view for the nearby feed.
+See [TODO.md](TODO.md).
