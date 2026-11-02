@@ -40,7 +40,8 @@
     "permissionDenied": "Platsåtkomst är avstängd för Sidequest. Slå på den i inställningarna för att se evenemang omkring dig.",
     "useMyLocation": "Använd min plats",
     "empty": "Inga evenemang nära dig just nu.",
-    "within": "{{km}} km"
+    "within": "{{km}} km",
+    "showMap": "Visa karta"
   },
   "following": {
     "signInPrompt": "Logga in för att se inlägg och evenemang från personer och organisationer du följer.",

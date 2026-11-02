@@ -40,7 +40,8 @@
     "permissionDenied": "Location access is turned off for Sidequest. Enable it in your settings to see events around you.",
     "useMyLocation": "Use my location",
     "empty": "No events near you right now.",
-    "within": "{{km}} km"
+    "within": "{{km}} km",
+    "showMap": "Show map"
   },
   "following": {
     "signInPrompt": "Sign in to see posts and events from the people and organizations you follow.",

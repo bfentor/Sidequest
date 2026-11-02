@@ -45,7 +45,8 @@
         {
           "photosPermission": "Sidequest lets you choose photos for your profile, events and posts."
         }
-      ]
+      ],
+      "expo-maps"
     ],
     "experiments": {
       "typedRoutes": true,

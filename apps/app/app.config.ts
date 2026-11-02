@@ -33,7 +33,12 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     name: variant.name,
     slug: config.slug ?? 'sidequest',
     ios: { ...config.ios, bundleIdentifier: variant.id },
-    android: { ...config.android, package: variant.id },
+    android: {
+      ...config.android,
+      package: variant.id,
+      // Google Maps (the nearby map) needs a key restricted to these Android app IDs.
+      config: { googleMaps: { apiKey: process.env.GOOGLE_MAPS_ANDROID_API_KEY } },
+    },
     // Updates only reach builds with the same native code, whatever the version number says.
     runtimeVersion: { policy: 'fingerprint' },
     updates: projectId ? { url: `https://u.expo.dev/${projectId}` } : config.updates,

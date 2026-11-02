@@ -1,10 +1,13 @@
 import { useNearbyFeed, type LatLng } from '@sidequest/api';
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 
 import { Button } from '@/components/button';
+import { Checkbox } from '@/components/checkbox';
 import { EventCard } from '@/components/event-card';
+import { EventMap } from '@/components/event-map';
 import { FeedFilterBar, useFeedFilters } from '@/components/feed-filter-bar';
 import { FeedList } from '@/components/feed-list';
 import { Screen } from '@/components/screen';
@@ -12,6 +15,7 @@ import { ThemedText } from '@/components/themed-text';
 import { Spacing } from '@/constants/theme';
 import { useCurrentPosition } from '@/hooks/use-current-position';
 import { useTheme } from '@/hooks/use-theme';
+import { useBooleanPreference } from '@/lib/preferences';
 
 function Header() {
   const { t } = useTranslation();
@@ -59,6 +63,8 @@ function NearbyFeed({ position }: { position: LatLng }) {
   const [radius, setRadius] = useState(10);
   const filterState = useFeedFilters();
   const feed = useNearbyFeed(position, radius, filterState.filters);
+  const [showMap, setShowMap] = useBooleanPreference('nearby.showMap', false);
+  const events = feed.data?.pages.flatMap((page) => page.results) ?? [];
 
   return (
     <FeedList
@@ -82,6 +88,17 @@ function NearbyFeed({ position }: { position: LatLng }) {
             ))}
           </View>
           <FeedFilterBar {...filterState} />
+          <Checkbox checked={showMap} onChange={setShowMap} label={t('nearby.showMap')} />
+          {showMap ? (
+            <EventMap
+              center={position}
+              radiusKm={radius}
+              events={events}
+              onSelect={(event) =>
+                router.push({ pathname: '/events/[id]', params: { id: event.id } })
+              }
+            />
+          ) : null}
         </View>
       }
       renderItem={(event) => <EventCard event={event} distanceM={event.distance_m} />}

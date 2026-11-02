@@ -83,7 +83,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 - [x] Search for events, people and organizations
 - [x] Filters: date range, category, free only, distance
 - [x] Quick filters: today, tonight, this weekend
-- [ ] Map view for the nearby feed
+- [x] Map view for the nearby feed
 - [x] Browse by category
 - [x] Trending or popular events
 - [x] Algorithmic "For you" feed, ranked by interests, who you follow, which friends are going, popularity and how close the event is

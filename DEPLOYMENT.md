@@ -177,3 +177,18 @@ The iOS and Android apps are built with [EAS](https://docs.expo.dev/eas/) (see
 `apps/app/eas.json`), not Coolify. A staging build points at
 `https://sidequest-api.fentorweb.hu` and receives over-the-air updates from the
 `staging` channel. Store releases come later.
+
+### Google Maps key (Android)
+
+The nearby map uses Apple Maps on iOS (no key needed), OpenStreetMap on the
+web, and Google Maps on Android, which needs an API key:
+
+1. In Google Cloud, enable **Maps SDK for Android** and create an API key
+   restricted to Android apps, listing each app ID
+   (`hu.fentorweb.sidequest`, `.staging`, `.dev`) with its SHA-1 fingerprint
+   (`npx eas-cli@latest credentials` shows it).
+2. Store it as an EAS environment variable:
+   `npx eas-cli@latest env:create --name GOOGLE_MAPS_ANDROID_API_KEY --value <key> --environment preview --environment production --environment development --visibility sensitive`.
+3. Make a new build; the key is baked into the native app.
+
+Without it, the map on Android stays blank; the list still works.

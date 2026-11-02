@@ -40,7 +40,8 @@
     "permissionDenied": "Sidequestin sijaintioikeus on pois päältä. Salli se asetuksista nähdäksesi lähelläsi olevat tapahtumat.",
     "useMyLocation": "Käytä sijaintiani",
     "empty": "Lähelläsi ei ole nyt tapahtumia.",
-    "within": "{{km}} km"
+    "within": "{{km}} km",
+    "showMap": "Näytä kartta"
   },
   "following": {
     "signInPrompt": "Kirjaudu sisään nähdäksesi seuraamiesi ihmisten ja järjestöjen julkaisut ja tapahtumat.",
