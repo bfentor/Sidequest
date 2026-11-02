@@ -1,5 +1,6 @@
-# Local development: `docker compose up` runs PostGIS and the Django API.
-# Or run only the database (`docker compose up db`) and Django on your machine.
+# Local development: `docker compose up` runs PostGIS, the API and the web app
+# from their production images. Or run only the database (`docker compose up db`)
+# and the rest on your machine (README.md).
 services:
   db:
     image: postgis/postgis:18-3.6
@@ -26,7 +27,7 @@ services:
       # Any host, so phones on your network can reach the dev server.
       DJANGO_ALLOWED_HOSTS: "*"
       DATABASE_URL: postgis://sidequest:sidequest@db:5432/sidequest
-      CORS_ALLOWED_ORIGINS: http://localhost:8081
+      CORS_ALLOWED_ORIGINS: http://localhost:8081,http://localhost:3000
     ports:
       - "8000:8000"
     volumes:
@@ -34,6 +35,17 @@ services:
     depends_on:
       db:
         condition: service_healthy
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web-server/Dockerfile
+      args:
+        EXPO_PUBLIC_API_URL: http://localhost:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
 
 volumes:
   db-data:

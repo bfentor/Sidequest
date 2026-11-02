@@ -5,12 +5,16 @@ All environment-specific values come from environment variables (or a local
 development, CI and production.
 """
 
+import tomllib
 from pathlib import Path
 
 import environ
 from corsheaders.defaults import default_headers
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+with open(BASE_DIR / "pyproject.toml", "rb") as pyproject:
+    APP_VERSION = tomllib.load(pyproject)["project"]["version"]
 
 env = environ.Env()
 env_file = BASE_DIR / ".env"
@@ -20,6 +24,7 @@ if env_file.exists():
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 DEBUG = env.bool("DJANGO_DEBUG", default=False)
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=[])
+CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
 
 # Where the frontend lives; used for links in emails (password reset etc.).
 FRONTEND_URL = env("FRONTEND_URL", default="http://localhost:8081")
@@ -52,6 +57,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -142,7 +148,7 @@ REST_FRAMEWORK = {
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "Sidequest API",
-    "VERSION": "0.1.0",
+    "VERSION": APP_VERSION,
     "SERVE_INCLUDE_SCHEMA": False,
     # Separate request/response components so generated clients know which
     # fields are read-only.
@@ -164,6 +170,52 @@ USE_TZ = True
 # Static and uploaded files
 
 STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = env("STATIC_ROOT", default=str(BASE_DIR / "staticfiles"))
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    # Static files (the admin's) are served by WhiteNoise from the image.
+    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
+}
+# Fall back to unhashed names when collectstatic hasn't run (tests, development).
+WHITENOISE_MANIFEST_STRICT = False
+
+# Uploaded files go to S3-compatible object storage when a bucket is configured.
+if env("AWS_STORAGE_BUCKET_NAME", default=""):
+    STORAGES["default"] = {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "bucket_name": env("AWS_STORAGE_BUCKET_NAME"),
+            "endpoint_url": env("AWS_S3_ENDPOINT_URL", default=None),
+            "region_name": env("AWS_S3_REGION_NAME", default=None),
+            "access_key": env("AWS_ACCESS_KEY_ID"),
+            "secret_key": env("AWS_SECRET_ACCESS_KEY"),
+            "custom_domain": env("AWS_S3_CUSTOM_DOMAIN", default=None),
+            "default_acl": "public-read",
+            "querystring_auth": False,
+            "file_overwrite": False,
+        },
+    }
+
+
+# Production
+
+if not DEBUG:
+    # TLS ends at the proxy (Cloudflare / Coolify's Traefik).
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
+SENTRY_DSN = env("SENTRY_DSN", default="")
+if SENTRY_DSN:
+    import sentry_sdk
+
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        environment=env("SENTRY_ENVIRONMENT", default="staging"),
+        release=APP_VERSION,
+        send_default_pii=False,
+        traces_sample_rate=env.float("SENTRY_TRACES_SAMPLE_RATE", default=0.0),
+    )

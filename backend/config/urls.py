@@ -4,6 +4,8 @@ from django.contrib import admin
 from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
+from .health import healthz
+
 api_patterns = [
     path("", include("profiles.urls")),
     path("", include("events.urls")),
@@ -14,6 +16,7 @@ api_patterns = [
 ]
 
 urlpatterns = [
+    path("healthz", healthz),
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path("_allauth/", include("allauth.headless.urls")),

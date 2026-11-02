@@ -14,6 +14,7 @@ The app has three feeds:
 
 ```
 apps/app/          Expo (React Native) app: iOS, Android and web
+apps/web-server/   Node server for the exported web build (production only)
 packages/api/      Typed API client, generated from the backend's OpenAPI schema
 backend/           Django + Django REST Framework + PostGIS
 docker-compose.yml PostGIS and the API for local development
@@ -123,8 +124,7 @@ Pull requests are squash-merged, so their title is the commit message; CI checks
 ## Shipping
 
 - **iOS and Android:** use [EAS](https://docs.expo.dev/eas/). `npx eas-cli@latest build:configure` creates `eas.json` and asks for bundle identifiers. After that, `eas build` and `eas submit` build and submit the apps, and `eas update` pushes over-the-air JS updates.
-- **Web:** `app.json` uses `"web": { "output": "server" }`, so the web build includes a server for server-side rendering. You can [deploy it with EAS Hosting](https://docs.expo.dev/eas/hosting/introduction/) or any Node host. Set `EXPO_PUBLIC_API_URL` at build time.
-- **Backend:** build the image from `backend/Dockerfile` and deploy it next to a managed PostgreSQL that has PostGIS. Host in the EU for GDPR. Before going live, run `python manage.py check --deploy`, configure a real `MAILERS` backend, and set up static files and media storage.
+- **API and web app:** deployed to staging with Coolify; see [DEPLOYMENT.md](DEPLOYMENT.md). Scheduled jobs are listed in [CRONJOBS.md](CRONJOBS.md).
 
 ## Next steps
 
