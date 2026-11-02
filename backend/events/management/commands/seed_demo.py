@@ -1,5 +1,6 @@
 from datetime import date, timedelta
 
+from allauth.account.models import EmailAddress
 from django.conf import settings
 from django.contrib.gis.geos import Point
 from django.core.management.base import BaseCommand, CommandError
@@ -50,6 +51,9 @@ class Command(BaseCommand):
         friend = User.objects.create_user(
             email="sam@sidequest.test", password=DEMO_PASSWORD, **adult
         )
+        # Demo accounts can sign in straight away, without the emailed code.
+        for user in (demo, friend):
+            EmailAddress.objects.create(user=user, email=user.email, verified=True, primary=True)
         union = Profile.objects.create(
             kind=Profile.Kind.ORGANIZATION,
             handle="student_union",

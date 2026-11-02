@@ -16,6 +16,7 @@ from notifications.services import attendees_of, notify
 from profiles.models import Profile
 from profiles.permissions import CanActAsOwner
 from profiles.serializers import ProfileSummarySerializer
+from students.services import current_university
 
 from . import attendance as rsvps
 from . import geocoding
@@ -82,6 +83,15 @@ class EventViewSet(
         profile = request.user.profile
         if event.status == Event.Status.CANCELLED and request.method == "PUT":
             raise ValidationError(_("This event was cancelled."))
+        if event.students_of_id and request.method == "PUT":
+            if current_university(request.user) != event.students_of:
+                raise ValidationError(
+                    _(
+                        "This event is for %(university)s students. "
+                        "Verify you study there in Settings."
+                    )
+                    % {"university": event.students_of.short_name}
+                )
         if event.min_age and request.method == "PUT":
             age = request.user.age
             if age is None:

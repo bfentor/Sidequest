@@ -295,7 +295,10 @@
     "draft": "Luonnos",
     "publishAt": "Julkaisuaika",
     "adultsOnly": "Vain täysi-ikäisille",
-    "adultsOnlyHint": "Vain 18 vuotta täyttäneet voivat ilmoittautua."
+    "adultsOnlyHint": "Vain 18 vuotta täyttäneet voivat ilmoittautua.",
+    "whoCanJoin": "Kuka voi osallistua",
+    "anyone": "Kuka tahansa",
+    "studentsOf": "Opiskelijat: {{university}}"
   },
   "eventStatus": {
     "active": "Käynnissä",
@@ -365,5 +368,15 @@
     "currentPassword": "Nykyinen salasana",
     "changePassword": "Vaihda salasana",
     "passwordChanged": "Salasanasi vaihdettiin."
+  },
+  "student": {
+    "title": "Opiskelijastatus",
+    "hint": "Osoita olevasi opiskelija: lähetämme koodin yliopiston sähköpostiosoitteeseesi. Jotkin tapahtumat ovat vain yhden yliopiston opiskelijoille.",
+    "email": "Yliopiston sähköposti",
+    "sendCode": "Lähetä koodi",
+    "codeSent": "Syötä 6-numeroinen koodi, jonka lähetimme osoitteeseen {{email}}.",
+    "verified": "Vahvistettu opiskelija ({{university}}) {{date}} alkaen.",
+    "remove": "Poista",
+    "badge": "Opiskelija: {{university}}"
   }
 }

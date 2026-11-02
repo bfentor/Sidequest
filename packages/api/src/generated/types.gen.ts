@@ -95,6 +95,10 @@ export type Event = {
     price?: string | null;
     ticket_url?: string | string;
     min_age?: number | null;
+    /**
+     * Only verified students of this university can RSVP.
+     */
+    students_of: University | null;
     visibility?: EventVisibilityEnum;
     status?: EventStatusEnum;
     /**
@@ -280,6 +284,10 @@ export type NearbyEvent = {
     price?: string | null;
     ticket_url?: string | string;
     min_age?: number | null;
+    /**
+     * Only verified students of this university can RSVP.
+     */
+    students_of: University | null;
     visibility?: EventVisibilityEnum;
     status?: EventStatusEnum;
     /**
@@ -486,6 +494,10 @@ export type Profile = {
     readonly created_at: string;
     readonly follower_count: number;
     readonly following_count: number;
+    /**
+     * The university this person is a verified student of.
+     */
+    student_of: University | null;
     readonly is_followed: boolean;
     /**
      * The viewer asked to follow this private profile.
@@ -574,12 +586,36 @@ export type RsvpRequest = {
  */
 export type RsvpStatusEnum = 'going' | 'interested';
 
+export type StudentCodeRequest = {
+    code: string;
+};
+
+export type StudentEmailRequest = {
+    /**
+     * Your university email address.
+     */
+    email: string;
+};
+
+export type StudentStatus = {
+    university: University;
+    readonly email: string;
+    readonly verified_at: string;
+    readonly is_current: boolean;
+};
+
 /**
  * * `post` - post
  * * `event` - event
  * * `profile` - profile
  */
 export type TargetTypeEnum = 'post' | 'event' | 'profile';
+
+export type University = {
+    readonly id: number;
+    readonly name: string;
+    readonly short_name: string;
+};
 
 export type UnreadCount = {
     unread: number;
@@ -667,6 +703,7 @@ export type EventRequestWritable = {
     price?: string | null;
     ticket_url?: string | string;
     min_age?: number | null;
+    students_of_id?: number | null;
     visibility?: EventVisibilityEnum;
     status?: EventStatusEnum;
     /**
@@ -768,6 +805,7 @@ export type PatchedEventRequestWritable = {
     price?: string | null;
     ticket_url?: string | string;
     min_age?: number | null;
+    students_of_id?: number | null;
     visibility?: EventVisibilityEnum;
     status?: EventStatusEnum;
     /**
@@ -1399,6 +1437,61 @@ export type MeSettingsPartialUpdateResponses = {
 
 export type MeSettingsPartialUpdateResponse = MeSettingsPartialUpdateResponses[keyof MeSettingsPartialUpdateResponses];
 
+export type MeStudentDestroyData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/me/student/';
+};
+
+export type MeStudentDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type MeStudentDestroyResponse = MeStudentDestroyResponses[keyof MeStudentDestroyResponses];
+
+export type MeStudentRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/me/student/';
+};
+
+export type MeStudentRetrieveResponses = {
+    200: StudentStatus;
+};
+
+export type MeStudentRetrieveResponse = MeStudentRetrieveResponses[keyof MeStudentRetrieveResponses];
+
+export type MeStudentCreateData = {
+    body: StudentEmailRequest;
+    path?: never;
+    query?: never;
+    url: '/api/me/student/';
+};
+
+export type MeStudentCreateResponses = {
+    200: University;
+};
+
+export type MeStudentCreateResponse = MeStudentCreateResponses[keyof MeStudentCreateResponses];
+
+export type MeStudentVerifyCreateData = {
+    body: StudentCodeRequest;
+    path?: never;
+    query?: never;
+    url: '/api/me/student/verify/';
+};
+
+export type MeStudentVerifyCreateResponses = {
+    200: StudentStatus;
+};
+
+export type MeStudentVerifyCreateResponse = MeStudentVerifyCreateResponses[keyof MeStudentVerifyCreateResponses];
+
 export type NotificationsListData = {
     body?: never;
     path?: never;
@@ -1872,3 +1965,16 @@ export type ReportsCreateResponses = {
 };
 
 export type ReportsCreateResponse = ReportsCreateResponses[keyof ReportsCreateResponses];
+
+export type UniversitiesListData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/universities/';
+};
+
+export type UniversitiesListResponses = {
+    200: Array<University>;
+};
+
+export type UniversitiesListResponse = UniversitiesListResponses[keyof UniversitiesListResponses];

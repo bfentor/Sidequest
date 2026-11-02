@@ -24,7 +24,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 ## 2. Accounts and sign-in
 
 - [ ] Sign in with Google and Apple
-- [ ] Student verification through a university email domain, plus a "verified student" badge
+- [x] Student verification through a university email domain, plus a "verified student" badge
 - [x] Change email or password
 - [ ] Two-factor authentication (allauth supports it)
 - [ ] Onboarding after signup: pick interests, follow suggested organizations, allow location
@@ -59,7 +59,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 - [x] Price or "free", and a link to buy tickets
 - [x] Capacity limit and waitlist
 - [x] Visibility: public, followers only, or unlisted (link only)
-- [ ] Audience restrictions: only students of a given university, or 18+ (18+ done)
+- [x] Audience restrictions: only students of a given university, or 18+
 - [x] Drafts and scheduled publishing
 - [x] Mark an event as cancelled or postponed, and notify people who are going
 - [x] Co-hosts, so several organizations run one event

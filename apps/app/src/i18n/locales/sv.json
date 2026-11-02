@@ -295,7 +295,10 @@
     "draft": "Utkast",
     "publishAt": "Publiceras",
     "adultsOnly": "Endast 18+",
-    "adultsOnlyHint": "Bara personer som fyllt 18 kan anmäla sig."
+    "adultsOnlyHint": "Bara personer som fyllt 18 kan anmäla sig.",
+    "whoCanJoin": "Vem kan delta",
+    "anyone": "Vem som helst",
+    "studentsOf": "Studenter vid {{university}}"
   },
   "eventStatus": {
     "active": "Blir av",
@@ -365,5 +368,15 @@
     "currentPassword": "Nuvarande lösenord",
     "changePassword": "Byt lösenord",
     "passwordChanged": "Ditt lösenord har bytts."
+  },
+  "student": {
+    "title": "Studentstatus",
+    "hint": "Visa att du är student: vi skickar en kod till din universitetsadress. Vissa evenemang är bara för studenter vid ett visst universitet.",
+    "email": "Universitetets e-post",
+    "sendCode": "Skicka kod",
+    "codeSent": "Ange den sexsiffriga koden vi skickade till {{email}}.",
+    "verified": "Verifierad student vid {{university}} sedan {{date}}.",
+    "remove": "Ta bort",
+    "badge": "Student vid {{university}}"
   }
 }

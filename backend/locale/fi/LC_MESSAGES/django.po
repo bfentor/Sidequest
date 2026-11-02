@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sidequest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-02 19:39+0200\n"
-"PO-Revision-Date: 2026-11-02 19:39+0200\n"
+"POT-Creation-Date: 2026-11-02 19:50+0200\n"
+"PO-Revision-Date: 2026-11-02 19:50+0200\n"
 "Last-Translator: Sidequest <dev@sidequest.invalid>\n"
 "Language-Team: Finnish\n"
 "Language: fi\n"
@@ -37,6 +37,10 @@ msgstr "Täytyy olla alkamisajan jälkeen."
 
 msgid "This event was cancelled."
 msgstr "Tapahtuma on peruttu."
+
+#, python-format
+msgid "This event is for %(university)s students. Verify you study there in Settings."
+msgstr "Tapahtuma on tarkoitettu yliopiston %(university)s opiskelijoille. Vahvista opiskelusi asetuksissa."
 
 msgid "Add your birth date in Settings to join this event."
 msgstr "Lisää syntymäaikasi asetuksissa osallistuaksesi tähän tapahtumaan."
@@ -240,6 +244,26 @@ msgstr "Tämän profiilin seuraajat on piilotettu."
 
 msgid "Use upcoming or past."
 msgstr "Käytä arvoa upcoming tai past."
+
+msgid "This isn't a university email address we know."
+msgstr "Tämä ei ole tuntemamme yliopiston sähköpostiosoite."
+
+msgid "[Sidequest] Your student verification code"
+msgstr "[Sidequest] Opiskelijavahvistuksen koodisi"
+
+#, python-format
+msgid "Your code is %(code)s. Enter it in Sidequest within 15 minutes to show you study at %(university)s. If you didn't ask for this, ignore this email."
+msgstr "Koodisi on %(code)s. Syötä se Sidequestiin 15 minuutin kuluessa osoittaaksesi, että opiskelet yliopistossa %(university)s. Jos et pyytänyt tätä, voit jättää viestin huomiotta."
+
+msgid "The code has expired. Ask for a new one."
+msgstr "Koodi on vanhentunut. Pyydä uusi."
+
+msgid "Too many wrong codes. Ask for a new one."
+msgstr "Liian monta väärää koodia. Pyydä uusi."
+
+#| msgid "The password is wrong."
+msgid "The code is wrong."
+msgstr "Koodi on väärä."
 
 #~ msgid "Choose admin or editor."
 #~ msgstr "Valitse ylläpitäjä tai muokkaaja."

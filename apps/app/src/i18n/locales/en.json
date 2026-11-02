@@ -295,7 +295,10 @@
     "draft": "Draft",
     "publishAt": "Publish at",
     "adultsOnly": "18+ only",
-    "adultsOnlyHint": "Only people aged 18 or over can RSVP."
+    "adultsOnlyHint": "Only people aged 18 or over can RSVP.",
+    "whoCanJoin": "Who can join",
+    "anyone": "Anyone",
+    "studentsOf": "{{university}} students"
   },
   "eventStatus": {
     "active": "On",
@@ -365,5 +368,15 @@
     "currentPassword": "Current password",
     "changePassword": "Change password",
     "passwordChanged": "Your password was changed."
+  },
+  "student": {
+    "title": "Student status",
+    "hint": "Show you're a student: we'll send a code to your university email address. Some events are only for students of one university.",
+    "email": "University email",
+    "sendCode": "Send code",
+    "codeSent": "Enter the 6-digit code we sent to {{email}}.",
+    "verified": "Verified student at {{university}} since {{date}}.",
+    "remove": "Remove",
+    "badge": "Student at {{university}}"
   }
 }

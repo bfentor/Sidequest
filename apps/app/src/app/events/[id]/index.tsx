@@ -168,6 +168,11 @@ export default function EventScreen() {
           ) : null}
           <View style={styles.price}>
             <ThemedText>{event.price ? format.price(event.price) : t('event.free')}</ThemedText>
+            {event.students_of ? (
+              <ThemedText type="smallBold">
+                {t('eventForm.studentsOf', { university: event.students_of.short_name })}
+              </ThemedText>
+            ) : null}
             {event.min_age ? (
               <ThemedText type="smallBold">{t('event.minAge', { age: event.min_age })}</ThemedText>
             ) : null}

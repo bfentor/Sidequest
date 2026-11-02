@@ -721,6 +721,90 @@ paths:
               schema:
                 $ref: '#/components/schemas/AccountSettings'
           description: ''
+  /api/me/student/:
+    get:
+      operationId: me_student_retrieve
+      description: |-
+        Your student verification: see it (GET), send a code to a university
+        address (POST), or remove it (DELETE).
+      tags:
+      - me
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentStatus'
+          description: ''
+    post:
+      operationId: me_student_create
+      description: |-
+        Your student verification: see it (GET), send a code to a university
+        address (POST), or remove it (DELETE).
+      tags:
+      - me
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentEmailRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StudentEmailRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StudentEmailRequest'
+        required: true
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/University'
+          description: ''
+    delete:
+      operationId: me_student_destroy
+      description: |-
+        Your student verification: see it (GET), send a code to a university
+        address (POST), or remove it (DELETE).
+      tags:
+      - me
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/me/student/verify/:
+    post:
+      operationId: me_student_verify_create
+      description: Confirm the code sent to your university address.
+      tags:
+      - me
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentCodeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StudentCodeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StudentCodeRequest'
+        required: true
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentStatus'
+          description: ''
   /api/notifications/:
     get:
       operationId: notifications_list
@@ -1408,6 +1492,23 @@ paths:
               schema:
                 $ref: '#/components/schemas/Report'
           description: ''
+  /api/universities/:
+    get:
+      operationId: universities_list
+      tags:
+      - universities
+      security:
+      - XSessionTokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/University'
+          description: ''
 components:
   schemas:
     AccountSettings:
@@ -1606,6 +1707,12 @@ components:
           maximum: 32767
           minimum: 0
           nullable: true
+        students_of:
+          allOf:
+          - $ref: '#/components/schemas/University'
+          nullable: true
+          readOnly: true
+          description: Only verified students of this university can RSVP.
         visibility:
           $ref: '#/components/schemas/EventVisibilityEnum'
         status:
@@ -1649,6 +1756,7 @@ components:
       - organizer
       - series_id
       - starts_at
+      - students_of
       - title
       - updated_at
     EventRequest:
@@ -1720,6 +1828,10 @@ components:
           type: integer
           maximum: 32767
           minimum: 0
+          nullable: true
+        students_of_id:
+          type: integer
+          writeOnly: true
           nullable: true
         visibility:
           $ref: '#/components/schemas/EventVisibilityEnum'
@@ -2052,6 +2164,12 @@ components:
           maximum: 32767
           minimum: 0
           nullable: true
+        students_of:
+          allOf:
+          - $ref: '#/components/schemas/University'
+          nullable: true
+          readOnly: true
+          description: Only verified students of this university can RSVP.
         visibility:
           $ref: '#/components/schemas/EventVisibilityEnum'
         status:
@@ -2100,6 +2218,7 @@ components:
       - organizer
       - series_id
       - starts_at
+      - students_of
       - title
       - updated_at
     Notification:
@@ -2426,6 +2545,10 @@ components:
           maximum: 32767
           minimum: 0
           nullable: true
+        students_of_id:
+          type: integer
+          writeOnly: true
+          nullable: true
         visibility:
           $ref: '#/components/schemas/EventVisibilityEnum'
         status:
@@ -2642,6 +2765,12 @@ components:
         following_count:
           type: integer
           readOnly: true
+        student_of:
+          allOf:
+          - $ref: '#/components/schemas/University'
+          nullable: true
+          readOnly: true
+          description: The university this person is a verified student of.
         is_followed:
           type: boolean
           readOnly: true
@@ -2668,6 +2797,7 @@ components:
       - is_muted
       - is_requested
       - kind
+      - student_of
       - verified
     ProfileKindEnum:
       enum:
@@ -2820,6 +2950,48 @@ components:
       description: |-
         * `going` - going
         * `interested` - interested
+    StudentCodeRequest:
+      type: object
+      properties:
+        code:
+          type: string
+          minLength: 1
+          maxLength: 10
+      required:
+      - code
+    StudentEmailRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 1
+          description: Your university email address.
+      required:
+      - email
+    StudentStatus:
+      type: object
+      properties:
+        university:
+          allOf:
+          - $ref: '#/components/schemas/University'
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        verified_at:
+          type: string
+          format: date-time
+          readOnly: true
+        is_current:
+          type: boolean
+          readOnly: true
+      required:
+      - email
+      - is_current
+      - university
+      - verified_at
     TargetTypeEnum:
       enum:
       - post
@@ -2830,6 +3002,22 @@ components:
         * `post` - post
         * `event` - event
         * `profile` - profile
+    University:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        short_name:
+          type: string
+          readOnly: true
+      required:
+      - id
+      - name
+      - short_name
     UnreadCount:
       type: object
       properties:

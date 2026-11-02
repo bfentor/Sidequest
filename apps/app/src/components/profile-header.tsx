@@ -23,6 +23,7 @@ export function ProfileHeader({ profile, actions }: ProfileHeaderProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const details = [
+    profile.student_of ? t('student.badge', { university: profile.student_of.short_name }) : null,
     profile.pronouns,
     profile.university,
     profile.faculty,

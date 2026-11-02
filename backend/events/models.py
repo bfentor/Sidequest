@@ -64,7 +64,7 @@ class EventQuerySet(models.QuerySet):
         """Everything an event's serializer shows, fetched in as few queries as possible."""
         return (
             self.with_attendance(viewer)
-            .select_related("organizer__avatar", "cover")
+            .select_related("organizer__avatar", "cover", "students_of")
             .prefetch_related("categories", "co_host_links__profile__avatar")
         )
 
@@ -147,6 +147,14 @@ class Event(models.Model):
     ticket_url = models.URLField(blank=True)
     # E.g. 18 for parties with alcohol; checked when someone RSVPs.
     min_age = models.PositiveSmallIntegerField(null=True, blank=True)
+    # Only verified students of this university can RSVP.
+    students_of = models.ForeignKey(
+        "students.University",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
+    )
     # How many can attend; empty for no limit. Beyond it, people join the waitlist.
     capacity = models.PositiveIntegerField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

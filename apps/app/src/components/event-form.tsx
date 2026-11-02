@@ -14,6 +14,7 @@ import { Spacing } from '@/constants/theme';
 import { useActingProfiles } from '@/hooks/use-acting-profiles';
 import { useCategories } from '@/hooks/use-categories';
 import { useImageUpload } from '@/hooks/use-image-upload';
+import { useUniversities } from '@/hooks/use-universities';
 import { useTheme } from '@/hooks/use-theme';
 
 import { Avatar } from './avatar';
@@ -81,6 +82,8 @@ export function EventForm({ initial, mode, submitLabel, onSubmit }: EventFormPro
   const [price, setPrice] = useState(initial?.price ?? '');
   const [ticketUrl, setTicketUrl] = useState(initial?.ticket_url ?? '');
   const [adultsOnly, setAdultsOnly] = useState(initial?.min_age === 18);
+  const universities = useUniversities();
+  const [studentsOf, setStudentsOf] = useState<number | null>(initial?.students_of?.id ?? null);
   const [visibility, setVisibility] = useState<EventVisibilityEnum>(
     initial?.visibility ?? 'public',
   );
@@ -122,6 +125,7 @@ export function EventForm({ initial, mode, submitLabel, onSubmit }: EventFormPro
         price: free || !price ? null : price.replace(',', '.'),
         ticket_url: ticketUrl,
         min_age: adultsOnly ? 18 : null,
+        students_of_id: studentsOf,
         visibility,
         co_host_handles: coHosts,
         ...(mode === 'create' && organizer ? { organizer_handle: organizer } : {}),
@@ -328,6 +332,32 @@ export function EventForm({ initial, mode, submitLabel, onSubmit }: EventFormPro
           onValueChange={setAdultsOnly}
           accessibilityLabel={t('eventForm.adultsOnly')}
         />
+      </View>
+
+      <View style={styles.section}>
+        <ThemedText type="smallBold">{t('eventForm.whoCanJoin')}</ThemedText>
+        <View style={styles.chips}>
+          {[{ id: null, short_name: t('eventForm.anyone') }, ...universities].map((option) => {
+            const selected = studentsOf === option.id;
+            return (
+              <Pressable
+                key={option.id ?? 'anyone'}
+                role="radio"
+                aria-checked={selected}
+                onPress={() => setStudentsOf(option.id)}
+                style={[
+                  styles.chip,
+                  { backgroundColor: selected ? theme.tint : theme.backgroundElement },
+                ]}>
+                <ThemedText type="small" style={selected && { color: theme.onTint }}>
+                  {option.id === null
+                    ? option.short_name
+                    : t('eventForm.studentsOf', { university: option.short_name })}
+                </ThemedText>
+              </Pressable>
+            );
+          })}
+        </View>
       </View>
 
       <View style={styles.section}>

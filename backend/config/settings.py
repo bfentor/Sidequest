@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "events",
     "posts",
     "feeds",
+    "students",
 ]
 
 MIDDLEWARE = [
@@ -198,6 +199,7 @@ REST_FRAMEWORK = {
         "reports": "20/hour",
         "uploads": "60/hour",
         "geocode": "120/hour",
+        "student_codes": "5/hour",
     },
 }
 

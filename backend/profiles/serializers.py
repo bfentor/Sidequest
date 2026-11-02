@@ -1,7 +1,10 @@
+from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
 from events.models import Category
 from images.serializers import ImageSerializer, OwnImageField
+from students.serializers import UniversitySerializer
+from students.services import current_university
 
 from .models import Profile
 
@@ -48,12 +51,20 @@ class ProfileSerializer(serializers.ModelSerializer):
     )
     follower_count = serializers.IntegerField(read_only=True)
     following_count = serializers.IntegerField(read_only=True)
+    student_of = serializers.SerializerMethodField(
+        help_text="The university this person is a verified student of."
+    )
     is_followed = serializers.BooleanField(read_only=True)
     is_requested = serializers.BooleanField(
         read_only=True, help_text="The viewer asked to follow this private profile."
     )
     is_blocked = serializers.BooleanField(read_only=True)
     is_muted = serializers.BooleanField(read_only=True)
+
+    @extend_schema_field(UniversitySerializer(allow_null=True))
+    def get_student_of(self, profile):
+        university = current_university(profile.user) if profile.user_id else None
+        return UniversitySerializer(university).data if university else None
 
     class Meta:
         model = Profile
@@ -80,6 +91,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             "created_at",
             "follower_count",
             "following_count",
+            "student_of",
             "is_followed",
             "is_requested",
             "is_blocked",

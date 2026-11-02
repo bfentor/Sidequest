@@ -8,6 +8,8 @@ from notifications.models import Kind
 from notifications.services import attendees_of, notify
 from profiles.models import Profile
 from profiles.serializers import ActingProfileField, ProfileSummarySerializer
+from students.models import University
+from students.serializers import UniversitySerializer
 
 from .fields import LatLngField
 from .models import Attendance, Category, CoHost, Event
@@ -110,6 +112,16 @@ class EventSerializer(serializers.ModelSerializer):
     )
     attendance = serializers.SerializerMethodField()
     co_hosts = serializers.SerializerMethodField(help_text="Co-hosts who accepted.")
+    students_of = serializers.SerializerMethodField(
+        help_text="Only verified students of this university can RSVP."
+    )
+    students_of_id = serializers.PrimaryKeyRelatedField(
+        source="students_of",
+        queryset=University.objects.all(),
+        write_only=True,
+        required=False,
+        allow_null=True,
+    )
     co_host_handles = serializers.ListField(
         child=serializers.CharField(),
         write_only=True,
@@ -146,6 +158,8 @@ class EventSerializer(serializers.ModelSerializer):
             "price",
             "ticket_url",
             "min_age",
+            "students_of",
+            "students_of_id",
             "visibility",
             "status",
             "published_at",
@@ -158,6 +172,10 @@ class EventSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
         read_only_fields = ["series_id"]
+
+    @extend_schema_field(UniversitySerializer(allow_null=True))
+    def get_students_of(self, event):
+        return UniversitySerializer(event.students_of).data if event.students_of else None
 
     @extend_schema_field(ProfileSummarySerializer(many=True))
     def get_co_hosts(self, event):
