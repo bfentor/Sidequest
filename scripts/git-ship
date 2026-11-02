@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+#
+# git ship: commit everything with a Conventional Commits message, then ship
+# the current branch to testing (which deploys staging once CI passes).
+#
+#   git add -A
+#   git commit -m "<type>(<scope>): <description>"
+#   git push origin <branch>
+#   git checkout testing && git pull --ff-only origin testing
+#   git merge --no-edit <branch> && git push origin testing
+#   git checkout <branch>
+#
+# The version is not bumped here: release-please works it out from the commit
+# messages and opens a release pull request (.github/workflows/release-please.yml).
+#
+# Set up the alias once per clone:
+#   git config alias.ship '!scripts/git-ship'
+
+set -euo pipefail
+
+root=$(git rev-parse --show-toplevel)
+cd "$root"
+
+branch=$(git symbolic-ref --quiet --short HEAD || true)
+case "$branch" in
+    "" ) echo "git ship: you are on a detached HEAD." >&2; exit 1 ;;
+    testing|main|master) echo "git ship: ship from your own branch, not '$branch'." >&2; exit 1 ;;
+esac
+
+if [ -n "$(git status --porcelain)" ]; then
+    echo "Changes to commit:"
+    git status --short
+    echo
+
+    PS3="Type of change? "
+    select type in feat fix perf refactor docs test build ci chore; do
+        [ -n "${type:-}" ] && break
+        echo "Choose a number from the list."
+    done
+    read -rp "Scope (optional, e.g. events, feeds, auth): " scope
+    description=""
+    while [ -z "$description" ]; do
+        read -rp "Description (imperative, e.g. \"add RSVP buttons\"): " description
+    done
+    read -rp "Breaking change? [y/N] " breaking
+
+    header="$type${scope:+($scope)}"
+    [[ "$breaking" =~ ^[Yy] ]] && header="$header!"
+    header="$header: $description"
+
+    echo
+    echo "Commit: $header"
+    git add -A
+    git commit -m "$header"
+else
+    echo "No changes to commit: shipping $branch as it is."
+fi
+
+git push origin "$branch"
+git checkout testing
+git pull --ff-only origin testing
+git merge --no-edit "$branch"
+git push origin testing
+git checkout "$branch"
+
+echo
+echo "Shipped $branch to testing. Staging deploys once CI passes."

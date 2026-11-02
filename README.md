@@ -110,6 +110,16 @@ cd backend && uv run pytest && uv run ruff check . && uv run ruff format --check
 npm run typecheck && npm run lint
 ```
 
+## Releasing
+
+Commit messages follow [Conventional Commits](https://www.conventionalcommits.org): `feat(events): add RSVP buttons`, `fix: crash on sign out`, `docs: …`. `scripts/git-ship` (set up once with `git config alias.ship '!scripts/git-ship'`) asks for the type, scope and description, commits, and ships your branch to `testing`:
+
+1. CI runs on `testing`. When it passes, staging is deployed (`.github/workflows/deploy.yml`, see [DEPLOYMENT.md](DEPLOYMENT.md)).
+2. release-please keeps a pull request open titled `chore: release X.Y.Z`. It bumps the version in every file that holds it and adds the changes to `CHANGELOG.md`. `fix` bumps the patch version, `feat` the minor version, and a breaking change (`feat!: …`) the major version. Before 1.0.0, breaking changes bump the minor version instead.
+3. Merging that pull request tags `vX.Y.Z` and creates a GitHub Release.
+
+Pull requests are squash-merged, so their title is the commit message; CI checks that it follows the format.
+
 ## Shipping
 
 - **iOS and Android:** use [EAS](https://docs.expo.dev/eas/). `npx eas-cli@latest build:configure` creates `eas.json` and asks for bundle identifiers. After that, `eas build` and `eas submit` build and submit the apps, and `eas update` pushes over-the-air JS updates.

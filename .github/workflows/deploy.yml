@@ -1,0 +1,74 @@
+name: Deploy with Coolify
+
+# Once CI passes on testing, staging is deployed: Coolify rebuilds the API and
+# the web app on the server and only moves traffic to a release once its
+# health check passes (DEPLOYMENT.md). main will deploy production the same
+# way once a production environment exists.
+#
+# Repository settings › Secrets and variables › Actions:
+#   secret   COOLIFY_TOKEN              API token with the "deploy" and "read" permissions
+#   variable COOLIFY_URL                e.g. https://deploy.example.com
+#   variable COOLIFY_STAGING_API_UUID   the staging API app's UUID (in its URL in Coolify)
+#   variable COOLIFY_STAGING_WEB_UUID   the staging web app's UUID
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [testing]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.event.workflow_run.head_branch || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app: [api, web]
+    steps:
+      - name: Deploy ${{ matrix.app }}
+        env:
+          COOLIFY_URL: ${{ vars.COOLIFY_URL }}
+          COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
+          BRANCH: ${{ github.event.workflow_run.head_branch || github.ref_name }}
+          API_UUID: ${{ vars.COOLIFY_STAGING_API_UUID }}
+          WEB_UUID: ${{ vars.COOLIFY_STAGING_WEB_UUID }}
+        run: |
+          set -eo pipefail
+
+          case "$BRANCH" in
+            testing) environment=staging ;;
+            *) echo "::error::$BRANCH is not deployed anywhere (only testing is, for now)."; exit 1 ;;
+          esac
+          case "${{ matrix.app }}" in
+            api) app=$API_UUID ;;
+            web) app=$WEB_UUID ;;
+          esac
+          if [ -z "$COOLIFY_URL" ] || [ -z "$COOLIFY_TOKEN" ] || [ -z "$app" ]; then
+            echo "::error::Coolify isn't configured: set the COOLIFY_TOKEN secret and the COOLIFY_* variables (see the top of this file)."
+            exit 1
+          fi
+
+          api() {
+            curl -fsS -H "Authorization: Bearer $COOLIFY_TOKEN" -H "Accept: application/json" "$@"
+          }
+
+          deployment=$(api -X POST "$COOLIFY_URL/api/v1/deploy?uuid=$app" | jq -r '.deployments[0].deployment_uuid')
+          echo "Deploying ${{ matrix.app }} ($BRANCH) to $environment (deployment $deployment)"
+
+          # Wait, so that a failed deploy fails the workflow too. The previous
+          # release keeps serving if it fails.
+          for _ in $(seq 120); do
+            status=$(api "$COOLIFY_URL/api/v1/deployments/$deployment" | jq -r '.status')
+            case "$status" in
+              finished) echo "Deployed to $environment."; exit 0 ;;
+              failed|cancelled*) echo "::error::The deploy $status. Its log is in Coolify: the app's Deployments."; exit 1 ;;
+            esac
+            sleep 15
+          done
+          echo "::error::The deploy did not finish in 30 minutes. See the app's Deployments in Coolify."
+          exit 1
