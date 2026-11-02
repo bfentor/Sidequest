@@ -2,6 +2,7 @@ from django.contrib.gis.db import models as gis_models
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.measure import D
 from django.contrib.postgres.indexes import GinIndex, OpClass
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models.functions import Upper
 from django.utils import timezone
@@ -201,6 +202,8 @@ class Event(models.Model):
     announced_at = models.DateTimeField(null=True, blank=True)
     # When people going or interested were reminded; cleared when the start time changes.
     reminded_at = models.DateTimeField(null=True, blank=True)
+    # When people who went were asked how it was.
+    feedback_requested_at = models.DateTimeField(null=True, blank=True)
     # Shared by the occurrences of a recurring event.
     series_id = models.UUIDField(null=True, blank=True, db_index=True)
     co_hosts = models.ManyToManyField(
@@ -301,3 +304,24 @@ class SavedEvent(models.Model):
 
     def __str__(self):
         return f"{self.profile} saved {self.event}"
+
+
+class EventFeedback(models.Model):
+    """How someone who went rated an event. Hosts see ratings and comments without names."""
+
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="feedback")
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="event_feedback")
+    rating = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)]
+    )
+    comment = models.TextField(max_length=1000, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["event", "profile"], name="unique_event_feedback"),
+        ]
+
+    def __str__(self):
+        return f"{self.profile} rated {self.event} {self.rating}/5"

@@ -124,7 +124,8 @@
       "follow_accepted": "Accepted follow requests",
       "organization_invite": "Invitations to organizations",
       "event_postponed": "Postponed events",
-      "co_host_invite": "Invitations to co-host events"
+      "co_host_invite": "Invitations to co-host events",
+      "feedback_request": "Requests for feedback after events"
     }
   },
   "posts": {
@@ -207,7 +208,8 @@
     "followAccepted": "{{name}} accepted your follow request.",
     "organizationInvite": "{{name}} invited you to join them.",
     "eventPostponed": "{{title}} was postponed.",
-    "coHostInvite": "{{name}} invited you to co-host {{title}}."
+    "coHostInvite": "{{name}} invited you to co-host {{title}}.",
+    "feedbackRequest": "How was {{title}}? Let the organizers know."
   },
   "editProfile": {
     "changeCover": "Change cover picture",
@@ -519,5 +521,20 @@
     "by": "Photo by {{name}}",
     "empty": "No photos yet.",
     "add": "Add photos"
+  },
+  "feedback": {
+    "title": "How was it?",
+    "hint": "Only the organizers see your rating and comment, and not who wrote them.",
+    "stars_one": "{{count}} star",
+    "stars_other": "{{count}} stars",
+    "comment": "Anything the organizers should know? (optional)",
+    "send": "Send",
+    "update": "Update",
+    "thanks": "Thanks for your feedback!",
+    "results": "Feedback",
+    "count_one": "{{count}} rating",
+    "count_other": "{{count}} ratings",
+    "comments": "Comments",
+    "empty": "No feedback yet. Everyone who was going is asked for it when the event ends."
   }
 }

@@ -124,7 +124,8 @@
       "follow_accepted": "Hyväksytyt seuraamispyynnöt",
       "organization_invite": "Kutsut järjestöihin",
       "event_postponed": "Siirretyt tapahtumat",
-      "co_host_invite": "Kutsut tapahtumien yhteisjärjestäjäksi"
+      "co_host_invite": "Kutsut tapahtumien yhteisjärjestäjäksi",
+      "feedback_request": "Palautepyynnöt tapahtumien jälkeen"
     }
   },
   "posts": {
@@ -207,7 +208,8 @@
     "followAccepted": "{{name}} hyväksyi seuraamispyyntösi.",
     "organizationInvite": "{{name}} kutsui sinut jäseneksi.",
     "eventPostponed": "{{title}} on siirretty.",
-    "coHostInvite": "{{name}} kutsui sinut järjestämään tapahtumaa {{title}}."
+    "coHostInvite": "{{name}} kutsui sinut järjestämään tapahtumaa {{title}}.",
+    "feedbackRequest": "Millainen oli {{title}}? Kerro järjestäjille."
   },
   "editProfile": {
     "changeCover": "Vaihda kansikuva",
@@ -519,5 +521,20 @@
     "by": "Kuva: {{name}}",
     "empty": "Kuvia ei ole vielä.",
     "add": "Lisää kuvia"
+  },
+  "feedback": {
+    "title": "Millainen tapahtuma oli?",
+    "hint": "Vain järjestäjät näkevät arviosi ja kommenttisi, eivätkä he näe, kuka ne kirjoitti.",
+    "stars_one": "{{count}} tähti",
+    "stars_other": "{{count}} tähteä",
+    "comment": "Haluatko kertoa järjestäjille jotain? (valinnainen)",
+    "send": "Lähetä",
+    "update": "Päivitä",
+    "thanks": "Kiitos palautteestasi!",
+    "results": "Palaute",
+    "count_one": "{{count}} arvio",
+    "count_other": "{{count}} arviota",
+    "comments": "Kommentit",
+    "empty": "Palautetta ei ole vielä. Kaikilta osallistujiksi ilmoittautuneilta pyydetään palautetta tapahtuman päätyttyä."
   }
 }

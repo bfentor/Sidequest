@@ -23,6 +23,7 @@ import { CategoryChips } from '@/components/category-chips';
 import { Comments } from '@/components/comments';
 import { ContentMenu } from '@/components/content-menu';
 import { EventActions } from '@/components/event-actions';
+import { EventFeedback } from '@/components/event-feedback';
 import { EventPhotos } from '@/components/event-photos';
 import { FriendsGoing } from '@/components/friends-going';
 import { RemoteImage } from '@/components/remote-image';
@@ -97,6 +98,10 @@ function organizerActions(
     {
       label: t('organizerTools.export'),
       onPress: () => exportAttendees(event.id),
+    },
+    {
+      label: t('feedback.results'),
+      onPress: () => router.push({ pathname: '/events/[id]/feedback', params: { id: event.id } }),
     },
     {
       label: t('eventForm.edit'),
@@ -233,6 +238,7 @@ export default function EventScreen() {
           </View>
           {event.description ? <ThemedText>{event.description}</ThemedText> : null}
           <CategoryChips slugs={event.categories ?? []} />
+          <EventFeedback event={event} />
           <EventPhotos event={event} />
           <Comments
             parent={{ type: 'event', id: event.id }}

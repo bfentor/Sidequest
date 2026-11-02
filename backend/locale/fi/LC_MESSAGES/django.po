@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sidequest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-02 20:52+0200\n"
+"POT-Creation-Date: 2026-11-03 00:59+0200\n"
 "PO-Revision-Date: 2026-11-02 20:52+0200\n"
 "Last-Translator: Sidequest <dev@sidequest.invalid>\n"
 "Language-Team: Finnish\n"
@@ -57,6 +57,9 @@ msgstr "Lisää syntymäaikasi asetuksissa osallistuaksesi tähän tapahtumaan."
 #, python-format
 msgid "This event is for people aged %(age)s or over."
 msgstr "Tapahtuma on vähintään %(age)s-vuotiaille."
+
+msgid "Only people who went can rate an event, after it ends."
+msgstr "Vain tapahtumaan osallistuneet voivat arvioida sen, kun se on päättynyt."
 
 msgid "Name"
 msgstr "Nimi"
@@ -154,6 +157,9 @@ msgstr "Kutsut tapahtumien yhteisjärjestäjäksi"
 msgid "Event reminders"
 msgstr "Tapahtumamuistutukset"
 
+msgid "Requests for feedback after events"
+msgstr "Palautepyynnöt tapahtumien jälkeen"
+
 msgid "A spot opened up for you"
 msgstr "Sinulle vapautui paikka"
 
@@ -202,6 +208,9 @@ msgstr "%(name)s kutsui sinut tapahtuman yhteisjärjestäjäksi."
 #, python-format
 msgid "Starts at %(time)s."
 msgstr "Alkaa klo %(time)s."
+
+msgid "How was it? Let the organizers know."
+msgstr "Millainen se oli? Kerro järjestäjille."
 
 msgid "A spot opened up: you're going!"
 msgstr "Paikka vapautui: osallistut!"

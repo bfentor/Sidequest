@@ -53,6 +53,7 @@ function RootStack() {
       <Stack.Screen name="events/[id]/edit" options={{ title: t('eventForm.edit') }} />
       <Stack.Screen name="events/[id]/attendees" options={{ title: t('attendees.title') }} />
       <Stack.Screen name="events/[id]/announce" options={{ title: t('organizerTools.announce') }} />
+      <Stack.Screen name="events/[id]/feedback" options={{ title: t('feedback.results') }} />
       <Stack.Screen name="events/new" options={{ title: t('eventForm.newEvent') }} />
       <Stack.Screen name="posts/new" options={{ title: t('posts.new') }} />
       <Stack.Screen name="posts/[id]/index" options={{ title: t('posts.title') }} />

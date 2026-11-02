@@ -36,6 +36,8 @@ function describe(notification: Notification, t: TFunction) {
       return t('notifications.coHostInvite', { name, title });
     case 'event_reminder':
       return t('notifications.eventReminder', { title });
+    case 'feedback_request':
+      return t('notifications.feedbackRequest', { title });
     case 'waitlist_promoted':
       return t('notifications.waitlistPromoted', { title });
     case 'announcement':

@@ -79,6 +79,7 @@ const PUSH_KINDS = [
   'event_postponed',
   'co_host_invite',
   'event_reminder',
+  'feedback_request',
   'waitlist_promoted',
   'announcement',
   'mention',

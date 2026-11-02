@@ -205,6 +205,30 @@ export type EventStatusEnum = 'active' | 'postponed' | 'cancelled';
  */
 export type EventVisibilityEnum = 'public' | 'followers' | 'unlisted';
 
+export type FeedbackComment = {
+    rating: number;
+    comment: string;
+    created_at: string;
+};
+
+export type FeedbackRequest = {
+    rating: number;
+    comment?: string;
+};
+
+export type FeedbackSummary = {
+    count: number;
+    average: number | null;
+    /**
+     * How many rated it 1, 2, 3, 4 and 5.
+     */
+    ratings: Array<number>;
+    /**
+     * Newest first, without names.
+     */
+    comments: Array<FeedbackComment>;
+};
+
 export type FollowStatus = {
     /**
      * requested: the profile is private and has to accept you first.
@@ -315,6 +339,15 @@ export type Member = {
  */
 export type MembershipRoleEnum = 'admin' | 'editor';
 
+export type MyFeedback = {
+    /**
+     * Whether you can rate the event: you were going and it has ended.
+     */
+    can_give: boolean;
+    rating: number | null;
+    comment: string;
+};
+
 export type NearbyEvent = {
     readonly id: number;
     organizer: ProfileSummary;
@@ -388,13 +421,14 @@ export type NotificationEvent = {
  * * `event_postponed` - Postponed events
  * * `co_host_invite` - Invitations to co-host events
  * * `event_reminder` - Event reminders
+ * * `feedback_request` - Requests for feedback after events
  * * `waitlist_promoted` - A spot opened up for you
  * * `announcement` - Announcements from organizers
  * * `mention` - Mentions
  * * `comment` - Comments
  * * `reaction` - Likes
  */
-export type NotificationKindEnum = 'new_follower' | 'follow_request' | 'follow_accepted' | 'organization_invite' | 'new_event' | 'event_changed' | 'event_cancelled' | 'event_postponed' | 'co_host_invite' | 'event_reminder' | 'waitlist_promoted' | 'announcement' | 'mention' | 'comment' | 'reaction';
+export type NotificationKindEnum = 'new_follower' | 'follow_request' | 'follow_accepted' | 'organization_invite' | 'new_event' | 'event_changed' | 'event_cancelled' | 'event_postponed' | 'co_host_invite' | 'event_reminder' | 'feedback_request' | 'waitlist_promoted' | 'announcement' | 'mention' | 'comment' | 'reaction';
 
 export type NullEnum = never;
 
@@ -1375,6 +1409,60 @@ export type EventsCommentsCreateResponses = {
 };
 
 export type EventsCommentsCreateResponse = EventsCommentsCreateResponses[keyof EventsCommentsCreateResponses];
+
+export type EventsFeedbackRetrieveData = {
+    body?: never;
+    path: {
+        /**
+         * A unique integer value identifying this event.
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/api/events/{id}/feedback/';
+};
+
+export type EventsFeedbackRetrieveResponses = {
+    200: FeedbackSummary;
+};
+
+export type EventsFeedbackRetrieveResponse = EventsFeedbackRetrieveResponses[keyof EventsFeedbackRetrieveResponses];
+
+export type EventsFeedbackMineRetrieveData = {
+    body?: never;
+    path: {
+        /**
+         * A unique integer value identifying this event.
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/api/events/{id}/feedback/mine/';
+};
+
+export type EventsFeedbackMineRetrieveResponses = {
+    200: MyFeedback;
+};
+
+export type EventsFeedbackMineRetrieveResponse = EventsFeedbackMineRetrieveResponses[keyof EventsFeedbackMineRetrieveResponses];
+
+export type EventsFeedbackMineUpdateData = {
+    body: FeedbackRequest;
+    path: {
+        /**
+         * A unique integer value identifying this event.
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/api/events/{id}/feedback/mine/';
+};
+
+export type EventsFeedbackMineUpdateResponses = {
+    200: MyFeedback;
+};
+
+export type EventsFeedbackMineUpdateResponse = EventsFeedbackMineUpdateResponses[keyof EventsFeedbackMineUpdateResponses];
 
 export type EventsPhotosListData = {
     body?: never;

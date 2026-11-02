@@ -53,6 +53,8 @@ def render(notification) -> tuple[str, str]:
         case Kind.EVENT_REMINDER:
             starts = formats.date_format(timezone.localtime(event.starts_at), "TIME_FORMAT")
             return title, _("Starts at %(time)s.") % {"time": starts}
+        case Kind.FEEDBACK_REQUEST:
+            return title, _("How was it? Let the organizers know.")
         case Kind.WAITLIST_PROMOTED:
             return title, _("A spot opened up: you're going!")
         case Kind.ANNOUNCEMENT:

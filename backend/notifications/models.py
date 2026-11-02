@@ -14,6 +14,7 @@ class Kind(models.TextChoices):
     EVENT_POSTPONED = "event_postponed", _("Postponed events")
     CO_HOST_INVITE = "co_host_invite", _("Invitations to co-host events")
     EVENT_REMINDER = "event_reminder", _("Event reminders")
+    FEEDBACK_REQUEST = "feedback_request", _("Requests for feedback after events")
     WAITLIST_PROMOTED = "waitlist_promoted", _("A spot opened up for you")
     ANNOUNCEMENT = "announcement", _("Announcements from organizers")
     MENTION = "mention", _("Mentions")

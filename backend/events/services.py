@@ -6,13 +6,15 @@ from django.db import transaction
 from django.utils import timezone
 
 from notifications.models import Kind
-from notifications.services import attendees_of, followers_of, managers_of, notify
+from notifications.services import attendees_of, followers_of, going_to, managers_of, notify
 from posts.models import Post
 
 from .models import Attendance, CoHost, Event
 
 # How long before an event starts people going or interested are reminded.
 REMIND_BEFORE = timedelta(hours=2)
+# Events that ended longer ago than this aren't asked about any more (e.g. right after deploying).
+FEEDBACK_WINDOW = timedelta(days=1)
 
 # How far apart the occurrences of a recurring event are.
 REPEAT_FREQUENCIES = ("weekly", "biweekly", "monthly")
@@ -138,5 +140,37 @@ def remind_due():
             )
             # No actor: reminders come from Sidequest, so blocks and mutes don't apply.
             notify(attendees, Kind.EVENT_REMINDER, event=event)
+        count += 1
+    return count
+
+
+def feedback_open(event, now=None):
+    """Whether people who went can rate the event: it has ended and wasn't cancelled."""
+    return event.ends_at <= (now or timezone.now()) and event.status != Event.Status.CANCELLED
+
+
+def request_feedback_due():
+    """Ask everyone who was going to events that just ended how it was, once.
+
+    Returns how many events were asked about.
+    """
+    now = timezone.now()
+    due = Event.objects.filter(
+        feedback_requested_at__isnull=True,
+        ends_at__lte=now,
+        ends_at__gt=now - FEEDBACK_WINDOW,
+        published_at__lte=now,
+        status=Event.Status.ACTIVE,
+        removed_at__isnull=True,
+    )
+    count = 0
+    for event in due:
+        with transaction.atomic():
+            claimed = Event.objects.filter(pk=event.pk, feedback_requested_at__isnull=True).update(
+                feedback_requested_at=now
+            )
+            if not claimed:
+                continue
+            notify(going_to(event), Kind.FEEDBACK_REQUEST, event=event)
         count += 1
     return count

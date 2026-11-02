@@ -1,7 +1,7 @@
 import csv
 import io
 
-from django.db.models import Exists, OuterRef, Q, Subquery
+from django.db.models import Avg, Count, Exists, OuterRef, Q, Subquery
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
@@ -26,7 +26,7 @@ from students.services import current_university
 
 from . import attendance as rsvps
 from . import geocoding
-from .models import Attendance, Category, CoHost, Event, SavedEvent
+from .models import Attendance, Category, CoHost, Event, EventFeedback, SavedEvent
 from .serializers import (
     AttendanceSummarySerializer,
     CategorySerializer,
@@ -35,6 +35,7 @@ from .serializers import (
     RsvpSerializer,
     attendance_summary,
 )
+from .services import feedback_open
 
 
 class AttendeesQuerySerializer(serializers.Serializer):
@@ -55,6 +56,34 @@ class AnnouncementSerializer(serializers.Serializer):
 
 class AnnouncementSentSerializer(serializers.Serializer):
     sent = serializers.IntegerField(help_text="How many people were notified.")
+
+
+class FeedbackSerializer(serializers.Serializer):
+    rating = serializers.IntegerField(min_value=1, max_value=5)
+    comment = serializers.CharField(max_length=1000, required=False, allow_blank=True, default="")
+
+
+class MyFeedbackSerializer(serializers.Serializer):
+    can_give = serializers.BooleanField(
+        help_text="Whether you can rate the event: you were going and it has ended."
+    )
+    rating = serializers.IntegerField(allow_null=True)
+    comment = serializers.CharField(allow_blank=True)
+
+
+class FeedbackCommentSerializer(serializers.Serializer):
+    rating = serializers.IntegerField()
+    comment = serializers.CharField()
+    created_at = serializers.DateTimeField()
+
+
+class FeedbackSummarySerializer(serializers.Serializer):
+    count = serializers.IntegerField()
+    average = serializers.FloatField(allow_null=True)
+    ratings = serializers.ListField(
+        child=serializers.IntegerField(), help_text="How many rated it 1, 2, 3, 4 and 5."
+    )
+    comments = FeedbackCommentSerializer(many=True, help_text="Newest first, without names.")
 
 
 def require_host(user, event):
@@ -218,6 +247,59 @@ class EventViewSet(
             message=serializer.validated_data["message"],
         )
         return Response({"sent": len(recipients)})
+
+    @extend_schema(responses=MyFeedbackSerializer, methods=["GET"])
+    @extend_schema(request=FeedbackSerializer, responses=MyFeedbackSerializer, methods=["PUT"])
+    @action(
+        detail=True,
+        methods=["get", "put"],
+        url_path="feedback/mine",
+        permission_classes=[permissions.IsAuthenticated],
+        throttle_scope="rsvps",
+        http_method_names=["get", "put", "options"],
+    )
+    def my_feedback(self, request, pk=None):
+        """Your rating of the event (GET), or give or change it (PUT) once it has ended."""
+        event = get_object_or_404(self.get_queryset(), pk=pk)
+        profile = request.user.profile
+        went = Attendance.objects.filter(
+            event=event, profile=profile, status=Attendance.Status.GOING
+        ).exists()
+        can_give = went and feedback_open(event)
+        if request.method == "PUT":
+            if not can_give:
+                raise ValidationError(_("Only people who went can rate an event, after it ends."))
+            serializer = FeedbackSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            EventFeedback.objects.update_or_create(
+                event=event, profile=profile, defaults=serializer.validated_data
+            )
+        mine = EventFeedback.objects.filter(event=event, profile=profile).first()
+        return Response(
+            {
+                "can_give": can_give,
+                "rating": mine.rating if mine else None,
+                "comment": mine.comment if mine else "",
+            }
+        )
+
+    @extend_schema(responses=FeedbackSummarySerializer)
+    @action(detail=True, methods=["get"], permission_classes=[permissions.IsAuthenticated])
+    def feedback(self, request, pk=None):
+        """Ratings and comments from people who went, without names (hosts only)."""
+        event = get_object_or_404(self.get_queryset(), pk=pk)
+        require_host(request.user, event)
+        rows = EventFeedback.objects.filter(event=event)
+        counts = dict(rows.values_list("rating").annotate(count=Count("pk")).order_by())
+        comments = rows.exclude(comment="").order_by("-created_at")[:100]
+        return Response(
+            {
+                "count": sum(counts.values()),
+                "average": rows.aggregate(average=Avg("rating"))["average"],
+                "ratings": [counts.get(rating, 0) for rating in range(1, 6)],
+                "comments": FeedbackCommentSerializer(comments, many=True).data,
+            }
+        )
 
     @extend_schema(
         responses={(200, "text/csv"): OpenApiResponse(OpenApiTypes.STR, description="CSV file")}

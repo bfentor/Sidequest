@@ -433,6 +433,86 @@ paths:
               schema:
                 $ref: '#/components/schemas/Comment'
           description: ''
+  /api/events/{id}/feedback/:
+    get:
+      operationId: events_feedback_retrieve
+      description: Ratings and comments from people who went, without names (hosts
+        only).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this event.
+        required: true
+      tags:
+      - events
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeedbackSummary'
+          description: ''
+  /api/events/{id}/feedback/mine/:
+    get:
+      operationId: events_feedback_mine_retrieve
+      description: Your rating of the event (GET), or give or change it (PUT) once
+        it has ended.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this event.
+        required: true
+      tags:
+      - events
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MyFeedback'
+          description: ''
+    put:
+      operationId: events_feedback_mine_update
+      description: Your rating of the event (GET), or give or change it (PUT) once
+        it has ended.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this event.
+        required: true
+      tags:
+      - events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeedbackRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/FeedbackRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/FeedbackRequest'
+        required: true
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MyFeedback'
+          description: ''
   /api/events/{id}/photos/:
     get:
       operationId: events_photos_list
@@ -2692,6 +2772,57 @@ components:
         * `public` - Public
         * `followers` - Followers
         * `unlisted` - Unlisted
+    FeedbackComment:
+      type: object
+      properties:
+        rating:
+          type: integer
+        comment:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - comment
+      - created_at
+      - rating
+    FeedbackRequest:
+      type: object
+      properties:
+        rating:
+          type: integer
+          maximum: 5
+          minimum: 1
+        comment:
+          type: string
+          default: ''
+          maxLength: 1000
+      required:
+      - rating
+    FeedbackSummary:
+      type: object
+      properties:
+        count:
+          type: integer
+        average:
+          type: number
+          format: double
+          nullable: true
+        ratings:
+          type: array
+          items:
+            type: integer
+          description: How many rated it 1, 2, 3, 4 and 5.
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeedbackComment'
+          description: Newest first, without names.
+      required:
+      - average
+      - comments
+      - count
+      - ratings
     FollowStatus:
       type: object
       properties:
@@ -2908,6 +3039,22 @@ components:
       description: |-
         * `admin` - Admin
         * `editor` - Editor
+    MyFeedback:
+      type: object
+      properties:
+        can_give:
+          type: boolean
+          description: 'Whether you can rate the event: you were going and it has
+            ended.'
+        rating:
+          type: integer
+          nullable: true
+        comment:
+          type: string
+      required:
+      - can_give
+      - comment
+      - rating
     NearbyEvent:
       type: object
       properties:
@@ -3111,6 +3258,7 @@ components:
       - event_postponed
       - co_host_invite
       - event_reminder
+      - feedback_request
       - waitlist_promoted
       - announcement
       - mention
@@ -3128,6 +3276,7 @@ components:
         * `event_postponed` - Postponed events
         * `co_host_invite` - Invitations to co-host events
         * `event_reminder` - Event reminders
+        * `feedback_request` - Requests for feedback after events
         * `waitlist_promoted` - A spot opened up for you
         * `announcement` - Announcements from organizers
         * `mention` - Mentions

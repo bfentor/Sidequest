@@ -38,6 +38,10 @@ function createFormatters(locale: string) {
     price(amount: string) {
       return euros.format(Number(amount));
     },
+    /** An average rating, e.g. 4.666… → "4,7". */
+    rating(value: number) {
+      return decimal.format(value);
+    },
     distance(meters: number) {
       return meters < 1000
         ? `${Math.round(meters / 10) * 10} m`

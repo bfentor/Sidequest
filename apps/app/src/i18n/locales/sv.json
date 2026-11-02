@@ -124,7 +124,8 @@
       "follow_accepted": "Godkända följarförfrågningar",
       "organization_invite": "Inbjudningar till organisationer",
       "event_postponed": "Uppskjutna evenemang",
-      "co_host_invite": "Inbjudningar att arrangera evenemang tillsammans"
+      "co_host_invite": "Inbjudningar att arrangera evenemang tillsammans",
+      "feedback_request": "Förfrågningar om respons efter evenemang"
     }
   },
   "posts": {
@@ -207,7 +208,8 @@
     "followAccepted": "{{name}} godkände din följarförfrågan.",
     "organizationInvite": "{{name}} bjöd in dig som medlem.",
     "eventPostponed": "{{title}} har skjutits upp.",
-    "coHostInvite": "{{name}} bjöd in dig att arrangera {{title}} tillsammans."
+    "coHostInvite": "{{name}} bjöd in dig att arrangera {{title}} tillsammans.",
+    "feedbackRequest": "Hur var {{title}}? Berätta för arrangörerna."
   },
   "editProfile": {
     "changeCover": "Byt omslagsbild",
@@ -519,5 +521,20 @@
     "by": "Foto: {{name}}",
     "empty": "Inga bilder än.",
     "add": "Lägg till bilder"
+  },
+  "feedback": {
+    "title": "Hur var det?",
+    "hint": "Bara arrangörerna ser ditt betyg och din kommentar, och de ser inte vem som skrev dem.",
+    "stars_one": "{{count}} stjärna",
+    "stars_other": "{{count}} stjärnor",
+    "comment": "Något arrangörerna borde veta? (valfritt)",
+    "send": "Skicka",
+    "update": "Uppdatera",
+    "thanks": "Tack för din respons!",
+    "results": "Respons",
+    "count_one": "{{count}} betyg",
+    "count_other": "{{count}} betyg",
+    "comments": "Kommentarer",
+    "empty": "Ingen respons än. Alla som skulle gå ombeds lämna respons när evenemanget är slut."
   }
 }

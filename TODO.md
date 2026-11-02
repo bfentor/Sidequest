@@ -76,7 +76,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 - [x] Reminders before an event
 - [x] Q&A or comments on events
 - (Idea) QR check-in at the door
-- [ ] Photos and feedback after the event
+- [x] Photos and feedback after the event
 
 ## 7. Feeds, search and discovery
 

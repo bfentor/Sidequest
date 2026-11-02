@@ -90,6 +90,12 @@ def export_data(user):
             {"event": title, "status": status}
             for title, status in profile.attendances.values_list("event__title", "status")
         ],
+        "event_feedback": [
+            {"event": title, "rating": rating, "comment": comment}
+            for title, rating, comment in profile.event_feedback.values_list(
+                "event__title", "rating", "comment"
+            )
+        ],
         "reports_made": [
             {"created_at": created.isoformat(), "reason": reason, "details": details}
             for created, reason, details in user.reports.values_list(
