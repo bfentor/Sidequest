@@ -164,3 +164,32 @@ def test_co_hosting_needs_acceptance_for_the_whole_series(
     assert [p["handle"] for p in detail["co_hosts"]] == ["club"]
     club_events = api_client.get("/api/profiles/club/events/").json()["results"]
     assert len(club_events) == 2
+
+
+def test_reminders_go_once_to_going_and_interested(auth_client, user, make_user, make_event):
+    from events.models import Attendance
+    from events.services import remind_due
+
+    host = make_user().profile
+    soon = make_event(host, title="soon", starts_in=timedelta(hours=1))
+    make_event(host, title="tomorrow", starts_in=timedelta(days=1))
+    going, interested, waitlisted = (make_user() for _ in range(3))
+    for person, status in (
+        (going, "going"),
+        (interested, "interested"),
+        (waitlisted, "waitlisted"),
+    ):
+        Attendance.objects.create(event=soon, profile=person.profile, status=status)
+
+    assert remind_due() == 1
+    assert remind_due() == 0
+    reminded = set(
+        Notification.objects.filter(kind="event_reminder").values_list("recipient", flat=True)
+    )
+    assert reminded == {going.pk, interested.pk}
+
+    soon.organizer = user.profile
+    soon.save()
+    later = (timezone.now() + timedelta(minutes=90)).isoformat()
+    auth_client.patch(f"/api/events/{soon.pk}/", {"starts_at": later}, format="json")
+    assert remind_due() == 1

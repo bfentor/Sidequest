@@ -73,7 +73,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 - [x] Saved or bookmarked events
 - [x] Add to calendar (iCal, Google Calendar)
 - [x] Shareable event links
-- [ ] Reminders before an event
+- [x] Reminders before an event
 - [ ] Q&A or comments on events
 - [ ] QR check-in at the door
 - [ ] Photos and feedback after the event
@@ -106,7 +106,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 
 - [x] Push notifications
 - [x] In-app notification inbox
-- [ ] Event reminders
+- [x] Event reminders
 - [x] Alerts when an event you're going to changes or gets cancelled
 - [x] New follower and new event from someone you follow
 - [ ] Weekly email digest of upcoming events

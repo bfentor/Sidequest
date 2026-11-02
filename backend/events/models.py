@@ -198,6 +198,8 @@ class Event(models.Model):
     published_at = models.DateTimeField(null=True, blank=True, default=timezone.now)
     # When followers were told about it (an announcement post and notifications).
     announced_at = models.DateTimeField(null=True, blank=True)
+    # When people going or interested were reminded; cleared when the start time changes.
+    reminded_at = models.DateTimeField(null=True, blank=True)
     # Shared by the occurrences of a recurring event.
     series_id = models.UUIDField(null=True, blank=True, db_index=True)
     co_hosts = models.ManyToManyField(

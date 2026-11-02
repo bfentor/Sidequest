@@ -6,10 +6,13 @@ from django.db import transaction
 from django.utils import timezone
 
 from notifications.models import Kind
-from notifications.services import followers_of, managers_of, notify
+from notifications.services import attendees_of, followers_of, managers_of, notify
 from posts.models import Post
 
-from .models import CoHost, Event
+from .models import Attendance, CoHost, Event
+
+# How long before an event starts people going or interested are reminded.
+REMIND_BEFORE = timedelta(hours=2)
 
 # How far apart the occurrences of a recurring event are.
 REPEAT_FREQUENCIES = ("weekly", "biweekly", "monthly")
@@ -102,5 +105,38 @@ def publish_due():
     count = 0
     for event in due:
         announce(event)
+        count += 1
+    return count
+
+
+def remind_due():
+    """Remind everyone going or interested in events starting within REMIND_BEFORE, once.
+
+    Returns how many events were reminded about. Waitlisted people aren't
+    reminded; they hear about it if a spot opens.
+    """
+    now = timezone.now()
+    due = Event.objects.filter(
+        reminded_at__isnull=True,
+        starts_at__gt=now,
+        starts_at__lte=now + REMIND_BEFORE,
+        published_at__lte=now,
+        status=Event.Status.ACTIVE,
+        removed_at__isnull=True,
+    ).select_related("organizer")
+    count = 0
+    for event in due:
+        with transaction.atomic():
+            # Skips events another run is handling or has just handled.
+            claimed = Event.objects.filter(pk=event.pk, reminded_at__isnull=True).update(
+                reminded_at=now
+            )
+            if not claimed:
+                continue
+            attendees = attendees_of(event).exclude(
+                attendances__event=event, attendances__status=Attendance.Status.WAITLISTED
+            )
+            # No actor: reminders come from Sidequest, so blocks and mutes don't apply.
+            notify(attendees, Kind.EVENT_REMINDER, event=event)
         count += 1
     return count

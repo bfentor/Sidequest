@@ -256,6 +256,9 @@ class EventSerializer(serializers.ModelSerializer):
             field in validated_data and validated_data[field] != getattr(instance, field)
             for field in self.NOTIFY_ON_CHANGE
         )
+        if "starts_at" in validated_data and validated_data["starts_at"] != instance.starts_at:
+            # Remind people again for the new time.
+            validated_data["reminded_at"] = None
         event = super().update(instance, validated_data)
 
         if co_hosts is not None:
