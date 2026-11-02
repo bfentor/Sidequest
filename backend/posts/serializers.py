@@ -32,6 +32,8 @@ class PostSerializer(serializers.ModelSerializer):
         help_text="Attach (share) an existing event.",
     )
     images = serializers.SerializerMethodField()
+    like_count = serializers.SerializerMethodField()
+    is_liked = serializers.SerializerMethodField(help_text="Whether you liked this post.")
     image_ids = serializers.ListField(
         child=OwnImageField(),
         write_only=True,
@@ -52,6 +54,8 @@ class PostSerializer(serializers.ModelSerializer):
             "event_id",
             "images",
             "image_ids",
+            "like_count",
+            "is_liked",
             "created_at",
             "edited_at",
         ]
@@ -61,6 +65,13 @@ class PostSerializer(serializers.ModelSerializer):
     def get_images(self, post):
         links = post.image_links.all()
         return ImageSerializer([link.image for link in links], many=True, context=self.context).data
+
+    # Annotated by for_display; a just-created post has none yet.
+    def get_like_count(self, post) -> int:
+        return getattr(post, "like_count", 0)
+
+    def get_is_liked(self, post) -> bool:
+        return getattr(post, "is_liked", False)
 
     def validate_image_ids(self, images):
         if len(set(images)) != len(images):

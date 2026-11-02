@@ -140,7 +140,10 @@
     "aboutEventPlaceholder": "Kerro jotain tästä tapahtumasta",
     "addImage": "Lisää kuva",
     "removeImage": "Poista kuva",
-    "loadFailed": "Julkaisua ei voitu ladata."
+    "loadFailed": "Julkaisua ei voitu ladata.",
+    "like": "Tykkää",
+    "unlike": "Peru tykkäys",
+    "title": "Julkaisu"
   },
   "moderation": {
     "report": "Ilmoita",

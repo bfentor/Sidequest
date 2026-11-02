@@ -140,7 +140,10 @@
     "aboutEventPlaceholder": "Säg något om det här evenemanget",
     "addImage": "Lägg till en bild",
     "removeImage": "Ta bort bild",
-    "loadFailed": "Inlägget kunde inte laddas."
+    "loadFailed": "Inlägget kunde inte laddas.",
+    "like": "Gilla",
+    "unlike": "Sluta gilla",
+    "title": "Inlägg"
   },
   "moderation": {
     "report": "Anmäl",

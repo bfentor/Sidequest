@@ -95,7 +95,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 - [x] Write a post (text, or sharing an event)
 - [x] Images in posts
 - [x] Edit and delete posts
-- [ ] Likes and reactions
+- [x] Likes and reactions
 - [ ] Comments
 - [x] Reposting or sharing events to your followers
 - [ ] @mentions, hashtags and link previews

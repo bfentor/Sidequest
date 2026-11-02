@@ -483,6 +483,11 @@ export type Post = {
     body?: string;
     event: Event | null;
     readonly images: Array<Image>;
+    readonly like_count: number;
+    /**
+     * Whether you liked this post.
+     */
+    readonly is_liked: boolean;
     readonly created_at: string;
     readonly edited_at: string | null;
 };
@@ -2062,6 +2067,48 @@ export type PostsPartialUpdateResponses = {
 };
 
 export type PostsPartialUpdateResponse = PostsPartialUpdateResponses[keyof PostsPartialUpdateResponses];
+
+export type PostsLikeDestroyData = {
+    body?: never;
+    path: {
+        /**
+         * A unique integer value identifying this post.
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/api/posts/{id}/like/';
+};
+
+export type PostsLikeDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type PostsLikeDestroyResponse = PostsLikeDestroyResponses[keyof PostsLikeDestroyResponses];
+
+export type PostsLikeUpdateData = {
+    body?: never;
+    path: {
+        /**
+         * A unique integer value identifying this post.
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/api/posts/{id}/like/';
+};
+
+export type PostsLikeUpdateResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type PostsLikeUpdateResponse = PostsLikeUpdateResponses[keyof PostsLikeUpdateResponses];
 
 export type ProfilesRetrieveData = {
     body?: never;

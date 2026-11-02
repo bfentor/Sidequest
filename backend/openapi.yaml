@@ -1586,6 +1586,43 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/posts/{id}/like/:
+    put:
+      operationId: posts_like_update
+      description: Like (PUT) or unlike (DELETE). The author hears about the first
+        like only.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this post.
+        required: true
+      tags:
+      - posts
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '204':
+          description: No response body
+    delete:
+      operationId: posts_like_destroy
+      description: Like (PUT) or unlike (DELETE). The author hears about the first
+        like only.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this post.
+        required: true
+      tags:
+      - posts
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/profiles/{handle}/:
     get:
       operationId: profiles_retrieve
@@ -3162,6 +3199,13 @@ components:
           items:
             $ref: '#/components/schemas/Image'
           readOnly: true
+        like_count:
+          type: integer
+          readOnly: true
+        is_liked:
+          type: boolean
+          readOnly: true
+          description: Whether you liked this post.
         created_at:
           type: string
           format: date-time
@@ -3178,6 +3222,8 @@ components:
       - event
       - id
       - images
+      - is_liked
+      - like_count
     PostRequest:
       type: object
       properties:

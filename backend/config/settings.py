@@ -206,6 +206,7 @@ REST_FRAMEWORK = {
         "events": "20/hour",
         "follows": "200/hour",
         "rsvps": "300/hour",
+        "likes": "600/hour",
         "blocks": "60/hour",
         "reports": "20/hour",
         "uploads": "60/hour",

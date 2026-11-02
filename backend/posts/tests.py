@@ -60,3 +60,22 @@ def test_edit_marks_the_post_edited(auth_client, api_client, user, make_user):
     api_client.force_authenticate(make_user())
     response = api_client.patch(f"/api/posts/{post.pk}/", {"body": "mine now"}, format="json")
     assert response.status_code == 403
+
+
+def test_like_and_unlike(auth_client, api_client, user, make_user):
+    from notifications.models import Notification
+
+    author = make_user()
+    post = Post.objects.create(author=author.profile, body="hi")
+
+    assert auth_client.put(f"/api/posts/{post.pk}/like/").status_code == 204
+    assert auth_client.put(f"/api/posts/{post.pk}/like/").status_code == 204
+    data = auth_client.get(f"/api/posts/{post.pk}/").json()
+    assert (data["like_count"], data["is_liked"]) == (1, True)
+    assert Notification.objects.filter(recipient=author, kind="reaction").count() == 1
+
+    anonymous = api_client.get(f"/api/posts/{post.pk}/").json()
+    assert (anonymous["like_count"], anonymous["is_liked"]) == (1, False)
+
+    assert auth_client.delete(f"/api/posts/{post.pk}/like/").status_code == 204
+    assert auth_client.get(f"/api/posts/{post.pk}/").json()["like_count"] == 0

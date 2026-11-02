@@ -54,6 +54,8 @@ function open(notification: Notification) {
     router.push('/follow-requests');
   } else if (notification.kind === 'organization_invite') {
     router.push('/organizations');
+  } else if (notification.post) {
+    router.push({ pathname: '/posts/[id]', params: { id: notification.post } });
   } else if (notification.event) {
     router.push({ pathname: '/events/[id]', params: { id: notification.event.id } });
   } else if (notification.actor) {

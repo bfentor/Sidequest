@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 
+from config.db import count_of
 from events.models import Event
 from moderation.visibility import hidden_profiles, muted_profiles, private_profiles
 from profiles.models import Follow, Profile
@@ -21,9 +22,19 @@ class PostQuerySet(models.QuerySet):
 
     def for_display(self, viewer):
         """Everything a post's serializer shows; shared events come with their attendance."""
-        return self.select_related("author__avatar").prefetch_related(
-            models.Prefetch("event", queryset=Event.objects.for_display(viewer)),
-            "image_links__image",
+        likes = PostLike.objects.filter(post=models.OuterRef("pk"))
+        liked = (
+            models.Exists(likes.filter(profile=viewer))
+            if viewer is not None
+            else models.Value(False)
+        )
+        return (
+            self.select_related("author__avatar")
+            .prefetch_related(
+                models.Prefetch("event", queryset=Event.objects.for_display(viewer)),
+                "image_links__image",
+            )
+            .annotate(like_count=count_of(likes), is_liked=liked)
         )
 
     def in_feeds_of(self, viewer):
@@ -93,3 +104,17 @@ class PostImage(models.Model):
 
     def __str__(self):
         return f"Picture {self.position + 1} of {self.post}"
+
+
+class PostLike(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likes")
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="post_likes")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["post", "profile"], name="unique_post_like"),
+        ]
+
+    def __str__(self):
+        return f"{self.profile} likes {self.post}"

@@ -10,6 +10,7 @@ import { useFormat } from '@/lib/format';
 import { Avatar } from './avatar';
 import { ContentMenu } from './content-menu';
 import { EventCard } from './event-card';
+import { LikeButton } from './like-button';
 import { RemoteImage } from './remote-image';
 import { ThemedText } from './themed-text';
 
@@ -74,6 +75,7 @@ export function PostCard({ post }: { post: Post }) {
         </View>
       ) : null}
       {post.event ? <EventCard event={post.event} /> : null}
+      <LikeButton post={post} />
     </View>
   );
 }

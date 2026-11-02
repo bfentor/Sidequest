@@ -140,7 +140,10 @@
     "aboutEventPlaceholder": "Say something about this event",
     "addImage": "Add a picture",
     "removeImage": "Remove picture",
-    "loadFailed": "Couldn't load this post."
+    "loadFailed": "Couldn't load this post.",
+    "like": "Like",
+    "unlike": "Unlike",
+    "title": "Post"
   },
   "moderation": {
     "report": "Report",

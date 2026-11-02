@@ -68,6 +68,8 @@ def render(notification) -> tuple[str, str]:
 
 def link(notification) -> str:
     """Where tapping the notification takes the app."""
+    if notification.post_id:
+        return f"/posts/{notification.post_id}"
     if notification.event_id:
         return f"/events/{notification.event_id}"
     if notification.kind == Kind.FOLLOW_REQUEST:
