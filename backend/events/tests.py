@@ -50,3 +50,26 @@ def test_only_organizer_can_edit(api_client, make_user, make_event):
     api_client.force_authenticate(make_user())
 
     assert api_client.patch(f"/api/events/{event.id}/", {"title": "Mine now"}).status_code == 403
+
+
+def test_categories_are_named_in_the_requested_language(api_client, db):
+    response = api_client.get("/api/categories/", headers={"Accept-Language": "fi"})
+    sports = next(c for c in response.json() if c["slug"] == "sports")
+    assert sports == {"slug": "sports", "name": "Urheilu", "icon": "sports_soccer"}
+
+
+def test_publish_with_categories(auth_client):
+    response = auth_client.post(
+        "/api/events/", {**EVENT, "categories": ["games", "community"]}, format="json"
+    )
+    assert response.status_code == 201
+    assert sorted(response.json()["categories"]) == ["community", "games"]
+
+    bad = auth_client.post("/api/events/", {**EVENT, "categories": ["nope"]}, format="json")
+    assert bad.status_code == 400
+
+
+def test_set_interests(auth_client):
+    response = auth_client.patch("/api/me/", {"interests": ["music", "tech"]}, format="json")
+    assert response.status_code == 200
+    assert sorted(response.json()["interests"]) == ["music", "tech"]

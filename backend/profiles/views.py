@@ -24,6 +24,7 @@ class ProfileViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
             Profile.objects.visible_to(viewer)
             .with_social_stats(viewer=viewer)
             .select_related("avatar")
+            .prefetch_related("interests")
         )
 
     @extend_schema(request=None, responses={204: None})
@@ -55,5 +56,6 @@ class MeView(generics.RetrieveUpdateAPIView):
         return (
             Profile.objects.with_social_stats(viewer=self.request.user.profile)
             .select_related("avatar")
+            .prefetch_related("interests")
             .get(user=self.request.user)
         )

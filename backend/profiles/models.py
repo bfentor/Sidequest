@@ -65,6 +65,8 @@ class Profile(models.Model):
     avatar = models.ForeignKey(
         "images.Image", on_delete=models.SET_NULL, null=True, blank=True, related_name="avatar_of"
     )
+    # What the person likes; used for recommendations.
+    interests = models.ManyToManyField("events.Category", blank=True, related_name="interested")
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,

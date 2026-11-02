@@ -3,6 +3,7 @@ from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.measure import D
 from django.db import models
 from django.utils import timezone
+from django.utils.translation import get_language
 
 from moderation.visibility import hidden_profiles, muted_profiles
 from profiles.models import Profile
@@ -32,6 +33,33 @@ class EventQuerySet(models.QuerySet):
         )
 
 
+class Category(models.Model):
+    """What an event is about. Also used for people's interests.
+
+    Names are stored in every language so admins can add categories without a release.
+    """
+
+    slug = models.SlugField(unique=True)
+    name_en = models.CharField(max_length=60)
+    name_fi = models.CharField(max_length=60)
+    name_sv = models.CharField(max_length=60)
+    # Material Symbol shown next to the name.
+    icon = models.CharField(max_length=40, blank=True)
+    position = models.PositiveSmallIntegerField(default=0)
+
+    class Meta:
+        ordering = ["position", "slug"]
+        verbose_name_plural = "categories"
+
+    def __str__(self):
+        return self.name_en
+
+    @property
+    def name(self):
+        """The name in the active language (the request's Accept-Language)."""
+        return getattr(self, f"name_{get_language()}", None) or self.name_en
+
+
 class Event(models.Model):
     organizer = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="events")
     title = models.CharField(max_length=200)
@@ -43,6 +71,7 @@ class Event(models.Model):
     # Geography (not geometry) so distances are computed on the globe in metres.
     # Empty for online events, which then don't appear in the nearby feed.
     location = gis_models.PointField(geography=True, srid=4326, null=True, blank=True)
+    categories = models.ManyToManyField(Category, blank=True, related_name="events")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     # Set by moderators; hides the event everywhere.

@@ -4,6 +4,7 @@ import { Stack, useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator } from 'react-native';
 
+import { CategoryChips } from '@/components/category-chips';
 import { ContentMenu } from '@/components/content-menu';
 import { Screen } from '@/components/screen';
 import { ThemedText } from '@/components/themed-text';
@@ -54,6 +55,7 @@ export default function EventScreen() {
             <ThemedText>{[event.venue_name, event.address].filter(Boolean).join(', ')}</ThemedText>
           ) : null}
           {event.description ? <ThemedText>{event.description}</ThemedText> : null}
+          <CategoryChips slugs={event.categories ?? []} />
         </>
       )}
     </Screen>

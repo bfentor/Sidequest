@@ -3,6 +3,24 @@ info:
   title: Sidequest API
   version: 0.1.0
 paths:
+  /api/categories/:
+    get:
+      operationId: categories_list
+      description: Every category, in display order, named in the request's language.
+      tags:
+      - categories
+      security:
+      - XSessionTokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+          description: ''
   /api/events/:
     post:
       operationId: events_create
@@ -516,6 +534,24 @@ paths:
           description: ''
 components:
   schemas:
+    Category:
+      type: object
+      properties:
+        slug:
+          type: string
+          readOnly: true
+          pattern: ^[-a-zA-Z0-9_]+$
+        name:
+          type: string
+          readOnly: true
+          description: In the request's language.
+        icon:
+          type: string
+          readOnly: true
+      required:
+      - icon
+      - name
+      - slug
     Event:
       type: object
       properties:
@@ -547,6 +583,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/LatLng'
           nullable: true
+        categories:
+          type: array
+          items:
+            type: string
         created_at:
           type: string
           format: date-time
@@ -594,6 +634,11 @@ components:
           allOf:
           - $ref: '#/components/schemas/LatLngRequest'
           nullable: true
+        categories:
+          type: array
+          items:
+            type: string
+            minLength: 1
       required:
       - ends_at
       - starts_at
@@ -721,6 +766,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/LatLng'
           nullable: true
+        categories:
+          type: array
+          items:
+            type: string
         created_at:
           type: string
           format: date-time
@@ -834,6 +883,11 @@ components:
           allOf:
           - $ref: '#/components/schemas/LatLngRequest'
           nullable: true
+        categories:
+          type: array
+          items:
+            type: string
+            minLength: 1
     PatchedProfileRequest:
       type: object
       description: Full profile. Expects a queryset annotated with `with_social_stats`.
@@ -855,6 +909,12 @@ components:
           writeOnly: true
           nullable: true
           description: An image uploaded with POST /api/images/.
+        interests:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          description: Category slugs (GET /api/categories/).
     Post:
       type: object
       properties:
@@ -921,6 +981,11 @@ components:
           - $ref: '#/components/schemas/Image'
           readOnly: true
           nullable: true
+        interests:
+          type: array
+          items:
+            type: string
+          description: Category slugs (GET /api/categories/).
         created_at:
           type: string
           format: date-time

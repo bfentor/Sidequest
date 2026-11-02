@@ -21,6 +21,8 @@ class PostViewSet(
     throttle_scope = "posts"
 
     def get_queryset(self):
-        return Post.objects.visible_to(viewer_profile(self.request)).select_related(
-            "author__avatar", "event__organizer__avatar"
+        return (
+            Post.objects.visible_to(viewer_profile(self.request))
+            .select_related("author__avatar", "event__organizer__avatar")
+            .prefetch_related("event__categories")
         )

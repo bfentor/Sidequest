@@ -4,6 +4,15 @@ export type ClientOptions = {
     baseUrl: `${string}://${string}` | (string & {});
 };
 
+export type Category = {
+    readonly slug: string;
+    /**
+     * In the request's language.
+     */
+    readonly name: string;
+    readonly icon: string;
+};
+
 export type Event = {
     readonly id: number;
     organizer: ProfileSummary;
@@ -14,6 +23,7 @@ export type Event = {
     venue_name?: string;
     address?: string;
     location?: LatLng | null;
+    categories?: Array<string>;
     readonly created_at: string;
     readonly updated_at: string;
 };
@@ -26,6 +36,7 @@ export type EventRequest = {
     venue_name?: string;
     address?: string;
     location?: LatLngRequest | null;
+    categories?: Array<string>;
 };
 
 /**
@@ -81,6 +92,7 @@ export type NearbyEvent = {
     venue_name?: string;
     address?: string;
     location?: LatLng | null;
+    categories?: Array<string>;
     readonly created_at: string;
     readonly updated_at: string;
     readonly distance_m: number;
@@ -113,6 +125,7 @@ export type PatchedEventRequest = {
     venue_name?: string;
     address?: string;
     location?: LatLngRequest | null;
+    categories?: Array<string>;
 };
 
 /**
@@ -122,6 +135,10 @@ export type PatchedProfileRequest = {
     handle?: string;
     display_name?: string;
     bio?: string;
+    /**
+     * Category slugs (GET /api/categories/).
+     */
+    interests?: Array<string>;
 };
 
 export type Post = {
@@ -145,6 +162,10 @@ export type Profile = {
     kind: KindEnum;
     bio?: string;
     avatar: Image | null;
+    /**
+     * Category slugs (GET /api/categories/).
+     */
+    interests?: Array<string>;
     readonly created_at: string;
     readonly follower_count: number;
     readonly following_count: number;
@@ -201,6 +222,7 @@ export type EventWritable = {
     venue_name?: string;
     address?: string;
     location?: LatLng | null;
+    categories?: Array<string>;
 };
 
 export type EventRequestWritable = {
@@ -215,6 +237,7 @@ export type EventRequestWritable = {
     venue_name?: string;
     address?: string;
     location?: LatLngRequest | null;
+    categories?: Array<string>;
 };
 
 export type NearbyEventWritable = {
@@ -225,6 +248,7 @@ export type NearbyEventWritable = {
     venue_name?: string;
     address?: string;
     location?: LatLng | null;
+    categories?: Array<string>;
 };
 
 export type PaginatedEventListWritable = {
@@ -258,6 +282,7 @@ export type PatchedEventRequestWritable = {
     venue_name?: string;
     address?: string;
     location?: LatLngRequest | null;
+    categories?: Array<string>;
 };
 
 /**
@@ -271,6 +296,10 @@ export type PatchedProfileRequestWritable = {
      * An image uploaded with POST /api/images/.
      */
     avatar_id?: number | null;
+    /**
+     * Category slugs (GET /api/categories/).
+     */
+    interests?: Array<string>;
 };
 
 export type PostWritable = {
@@ -296,6 +325,10 @@ export type ProfileWritable = {
     handle: string;
     display_name: string;
     bio?: string;
+    /**
+     * Category slugs (GET /api/categories/).
+     */
+    interests?: Array<string>;
 };
 
 export type ReportWritable = {
@@ -312,6 +345,19 @@ export type ReportRequestWritable = {
     reason: ReasonEnum;
     details?: string;
 };
+
+export type CategoriesListData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/categories/';
+};
+
+export type CategoriesListResponses = {
+    200: Array<Category>;
+};
+
+export type CategoriesListResponse = CategoriesListResponses[keyof CategoriesListResponses];
 
 export type EventsCreateData = {
     body: EventRequestWritable;

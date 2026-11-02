@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from events.models import Category
 from images.serializers import ImageSerializer, OwnImageField
 
 from .models import Profile
@@ -27,6 +28,13 @@ class ProfileSerializer(serializers.ModelSerializer):
         allow_null=True,
         help_text="An image uploaded with POST /api/images/.",
     )
+    interests = serializers.SlugRelatedField(
+        slug_field="slug",
+        many=True,
+        queryset=Category.objects.all(),
+        required=False,
+        help_text="Category slugs (GET /api/categories/).",
+    )
     follower_count = serializers.IntegerField(read_only=True)
     following_count = serializers.IntegerField(read_only=True)
     is_followed = serializers.BooleanField(read_only=True)
@@ -42,6 +50,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             "bio",
             "avatar",
             "avatar_id",
+            "interests",
             "created_at",
             "follower_count",
             "following_count",

@@ -1,8 +1,12 @@
+from django.urls import path
 from rest_framework.routers import SimpleRouter
 
-from .views import EventViewSet
+from .views import CategoryListView, EventViewSet
 
 router = SimpleRouter()
 router.register("events", EventViewSet, basename="event")
 
-urlpatterns = router.urls
+urlpatterns = [
+    path("categories/", CategoryListView.as_view(), name="category-list"),
+    *router.urls,
+]

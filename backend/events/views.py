@@ -1,10 +1,10 @@
-from rest_framework import mixins, permissions, viewsets
+from rest_framework import generics, mixins, permissions, viewsets
 
 from moderation.visibility import viewer_profile
 from profiles.permissions import CanActAsOwner
 
-from .models import Event
-from .serializers import EventSerializer
+from .models import Category, Event
+from .serializers import CategorySerializer, EventSerializer
 
 
 class EventViewSet(
@@ -23,6 +23,17 @@ class EventViewSet(
     http_method_names = ["get", "post", "patch", "delete", "options"]
 
     def get_queryset(self):
-        return Event.objects.visible_to(viewer_profile(self.request)).select_related(
-            "organizer__avatar"
+        return (
+            Event.objects.visible_to(viewer_profile(self.request))
+            .select_related("organizer__avatar")
+            .prefetch_related("categories")
         )
+
+
+class CategoryListView(generics.ListAPIView):
+    """Every category, in display order, named in the request's language."""
+
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [permissions.AllowAny]
+    pagination_class = None
