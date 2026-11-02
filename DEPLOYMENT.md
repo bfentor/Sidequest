@@ -142,8 +142,10 @@ Scheduled tasks: the ones in [CRONJOBS.md](CRONJOBS.md).
 - Ports Exposes `3000`. Domain: `https://sidequest.fentorweb.hu`.
 - Healthcheck: path `/healthz`, port `3000`.
 - Automatic deploys on push: off.
-- Environment variable `EXPO_PUBLIC_API_URL` = `https://sidequest-api.fentorweb.hu`,
-  marked as **Build Variable** (it's inlined into the bundle at build time).
+- Environment variables `EXPO_PUBLIC_API_URL` = `https://sidequest-api.fentorweb.hu`
+  and `EXPO_PUBLIC_WEB_URL` = `https://sidequest.fentorweb.hu` (used in shared
+  links), both marked as **Build Variable** (they're inlined into the bundle at
+  build time).
 
 ### d. GitHub
 

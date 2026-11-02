@@ -453,5 +453,12 @@
   "saved": {
     "save": "Tallenna tapahtuma",
     "unsave": "Poista tallennetuista"
+  },
+  "eventActions": {
+    "addToCalendar": "Lisää kalenteriin",
+    "share": "Jaa",
+    "linkCopied": "Linkki kopioitu.",
+    "calendarFile": "Kalenteritiedosto (Apple, Outlook…)",
+    "googleCalendar": "Google-kalenteri"
   }
 }

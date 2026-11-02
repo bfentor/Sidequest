@@ -53,4 +53,5 @@ jobs:
         env:
           APP_VARIANT: staging
           EXPO_PUBLIC_API_URL: https://sidequest-api.fentorweb.hu
+          EXPO_PUBLIC_WEB_URL: https://sidequest.fentorweb.hu
         run: npx eas-cli@latest update --channel staging --auto --non-interactive

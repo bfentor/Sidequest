@@ -453,5 +453,12 @@
   "saved": {
     "save": "Spara evenemang",
     "unsave": "Ta bort från sparade"
+  },
+  "eventActions": {
+    "addToCalendar": "Lägg till i kalendern",
+    "share": "Dela",
+    "linkCopied": "Länken kopierades.",
+    "calendarFile": "Kalenderfil (Apple, Outlook…)",
+    "googleCalendar": "Google Kalender"
   }
 }

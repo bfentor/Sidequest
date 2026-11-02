@@ -71,8 +71,8 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 - [x] "Friends who are going"
 - [x] My events: a calendar or list of events I'm going to
 - [x] Saved or bookmarked events
-- [ ] Add to calendar (iCal, Google Calendar)
-- [ ] Shareable event links
+- [x] Add to calendar (iCal, Google Calendar)
+- [x] Shareable event links
 - [ ] Reminders before an event
 - [ ] Q&A or comments on events
 - [ ] QR check-in at the door

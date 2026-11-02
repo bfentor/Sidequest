@@ -19,6 +19,7 @@ import { useAuth } from '@/auth/auth-provider';
 import { Button } from '@/components/button';
 import { CategoryChips } from '@/components/category-chips';
 import { ContentMenu } from '@/components/content-menu';
+import { EventActions } from '@/components/event-actions';
 import { FriendsGoing } from '@/components/friends-going';
 import { RemoteImage } from '@/components/remote-image';
 import { RsvpBar } from '@/components/rsvp-bar';
@@ -171,6 +172,7 @@ export default function EventScreen() {
               </ThemedText>
             </Link>
           ) : null}
+          <EventActions event={event} />
           {event.venue_name || event.address ? (
             <ThemedText>{[event.venue_name, event.address].filter(Boolean).join(', ')}</ThemedText>
           ) : null}

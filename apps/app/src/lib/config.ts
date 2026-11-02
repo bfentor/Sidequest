@@ -5,3 +5,6 @@
  * - Physical device:     http://<your computer's LAN IP>:8000
  */
 export const API_URL = process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:8000';
+
+/** Public address of the web app, used in links people share. Set EXPO_PUBLIC_WEB_URL. */
+export const WEB_URL = process.env.EXPO_PUBLIC_WEB_URL ?? 'http://localhost:8081';

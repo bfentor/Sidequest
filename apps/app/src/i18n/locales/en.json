@@ -453,5 +453,12 @@
   "saved": {
     "save": "Save event",
     "unsave": "Remove from saved"
+  },
+  "eventActions": {
+    "addToCalendar": "Add to calendar",
+    "share": "Share",
+    "linkCopied": "Link copied.",
+    "calendarFile": "Calendar file (Apple, Outlook…)",
+    "googleCalendar": "Google Calendar"
   }
 }

@@ -16,7 +16,9 @@ COPY packages/api packages/api
 
 # Public values are inlined into the bundle, so they're needed at build time.
 ARG EXPO_PUBLIC_API_URL
+ARG EXPO_PUBLIC_WEB_URL
 ENV EXPO_PUBLIC_API_URL=$EXPO_PUBLIC_API_URL
+ENV EXPO_PUBLIC_WEB_URL=$EXPO_PUBLIC_WEB_URL
 RUN cd apps/app && npx expo export --platform web
 
 # --- Serve it ---
