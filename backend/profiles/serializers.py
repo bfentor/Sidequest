@@ -1,10 +1,14 @@
 from rest_framework import serializers
 
+from images.serializers import ImageSerializer, OwnImageField
+
 from .models import Profile
 
 
 class ProfileSummarySerializer(serializers.ModelSerializer):
     """Compact profile representation embedded in events and posts."""
+
+    avatar = ImageSerializer(read_only=True, allow_null=True)
 
     class Meta:
         model = Profile
@@ -15,6 +19,14 @@ class ProfileSummarySerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     """Full profile. Expects a queryset annotated with `with_social_stats`."""
 
+    avatar = ImageSerializer(read_only=True, allow_null=True)
+    avatar_id = OwnImageField(
+        source="avatar",
+        write_only=True,
+        required=False,
+        allow_null=True,
+        help_text="An image uploaded with POST /api/images/.",
+    )
     follower_count = serializers.IntegerField(read_only=True)
     following_count = serializers.IntegerField(read_only=True)
     is_followed = serializers.BooleanField(read_only=True)
@@ -27,6 +39,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             "kind",
             "bio",
             "avatar",
+            "avatar_id",
             "created_at",
             "follower_count",
             "following_count",

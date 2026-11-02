@@ -45,7 +45,9 @@ class Profile(models.Model):
     handle = models.CharField(max_length=30, unique=True, validators=[handle_validator])
     display_name = models.CharField(max_length=80)
     bio = models.TextField(max_length=500, blank=True)
-    avatar = models.ImageField(upload_to="avatars/", blank=True)
+    avatar = models.ForeignKey(
+        "images.Image", on_delete=models.SET_NULL, null=True, blank=True, related_name="avatar_of"
+    )
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,

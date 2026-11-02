@@ -14,7 +14,7 @@ class PostViewSet(
 ):
     """Create, view and delete single posts. Listing happens through the feeds."""
 
-    queryset = Post.objects.select_related("author", "event__organizer")
+    queryset = Post.objects.select_related("author__avatar", "event__organizer__avatar")
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, CanActAsOwner]
     owner_field = "author"

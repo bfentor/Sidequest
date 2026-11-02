@@ -15,7 +15,7 @@ class ProfileViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     lookup_field = "handle"
 
     def get_queryset(self):
-        return Profile.objects.with_social_stats(viewer=self.request.user)
+        return Profile.objects.with_social_stats(viewer=self.request.user).select_related("avatar")
 
     @extend_schema(request=None, responses={204: None})
     @action(
@@ -41,6 +41,8 @@ class MeView(generics.RetrieveUpdateAPIView):
     http_method_names = ["get", "patch", "options"]
 
     def get_object(self):
-        return Profile.objects.with_social_stats(viewer=self.request.user).get(
-            user=self.request.user
+        return (
+            Profile.objects.with_social_stats(viewer=self.request.user)
+            .select_related("avatar")
+            .get(user=self.request.user)
         )

@@ -29,6 +29,33 @@ export type EventRequest = {
 };
 
 /**
+ * How images appear inside other resources.
+ */
+export type Image = {
+    readonly id: number;
+    readonly url: string;
+    readonly width: number;
+    readonly height: number;
+};
+
+/**
+ * How images appear inside other resources.
+ */
+export type ImageUpload = {
+    readonly id: number;
+    readonly url: string;
+    readonly width: number;
+    readonly height: number;
+};
+
+/**
+ * How images appear inside other resources.
+ */
+export type ImageUploadRequest = {
+    file: Blob | File;
+};
+
+/**
  * * `person` - Person
  * * `organization` - Organization
  */
@@ -95,7 +122,6 @@ export type PatchedProfileRequest = {
     handle?: string;
     display_name?: string;
     bio?: string;
-    avatar?: Blob | File;
 };
 
 export type Post = {
@@ -118,7 +144,7 @@ export type Profile = {
     display_name: string;
     kind: KindEnum;
     bio?: string;
-    avatar?: string | null;
+    avatar: Image | null;
     readonly created_at: string;
     readonly follower_count: number;
     readonly following_count: number;
@@ -132,7 +158,7 @@ export type ProfileSummary = {
     readonly handle: string;
     readonly display_name: string;
     kind: KindEnum;
-    readonly avatar: string | null;
+    avatar: Image | null;
 };
 
 export type EventWritable = {
@@ -202,6 +228,19 @@ export type PatchedEventRequestWritable = {
     location?: LatLngRequest | null;
 };
 
+/**
+ * Full profile. Expects a queryset annotated with `with_social_stats`.
+ */
+export type PatchedProfileRequestWritable = {
+    handle?: string;
+    display_name?: string;
+    bio?: string;
+    /**
+     * An image uploaded with POST /api/images/.
+     */
+    avatar_id?: number | null;
+};
+
 export type PostWritable = {
     body?: string;
 };
@@ -225,7 +264,6 @@ export type ProfileWritable = {
     handle: string;
     display_name: string;
     bio?: string;
-    avatar?: string | null;
 };
 
 export type EventsCreateData = {
@@ -359,6 +397,19 @@ export type FeedsUpcomingListResponses = {
 
 export type FeedsUpcomingListResponse = FeedsUpcomingListResponses[keyof FeedsUpcomingListResponses];
 
+export type ImagesCreateData = {
+    body: ImageUploadRequest;
+    path?: never;
+    query?: never;
+    url: '/api/images/';
+};
+
+export type ImagesCreateResponses = {
+    201: ImageUpload;
+};
+
+export type ImagesCreateResponse = ImagesCreateResponses[keyof ImagesCreateResponses];
+
 export type MeRetrieveData = {
     body?: never;
     path?: never;
@@ -373,7 +424,7 @@ export type MeRetrieveResponses = {
 export type MeRetrieveResponse = MeRetrieveResponses[keyof MeRetrieveResponses];
 
 export type MePartialUpdateData = {
-    body?: PatchedProfileRequest;
+    body?: PatchedProfileRequestWritable;
     path?: never;
     query?: never;
     url: '/api/me/';

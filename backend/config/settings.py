@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "allauth.headless",
     # Local
     "accounts",
+    "images",
     "profiles",
     "events",
     "posts",

@@ -39,6 +39,12 @@
         {
           "locationWhenInUsePermission": "Sidequest uses your location to show events near you."
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Sidequest lets you choose photos for your profile, events and posts."
+        }
       ]
     ],
     "experiments": {

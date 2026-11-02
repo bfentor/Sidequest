@@ -15,7 +15,7 @@ class EventViewSet(
 ):
     """Create and manage single events. Listing happens through the feeds."""
 
-    queryset = Event.objects.select_related("organizer")
+    queryset = Event.objects.select_related("organizer__avatar")
     serializer_class = EventSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, CanActAsOwner]
     owner_field = "organizer"

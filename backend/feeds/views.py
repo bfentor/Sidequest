@@ -24,7 +24,7 @@ class UpcomingFeedView(generics.ListAPIView):
     permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return Event.objects.not_ended().select_related("organizer")
+        return Event.objects.not_ended().select_related("organizer__avatar")
 
 
 class NearbyQuerySerializer(serializers.Serializer):
@@ -51,7 +51,7 @@ class NearbyFeedView(generics.ListAPIView):
         return (
             Event.objects.not_ended()
             .near(point, params.validated_data["radius_km"])
-            .select_related("organizer")
+            .select_related("organizer__avatar")
         )
 
 
@@ -64,5 +64,5 @@ class FollowingFeedView(generics.ListAPIView):
 
     def get_queryset(self):
         return Post.objects.following_feed_for(self.request.user.profile).select_related(
-            "author", "event__organizer"
+            "author__avatar", "event__organizer__avatar"
         )

@@ -204,6 +204,28 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedEventList'
           description: ''
+  /api/images/:
+    post:
+      operationId: images_create
+      description: Upload a picture, to attach to a profile, event or post by its
+        id.
+      tags:
+      - images
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ImageUploadRequest'
+        required: true
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageUpload'
+          description: ''
   /api/me/:
     get:
       operationId: me_retrieve
@@ -449,6 +471,58 @@ components:
       - ends_at
       - starts_at
       - title
+    Image:
+      type: object
+      description: How images appear inside other resources.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        width:
+          type: integer
+          readOnly: true
+        height:
+          type: integer
+          readOnly: true
+      required:
+      - height
+      - id
+      - url
+      - width
+    ImageUpload:
+      type: object
+      description: How images appear inside other resources.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        width:
+          type: integer
+          readOnly: true
+        height:
+          type: integer
+          readOnly: true
+      required:
+      - height
+      - id
+      - url
+      - width
+    ImageUploadRequest:
+      type: object
+      description: How images appear inside other resources.
+      properties:
+        file:
+          type: string
+          format: binary
+          writeOnly: true
+      required:
+      - file
     KindEnum:
       enum:
       - person
@@ -649,9 +723,11 @@ components:
         bio:
           type: string
           maxLength: 500
-        avatar:
-          type: string
-          format: binary
+        avatar_id:
+          type: integer
+          writeOnly: true
+          nullable: true
+          description: An image uploaded with POST /api/images/.
     Post:
       type: object
       properties:
@@ -714,8 +790,9 @@ components:
           type: string
           maxLength: 500
         avatar:
-          type: string
-          format: uri
+          allOf:
+          - $ref: '#/components/schemas/Image'
+          readOnly: true
           nullable: true
         created_at:
           type: string
@@ -731,6 +808,7 @@ components:
           type: boolean
           readOnly: true
       required:
+      - avatar
       - created_at
       - display_name
       - follower_count
@@ -753,10 +831,10 @@ components:
           - $ref: '#/components/schemas/KindEnum'
           readOnly: true
         avatar:
-          type: string
-          format: uri
-          nullable: true
+          allOf:
+          - $ref: '#/components/schemas/Image'
           readOnly: true
+          nullable: true
       required:
       - avatar
       - display_name

@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { eventsCreate, eventsDestroy, eventsPartialUpdate, eventsRetrieve, feedsFollowingList, feedsNearbyList, feedsUpcomingList, mePartialUpdate, meRetrieve, type Options, postsCreate, postsDestroy, postsRetrieve, profilesFollowCreate, profilesFollowDestroy, profilesRetrieve } from '../sdk.gen';
-import type { EventsCreateData, EventsCreateResponse, EventsDestroyData, EventsDestroyResponse, EventsPartialUpdateData, EventsPartialUpdateResponse, EventsRetrieveData, EventsRetrieveResponse, FeedsFollowingListData, FeedsFollowingListResponse, FeedsNearbyListData, FeedsNearbyListResponse, FeedsUpcomingListData, FeedsUpcomingListResponse, MePartialUpdateData, MePartialUpdateResponse, MeRetrieveData, MeRetrieveResponse, PostsCreateData, PostsCreateResponse, PostsDestroyData, PostsDestroyResponse, PostsRetrieveData, PostsRetrieveResponse, ProfilesFollowCreateData, ProfilesFollowCreateResponse, ProfilesFollowDestroyData, ProfilesFollowDestroyResponse, ProfilesRetrieveData, ProfilesRetrieveResponse } from '../types.gen';
+import { eventsCreate, eventsDestroy, eventsPartialUpdate, eventsRetrieve, feedsFollowingList, feedsNearbyList, feedsUpcomingList, imagesCreate, mePartialUpdate, meRetrieve, type Options, postsCreate, postsDestroy, postsRetrieve, profilesFollowCreate, profilesFollowDestroy, profilesRetrieve } from '../sdk.gen';
+import type { EventsCreateData, EventsCreateResponse, EventsDestroyData, EventsDestroyResponse, EventsPartialUpdateData, EventsPartialUpdateResponse, EventsRetrieveData, EventsRetrieveResponse, FeedsFollowingListData, FeedsFollowingListResponse, FeedsNearbyListData, FeedsNearbyListResponse, FeedsUpcomingListData, FeedsUpcomingListResponse, ImagesCreateData, ImagesCreateResponse, MePartialUpdateData, MePartialUpdateResponse, MeRetrieveData, MeRetrieveResponse, PostsCreateData, PostsCreateResponse, PostsDestroyData, PostsDestroyResponse, PostsRetrieveData, PostsRetrieveResponse, ProfilesFollowCreateData, ProfilesFollowCreateResponse, ProfilesFollowDestroyData, ProfilesFollowDestroyResponse, ProfilesRetrieveData, ProfilesRetrieveResponse } from '../types.gen';
 
 /**
  * Create and manage single events. Listing happens through the feeds.
@@ -283,6 +283,23 @@ export const feedsUpcomingListInfiniteOptions = (options?: Options<FeedsUpcoming
         queryKey: feedsUpcomingListInfiniteQueryKey(options)
     });
     return opts as Omit<typeof opts, 'initialData'>;
+};
+
+/**
+ * Upload a picture, to attach to a profile, event or post by its id.
+ */
+export const imagesCreateMutation = (options?: Partial<Options<ImagesCreateData>>): UseMutationOptions<ImagesCreateResponse, DefaultError, Options<ImagesCreateData>> => {
+    const mutationOptions: UseMutationOptions<ImagesCreateResponse, DefaultError, Options<ImagesCreateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await imagesCreate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
 };
 
 export const meRetrieveQueryKey = (options?: Options<MeRetrieveData>) => createQueryKey('meRetrieve', options);
