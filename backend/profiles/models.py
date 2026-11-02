@@ -10,6 +10,13 @@ handle_validator = RegexValidator(
 
 
 class ProfileQuerySet(models.QuerySet):
+    def visible_to(self, viewer):
+        """Profiles the viewer may see: not removed, and not ones that blocked the viewer."""
+        queryset = self.filter(removed_at__isnull=True)
+        if viewer is not None:
+            queryset = queryset.exclude(blocks__blocked=viewer)
+        return queryset
+
     def manageable_by(self, user):
         """Profiles `user` may act as: their own and organizations they belong to."""
         if not user.is_authenticated:
@@ -17,15 +24,25 @@ class ProfileQuerySet(models.QuerySet):
         return self.filter(Q(user=user) | Q(memberships__user=user)).distinct()
 
     def with_social_stats(self, viewer):
-        """Annotate follower/following counts and whether `viewer` follows each profile."""
+        """Annotate follower/following counts and the viewer's follow, block and mute state.
+
+        `viewer` is the requesting user's profile, or None when signed out.
+        """
+        # Imported here: moderation's models depend on this module.
+        from moderation.models import Block, Mute
+
         qs = self.annotate(
             follower_count=Count("followed_by", distinct=True),
             following_count=Count("follows", distinct=True),
         )
-        if viewer.is_authenticated:
-            viewer_follows = Follow.objects.filter(follower__user=viewer, followee=OuterRef("pk"))
-            return qs.annotate(is_followed=Exists(viewer_follows))
-        return qs.annotate(is_followed=models.Value(False))
+        if viewer is None:
+            false = models.Value(False)
+            return qs.annotate(is_followed=false, is_blocked=false, is_muted=false)
+        return qs.annotate(
+            is_followed=Exists(Follow.objects.filter(follower=viewer, followee=OuterRef("pk"))),
+            is_blocked=Exists(Block.objects.filter(blocker=viewer, blocked=OuterRef("pk"))),
+            is_muted=Exists(Mute.objects.filter(muter=viewer, muted=OuterRef("pk"))),
+        )
 
 
 class Profile(models.Model):
@@ -56,6 +73,8 @@ class Profile(models.Model):
         related_name="profile",
     )
     created_at = models.DateTimeField(auto_now_add=True)
+    # Set by moderators; hides the profile and everything it published.
+    removed_at = models.DateTimeField(null=True, blank=True)
 
     objects = ProfileQuerySet.as_manager()
 

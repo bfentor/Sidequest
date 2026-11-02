@@ -9,9 +9,9 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 ## 1. Required before launch
 
 - [ ] **[store]** Delete your account from inside the app (Apple requires it)
-- [ ] **[store]** Report posts, events and profiles
-- [ ] **[store]** Block and mute users
-- [ ] **[store]** Moderation queue where reported content gets reviewed and removed
+- [x] **[store]** Report posts, events and profiles
+- [x] **[store]** Block and mute users
+- [x] **[store]** Moderation queue where reported content gets reviewed and removed
 - [ ] **[store]** Terms of service and privacy policy, linked in the app and accepted at signup
 - [ ] **[store]** Sign in with Apple, if any other social login is added
 - [ ] Email verification
@@ -128,7 +128,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 
 - [ ] Rate limiting on posting, following and signup
 - [ ] Spam and profanity filters, and moderation of uploaded images
-- [ ] Audit log of moderation actions
+- [x] Audit log of moderation actions
 - [ ] Age gate or minimum age
 
 ## 13. Language and accessibility

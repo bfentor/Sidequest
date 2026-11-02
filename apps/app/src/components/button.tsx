@@ -8,15 +8,19 @@ import { ThemedText } from './themed-text';
 type ButtonProps = {
   title: string;
   onPress: () => void;
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'danger';
   disabled?: boolean;
   loading?: boolean;
 };
 
 export function Button({ title, onPress, variant = 'primary', disabled, loading }: ButtonProps) {
   const theme = useTheme();
-  const primary = variant === 'primary';
-  const foreground = primary ? theme.onTint : theme.text;
+  const background = {
+    primary: theme.tint,
+    secondary: theme.backgroundElement,
+    danger: theme.danger,
+  }[variant];
+  const foreground = variant === 'secondary' ? theme.text : theme.onTint;
 
   return (
     <Pressable
@@ -25,7 +29,7 @@ export function Button({ title, onPress, variant = 'primary', disabled, loading 
       disabled={disabled || loading}
       style={({ pressed }) => [
         styles.button,
-        { backgroundColor: primary ? theme.tint : theme.backgroundElement },
+        { backgroundColor: background },
         (pressed || disabled) && styles.dimmed,
       ]}>
       {loading ? (

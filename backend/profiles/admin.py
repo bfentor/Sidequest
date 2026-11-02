@@ -1,5 +1,7 @@
 from django.contrib import admin
 
+from moderation.admin import RemovableAdminMixin
+
 from .models import Follow, Membership, Profile
 
 
@@ -11,9 +13,9 @@ class MembershipInline(admin.TabularInline):
 
 
 @admin.register(Profile)
-class ProfileAdmin(admin.ModelAdmin):
-    list_display = ["handle", "display_name", "kind", "created_at"]
-    list_filter = ["kind"]
+class ProfileAdmin(RemovableAdminMixin, admin.ModelAdmin):
+    list_display = ["handle", "display_name", "kind", "created_at", "removed_at"]
+    list_filter = ["kind", ("removed_at", admin.EmptyFieldListFilter)]
     search_fields = ["handle", "display_name", "user__email"]
     autocomplete_fields = ["user"]
     inlines = [MembershipInline]

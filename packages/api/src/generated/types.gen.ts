@@ -149,6 +149,8 @@ export type Profile = {
     readonly follower_count: number;
     readonly following_count: number;
     readonly is_followed: boolean;
+    readonly is_blocked: boolean;
+    readonly is_muted: boolean;
 };
 
 /**
@@ -160,6 +162,36 @@ export type ProfileSummary = {
     kind: KindEnum;
     avatar: Image | null;
 };
+
+/**
+ * * `spam` - Spam
+ * * `harassment` - Harassment or bullying
+ * * `hate` - Hate speech
+ * * `sexual` - Nudity or sexual content
+ * * `violence` - Violence or dangerous activity
+ * * `false_information` - False information
+ * * `other` - Something else
+ */
+export type ReasonEnum = 'spam' | 'harassment' | 'hate' | 'sexual' | 'violence' | 'false_information' | 'other';
+
+export type Report = {
+    readonly id: number;
+    reason: ReasonEnum;
+    details?: string;
+    readonly created_at: string;
+};
+
+export type ReportRequest = {
+    reason: ReasonEnum;
+    details?: string;
+};
+
+/**
+ * * `post` - post
+ * * `event` - event
+ * * `profile` - profile
+ */
+export type TargetTypeEnum = 'post' | 'event' | 'profile';
 
 export type EventWritable = {
     title: string;
@@ -264,6 +296,21 @@ export type ProfileWritable = {
     handle: string;
     display_name: string;
     bio?: string;
+};
+
+export type ReportWritable = {
+    reason: ReasonEnum;
+    details?: string;
+};
+
+export type ReportRequestWritable = {
+    target_type: TargetTypeEnum;
+    /**
+     * The post's or event's id, or the profile's handle.
+     */
+    target_id: string;
+    reason: ReasonEnum;
+    details?: string;
 };
 
 export type EventsCreateData = {
@@ -436,6 +483,32 @@ export type MePartialUpdateResponses = {
 
 export type MePartialUpdateResponse = MePartialUpdateResponses[keyof MePartialUpdateResponses];
 
+export type MeBlockedListData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/me/blocked/';
+};
+
+export type MeBlockedListResponses = {
+    200: Array<ProfileSummary>;
+};
+
+export type MeBlockedListResponse = MeBlockedListResponses[keyof MeBlockedListResponses];
+
+export type MeMutedListData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/me/muted/';
+};
+
+export type MeMutedListResponses = {
+    200: Array<ProfileSummary>;
+};
+
+export type MeMutedListResponse = MeMutedListResponses[keyof MeMutedListResponses];
+
 export type PostsCreateData = {
     body?: PostRequestWritable;
     path?: never;
@@ -503,6 +576,42 @@ export type ProfilesRetrieveResponses = {
 
 export type ProfilesRetrieveResponse = ProfilesRetrieveResponses[keyof ProfilesRetrieveResponses];
 
+export type ProfilesBlockDestroyData = {
+    body?: never;
+    path: {
+        handle: string;
+    };
+    query?: never;
+    url: '/api/profiles/{handle}/block/';
+};
+
+export type ProfilesBlockDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type ProfilesBlockDestroyResponse = ProfilesBlockDestroyResponses[keyof ProfilesBlockDestroyResponses];
+
+export type ProfilesBlockCreateData = {
+    body?: never;
+    path: {
+        handle: string;
+    };
+    query?: never;
+    url: '/api/profiles/{handle}/block/';
+};
+
+export type ProfilesBlockCreateResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type ProfilesBlockCreateResponse = ProfilesBlockCreateResponses[keyof ProfilesBlockCreateResponses];
+
 export type ProfilesFollowDestroyData = {
     body?: never;
     path: {
@@ -538,3 +647,52 @@ export type ProfilesFollowCreateResponses = {
 };
 
 export type ProfilesFollowCreateResponse = ProfilesFollowCreateResponses[keyof ProfilesFollowCreateResponses];
+
+export type ProfilesMuteDestroyData = {
+    body?: never;
+    path: {
+        handle: string;
+    };
+    query?: never;
+    url: '/api/profiles/{handle}/mute/';
+};
+
+export type ProfilesMuteDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type ProfilesMuteDestroyResponse = ProfilesMuteDestroyResponses[keyof ProfilesMuteDestroyResponses];
+
+export type ProfilesMuteCreateData = {
+    body?: never;
+    path: {
+        handle: string;
+    };
+    query?: never;
+    url: '/api/profiles/{handle}/mute/';
+};
+
+export type ProfilesMuteCreateResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type ProfilesMuteCreateResponse = ProfilesMuteCreateResponses[keyof ProfilesMuteCreateResponses];
+
+export type ReportsCreateData = {
+    body: ReportRequestWritable;
+    path?: never;
+    query?: never;
+    url: '/api/reports/';
+};
+
+export type ReportsCreateResponses = {
+    201: Report;
+};
+
+export type ReportsCreateResponse = ReportsCreateResponses[keyof ReportsCreateResponses];

@@ -10,7 +10,12 @@
     "signIn": "Kirjaudu sisään",
     "signOut": "Kirjaudu ulos",
     "settings": "Asetukset",
-    "byOrganizer": "Järjestäjä: {{name}}"
+    "byOrganizer": "Järjestäjä: {{name}}",
+    "cancel": "Peruuta",
+    "done": "Valmis",
+    "delete": "Poista",
+    "moreActions": "Lisää toimintoja",
+    "cannotBeUndone": "Tätä ei voi perua."
   },
   "errors": {
     "network": "Palvelimeen ei saatu yhteyttä.",
@@ -58,5 +63,37 @@
   "settings": {
     "language": "Kieli",
     "languageAutomatic": "Sama kuin laitteessa"
+  },
+  "posts": {
+    "delete": "Poista julkaisu",
+    "deleteConfirmTitle": "Poistetaanko julkaisu?"
+  },
+  "moderation": {
+    "report": "Ilmoita",
+    "reportQuestion": "Miksi ilmoitat tästä?",
+    "reasons": {
+      "spam": "Roskaposti",
+      "harassment": "Häirintä tai kiusaaminen",
+      "hate": "Vihapuhe",
+      "sexual": "Alastomuus tai seksuaalinen sisältö",
+      "violence": "Väkivalta tai vaarallinen toiminta",
+      "false_information": "Väärää tietoa",
+      "other": "Jokin muu"
+    },
+    "details": "Haluatko kertoa moderaattoreille jotain muuta? (valinnainen)",
+    "send": "Lähetä ilmoitus",
+    "thanksTitle": "Kiitos ilmoituksesta",
+    "thanksMessage": "Moderaattorimme käyvät sen läpi. Henkilölle, josta ilmoitit, ei kerrota, kuka ilmoituksen teki.",
+    "mute": "Mykistä @{{handle}}",
+    "block": "Estä @{{handle}}",
+    "blockConfirmTitle": "Estetäänkö @{{handle}}?",
+    "blockConfirmMessage": "Ette näe toistenne julkaisuja ja tapahtumia, eikä kumpikaan voi seurata toista. Hänelle ei kerrota estosta.",
+    "blockAction": "Estä",
+    "unblock": "Poista esto",
+    "unmute": "Poista mykistys",
+    "blockedAccounts": "Estetyt tilit",
+    "mutedAccounts": "Mykistetyt tilit",
+    "noneBlocked": "Et ole estänyt ketään.",
+    "noneMuted": "Et ole mykistänyt ketään."
   }
 }

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sidequest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-02 16:17+0200\n"
-"PO-Revision-Date: 2026-11-02 16:17+0200\n"
+"POT-Creation-Date: 2026-11-02 16:22+0200\n"
+"PO-Revision-Date: 2026-11-02 16:22+0200\n"
 "Last-Translator: Sidequest <dev@sidequest.invalid>\n"
 "Language-Team: Swedish\n"
 "Language: sv\n"
@@ -24,6 +24,56 @@ msgstr "Måste vara efter starttiden."
 msgid "The picture is too large (at most 10 MB)."
 msgstr "Bilden är för stor (högst 10 MB)."
 
+msgid "Spam"
+msgstr "Skräppost"
+
+msgid "Harassment or bullying"
+msgstr "Trakasserier eller mobbning"
+
+msgid "Hate speech"
+msgstr "Hatpropaganda"
+
+msgid "Nudity or sexual content"
+msgstr "Nakenhet eller sexuellt innehåll"
+
+msgid "Violence or dangerous activity"
+msgstr "Våld eller farlig verksamhet"
+
+msgid "False information"
+msgstr "Falsk information"
+
+msgid "Something else"
+msgstr "Något annat"
+
+msgid "Open"
+msgstr "Öppen"
+
+msgid "Resolved"
+msgstr "Löst"
+
+msgid "Dismissed"
+msgstr "Avvisad"
+
+msgid "Removed content"
+msgstr "Tog bort innehåll"
+
+msgid "Restored content"
+msgstr "Återställde innehåll"
+
+msgid "Dismissed reports"
+msgstr "Avvisade anmälningar"
+
+msgid "This content no longer exists."
+msgstr "Det här innehållet finns inte längre."
+
+#| msgid "You cannot follow yourself."
+msgid "You cannot block yourself."
+msgstr "Du kan inte blockera dig själv."
+
+#| msgid "You cannot follow yourself."
+msgid "You cannot mute yourself."
+msgstr "Du kan inte tysta dig själv."
+
 msgid "A post needs a body, an event, or both."
 msgstr "Ett inlägg behöver text, ett evenemang eller båda."
 
@@ -32,3 +82,6 @@ msgstr "Använd bara små bokstäver, siffror och understreck."
 
 msgid "You cannot follow yourself."
 msgstr "Du kan inte följa dig själv."
+
+msgid "Unblock this profile to follow it."
+msgstr "Häv blockeringen av profilen för att följa den."

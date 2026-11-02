@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { eventsCreate, eventsDestroy, eventsPartialUpdate, eventsRetrieve, feedsFollowingList, feedsNearbyList, feedsUpcomingList, imagesCreate, mePartialUpdate, meRetrieve, type Options, postsCreate, postsDestroy, postsRetrieve, profilesFollowCreate, profilesFollowDestroy, profilesRetrieve } from '../sdk.gen';
-import type { EventsCreateData, EventsCreateResponse, EventsDestroyData, EventsDestroyResponse, EventsPartialUpdateData, EventsPartialUpdateResponse, EventsRetrieveData, EventsRetrieveResponse, FeedsFollowingListData, FeedsFollowingListResponse, FeedsNearbyListData, FeedsNearbyListResponse, FeedsUpcomingListData, FeedsUpcomingListResponse, ImagesCreateData, ImagesCreateResponse, MePartialUpdateData, MePartialUpdateResponse, MeRetrieveData, MeRetrieveResponse, PostsCreateData, PostsCreateResponse, PostsDestroyData, PostsDestroyResponse, PostsRetrieveData, PostsRetrieveResponse, ProfilesFollowCreateData, ProfilesFollowCreateResponse, ProfilesFollowDestroyData, ProfilesFollowDestroyResponse, ProfilesRetrieveData, ProfilesRetrieveResponse } from '../types.gen';
+import { eventsCreate, eventsDestroy, eventsPartialUpdate, eventsRetrieve, feedsFollowingList, feedsNearbyList, feedsUpcomingList, imagesCreate, meBlockedList, meMutedList, mePartialUpdate, meRetrieve, type Options, postsCreate, postsDestroy, postsRetrieve, profilesBlockCreate, profilesBlockDestroy, profilesFollowCreate, profilesFollowDestroy, profilesMuteCreate, profilesMuteDestroy, profilesRetrieve, reportsCreate } from '../sdk.gen';
+import type { EventsCreateData, EventsCreateResponse, EventsDestroyData, EventsDestroyResponse, EventsPartialUpdateData, EventsPartialUpdateResponse, EventsRetrieveData, EventsRetrieveResponse, FeedsFollowingListData, FeedsFollowingListResponse, FeedsNearbyListData, FeedsNearbyListResponse, FeedsUpcomingListData, FeedsUpcomingListResponse, ImagesCreateData, ImagesCreateResponse, MeBlockedListData, MeBlockedListResponse, MeMutedListData, MeMutedListResponse, MePartialUpdateData, MePartialUpdateResponse, MeRetrieveData, MeRetrieveResponse, PostsCreateData, PostsCreateResponse, PostsDestroyData, PostsDestroyResponse, PostsRetrieveData, PostsRetrieveResponse, ProfilesBlockCreateData, ProfilesBlockCreateResponse, ProfilesBlockDestroyData, ProfilesBlockDestroyResponse, ProfilesFollowCreateData, ProfilesFollowCreateResponse, ProfilesFollowDestroyData, ProfilesFollowDestroyResponse, ProfilesMuteCreateData, ProfilesMuteCreateResponse, ProfilesMuteDestroyData, ProfilesMuteDestroyResponse, ProfilesRetrieveData, ProfilesRetrieveResponse, ReportsCreateData, ReportsCreateResponse } from '../types.gen';
 
 /**
  * Create and manage single events. Listing happens through the feeds.
@@ -337,6 +337,42 @@ export const mePartialUpdateMutation = (options?: Partial<Options<MePartialUpdat
     return mutationOptions;
 };
 
+export const meBlockedListQueryKey = (options?: Options<MeBlockedListData>) => createQueryKey('meBlockedList', options);
+
+/**
+ * Profiles the signed-in user has blocked.
+ */
+export const meBlockedListOptions = (options?: Options<MeBlockedListData>) => queryOptions<MeBlockedListResponse, DefaultError, MeBlockedListResponse, ReturnType<typeof meBlockedListQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await meBlockedList({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: meBlockedListQueryKey(options)
+});
+
+export const meMutedListQueryKey = (options?: Options<MeMutedListData>) => createQueryKey('meMutedList', options);
+
+/**
+ * Profiles the signed-in user has muted.
+ */
+export const meMutedListOptions = (options?: Options<MeMutedListData>) => queryOptions<MeMutedListResponse, DefaultError, MeMutedListResponse, ReturnType<typeof meMutedListQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await meMutedList({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: meMutedListQueryKey(options)
+});
+
 /**
  * Create, view and delete single posts. Listing happens through the feeds.
  */
@@ -404,6 +440,40 @@ export const profilesRetrieveOptions = (options: Options<ProfilesRetrieveData>) 
     queryKey: profilesRetrieveQueryKey(options)
 });
 
+/**
+ * POST to start blocking/muting a profile, DELETE to stop.
+ */
+export const profilesBlockDestroyMutation = (options?: Partial<Options<ProfilesBlockDestroyData>>): UseMutationOptions<ProfilesBlockDestroyResponse, DefaultError, Options<ProfilesBlockDestroyData>> => {
+    const mutationOptions: UseMutationOptions<ProfilesBlockDestroyResponse, DefaultError, Options<ProfilesBlockDestroyData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await profilesBlockDestroy({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * POST to start blocking/muting a profile, DELETE to stop.
+ */
+export const profilesBlockCreateMutation = (options?: Partial<Options<ProfilesBlockCreateData>>): UseMutationOptions<ProfilesBlockCreateResponse, DefaultError, Options<ProfilesBlockCreateData>> => {
+    const mutationOptions: UseMutationOptions<ProfilesBlockCreateResponse, DefaultError, Options<ProfilesBlockCreateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await profilesBlockCreate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
 export const profilesFollowDestroyMutation = (options?: Partial<Options<ProfilesFollowDestroyData>>): UseMutationOptions<ProfilesFollowDestroyResponse, DefaultError, Options<ProfilesFollowDestroyData>> => {
     const mutationOptions: UseMutationOptions<ProfilesFollowDestroyResponse, DefaultError, Options<ProfilesFollowDestroyData>> = {
         mutationFn: async (fnOptions) => {
@@ -422,6 +492,57 @@ export const profilesFollowCreateMutation = (options?: Partial<Options<ProfilesF
     const mutationOptions: UseMutationOptions<ProfilesFollowCreateResponse, DefaultError, Options<ProfilesFollowCreateData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await profilesFollowCreate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * POST to start blocking/muting a profile, DELETE to stop.
+ */
+export const profilesMuteDestroyMutation = (options?: Partial<Options<ProfilesMuteDestroyData>>): UseMutationOptions<ProfilesMuteDestroyResponse, DefaultError, Options<ProfilesMuteDestroyData>> => {
+    const mutationOptions: UseMutationOptions<ProfilesMuteDestroyResponse, DefaultError, Options<ProfilesMuteDestroyData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await profilesMuteDestroy({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * POST to start blocking/muting a profile, DELETE to stop.
+ */
+export const profilesMuteCreateMutation = (options?: Partial<Options<ProfilesMuteCreateData>>): UseMutationOptions<ProfilesMuteCreateResponse, DefaultError, Options<ProfilesMuteCreateData>> => {
+    const mutationOptions: UseMutationOptions<ProfilesMuteCreateResponse, DefaultError, Options<ProfilesMuteCreateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await profilesMuteCreate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Report a post, event or profile to the moderators.
+ */
+export const reportsCreateMutation = (options?: Partial<Options<ReportsCreateData>>): UseMutationOptions<ReportsCreateResponse, DefaultError, Options<ReportsCreateData>> => {
+    const mutationOptions: UseMutationOptions<ReportsCreateResponse, DefaultError, Options<ReportsCreateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await reportsCreate({
                 ...options,
                 ...fnOptions,
                 throwOnError: true

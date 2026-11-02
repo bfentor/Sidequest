@@ -1,10 +1,25 @@
 from django.db import models
 
 from events.models import Event
+from moderation.visibility import hidden_profiles, muted_profiles
 from profiles.models import Follow, Profile
 
 
 class PostQuerySet(models.QuerySet):
+    def visible_to(self, viewer):
+        """Not removed, by a visible author, and sharing nothing the viewer may not see."""
+        hidden = hidden_profiles(viewer)
+        return (
+            self.filter(removed_at__isnull=True, author__removed_at__isnull=True)
+            .exclude(author__in=hidden)
+            .exclude(event__removed_at__isnull=False)
+            .exclude(event__organizer__in=hidden)
+        )
+
+    def in_feeds_of(self, viewer):
+        """Like visible_to, also leaving out profiles the viewer muted."""
+        return self.visible_to(viewer).exclude(author__in=muted_profiles(viewer))
+
     def following_feed_for(self, profile):
         """Posts by `profile` and by every profile it follows."""
         followed = Follow.objects.filter(follower=profile).values("followee")
@@ -24,6 +39,8 @@ class Post(models.Model):
         Event, on_delete=models.CASCADE, null=True, blank=True, related_name="posts"
     )
     created_at = models.DateTimeField(auto_now_add=True)
+    # Set by moderators; hides the post everywhere.
+    removed_at = models.DateTimeField(null=True, blank=True)
 
     objects = PostQuerySet.as_manager()
 

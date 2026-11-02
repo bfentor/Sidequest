@@ -10,7 +10,12 @@
     "signIn": "Sign in",
     "signOut": "Sign out",
     "settings": "Settings",
-    "byOrganizer": "by {{name}}"
+    "byOrganizer": "by {{name}}",
+    "cancel": "Cancel",
+    "done": "Done",
+    "delete": "Delete",
+    "moreActions": "More actions",
+    "cannotBeUndone": "This can't be undone."
   },
   "errors": {
     "network": "Could not reach the server.",
@@ -58,5 +63,37 @@
   "settings": {
     "language": "Language",
     "languageAutomatic": "Same as device"
+  },
+  "posts": {
+    "delete": "Delete post",
+    "deleteConfirmTitle": "Delete this post?"
+  },
+  "moderation": {
+    "report": "Report",
+    "reportQuestion": "Why are you reporting this?",
+    "reasons": {
+      "spam": "Spam",
+      "harassment": "Harassment or bullying",
+      "hate": "Hate speech",
+      "sexual": "Nudity or sexual content",
+      "violence": "Violence or dangerous activity",
+      "false_information": "False information",
+      "other": "Something else"
+    },
+    "details": "Anything else moderators should know? (optional)",
+    "send": "Send report",
+    "thanksTitle": "Thanks for letting us know",
+    "thanksMessage": "Our moderators will review it. You won't be identified to the person you reported.",
+    "mute": "Mute @{{handle}}",
+    "block": "Block @{{handle}}",
+    "blockConfirmTitle": "Block @{{handle}}?",
+    "blockConfirmMessage": "You won't see each other's posts and events, and neither of you can follow the other. They aren't told.",
+    "blockAction": "Block",
+    "unblock": "Unblock",
+    "unmute": "Unmute",
+    "blockedAccounts": "Blocked accounts",
+    "mutedAccounts": "Muted accounts",
+    "noneBlocked": "You haven't blocked anyone.",
+    "noneMuted": "You haven't muted anyone."
   }
 }

@@ -1,5 +1,4 @@
 import type { AuthResult } from '@sidequest/api';
-import { router } from 'expo-router';
 import type { TFunction } from 'i18next';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +9,7 @@ import { Screen } from '@/components/screen';
 import { TextField } from '@/components/text-field';
 import { ThemedText } from '@/components/themed-text';
 import { authErrorMessage } from '@/lib/errors';
+import { goBack } from '@/lib/navigation';
 
 type Mode = 'sign-in' | 'sign-up';
 
@@ -38,7 +38,7 @@ export default function SignInScreen() {
     const result = await (mode === 'sign-in' ? signIn : signUp)({ email, password });
     setSubmitting(false);
     if (result.status === 'authenticated') {
-      router.back();
+      goBack();
     } else {
       setMessage(messageFor(result, t));
     }

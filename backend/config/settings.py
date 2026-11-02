@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     # Local
     "accounts",
     "images",
+    "moderation",
     "profiles",
     "events",
     "posts",

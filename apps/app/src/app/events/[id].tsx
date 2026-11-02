@@ -4,6 +4,7 @@ import { Stack, useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator } from 'react-native';
 
+import { ContentMenu } from '@/components/content-menu';
 import { Screen } from '@/components/screen';
 import { ThemedText } from '@/components/themed-text';
 import { useFormat } from '@/lib/format';
@@ -18,7 +19,19 @@ export default function EventScreen() {
 
   return (
     <Screen hasHeader>
-      <Stack.Screen options={{ title: event?.title ?? t('event.title') }} />
+      <Stack.Screen
+        options={{
+          title: event?.title ?? t('event.title'),
+          headerRight: event
+            ? () => (
+                <ContentMenu
+                  target={{ type: 'event', id: String(event.id) }}
+                  owner={event.organizer}
+                />
+              )
+            : undefined,
+        }}
+      />
       {isPending ? (
         <ActivityIndicator />
       ) : isError ? (

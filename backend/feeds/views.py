@@ -10,6 +10,7 @@ from rest_framework import generics, permissions, serializers
 
 from events.models import Event
 from events.serializers import EventSerializer, NearbyEventSerializer
+from moderation.visibility import viewer_profile
 from posts.models import Post
 from posts.serializers import PostSerializer
 
@@ -24,7 +25,8 @@ class UpcomingFeedView(generics.ListAPIView):
     permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return Event.objects.not_ended().select_related("organizer__avatar")
+        viewer = viewer_profile(self.request)
+        return Event.objects.not_ended().in_feeds_of(viewer).select_related("organizer__avatar")
 
 
 class NearbyQuerySerializer(serializers.Serializer):
@@ -50,6 +52,7 @@ class NearbyFeedView(generics.ListAPIView):
         point = Point(params.validated_data["lng"], params.validated_data["lat"], srid=4326)
         return (
             Event.objects.not_ended()
+            .in_feeds_of(viewer_profile(self.request))
             .near(point, params.validated_data["radius_km"])
             .select_related("organizer__avatar")
         )
@@ -63,6 +66,9 @@ class FollowingFeedView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return Post.objects.following_feed_for(self.request.user.profile).select_related(
-            "author__avatar", "event__organizer__avatar"
+        viewer = self.request.user.profile
+        return (
+            Post.objects.following_feed_for(viewer)
+            .in_feeds_of(viewer)
+            .select_related("author__avatar", "event__organizer__avatar")
         )

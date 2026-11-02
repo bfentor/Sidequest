@@ -1,15 +1,24 @@
-import type { Post } from '@sidequest/api';
+import { postsDestroyMutation, type Post } from '@sidequest/api';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
 import { Spacing } from '@/constants/theme';
 import { useFormat } from '@/lib/format';
 
 import { Avatar } from './avatar';
+import { ContentMenu } from './content-menu';
 import { EventCard } from './event-card';
 import { ThemedText } from './themed-text';
 
 export function PostCard({ post }: { post: Post }) {
   const format = useFormat();
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  const destroy = useMutation({
+    ...postsDestroyMutation(),
+    onSuccess: () => queryClient.invalidateQueries(),
+  });
 
   return (
     <View style={styles.post}>
@@ -21,6 +30,22 @@ export function PostCard({ post }: { post: Post }) {
             @{post.author.handle} · {format.dateTime(post.created_at)}
           </ThemedText>
         </View>
+        <ContentMenu
+          target={{ type: 'post', id: String(post.id) }}
+          owner={post.author}
+          ownActions={[
+            {
+              label: t('posts.delete'),
+              destructive: true,
+              onPress: () => destroy.mutate({ path: { id: post.id } }),
+              confirm: {
+                title: t('posts.deleteConfirmTitle'),
+                message: t('common.cannotBeUndone'),
+                confirmLabel: t('common.delete'),
+              },
+            },
+          ]}
+        />
       </View>
       {post.body ? <ThemedText>{post.body}</ThemedText> : null}
       {post.event ? <EventCard event={post.event} /> : null}

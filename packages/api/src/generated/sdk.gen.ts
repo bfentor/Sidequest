@@ -2,7 +2,7 @@
 
 import { type Client, type ClientMeta, formDataBodySerializer, type Options as Options2, type RequestResult, type TDataShape } from './client';
 import { client } from './client.gen';
-import type { EventsCreateData, EventsCreateResponses, EventsDestroyData, EventsDestroyResponses, EventsPartialUpdateData, EventsPartialUpdateResponses, EventsRetrieveData, EventsRetrieveResponses, FeedsFollowingListData, FeedsFollowingListResponses, FeedsNearbyListData, FeedsNearbyListResponses, FeedsUpcomingListData, FeedsUpcomingListResponses, ImagesCreateData, ImagesCreateResponses, MePartialUpdateData, MePartialUpdateResponses, MeRetrieveData, MeRetrieveResponses, PostsCreateData, PostsCreateResponses, PostsDestroyData, PostsDestroyResponses, PostsRetrieveData, PostsRetrieveResponses, ProfilesFollowCreateData, ProfilesFollowCreateResponses, ProfilesFollowDestroyData, ProfilesFollowDestroyResponses, ProfilesRetrieveData, ProfilesRetrieveResponses } from './types.gen';
+import type { EventsCreateData, EventsCreateResponses, EventsDestroyData, EventsDestroyResponses, EventsPartialUpdateData, EventsPartialUpdateResponses, EventsRetrieveData, EventsRetrieveResponses, FeedsFollowingListData, FeedsFollowingListResponses, FeedsNearbyListData, FeedsNearbyListResponses, FeedsUpcomingListData, FeedsUpcomingListResponses, ImagesCreateData, ImagesCreateResponses, MeBlockedListData, MeBlockedListResponses, MeMutedListData, MeMutedListResponses, MePartialUpdateData, MePartialUpdateResponses, MeRetrieveData, MeRetrieveResponses, PostsCreateData, PostsCreateResponses, PostsDestroyData, PostsDestroyResponses, PostsRetrieveData, PostsRetrieveResponses, ProfilesBlockCreateData, ProfilesBlockCreateResponses, ProfilesBlockDestroyData, ProfilesBlockDestroyResponses, ProfilesFollowCreateData, ProfilesFollowCreateResponses, ProfilesFollowDestroyData, ProfilesFollowDestroyResponses, ProfilesMuteCreateData, ProfilesMuteCreateResponses, ProfilesMuteDestroyData, ProfilesMuteDestroyResponses, ProfilesRetrieveData, ProfilesRetrieveResponses, ReportsCreateData, ReportsCreateResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -128,6 +128,24 @@ export const mePartialUpdate = <ThrowOnError extends boolean = false>(options?: 
 });
 
 /**
+ * Profiles the signed-in user has blocked.
+ */
+export const meBlockedList = <ThrowOnError extends boolean = false>(options?: Options<MeBlockedListData, ThrowOnError>): RequestResult<MeBlockedListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<MeBlockedListResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/me/blocked/',
+    ...options
+});
+
+/**
+ * Profiles the signed-in user has muted.
+ */
+export const meMutedList = <ThrowOnError extends boolean = false>(options?: Options<MeMutedListData, ThrowOnError>): RequestResult<MeMutedListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<MeMutedListResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/me/muted/',
+    ...options
+});
+
+/**
  * Create, view and delete single posts. Listing happens through the feeds.
  */
 export const postsCreate = <ThrowOnError extends boolean = false>(options?: Options<PostsCreateData, ThrowOnError>): RequestResult<PostsCreateResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostsCreateResponses, unknown, ThrowOnError>({
@@ -164,6 +182,24 @@ export const profilesRetrieve = <ThrowOnError extends boolean = false>(options: 
     ...options
 });
 
+/**
+ * POST to start blocking/muting a profile, DELETE to stop.
+ */
+export const profilesBlockDestroy = <ThrowOnError extends boolean = false>(options: Options<ProfilesBlockDestroyData, ThrowOnError>): RequestResult<ProfilesBlockDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<ProfilesBlockDestroyResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/profiles/{handle}/block/',
+    ...options
+});
+
+/**
+ * POST to start blocking/muting a profile, DELETE to stop.
+ */
+export const profilesBlockCreate = <ThrowOnError extends boolean = false>(options: Options<ProfilesBlockCreateData, ThrowOnError>): RequestResult<ProfilesBlockCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<ProfilesBlockCreateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/profiles/{handle}/block/',
+    ...options
+});
+
 export const profilesFollowDestroy = <ThrowOnError extends boolean = false>(options: Options<ProfilesFollowDestroyData, ThrowOnError>): RequestResult<ProfilesFollowDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<ProfilesFollowDestroyResponses, unknown, ThrowOnError>({
     security: [{ name: 'X-Session-Token', type: 'apiKey' }],
     url: '/api/profiles/{handle}/follow/',
@@ -174,4 +210,35 @@ export const profilesFollowCreate = <ThrowOnError extends boolean = false>(optio
     security: [{ name: 'X-Session-Token', type: 'apiKey' }],
     url: '/api/profiles/{handle}/follow/',
     ...options
+});
+
+/**
+ * POST to start blocking/muting a profile, DELETE to stop.
+ */
+export const profilesMuteDestroy = <ThrowOnError extends boolean = false>(options: Options<ProfilesMuteDestroyData, ThrowOnError>): RequestResult<ProfilesMuteDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<ProfilesMuteDestroyResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/profiles/{handle}/mute/',
+    ...options
+});
+
+/**
+ * POST to start blocking/muting a profile, DELETE to stop.
+ */
+export const profilesMuteCreate = <ThrowOnError extends boolean = false>(options: Options<ProfilesMuteCreateData, ThrowOnError>): RequestResult<ProfilesMuteCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<ProfilesMuteCreateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/profiles/{handle}/mute/',
+    ...options
+});
+
+/**
+ * Report a post, event or profile to the moderators.
+ */
+export const reportsCreate = <ThrowOnError extends boolean = false>(options: Options<ReportsCreateData, ThrowOnError>): RequestResult<ReportsCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<ReportsCreateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/reports/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
 });

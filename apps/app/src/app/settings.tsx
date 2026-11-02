@@ -1,7 +1,18 @@
+import {
+  meBlockedListOptions,
+  meMutedListOptions,
+  profilesBlockDestroyMutation,
+  profilesMuteDestroyMutation,
+  type ProfileSummary,
+} from '@sidequest/api';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet, View } from 'react-native';
 
+import { useAuth } from '@/auth/auth-provider';
+import { Avatar } from '@/components/avatar';
+import { Button } from '@/components/button';
 import { Screen } from '@/components/screen';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -10,10 +21,71 @@ import { useTheme } from '@/hooks/use-theme';
 import { chooseLanguage, LANGUAGES, storedLanguage, type Language } from '@/i18n';
 
 export default function SettingsScreen() {
+  const { status } = useAuth();
+
   return (
     <Screen hasHeader>
       <LanguagePicker />
+      {status === 'signed-in' ? <BlockedAndMuted /> : null}
     </Screen>
+  );
+}
+
+function BlockedAndMuted() {
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  const blocked = useQuery(meBlockedListOptions());
+  const muted = useQuery(meMutedListOptions());
+  const onSuccess = () => queryClient.invalidateQueries();
+  const unblock = useMutation({ ...profilesBlockDestroyMutation(), onSuccess });
+  const unmute = useMutation({ ...profilesMuteDestroyMutation(), onSuccess });
+
+  return (
+    <>
+      <ProfileSection
+        title={t('moderation.blockedAccounts')}
+        emptyText={t('moderation.noneBlocked')}
+        profiles={blocked.data}
+        actionLabel={t('moderation.unblock')}
+        onAction={(handle) => unblock.mutate({ path: { handle } })}
+      />
+      <ProfileSection
+        title={t('moderation.mutedAccounts')}
+        emptyText={t('moderation.noneMuted')}
+        profiles={muted.data}
+        actionLabel={t('moderation.unmute')}
+        onAction={(handle) => unmute.mutate({ path: { handle } })}
+      />
+    </>
+  );
+}
+
+type ProfileSectionProps = {
+  title: string;
+  emptyText: string;
+  profiles: ProfileSummary[] | undefined;
+  actionLabel: string;
+  onAction: (handle: string) => void;
+};
+
+function ProfileSection({ title, emptyText, profiles, actionLabel, onAction }: ProfileSectionProps) {
+  return (
+    <View style={styles.section}>
+      <ThemedText type="heading">{title}</ThemedText>
+      {profiles?.length === 0 ? <ThemedText themeColor="textSecondary">{emptyText}</ThemedText> : null}
+      {profiles?.map((profile) => (
+        <View key={profile.handle} style={styles.profileRow}>
+          <Avatar name={profile.display_name} image={profile.avatar} size={36} />
+          <View style={styles.profileName}>
+            <ThemedText type="smallBold">{profile.display_name}</ThemedText>
+            <ThemedText type="small" themeColor="textSecondary">
+              @{profile.handle}
+            </ThemedText>
+          </View>
+          <Button title={actionLabel} variant="secondary" onPress={() => onAction(profile.handle)} />
+        </View>
+      ))}
+    </View>
   );
 }
 
@@ -74,5 +146,13 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.6,
+  },
+  profileRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.two,
+  },
+  profileName: {
+    flex: 1,
   },
 });

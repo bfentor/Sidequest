@@ -266,6 +266,40 @@ paths:
               schema:
                 $ref: '#/components/schemas/Profile'
           description: ''
+  /api/me/blocked/:
+    get:
+      operationId: me_blocked_list
+      description: Profiles the signed-in user has blocked.
+      tags:
+      - me
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProfileSummary'
+          description: ''
+  /api/me/muted/:
+    get:
+      operationId: me_muted_list
+      description: Profiles the signed-in user has muted.
+      tags:
+      - me
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProfileSummary'
+          description: ''
   /api/posts/:
     post:
       operationId: posts_create
@@ -356,6 +390,39 @@ paths:
               schema:
                 $ref: '#/components/schemas/Profile'
           description: ''
+  /api/profiles/{handle}/block/:
+    post:
+      operationId: profiles_block_create
+      description: POST to start blocking/muting a profile, DELETE to stop.
+      parameters:
+      - in: path
+        name: handle
+        schema:
+          type: string
+        required: true
+      tags:
+      - profiles
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '204':
+          description: No response body
+    delete:
+      operationId: profiles_block_destroy
+      description: POST to start blocking/muting a profile, DELETE to stop.
+      parameters:
+      - in: path
+        name: handle
+        schema:
+          type: string
+        required: true
+      tags:
+      - profiles
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/profiles/{handle}/follow/:
     post:
       operationId: profiles_follow_create
@@ -387,6 +454,66 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/profiles/{handle}/mute/:
+    post:
+      operationId: profiles_mute_create
+      description: POST to start blocking/muting a profile, DELETE to stop.
+      parameters:
+      - in: path
+        name: handle
+        schema:
+          type: string
+        required: true
+      tags:
+      - profiles
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '204':
+          description: No response body
+    delete:
+      operationId: profiles_mute_destroy
+      description: POST to start blocking/muting a profile, DELETE to stop.
+      parameters:
+      - in: path
+        name: handle
+        schema:
+          type: string
+        required: true
+      tags:
+      - profiles
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/reports/:
+    post:
+      operationId: reports_create
+      description: Report a post, event or profile to the moderators.
+      tags:
+      - reports
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReportRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReportRequest'
+        required: true
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+          description: ''
 components:
   schemas:
     Event:
@@ -807,6 +934,12 @@ components:
         is_followed:
           type: boolean
           readOnly: true
+        is_blocked:
+          type: boolean
+          readOnly: true
+        is_muted:
+          type: boolean
+          readOnly: true
       required:
       - avatar
       - created_at
@@ -814,7 +947,9 @@ components:
       - follower_count
       - following_count
       - handle
+      - is_blocked
       - is_followed
+      - is_muted
       - kind
     ProfileSummary:
       type: object
@@ -840,6 +975,74 @@ components:
       - display_name
       - handle
       - kind
+    ReasonEnum:
+      enum:
+      - spam
+      - harassment
+      - hate
+      - sexual
+      - violence
+      - false_information
+      - other
+      type: string
+      description: |-
+        * `spam` - Spam
+        * `harassment` - Harassment or bullying
+        * `hate` - Hate speech
+        * `sexual` - Nudity or sexual content
+        * `violence` - Violence or dangerous activity
+        * `false_information` - False information
+        * `other` - Something else
+    Report:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        reason:
+          $ref: '#/components/schemas/ReasonEnum'
+        details:
+          type: string
+          maxLength: 1000
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - reason
+    ReportRequest:
+      type: object
+      properties:
+        target_type:
+          allOf:
+          - $ref: '#/components/schemas/TargetTypeEnum'
+          writeOnly: true
+        target_id:
+          type: string
+          writeOnly: true
+          minLength: 1
+          description: The post's or event's id, or the profile's handle.
+        reason:
+          $ref: '#/components/schemas/ReasonEnum'
+        details:
+          type: string
+          maxLength: 1000
+      required:
+      - reason
+      - target_id
+      - target_type
+    TargetTypeEnum:
+      enum:
+      - post
+      - event
+      - profile
+      type: string
+      description: |-
+        * `post` - post
+        * `event` - event
+        * `profile` - profile
   securitySchemes:
     XSessionTokenAuth:
       type: apiKey

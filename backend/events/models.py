@@ -4,10 +4,21 @@ from django.contrib.gis.measure import D
 from django.db import models
 from django.utils import timezone
 
+from moderation.visibility import hidden_profiles, muted_profiles
 from profiles.models import Profile
 
 
 class EventQuerySet(models.QuerySet):
+    def visible_to(self, viewer):
+        """Not removed, and not organized by a profile blocked either way or removed."""
+        return self.filter(removed_at__isnull=True, organizer__removed_at__isnull=True).exclude(
+            organizer__in=hidden_profiles(viewer)
+        )
+
+    def in_feeds_of(self, viewer):
+        """Like visible_to, also leaving out profiles the viewer muted."""
+        return self.visible_to(viewer).exclude(organizer__in=muted_profiles(viewer))
+
     def not_ended(self):
         """Events that are ongoing or yet to start."""
         return self.filter(ends_at__gte=timezone.now())
@@ -34,6 +45,8 @@ class Event(models.Model):
     location = gis_models.PointField(geography=True, srid=4326, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    # Set by moderators; hides the event everywhere.
+    removed_at = models.DateTimeField(null=True, blank=True)
 
     objects = EventQuerySet.as_manager()
 

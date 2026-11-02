@@ -30,6 +30,8 @@ class ProfileSerializer(serializers.ModelSerializer):
     follower_count = serializers.IntegerField(read_only=True)
     following_count = serializers.IntegerField(read_only=True)
     is_followed = serializers.BooleanField(read_only=True)
+    is_blocked = serializers.BooleanField(read_only=True)
+    is_muted = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Profile
@@ -44,6 +46,8 @@ class ProfileSerializer(serializers.ModelSerializer):
             "follower_count",
             "following_count",
             "is_followed",
+            "is_blocked",
+            "is_muted",
         ]
         read_only_fields = ["kind", "created_at"]
 

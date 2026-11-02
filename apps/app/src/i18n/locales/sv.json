@@ -10,7 +10,12 @@
     "signIn": "Logga in",
     "signOut": "Logga ut",
     "settings": "Inställningar",
-    "byOrganizer": "av {{name}}"
+    "byOrganizer": "av {{name}}",
+    "cancel": "Avbryt",
+    "done": "Klar",
+    "delete": "Ta bort",
+    "moreActions": "Fler åtgärder",
+    "cannotBeUndone": "Det här går inte att ångra."
   },
   "errors": {
     "network": "Kunde inte nå servern.",
@@ -58,5 +63,37 @@
   "settings": {
     "language": "Språk",
     "languageAutomatic": "Samma som enheten"
+  },
+  "posts": {
+    "delete": "Ta bort inlägg",
+    "deleteConfirmTitle": "Ta bort inlägget?"
+  },
+  "moderation": {
+    "report": "Anmäl",
+    "reportQuestion": "Varför anmäler du det här?",
+    "reasons": {
+      "spam": "Skräppost",
+      "harassment": "Trakasserier eller mobbning",
+      "hate": "Hatpropaganda",
+      "sexual": "Nakenhet eller sexuellt innehåll",
+      "violence": "Våld eller farlig verksamhet",
+      "false_information": "Falsk information",
+      "other": "Något annat"
+    },
+    "details": "Något annat moderatorerna borde veta? (valfritt)",
+    "send": "Skicka anmälan",
+    "thanksTitle": "Tack för att du berättade",
+    "thanksMessage": "Våra moderatorer granskar den. Den du anmälde får inte veta vem som anmälde.",
+    "mute": "Tysta @{{handle}}",
+    "block": "Blockera @{{handle}}",
+    "blockConfirmTitle": "Blockera @{{handle}}?",
+    "blockConfirmMessage": "Ni ser inte varandras inlägg och evenemang, och ingen av er kan följa den andra. Hen får inte veta det.",
+    "blockAction": "Blockera",
+    "unblock": "Häv blockering",
+    "unmute": "Sluta tysta",
+    "blockedAccounts": "Blockerade konton",
+    "mutedAccounts": "Tystade konton",
+    "noneBlocked": "Du har inte blockerat någon.",
+    "noneMuted": "Du har inte tystat någon."
   }
 }

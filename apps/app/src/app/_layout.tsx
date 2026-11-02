@@ -48,6 +48,10 @@ function RootStack() {
         options={{ title: t('common.signIn'), presentation: 'modal' }}
       />
       <Stack.Screen name="settings" options={{ title: t('common.settings') }} />
+      <Stack.Screen
+        name="report"
+        options={{ title: t('moderation.report'), presentation: 'modal' }}
+      />
     </Stack>
   );
 }
