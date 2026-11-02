@@ -28,6 +28,8 @@ CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
 
 # Where the frontend lives; used for links in emails (password reset etc.).
 FRONTEND_URL = env("FRONTEND_URL", default="http://localhost:8081")
+# Where this API is reachable from outside; used for links in emails that the API answers itself.
+API_URL = env("API_URL", default="http://localhost:8000")
 
 
 # Applications

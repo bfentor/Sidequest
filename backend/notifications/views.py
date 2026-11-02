@@ -9,6 +9,7 @@ from rest_framework.pagination import CursorPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from .digest import user_for_token
 from .models import Kind, Notification, PushDevice, PushSetting
 from .serializers import (
     AccountSettingsSerializer,
@@ -103,6 +104,7 @@ class AccountSettingsView(APIView):
             "terms_version": user.terms_version,
             "current_terms_version": settings.TERMS_VERSION,
             "onboarded": user.onboarded_at is not None,
+            "email_digest": user.email_digest,
         }
 
     @extend_schema(responses=AccountSettingsSerializer)
@@ -122,6 +124,9 @@ class AccountSettingsView(APIView):
                 raise ValidationError({"birth_date": _("Your birth date is already set.")})
             user.birth_date = serializer.validated_data["birth_date"]
             user.save(update_fields=["birth_date"])
+        if "email_digest" in serializer.validated_data:
+            user.email_digest = serializer.validated_data["email_digest"]
+            user.save(update_fields=["email_digest"])
         if "onboarded" in serializer.validated_data:
             user.onboarded_at = timezone.now() if serializer.validated_data["onboarded"] else None
             user.save(update_fields=["onboarded_at"])
@@ -130,3 +135,19 @@ class AccountSettingsView(APIView):
                 user=user, kind=kind, defaults={"enabled": enabled}
             )
         return Response(self._current(user))
+
+
+class DigestUnsubscribeView(APIView):
+    """One-click unsubscribe from the weekly email (RFC 8058), from the email's header link."""
+
+    permission_classes = [permissions.AllowAny]
+    authentication_classes = []
+
+    @extend_schema(exclude=True)
+    def post(self, request, token):
+        user = user_for_token(token)
+        if user is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        user.email_digest = False
+        user.save(update_fields=["email_digest"])
+        return Response(status=status.HTTP_204_NO_CONTENT)

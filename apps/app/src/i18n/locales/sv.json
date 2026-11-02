@@ -126,7 +126,10 @@
       "event_postponed": "Uppskjutna evenemang",
       "co_host_invite": "Inbjudningar att arrangera evenemang tillsammans",
       "feedback_request": "Förfrågningar om respons efter evenemang"
-    }
+    },
+    "emailTitle": "Uppdateringar via e-post",
+    "emailDigest": "Mejla mig en veckosammanfattning av kommande evenemang",
+    "emailDigestHint": "Varje måndag: veckans evenemang som du ska gå på eller är intresserad av, och nya från dem du följer."
   },
   "posts": {
     "delete": "Ta bort inlägg",

@@ -49,6 +49,7 @@ export default function SettingsScreen() {
       {status === 'signed-in' ? (
         <>
           <PushSettings />
+          <EmailSettings />
           <BlockedAndMuted />
           <StudentSection />
           <CredentialsSection />
@@ -118,6 +119,39 @@ function PushSettings() {
           />
         </View>
       ))}
+    </View>
+  );
+}
+
+function EmailSettings() {
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  const { data } = useQuery(meSettingsRetrieveOptions());
+  const update = useMutation({
+    mutationFn: async (email_digest: boolean) =>
+      (await meSettingsPartialUpdate({ body: { email_digest }, throwOnError: true })).data,
+    onSuccess: (settings) =>
+      queryClient.setQueryData<AccountSettings>(meSettingsRetrieveQueryKey(), settings),
+  });
+
+  if (!data) {
+    return null;
+  }
+
+  return (
+    <View style={styles.section}>
+      <ThemedText type="heading">{t('settings.emailTitle')}</ThemedText>
+      <View style={styles.switchRow}>
+        <ThemedText style={styles.switchLabel}>{t('settings.emailDigest')}</ThemedText>
+        <Switch
+          value={data.email_digest ?? false}
+          onValueChange={(enabled) => update.mutate(enabled)}
+          accessibilityLabel={t('settings.emailDigest')}
+        />
+      </View>
+      <ThemedText type="small" themeColor="textSecondary">
+        {t('settings.emailDigestHint')}
+      </ThemedText>
     </View>
   );
 }

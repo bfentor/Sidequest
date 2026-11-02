@@ -47,6 +47,9 @@ class User(AbstractUser):
     terms_accepted_at = models.DateTimeField(null=True, blank=True)
     # When they finished (or skipped) the app's first-run steps; None shows them again.
     onboarded_at = models.DateTimeField(null=True, blank=True)
+    # The weekly email of upcoming events: opt-in, and when it last went out.
+    email_digest = models.BooleanField(default=False)
+    digest_sent_at = models.DateTimeField(null=True, blank=True)
 
     @property
     def age(self):

@@ -20,6 +20,10 @@ export type AccountSettings = {
     readonly terms_version: string;
     readonly current_terms_version: string;
     /**
+     * A weekly email of upcoming events (off unless turned on).
+     */
+    email_digest?: boolean;
+    /**
      * Whether the first-run steps are done; set it once they are.
      */
     onboarded?: boolean;
@@ -509,6 +513,10 @@ export type PatchedAccountSettingsRequest = {
      */
     birth_date?: string;
     /**
+     * A weekly email of upcoming events (off unless turned on).
+     */
+    email_digest?: boolean;
+    /**
      * Whether the first-run steps are done; set it once they are.
      */
     onboarded?: boolean;
@@ -783,6 +791,10 @@ export type AccountSettingsWritable = {
      * Can only be added when missing (older accounts).
      */
     birth_date?: string;
+    /**
+     * A weekly email of upcoming events (off unless turned on).
+     */
+    email_digest?: boolean;
     /**
      * Whether the first-run steps are done; set it once they are.
      */

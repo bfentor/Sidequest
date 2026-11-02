@@ -2356,6 +2356,9 @@ components:
         current_terms_version:
           type: string
           readOnly: true
+        email_digest:
+          type: boolean
+          description: A weekly email of upcoming events (off unless turned on).
         onboarded:
           type: boolean
           description: Whether the first-run steps are done; set it once they are.
@@ -3540,6 +3543,9 @@ components:
           type: string
           format: date
           description: Can only be added when missing (older accounts).
+        email_digest:
+          type: boolean
+          description: A weekly email of upcoming events (off unless turned on).
         onboarded:
           type: boolean
           description: Whether the first-run steps are done; set it once they are.

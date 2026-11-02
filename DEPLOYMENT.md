@@ -124,6 +124,7 @@ Environment variables:
 | `CSRF_TRUSTED_ORIGINS` | `https://sidequest-api.fentorweb.hu` (for the admin) |
 | `CORS_ALLOWED_ORIGINS` | `https://sidequest.fentorweb.hu` |
 | `FRONTEND_URL` | `https://sidequest.fentorweb.hu` |
+| `API_URL` | `https://sidequest-api.fentorweb.hu` (for unsubscribe links in emails) |
 | `CACHE_URL` | `dbcache://django_cache`, so rate limits are shared by all of the API's processes (the table is created on start) |
 | `ALLAUTH_TRUSTED_CLIENT_IP_HEADER` | `CF-Connecting-IP` (the visitor's address behind Cloudflare, for sign-in rate limits) |
 | `MAILER_BACKEND` | Leave unset (emails go to the log) until an email service is chosen |

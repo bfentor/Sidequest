@@ -126,7 +126,10 @@
       "event_postponed": "Postponed events",
       "co_host_invite": "Invitations to co-host events",
       "feedback_request": "Requests for feedback after events"
-    }
+    },
+    "emailTitle": "Email updates",
+    "emailDigest": "Email me a weekly summary of upcoming events",
+    "emailDigestHint": "Every Monday: events you're going to or interested in this week, and new ones from people you follow."
   },
   "posts": {
     "delete": "Delete post",

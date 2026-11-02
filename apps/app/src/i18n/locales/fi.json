@@ -126,7 +126,10 @@
       "event_postponed": "Siirretyt tapahtumat",
       "co_host_invite": "Kutsut tapahtumien yhteisjärjestäjäksi",
       "feedback_request": "Palautepyynnöt tapahtumien jälkeen"
-    }
+    },
+    "emailTitle": "Sähköpostipäivitykset",
+    "emailDigest": "Lähetä minulle viikoittain kooste tulevista tapahtumista",
+    "emailDigestHint": "Joka maanantai: tämän viikon tapahtumat, joihin olet menossa tai joista olet kiinnostunut, sekä seuraamiesi uudet tapahtumat."
   },
   "posts": {
     "delete": "Poista julkaisu",

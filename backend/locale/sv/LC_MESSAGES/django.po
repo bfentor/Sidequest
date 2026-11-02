@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sidequest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-03 00:59+0200\n"
+"POT-Creation-Date: 2026-11-03 01:25+0200\n"
 "PO-Revision-Date: 2026-11-02 20:52+0200\n"
 "Last-Translator: Sidequest <dev@sidequest.invalid>\n"
 "Language-Team: Swedish\n"
@@ -126,6 +126,19 @@ msgstr "Du kan inte blockera dig själv."
 
 msgid "You cannot mute yourself."
 msgstr "Du kan inte tysta dig själv."
+
+msgid "Your week:"
+msgstr "Din vecka:"
+
+msgid "New from people you follow:"
+msgstr "Nytt från dem du följer:"
+
+#, python-format
+msgid "You get this email because you turned on the weekly summary. Turn it off in Settings: %(url)s"
+msgstr "Du får det här mejlet eftersom du har slagit på veckosammanfattningen. Stäng av den i inställningarna: %(url)s"
+
+msgid "[Sidequest] Your week of events"
+msgstr "[Sidequest] Veckans evenemang"
 
 msgid "New followers"
 msgstr "Nya följare"

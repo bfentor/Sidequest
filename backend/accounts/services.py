@@ -45,6 +45,7 @@ def export_data(user):
             "joined": user.date_joined.isoformat(),
             "last_login": user.last_login.isoformat() if user.last_login else None,
             "language": user.language,
+            "email_digest": user.email_digest,
         },
         "profile": {
             "handle": profile.handle,

@@ -54,6 +54,9 @@ class AccountSettingsSerializer(serializers.Serializer):
     )
     terms_version = serializers.CharField(read_only=True, help_text="The version you accepted.")
     current_terms_version = serializers.CharField(read_only=True)
+    email_digest = serializers.BooleanField(
+        required=False, help_text="A weekly email of upcoming events (off unless turned on)."
+    )
     onboarded = serializers.BooleanField(
         required=False, help_text="Whether the first-run steps are done; set it once they are."
     )

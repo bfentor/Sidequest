@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sidequest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-03 00:59+0200\n"
+"POT-Creation-Date: 2026-11-03 01:25+0200\n"
 "PO-Revision-Date: 2026-11-02 20:52+0200\n"
 "Last-Translator: Sidequest <dev@sidequest.invalid>\n"
 "Language-Team: Finnish\n"
@@ -126,6 +126,19 @@ msgstr "Et voi estää itseäsi."
 
 msgid "You cannot mute yourself."
 msgstr "Et voi mykistää itseäsi."
+
+msgid "Your week:"
+msgstr "Viikkosi:"
+
+msgid "New from people you follow:"
+msgstr "Uutta seuraamiltasi:"
+
+#, python-format
+msgid "You get this email because you turned on the weekly summary. Turn it off in Settings: %(url)s"
+msgstr "Saat tämän viestin, koska otit viikkokoosteen käyttöön. Voit poistaa sen käytöstä asetuksista: %(url)s"
+
+msgid "[Sidequest] Your week of events"
+msgstr "[Sidequest] Viikkosi tapahtumat"
 
 msgid "New followers"
 msgstr "Uudet seuraajat"

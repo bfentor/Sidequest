@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 import { Button } from '@/components/button';
+import { Checkbox } from '@/components/checkbox';
 import { CategoryPicker } from '@/components/category-chips';
 import { FollowSuggestions } from '@/components/follow-suggestions';
 import { Screen } from '@/components/screen';
@@ -31,6 +32,7 @@ export default function OnboardingScreen() {
   const queryClient = useQueryClient();
   const [step, setStep] = useState(0);
   const [interests, setInterests] = useState<string[] | null>(null);
+  const [emailDigest, setEmailDigest] = useState(false);
 
   const saveInterests = useMutation({
     mutationFn: (slugs: string[]) =>
@@ -43,7 +45,11 @@ export default function OnboardingScreen() {
     },
   });
   const finish = useMutation({
-    mutationFn: () => meSettingsPartialUpdate({ body: { onboarded: true }, throwOnError: true }),
+    mutationFn: () =>
+      meSettingsPartialUpdate({
+        body: { onboarded: true, ...(emailDigest ? { email_digest: true } : {}) },
+        throwOnError: true,
+      }),
     onSuccess: ({ data }) => {
       queryClient.setQueryData<AccountSettings>(meSettingsRetrieveQueryKey(), data);
       goBack('/');
@@ -85,6 +91,11 @@ export default function OnboardingScreen() {
         <>
           <ThemedText type="subtitle">{t('onboarding.locationTitle')}</ThemedText>
           <LocationStep />
+          <Checkbox
+            checked={emailDigest}
+            onChange={setEmailDigest}
+            label={t('settings.emailDigest')}
+          />
         </>
       )}
 
