@@ -39,7 +39,8 @@
   },
   "following": {
     "signInPrompt": "Logga in för att se inlägg och evenemang från personer och organisationer du följer.",
-    "empty": "Inget här än. Följ personer eller organisationer för att fylla ditt flöde."
+    "empty": "Inget här än. Följ personer eller organisationer för att fylla ditt flöde.",
+    "hidePast": "Dölj tidigare evenemang"
   },
   "profile": {
     "signInPrompt": "Logga in för att följa personer och organisationer och för att publicera egna evenemang.",

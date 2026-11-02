@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 from events.models import Event
 from moderation.visibility import hidden_profiles, muted_profiles, private_profiles
@@ -32,6 +33,20 @@ class PostQuerySet(models.QuerySet):
         """Posts by `profile` and by every profile it follows."""
         followed = Follow.objects.filter(follower=profile).values("followee")
         return self.filter(models.Q(author__in=followed) | models.Q(author=profile))
+
+    def latest_per_event(self):
+        """Leaves out posts whose event a newer post in this queryset also shares.
+
+        Each event then shows once, where it was last posted.
+        """
+        newer = self.filter(
+            event=models.OuterRef("event"), created_at__gt=models.OuterRef("created_at")
+        )
+        return self.exclude(models.Q(event__isnull=False) & models.Exists(newer))
+
+    def without_past_events(self):
+        """Leaves out posts sharing an event that has ended; text-only posts stay."""
+        return self.exclude(event__ends_at__lt=timezone.now())
 
 
 class Post(models.Model):

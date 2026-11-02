@@ -250,8 +250,10 @@ paths:
   /api/feeds/following/:
     get:
       operationId: feeds_following_list
-      description: Posts from profiles the signed-in user follows (and their own),
-        newest first.
+      description: |-
+        Posts from profiles the signed-in user follows (and their own), newest first.
+
+        An event shared more than once shows only in its newest post.
       parameters:
       - name: cursor
         required: false
@@ -259,6 +261,12 @@ paths:
         description: The pagination cursor value.
         schema:
           type: string
+      - in: query
+        name: hide_past
+        schema:
+          type: boolean
+          default: false
+        description: Leave out posts about events that have ended.
       tags:
       - feeds
       security:

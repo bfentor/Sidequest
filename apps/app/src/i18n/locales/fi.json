@@ -39,7 +39,8 @@
   },
   "following": {
     "signInPrompt": "Kirjaudu sisään nähdäksesi seuraamiesi ihmisten ja järjestöjen julkaisut ja tapahtumat.",
-    "empty": "Täällä ei ole vielä mitään. Seuraa ihmisiä tai järjestöjä täyttääksesi syötteesi."
+    "empty": "Täällä ei ole vielä mitään. Seuraa ihmisiä tai järjestöjä täyttääksesi syötteesi.",
+    "hidePast": "Piilota menneet tapahtumat"
   },
   "profile": {
     "signInPrompt": "Kirjaudu sisään seurataksesi ihmisiä ja järjestöjä sekä julkaistaksesi omia tapahtumia.",

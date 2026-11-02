@@ -220,6 +220,8 @@ export const feedsFollowingListQueryKey = (options?: Options<FeedsFollowingListD
 
 /**
  * Posts from profiles the signed-in user follows (and their own), newest first.
+ *
+ * An event shared more than once shows only in its newest post.
  */
 export const feedsFollowingListOptions = (options?: Options<FeedsFollowingListData>) => queryOptions<FeedsFollowingListResponse, DefaultError, FeedsFollowingListResponse, ReturnType<typeof feedsFollowingListQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
@@ -267,6 +269,8 @@ export const feedsFollowingListInfiniteQueryKey = (options?: Options<FeedsFollow
 
 /**
  * Posts from profiles the signed-in user follows (and their own), newest first.
+ *
+ * An event shared more than once shows only in its newest post.
  */
 export const feedsFollowingListInfiniteOptions = (options?: Options<FeedsFollowingListData>) => {
     const opts = infiniteQueryOptions<FeedsFollowingListResponse, DefaultError, InfiniteData<FeedsFollowingListResponse>, QueryKey<Options<FeedsFollowingListData>>, string | Pick<QueryKey<Options<FeedsFollowingListData>>[0], 'body' | 'headers' | 'path' | 'query'>>(

@@ -88,13 +88,28 @@ class NearbyFeedView(generics.ListAPIView):
         )
 
 
+class FollowingQuerySerializer(serializers.Serializer):
+    hide_past = serializers.BooleanField(
+        required=False, default=False, help_text="Leave out posts about events that have ended."
+    )
+
+
+@extend_schema(parameters=[FollowingQuerySerializer])
 class FollowingFeedView(generics.ListAPIView):
-    """Posts from profiles the signed-in user follows (and their own), newest first."""
+    """Posts from profiles the signed-in user follows (and their own), newest first.
+
+    An event shared more than once shows only in its newest post.
+    """
 
     serializer_class = PostSerializer
     pagination_class = NewestFirstCursorPagination
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
+        params = FollowingQuerySerializer(data=self.request.query_params)
+        params.is_valid(raise_exception=True)
         viewer = self.request.user.profile
-        return Post.objects.following_feed_for(viewer).in_feeds_of(viewer).for_display(viewer)
+        posts = Post.objects.following_feed_for(viewer).in_feeds_of(viewer).latest_per_event()
+        if params.validated_data["hide_past"]:
+            posts = posts.without_past_events()
+        return posts.for_display(viewer)

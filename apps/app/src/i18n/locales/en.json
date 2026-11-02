@@ -39,7 +39,8 @@
   },
   "following": {
     "signInPrompt": "Sign in to see posts and events from the people and organizations you follow.",
-    "empty": "Nothing here yet. Follow some people or organizations to fill your feed."
+    "empty": "Nothing here yet. Follow some people or organizations to fill your feed.",
+    "hidePast": "Hide past events"
   },
   "profile": {
     "signInPrompt": "Sign in to follow people and organizations, and to publish your own events.",

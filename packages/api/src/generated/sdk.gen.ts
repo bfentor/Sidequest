@@ -126,6 +126,8 @@ export const eventsCoHostCreate = <ThrowOnError extends boolean = false>(options
 
 /**
  * Posts from profiles the signed-in user follows (and their own), newest first.
+ *
+ * An event shared more than once shows only in its newest post.
  */
 export const feedsFollowingList = <ThrowOnError extends boolean = false>(options?: Options<FeedsFollowingListData, ThrowOnError>): RequestResult<FeedsFollowingListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<FeedsFollowingListResponses, unknown, ThrowOnError>({
     security: [{ name: 'X-Session-Token', type: 'apiKey' }],

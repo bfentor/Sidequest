@@ -16,12 +16,14 @@ type CheckboxProps = {
 
 export function Checkbox({ checked, onChange, label, accessibilityLabel }: CheckboxProps) {
   const theme = useTheme();
+  // A plain-text label names the checkbox and toggles it when tapped.
+  const text = typeof label === 'string' ? label : undefined;
   return (
     <View style={styles.row}>
       <Pressable
         role="checkbox"
         aria-checked={checked}
-        accessibilityLabel={accessibilityLabel}
+        accessibilityLabel={accessibilityLabel ?? text}
         hitSlop={8}
         onPress={() => onChange(!checked)}
         style={[
@@ -35,7 +37,9 @@ export function Checkbox({ checked, onChange, label, accessibilityLabel }: Check
           <ThemedText style={{ color: theme.onTint, lineHeight: 18 }}>✓</ThemedText>
         ) : null}
       </Pressable>
-      <View style={styles.label}>{label}</View>
+      <View style={styles.label}>
+        {text ? <ThemedText onPress={() => onChange(!checked)}>{text}</ThemedText> : label}
+      </View>
     </View>
   );
 }

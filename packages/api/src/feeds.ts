@@ -67,12 +67,13 @@ export function useNearbyFeed(position: LatLng, radiusKm?: number, filters: Feed
   });
 }
 
-export function useFollowingFeed({ enabled = true } = {}) {
+export function useFollowingFeed({ enabled = true, hidePast = false } = {}) {
+  const query = hidePast ? { hide_past: true } : {};
   return useInfiniteQuery({
-    queryKey: feedsFollowingListInfiniteQueryKey(),
+    queryKey: feedsFollowingListInfiniteQueryKey({ query }),
     queryFn: async ({ pageParam, signal }) => {
       const { data } = await feedsFollowingList({
-        query: { cursor: pageParam },
+        query: { ...query, cursor: pageParam },
         signal,
         throwOnError: true,
       });

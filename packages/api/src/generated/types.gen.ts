@@ -1099,6 +1099,10 @@ export type FeedsFollowingListData = {
          * The pagination cursor value.
          */
         cursor?: string;
+        /**
+         * Leave out posts about events that have ended.
+         */
+        hide_past?: boolean;
     };
     url: '/api/feeds/following/';
 };
