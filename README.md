@@ -79,6 +79,8 @@ cp apps/app/.env.example apps/app/.env.local
 npm run app                                 # w = web, i = iOS simulator, a = Android emulator
 ```
 
+The app opens in a development build by default (`expo-dev-client`); press `s` in the terminal to switch to Expo Go. A development build for your phone: `cd apps/app && npx eas-cli build --profile development`.
+
 You can also run `docker compose up` to start both PostGIS and the API in containers.
 
 **Without Docker:** you can use a locally installed PostgreSQL with the PostGIS extension instead of the `db` container. Create the role and database once:
@@ -123,7 +125,7 @@ Pull requests are squash-merged, so their title is the commit message; CI checks
 
 ## Shipping
 
-- **iOS and Android:** use [EAS](https://docs.expo.dev/eas/). `npx eas-cli@latest build:configure` creates `eas.json` and asks for bundle identifiers. After that, `eas build` and `eas submit` build and submit the apps, and `eas update` pushes over-the-air JS updates.
+- **iOS and Android:** built with [EAS](https://docs.expo.dev/eas/). `apps/app/eas.json` has three profiles, `development`, `staging` and `production`; `app.config.ts` gives each its own name and app ID (`hu.fentorweb.sidequest[.dev|.staging]`). Link the project once with `cd apps/app && npx eas-cli init`. After CI passes on `testing`, `.github/workflows/eas-update.yml` publishes the JavaScript to the `staging` update channel; when native code changes, make a new build with `npx eas-cli build --profile staging`.
 - **API and web app:** deployed to staging with Coolify; see [DEPLOYMENT.md](DEPLOYMENT.md). Scheduled jobs are listed in [CRONJOBS.md](CRONJOBS.md).
 
 ## Next steps

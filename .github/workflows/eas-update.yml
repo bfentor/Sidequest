@@ -1,0 +1,56 @@
+name: Update staging apps
+
+# Once CI passes on testing, publish the app's JavaScript to the "staging"
+# update channel, so installed staging builds pick it up on their next launch.
+# Builds only accept updates made for the same native code (runtimeVersion's
+# fingerprint policy); when native code changes, make a new build with
+# `npx eas-cli build --profile staging` (apps/app/).
+#
+# Needs the repository secret EXPO_TOKEN (expo.dev › Access tokens) and the
+# project linked with `npx eas-cli init`. Skipped until both exist.
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [testing]
+  workflow_dispatch:
+
+concurrency:
+  group: eas-update-staging
+  cancel-in-progress: true
+
+jobs:
+  update:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    env:
+      EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+    steps:
+      - name: Check that EAS is set up
+        id: setup
+        run: |
+          if [ -z "$EXPO_TOKEN" ]; then
+            echo "::notice::EXPO_TOKEN isn't set, so no update is published."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@v5
+        if: steps.setup.outputs.ready == 'true'
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      - uses: actions/setup-node@v5
+        if: steps.setup.outputs.ready == 'true'
+        with:
+          node-version: 24
+          cache: npm
+      - if: steps.setup.outputs.ready == 'true'
+        run: npm ci
+      - name: Publish the update
+        if: steps.setup.outputs.ready == 'true'
+        working-directory: apps/app
+        env:
+          APP_VARIANT: staging
+          EXPO_PUBLIC_API_URL: https://sidequest-api.fentorweb.hu
+        run: npx eas-cli@latest update --channel staging --auto --non-interactive
