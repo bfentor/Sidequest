@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.gis",
+    # The site's name ("Sidequest") is what allauth's emails are signed with.
+    "django.contrib.sites",
     # Third party
     "corsheaders",
     "rest_framework",
@@ -102,6 +104,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CACHES = {"default": env.cache("CACHE_URL", default="locmemcache://")}
 
 
+SITE_ID = 1
+
 # Authentication
 
 AUTH_USER_MODEL = "accounts.User"
@@ -121,7 +125,17 @@ AUTH_PASSWORD_VALIDATORS = [
 ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*"]
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-ACCOUNT_EMAIL_VERIFICATION = env("ACCOUNT_EMAIL_VERIFICATION", default="optional")
+# Email addresses are verified with a code (easy to type on a phone) before
+# the first sign-in. Set ACCOUNT_EMAIL_VERIFICATION=optional for local development.
+ACCOUNT_EMAIL_VERIFICATION = env("ACCOUNT_EMAIL_VERIFICATION", default="mandatory")
+ACCOUNT_EMAIL_VERIFICATION_BY_CODE_ENABLED = True
+ACCOUNT_PASSWORD_RESET_BY_CODE_ENABLED = True
+ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
+# Changing the email address replaces the old one once the new one is verified.
+ACCOUNT_CHANGE_EMAIL = True
+# Tell people by email about security-relevant changes (password, email).
+ACCOUNT_EMAIL_NOTIFICATIONS = True
+ACCOUNT_EMAIL_SUBJECT_PREFIX = "[Sidequest] "
 # Birth date and acceptance of the terms at signup (accounts/signup.py).
 ACCOUNT_SIGNUP_FORM_CLASS = "accounts.signup.SignupForm"
 # To review with a lawyer: Finland's age of digital consent is 13.

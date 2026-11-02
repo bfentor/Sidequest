@@ -18,6 +18,7 @@ import { Pressable, StyleSheet, Switch, View } from 'react-native';
 import { useAuth } from '@/auth/auth-provider';
 import { AccountSection } from '@/components/account-section';
 import { Button } from '@/components/button';
+import { CredentialsSection } from '@/components/credentials-section';
 import { ProfileRow } from '@/components/profile-row';
 import { Screen } from '@/components/screen';
 import { ThemedText } from '@/components/themed-text';
@@ -47,6 +48,7 @@ export default function SettingsScreen() {
         <>
           <PushSettings />
           <BlockedAndMuted />
+          <CredentialsSection />
           <AccountSection />
           <Button
             title={t('common.signOut')}

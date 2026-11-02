@@ -61,7 +61,8 @@ def test_signup_needs_terms_and_a_minimum_age(api_client, db, settings):
     assert {e["param"] for e in no_terms.json()["errors"]} == {"accept_terms"}
     assert signup(api_client, birth_date=too_young, accept_terms=True).status_code == 400
 
-    assert signup(api_client, birth_date="2000-01-01", accept_terms=True).status_code == 200
+    # 401 with a pending email verification: the account exists, waiting for the code.
+    assert signup(api_client, birth_date="2000-01-01", accept_terms=True).status_code == 401
     user = User.objects.get(email="new@uni.example")
     assert user.terms_version == settings.TERMS_VERSION and user.age >= 26
 

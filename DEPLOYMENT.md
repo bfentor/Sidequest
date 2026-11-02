@@ -126,7 +126,6 @@ Environment variables:
 | `FRONTEND_URL` | `https://sidequest.fentorweb.hu` |
 | `CACHE_URL` | `dbcache://django_cache`, so rate limits are shared by all of the API's processes (the table is created on start) |
 | `ALLAUTH_TRUSTED_CLIENT_IP_HEADER` | `CF-Connecting-IP` (the visitor's address behind Cloudflare, for sign-in rate limits) |
-| `ACCOUNT_EMAIL_VERIFICATION` | `optional` on staging |
 | `MAILER_BACKEND` | Leave unset (emails go to the log) until an email service is chosen |
 | `EXPO_ACCESS_TOKEN` | Optional: needed only if "enhanced push security" is turned on for the Expo project |
 | `SENTRY_DSN`, `SENTRY_ENVIRONMENT` | Optional: Sentry's DSN, and `staging` |

@@ -93,7 +93,8 @@
     "acceptTermsStart": "Hyväksyn ",
     "acceptTermsAnd": " ja ",
     "termsLink": "käyttöehdot",
-    "privacyLink": "tietosuojaselosteen"
+    "privacyLink": "tietosuojaselosteen",
+    "forgotPassword": "Unohditko salasanasi?"
   },
   "settings": {
     "language": "Kieli",
@@ -336,5 +337,33 @@
     "updatedTitle": "Ehtomme ovat muuttuneet",
     "updatedMessage": "Lue ja hyväksy päivitetyt käyttöehdot ja tietosuojaseloste jatkaaksesi Sidequestin käyttöä.",
     "accept": "Hyväksy"
+  },
+  "verifyEmail": {
+    "title": "Vahvista sähköpostisi",
+    "hint": "Lähetimme sinulle koodin sähköpostitse. Syötä se tähän.",
+    "code": "Koodi",
+    "verify": "Vahvista",
+    "resend": "Lähetä uusi koodi",
+    "resent": "Uusi koodi on matkalla.",
+    "nothingPending": "Vahvistettavaa ei ole. Kirjaudu sisään jatkaaksesi."
+  },
+  "forgotPassword": {
+    "title": "Salasanan palautus",
+    "hint": "Anna tilisi sähköpostiosoite, niin lähetämme sinulle koodin.",
+    "send": "Lähetä koodi",
+    "codeSent": "Jos osoitteella on tili, koodi on matkalla. Syötä se ja uusi salasanasi.",
+    "newPassword": "Uusi salasana",
+    "reset": "Aseta uusi salasana"
+  },
+  "credentials": {
+    "email": "Sähköposti",
+    "newEmail": "Uusi sähköpostiosoite",
+    "changeEmail": "Vaihda sähköposti",
+    "codeSent": "Syötä koodi, jonka lähetimme osoitteeseen {{email}}.",
+    "emailChanged": "Sähköpostiosoitteesi vaihdettiin.",
+    "password": "Salasana",
+    "currentPassword": "Nykyinen salasana",
+    "changePassword": "Vaihda salasana",
+    "passwordChanged": "Salasanasi vaihdettiin."
   }
 }

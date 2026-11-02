@@ -14,8 +14,8 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 - [x] **[store]** Moderation queue where reported content gets reviewed and removed
 - [x] **[store]** Terms of service and privacy policy, linked in the app and accepted at signup
 - [ ] **[store]** Sign in with Apple, if any other social login is added
-- [ ] Email verification
-- [ ] Password reset screens (backend part done)
+- [x] Email verification
+- [x] Password reset screens (backend part done)
 - [x] GDPR: export my data, and delete my data
 
 - [ ] Write the real terms of service and privacy policy (placeholders in `apps/app/src/legal/documents.ts`; bump `TERMS_VERSION` in the API settings when they change)
@@ -25,7 +25,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 
 - [ ] Sign in with Google and Apple
 - [ ] Student verification through a university email domain, plus a "verified student" badge
-- [ ] Change email or password
+- [x] Change email or password
 - [ ] Two-factor authentication (allauth supports it)
 - [ ] Onboarding after signup: pick interests, follow suggested organizations, allow location
 - [ ] See and sign out other devices

@@ -45,6 +45,9 @@ class PushDeviceSerializer(serializers.Serializer):
 
 
 class AccountSettingsSerializer(serializers.Serializer):
+    email = serializers.EmailField(
+        read_only=True, help_text="Change it through allauth: /_allauth/app/v1/account/email."
+    )
     language = serializers.ChoiceField(choices=settings.LANGUAGES, required=False)
     birth_date = serializers.DateField(
         required=False, help_text="Can only be added when missing (older accounts)."

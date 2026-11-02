@@ -93,7 +93,8 @@
     "acceptTermsStart": "Jag godkänner ",
     "acceptTermsAnd": " och ",
     "termsLink": "användarvillkoren",
-    "privacyLink": "integritetspolicyn"
+    "privacyLink": "integritetspolicyn",
+    "forgotPassword": "Glömt lösenordet?"
   },
   "settings": {
     "language": "Språk",
@@ -336,5 +337,33 @@
     "updatedTitle": "Våra villkor har ändrats",
     "updatedMessage": "Läs och godkänn de uppdaterade användarvillkoren och integritetspolicyn för att fortsätta använda Sidequest.",
     "accept": "Godkänn"
+  },
+  "verifyEmail": {
+    "title": "Bekräfta din e-post",
+    "hint": "Vi har mejlat dig en kod. Ange den här för att slutföra.",
+    "code": "Kod",
+    "verify": "Bekräfta",
+    "resend": "Skicka en ny kod",
+    "resent": "En ny kod är på väg.",
+    "nothingPending": "Det finns inget att bekräfta just nu. Logga in för att fortsätta."
+  },
+  "forgotPassword": {
+    "title": "Återställ lösenord",
+    "hint": "Ange e-postadressen för ditt konto så skickar vi en kod.",
+    "send": "Skicka kod",
+    "codeSent": "Om ett konto använder adressen är en kod på väg. Ange den med ditt nya lösenord.",
+    "newPassword": "Nytt lösenord",
+    "reset": "Ange nytt lösenord"
+  },
+  "credentials": {
+    "email": "E-post",
+    "newEmail": "Ny e-postadress",
+    "changeEmail": "Byt e-post",
+    "codeSent": "Ange koden vi skickade till {{email}}.",
+    "emailChanged": "Din e-postadress har bytts.",
+    "password": "Lösenord",
+    "currentPassword": "Nuvarande lösenord",
+    "changePassword": "Byt lösenord",
+    "passwordChanged": "Ditt lösenord har bytts."
   }
 }

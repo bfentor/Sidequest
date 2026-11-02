@@ -1413,6 +1413,11 @@ components:
     AccountSettings:
       type: object
       properties:
+        email:
+          type: string
+          format: email
+          readOnly: true
+          description: 'Change it through allauth: /_allauth/app/v1/account/email.'
         language:
           $ref: '#/components/schemas/LanguageEnum'
         birth_date:
@@ -1434,6 +1439,7 @@ components:
             kinds are on.
       required:
       - current_terms_version
+      - email
       - terms_version
     ActingProfile:
       type: object

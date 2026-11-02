@@ -93,7 +93,8 @@
     "acceptTermsStart": "I accept the ",
     "acceptTermsAnd": " and the ",
     "termsLink": "terms of service",
-    "privacyLink": "privacy policy"
+    "privacyLink": "privacy policy",
+    "forgotPassword": "Forgot your password?"
   },
   "settings": {
     "language": "Language",
@@ -336,5 +337,33 @@
     "updatedTitle": "Our terms have changed",
     "updatedMessage": "Please read and accept the updated terms of service and privacy policy to keep using Sidequest.",
     "accept": "Accept"
+  },
+  "verifyEmail": {
+    "title": "Verify your email",
+    "hint": "We emailed you a code. Enter it here to finish.",
+    "code": "Code",
+    "verify": "Verify",
+    "resend": "Send a new code",
+    "resent": "A new code is on its way.",
+    "nothingPending": "There's nothing to verify right now. Sign in to continue."
+  },
+  "forgotPassword": {
+    "title": "Reset password",
+    "hint": "Enter your account's email address and we'll send you a code.",
+    "send": "Send code",
+    "codeSent": "If an account uses that address, a code is on its way. Enter it with your new password.",
+    "newPassword": "New password",
+    "reset": "Set new password"
+  },
+  "credentials": {
+    "email": "Email",
+    "newEmail": "New email address",
+    "changeEmail": "Change email",
+    "codeSent": "Enter the code we sent to {{email}}.",
+    "emailChanged": "Your email address was changed.",
+    "password": "Password",
+    "currentPassword": "Current password",
+    "changePassword": "Change password",
+    "passwordChanged": "Your password was changed."
   }
 }

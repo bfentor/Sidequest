@@ -1,5 +1,5 @@
 import type { AuthResult } from '@sidequest/api';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import type { TFunction } from 'i18next';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -57,6 +57,8 @@ export default function SignInScreen() {
     setSubmitting(false);
     if (result.status === 'authenticated') {
       goBack();
+    } else if (result.status === 'pending' && result.flows.includes('verify_email')) {
+      router.replace('/verify-email');
     } else {
       setMessage(messageFor(result, t));
     }
@@ -125,6 +127,13 @@ export default function SignInScreen() {
         loading={submitting}
         disabled={!email || !password || (mode === 'sign-up' && !acceptTerms)}
       />
+      {mode === 'sign-in' ? (
+        <Link href="/forgot-password">
+          <ThemedText type="small" themeColor="tint">
+            {t('auth.forgotPassword')}
+          </ThemedText>
+        </Link>
+      ) : null}
       <Button
         variant="secondary"
         title={mode === 'sign-in' ? t('auth.switchToSignUp') : t('auth.switchToSignIn')}

@@ -10,7 +10,8 @@ def test_every_new_user_gets_a_unique_person_profile(make_user):
     assert second.profile.handle.startswith("alex_")
 
 
-def test_sign_up_and_use_session_token(api_client, db):
+def test_sign_up_and_use_session_token(api_client, db, settings):
+    settings.ACCOUNT_EMAIL_VERIFICATION = "optional"
     response = api_client.post(
         "/_allauth/app/v1/auth/signup",
         {

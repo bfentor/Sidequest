@@ -8,8 +8,17 @@ import { session } from './session';
 
 type Credentials = { email: string; password: string };
 
+/** A multi-step flow waiting for an emailed code, with its temporary session token. */
+type PendingFlow = { kind: 'verify_email' | 'password_reset'; token: string };
+
 type AuthContextValue = {
   status: 'loading' | 'signed-in' | 'signed-out';
+  /** Set while signing up or in waits for the email code, or a password reset is under way. */
+  pendingFlow: PendingFlow | null;
+  verifyEmail: (code: string) => Promise<api.AuthResult>;
+  resendEmailCode: () => Promise<void>;
+  requestPasswordReset: (email: string) => Promise<api.AuthResult>;
+  resetPassword: (code: string, password: string) => Promise<api.AuthResult>;
   signIn: (credentials: Credentials) => Promise<api.AuthResult>;
   signUp: (details: api.SignUpDetails) => Promise<api.AuthResult>;
   signOut: () => Promise<void>;
@@ -22,6 +31,7 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 export function AuthProvider({ children }: PropsWithChildren) {
   const queryClient = useQueryClient();
   const [status, setStatus] = useState<AuthContextValue['status']>('loading');
+  const [pendingFlow, setPendingFlow] = useState<PendingFlow | null>(null);
 
   useEffect(() => {
     async function restore() {
@@ -35,7 +45,14 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   async function authenticate(request: Promise<api.AuthResult>) {
     const result = await request;
+    if (result.status === 'pending' && result.sessionToken) {
+      setPendingFlow({
+        kind: result.flows.includes('verify_email') ? 'verify_email' : 'password_reset',
+        token: result.sessionToken,
+      });
+    }
     if (result.status === 'authenticated') {
+      setPendingFlow(null);
       await session.save(result.sessionToken);
       // Cached data was fetched anonymously; refetch it as the signed-in user.
       queryClient.clear();
@@ -53,6 +70,14 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   const value: AuthContextValue = {
     status,
+    pendingFlow,
+    verifyEmail: (code) => authenticate(api.verifyEmail(code, pendingFlow?.token)),
+    resendEmailCode: async () => {
+      await api.resendEmailCode(pendingFlow?.token);
+    },
+    requestPasswordReset: (email) => authenticate(api.requestPasswordReset(email)),
+    resetPassword: (code, password) =>
+      authenticate(api.resetPassword(code, password, pendingFlow?.token ?? '')),
     signIn: (credentials) => authenticate(api.signIn(credentials)),
     signUp: (details) => authenticate(api.signUp(details)),
     signOut: async () => {

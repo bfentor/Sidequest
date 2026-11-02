@@ -5,6 +5,10 @@ export type ClientOptions = {
 };
 
 export type AccountSettings = {
+    /**
+     * Change it through allauth: /_allauth/app/v1/account/email.
+     */
+    readonly email: string;
     language?: LanguageEnum;
     /**
      * Can only be added when missing (older accounts).

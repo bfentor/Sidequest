@@ -96,6 +96,7 @@ class AccountSettingsView(APIView):
             PushSetting.objects.filter(user=user, enabled=False).values_list("kind", flat=True)
         )
         return {
+            "email": user.email,
             "language": user.language,
             "push": {k: k not in disabled for k in Kind.values},
             "birth_date": user.birth_date,
