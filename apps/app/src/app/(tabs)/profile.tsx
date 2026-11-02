@@ -1,6 +1,7 @@
 import { meRetrieveOptions } from '@sidequest/api';
 import { useQuery } from '@tanstack/react-query';
 import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 import { useAuth } from '@/auth/auth-provider';
@@ -11,28 +12,33 @@ import { Spacing } from '@/constants/theme';
 
 export default function ProfileScreen() {
   const { status } = useAuth();
+  const { t } = useTranslation();
 
   return (
     <Screen>
-      <ThemedText type="subtitle">Profile</ThemedText>
+      <ThemedText type="subtitle">{t('tabs.profile')}</ThemedText>
       {status === 'loading' ? (
         <ActivityIndicator />
       ) : status === 'signed-in' ? (
         <MyProfile />
       ) : (
         <>
-          <ThemedText themeColor="textSecondary">
-            Sign in to follow people and organizations, and to publish your own events.
-          </ThemedText>
-          <Button title="Sign in" onPress={() => router.push('/sign-in')} />
+          <ThemedText themeColor="textSecondary">{t('profile.signInPrompt')}</ThemedText>
+          <Button title={t('common.signIn')} onPress={() => router.push('/sign-in')} />
         </>
       )}
+      <Button
+        title={t('common.settings')}
+        variant="secondary"
+        onPress={() => router.push('/settings')}
+      />
     </Screen>
   );
 }
 
 function MyProfile() {
   const { signOut } = useAuth();
+  const { t } = useTranslation();
   const { data: me, isPending } = useQuery(meRetrieveOptions());
 
   if (isPending || !me) {
@@ -47,14 +53,10 @@ function MyProfile() {
       </View>
       {me.bio ? <ThemedText>{me.bio}</ThemedText> : null}
       <View style={styles.stats}>
-        <ThemedText type="small">
-          <ThemedText type="smallBold">{me.follower_count}</ThemedText> followers
-        </ThemedText>
-        <ThemedText type="small">
-          <ThemedText type="smallBold">{me.following_count}</ThemedText> following
-        </ThemedText>
+        <ThemedText type="small">{t('profile.followers', { count: me.follower_count })}</ThemedText>
+        <ThemedText type="small">{t('profile.following', { count: me.following_count })}</ThemedText>
       </View>
-      <Button title="Sign out" variant="secondary" onPress={signOut} />
+      <Button title={t('common.signOut')} variant="secondary" onPress={signOut} />
     </>
   );
 }

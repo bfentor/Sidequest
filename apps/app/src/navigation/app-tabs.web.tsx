@@ -1,6 +1,7 @@
 import { TabList, TabSlot, TabTrigger, Tabs, type TabListProps } from 'expo-router/ui';
 import { SymbolView, type AndroidSymbol } from 'expo-symbols';
 import type { ComponentProps } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
@@ -15,6 +16,8 @@ import { TABS } from './tabs';
  * client render identical markup.
  */
 export default function AppTabs() {
+  const { t } = useTranslation();
+
   return (
     <Tabs asChild>
       <div className={classes.shell}>
@@ -22,7 +25,7 @@ export default function AppTabs() {
           <NavBar>
             {TABS.map((tab) => (
               <TabTrigger key={tab.name} name={tab.name} href={tab.href} asChild>
-                <TabButton icon={tab.icon.material}>{tab.title}</TabButton>
+                <TabButton icon={tab.icon.material}>{t(`tabs.${tab.label}`)}</TabButton>
               </TabTrigger>
             ))}
           </NavBar>

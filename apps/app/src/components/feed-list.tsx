@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -32,6 +33,7 @@ type FeedListProps<T> = {
 /** Infinite-scrolling, pull-to-refresh list for any of the feeds. */
 export function FeedList<T>({ query, renderItem, keyExtractor, header, emptyText }: FeedListProps<T>) {
   const theme = useTheme();
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const items = query.data?.pages.flatMap((page) => page.results) ?? [];
 
@@ -46,8 +48,8 @@ export function FeedList<T>({ query, renderItem, keyExtractor, header, emptyText
           <ActivityIndicator style={styles.status} />
         ) : query.isError ? (
           <View style={styles.status}>
-            <ThemedText themeColor="textSecondary">Couldn&apos;t load this feed.</ThemedText>
-            <Button title="Try again" variant="secondary" onPress={() => query.refetch()} />
+            <ThemedText themeColor="textSecondary">{t('feed.loadFailed')}</ThemedText>
+            <Button title={t('common.tryAgain')} variant="secondary" onPress={() => query.refetch()} />
           </View>
         ) : (
           <ThemedText themeColor="textSecondary" style={styles.status}>

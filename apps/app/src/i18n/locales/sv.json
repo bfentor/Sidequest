@@ -1,0 +1,62 @@
+{
+  "tabs": {
+    "upcoming": "Kommande",
+    "nearby": "I närheten",
+    "following": "Följer",
+    "profile": "Profil"
+  },
+  "common": {
+    "tryAgain": "Försök igen",
+    "signIn": "Logga in",
+    "signOut": "Logga ut",
+    "settings": "Inställningar",
+    "byOrganizer": "av {{name}}"
+  },
+  "errors": {
+    "network": "Kunde inte nå servern.",
+    "unexpected": "Något gick fel."
+  },
+  "feed": {
+    "loadFailed": "Flödet kunde inte laddas."
+  },
+  "upcoming": {
+    "empty": "Inga kommande evenemang än."
+  },
+  "nearby": {
+    "locationFailed": "Det gick inte att avgöra var du är.",
+    "askPermission": "Dela din plats för att se evenemang omkring dig. Den används bara för att sortera evenemang och sparas aldrig.",
+    "permissionDenied": "Platsåtkomst är avstängd för Sidequest. Slå på den i inställningarna för att se evenemang omkring dig.",
+    "useMyLocation": "Använd min plats",
+    "empty": "Inga evenemang nära dig just nu."
+  },
+  "following": {
+    "signInPrompt": "Logga in för att se inlägg och evenemang från personer och organisationer du följer.",
+    "empty": "Inget här än. Följ personer eller organisationer för att fylla ditt flöde."
+  },
+  "profile": {
+    "signInPrompt": "Logga in för att följa personer och organisationer och för att publicera egna evenemang.",
+    "followers_one": "{{count}} följare",
+    "followers_other": "{{count}} följare",
+    "following": "följer {{count}}"
+  },
+  "event": {
+    "title": "Evenemang",
+    "loadFailed": "Evenemanget kunde inte laddas.",
+    "byOrganizerWithHandle": "av {{name}} (@{{handle}})"
+  },
+  "auth": {
+    "signInTitle": "Välkommen tillbaka",
+    "signUpTitle": "Skapa ditt konto",
+    "email": "E-post",
+    "password": "Lösenord",
+    "signUp": "Registrera dig",
+    "switchToSignUp": "Ny här? Skapa ett konto",
+    "switchToSignIn": "Har du ett konto? Logga in",
+    "verifyEmail": "Bekräfta din e-postadress via länken i inkorgen och logga sedan in.",
+    "moreSteps": "Fler steg krävs för att slutföra inloggningen."
+  },
+  "settings": {
+    "language": "Språk",
+    "languageAutomatic": "Samma som enheten"
+  }
+}

@@ -1,23 +1,24 @@
 import type { AuthResult } from '@sidequest/api';
 import { router } from 'expo-router';
+import type { TFunction } from 'i18next';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useAuth } from '@/auth/auth-provider';
 import { Button } from '@/components/button';
 import { Screen } from '@/components/screen';
 import { TextField } from '@/components/text-field';
 import { ThemedText } from '@/components/themed-text';
+import { authErrorMessage } from '@/lib/errors';
 
 type Mode = 'sign-in' | 'sign-up';
 
-function messageFor(result: AuthResult) {
+function messageFor(result: AuthResult, t: TFunction) {
   switch (result.status) {
     case 'error':
-      return result.errors.map((error) => error.message).join('\n');
+      return authErrorMessage(result.errors, t);
     case 'pending':
-      return result.flows.includes('verify_email')
-        ? 'Check your inbox to verify your email address, then sign in.'
-        : 'Additional steps are required to finish signing in.';
+      return result.flows.includes('verify_email') ? t('auth.verifyEmail') : t('auth.moreSteps');
     default:
       return null;
   }
@@ -25,6 +26,7 @@ function messageFor(result: AuthResult) {
 
 export default function SignInScreen() {
   const { signIn, signUp } = useAuth();
+  const { t } = useTranslation();
   const [mode, setMode] = useState<Mode>('sign-in');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -38,17 +40,17 @@ export default function SignInScreen() {
     if (result.status === 'authenticated') {
       router.back();
     } else {
-      setMessage(messageFor(result));
+      setMessage(messageFor(result, t));
     }
   }
 
   return (
     <Screen hasHeader keyboardShouldPersistTaps="handled">
       <ThemedText type="subtitle">
-        {mode === 'sign-in' ? 'Welcome back' : 'Create your account'}
+        {mode === 'sign-in' ? t('auth.signInTitle') : t('auth.signUpTitle')}
       </ThemedText>
       <TextField
-        label="Email"
+        label={t('auth.email')}
         value={email}
         onChangeText={setEmail}
         autoCapitalize="none"
@@ -57,7 +59,7 @@ export default function SignInScreen() {
         textContentType="emailAddress"
       />
       <TextField
-        label="Password"
+        label={t('auth.password')}
         value={password}
         onChangeText={setPassword}
         secureTextEntry
@@ -67,14 +69,14 @@ export default function SignInScreen() {
       />
       {message ? <ThemedText themeColor="danger">{message}</ThemedText> : null}
       <Button
-        title={mode === 'sign-in' ? 'Sign in' : 'Sign up'}
+        title={mode === 'sign-in' ? t('common.signIn') : t('auth.signUp')}
         onPress={submit}
         loading={submitting}
         disabled={!email || !password}
       />
       <Button
         variant="secondary"
-        title={mode === 'sign-in' ? 'New here? Create an account' : 'Have an account? Sign in'}
+        title={mode === 'sign-in' ? t('auth.switchToSignUp') : t('auth.switchToSignIn')}
         onPress={() => {
           setMode(mode === 'sign-in' ? 'sign-up' : 'sign-in');
           setMessage(null);

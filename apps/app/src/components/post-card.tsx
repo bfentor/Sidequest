@@ -2,18 +2,20 @@ import type { Post } from '@sidequest/api';
 import { StyleSheet, View } from 'react-native';
 
 import { Spacing } from '@/constants/theme';
-import { formatPostedAt } from '@/lib/format';
+import { useFormat } from '@/lib/format';
 
 import { EventCard } from './event-card';
 import { ThemedText } from './themed-text';
 
 export function PostCard({ post }: { post: Post }) {
+  const format = useFormat();
+
   return (
     <View style={styles.post}>
       <View style={styles.byline}>
         <ThemedText type="smallBold">{post.author.display_name}</ThemedText>
         <ThemedText type="small" themeColor="textSecondary">
-          @{post.author.handle} · {formatPostedAt(post.created_at)}
+          @{post.author.handle} · {format.dateTime(post.created_at)}
         </ThemedText>
       </View>
       {post.body ? <ThemedText>{post.body}</ThemedText> : null}

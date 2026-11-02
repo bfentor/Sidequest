@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from django.utils.translation import gettext as _
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics, mixins, permissions, status, viewsets
 from rest_framework.decorators import action
@@ -25,7 +26,7 @@ class ProfileViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
         follower = request.user.profile
         if request.method == "POST":
             if followee == follower:
-                raise ValidationError("You cannot follow yourself.")
+                raise ValidationError(_("You cannot follow yourself."))
             Follow.objects.get_or_create(follower=follower, followee=followee)
         else:
             Follow.objects.filter(follower=follower, followee=followee).delete()

@@ -1,0 +1,62 @@
+{
+  "tabs": {
+    "upcoming": "Tulossa",
+    "nearby": "Lähellä",
+    "following": "Seuratut",
+    "profile": "Profiili"
+  },
+  "common": {
+    "tryAgain": "Yritä uudelleen",
+    "signIn": "Kirjaudu sisään",
+    "signOut": "Kirjaudu ulos",
+    "settings": "Asetukset",
+    "byOrganizer": "Järjestäjä: {{name}}"
+  },
+  "errors": {
+    "network": "Palvelimeen ei saatu yhteyttä.",
+    "unexpected": "Jokin meni pieleen."
+  },
+  "feed": {
+    "loadFailed": "Syötteen lataaminen epäonnistui."
+  },
+  "upcoming": {
+    "empty": "Tulevia tapahtumia ei vielä ole."
+  },
+  "nearby": {
+    "locationFailed": "Sijaintiasi ei voitu selvittää.",
+    "askPermission": "Jaa sijaintisi nähdäksesi lähelläsi olevat tapahtumat. Sijaintia käytetään vain tapahtumien järjestämiseen, eikä sitä tallenneta.",
+    "permissionDenied": "Sidequestin sijaintioikeus on pois päältä. Salli se asetuksista nähdäksesi lähelläsi olevat tapahtumat.",
+    "useMyLocation": "Käytä sijaintiani",
+    "empty": "Lähelläsi ei ole nyt tapahtumia."
+  },
+  "following": {
+    "signInPrompt": "Kirjaudu sisään nähdäksesi seuraamiesi ihmisten ja järjestöjen julkaisut ja tapahtumat.",
+    "empty": "Täällä ei ole vielä mitään. Seuraa ihmisiä tai järjestöjä täyttääksesi syötteesi."
+  },
+  "profile": {
+    "signInPrompt": "Kirjaudu sisään seurataksesi ihmisiä ja järjestöjä sekä julkaistaksesi omia tapahtumia.",
+    "followers_one": "{{count}} seuraaja",
+    "followers_other": "{{count}} seuraajaa",
+    "following": "seuraa {{count}}"
+  },
+  "event": {
+    "title": "Tapahtuma",
+    "loadFailed": "Tapahtuman lataaminen epäonnistui.",
+    "byOrganizerWithHandle": "Järjestäjä: {{name}} (@{{handle}})"
+  },
+  "auth": {
+    "signInTitle": "Tervetuloa takaisin",
+    "signUpTitle": "Luo tili",
+    "email": "Sähköposti",
+    "password": "Salasana",
+    "signUp": "Rekisteröidy",
+    "switchToSignUp": "Uusi täällä? Luo tili",
+    "switchToSignIn": "Onko sinulla jo tili? Kirjaudu sisään",
+    "verifyEmail": "Vahvista sähköpostiosoitteesi saapuneiden viestien linkistä ja kirjaudu sitten sisään.",
+    "moreSteps": "Kirjautumisen viimeistely vaatii lisävaiheita."
+  },
+  "settings": {
+    "language": "Kieli",
+    "languageAutomatic": "Sama kuin laitteessa"
+  }
+}

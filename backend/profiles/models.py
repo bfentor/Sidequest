@@ -2,9 +2,10 @@ from django.conf import settings
 from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models import Count, Exists, OuterRef, Q
+from django.utils.translation import gettext_lazy as _
 
 handle_validator = RegexValidator(
-    r"^[a-z0-9_]+$", "Use only lowercase letters, numbers and underscores."
+    r"^[a-z0-9_]+$", _("Use only lowercase letters, numbers and underscores.")
 )
 
 

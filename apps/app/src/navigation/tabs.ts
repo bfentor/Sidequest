@@ -5,7 +5,8 @@ export type TabDefinition = {
   /** Route file name inside `src/app/(tabs)/`. */
   name: string;
   href: Href;
-  title: string;
+  /** Key under `tabs` in the translation files. */
+  label: 'upcoming' | 'nearby' | 'following' | 'profile';
   /** SF Symbol on iOS; Material Symbol on Android and web. */
   icon: { ios: SFSymbol; material: AndroidSymbol };
 };
@@ -15,25 +16,25 @@ export const TABS: TabDefinition[] = [
   {
     name: 'index',
     href: '/',
-    title: 'Upcoming',
+    label: 'upcoming',
     icon: { ios: 'calendar', material: 'calendar_month' },
   },
   {
     name: 'nearby',
     href: '/nearby',
-    title: 'Nearby',
+    label: 'nearby',
     icon: { ios: 'location', material: 'near_me' },
   },
   {
     name: 'following',
     href: '/following',
-    title: 'Following',
+    label: 'following',
     icon: { ios: 'person.2', material: 'group' },
   },
   {
     name: 'profile',
     href: '/profile',
-    title: 'Profile',
+    label: 'profile',
     icon: { ios: 'person.crop.circle', material: 'person' },
   },
 ];

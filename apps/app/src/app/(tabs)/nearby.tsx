@@ -1,4 +1,5 @@
 import { useNearbyFeed, type LatLng } from '@sidequest/api';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator } from 'react-native';
 
 import { Button } from '@/components/button';
@@ -8,10 +9,14 @@ import { Screen } from '@/components/screen';
 import { ThemedText } from '@/components/themed-text';
 import { useCurrentPosition } from '@/hooks/use-current-position';
 
-const header = <ThemedText type="subtitle">Nearby</ThemedText>;
+function Header() {
+  const { t } = useTranslation();
+  return <ThemedText type="subtitle">{t('tabs.nearby')}</ThemedText>;
+}
 
 export default function NearbyScreen() {
   const { permission, requestPermission, position, failed } = useCurrentPosition();
+  const { t } = useTranslation();
 
   if (position) {
     return <NearbyFeed position={position} />;
@@ -19,24 +24,22 @@ export default function NearbyScreen() {
 
   return (
     <Screen>
-      {header}
+      <Header />
       {!permission ? (
         <ActivityIndicator />
       ) : permission.granted ? (
         failed ? (
-          <ThemedText themeColor="textSecondary">Couldn&apos;t determine your location.</ThemedText>
+          <ThemedText themeColor="textSecondary">{t('nearby.locationFailed')}</ThemedText>
         ) : (
           <ActivityIndicator />
         )
       ) : (
         <>
           <ThemedText themeColor="textSecondary">
-            {permission.canAskAgain
-              ? 'Share your location to see events around you. It is only used to sort events and is never stored.'
-              : 'Location access is turned off for Sidequest. Enable it in your settings to see events around you.'}
+            {permission.canAskAgain ? t('nearby.askPermission') : t('nearby.permissionDenied')}
           </ThemedText>
           {permission.canAskAgain ? (
-            <Button title="Use my location" onPress={requestPermission} />
+            <Button title={t('nearby.useMyLocation')} onPress={requestPermission} />
           ) : null}
         </>
       )}
@@ -46,14 +49,15 @@ export default function NearbyScreen() {
 
 function NearbyFeed({ position }: { position: LatLng }) {
   const feed = useNearbyFeed(position);
+  const { t } = useTranslation();
 
   return (
     <FeedList
       query={feed}
-      header={header}
+      header={<Header />}
       renderItem={(event) => <EventCard event={event} distanceM={event.distance_m} />}
       keyExtractor={(event) => String(event.id)}
-      emptyText="No events near you right now."
+      emptyText={t('nearby.empty')}
     />
   );
 }

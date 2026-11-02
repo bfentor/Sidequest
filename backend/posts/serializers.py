@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from events.models import Event
@@ -30,5 +31,5 @@ class PostSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         if not attrs.get("body") and not attrs.get("event"):
-            raise serializers.ValidationError("A post needs a body, an event, or both.")
+            raise serializers.ValidationError(_("A post needs a body, an event, or both."))
         return attrs

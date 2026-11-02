@@ -48,3 +48,10 @@ def test_update_own_profile(auth_client):
 
     response = auth_client.patch("/api/me/", {"handle": "Not Valid"})
     assert response.status_code == 400
+
+
+def test_errors_follow_the_requested_language(auth_client, user):
+    response = auth_client.post(
+        f"/api/profiles/{user.profile.handle}/follow/", headers={"Accept-Language": "fi"}
+    )
+    assert response.json() == ["Et voi seurata itseäsi."]

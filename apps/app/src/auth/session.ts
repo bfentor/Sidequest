@@ -1,5 +1,6 @@
 import { configureApi } from '@sidequest/api';
 
+import i18n from '@/i18n';
 import { API_URL } from '@/lib/config';
 
 import { tokenStorage } from './token-storage';
@@ -26,4 +27,8 @@ export const session = {
   },
 };
 
-configureApi({ baseUrl: API_URL, getSessionToken: session.token });
+configureApi({
+  baseUrl: API_URL,
+  getSessionToken: session.token,
+  getLanguage: () => i18n.language,
+});

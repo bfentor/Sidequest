@@ -133,7 +133,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 
 ## 13. Language and accessibility
 
-- [ ] Finnish, Swedish and English translations
+- [x] Finnish, Swedish and English translations
 - [ ] Screen reader labels, support for the system text size setting, and reduced motion
 
 ## 14. Infrastructure and operations
@@ -147,7 +147,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 - [ ] App icon, splash screen, branding and app store listing assets
 - [ ] End-to-end tests in CI
 - [ ] Feature flags
-- [ ] Semantic versioning on commit
+- [x] Semantic versioning on commit
 
 ## 15. Speed and offline use
 

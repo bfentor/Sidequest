@@ -97,6 +97,13 @@ Useful URLs while the backend runs:
 - http://localhost:8000/_allauth/openapi.html: auth API docs
 - http://localhost:8000/admin/: Django admin
 
+## Translations
+
+The app and the API are in English, Finnish and Swedish. Every new user-facing string gets all three in the same change.
+
+- **App:** `apps/app/src/i18n/locales/{en,fi,sv}.json`, used with `const { t } = useTranslation()`. TypeScript reports keys missing from the Finnish or Swedish file, and unknown keys passed to `t()`. Dates and numbers go through `useFormat()` (`src/lib/format.ts`).
+- **API:** messages wrapped in `gettext` / `gettext_lazy`. After adding some, run `uv run python manage.py makemessages -l fi -l sv --ignore=.venv --no-location`, translate them in `backend/locale/*/LC_MESSAGES/django.po`, and compile with `uv run python manage.py compilemessages --ignore=.venv` (the `.mo` files are built in CI and the Docker image, not committed). The app sends its language as `Accept-Language`.
+
 ## Changing the API
 
 1. Change models, serializers and views in `backend/`, then run `uv run python manage.py makemigrations`.

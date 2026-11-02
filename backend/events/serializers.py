@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from profiles.serializers import ActingProfileField, ProfileSummarySerializer
@@ -37,7 +38,7 @@ class EventSerializer(serializers.ModelSerializer):
         starts_at = attrs.get("starts_at", getattr(self.instance, "starts_at", None))
         ends_at = attrs.get("ends_at", getattr(self.instance, "ends_at", None))
         if starts_at and ends_at and ends_at <= starts_at:
-            raise serializers.ValidationError({"ends_at": "Must be after the start time."})
+            raise serializers.ValidationError({"ends_at": _("Must be after the start time.")})
         return attrs
 
     def create(self, validated_data):
