@@ -27,7 +27,12 @@
     "loadFailed": "Syötteen lataaminen epäonnistui."
   },
   "upcoming": {
-    "empty": "Tulevia tapahtumia ei vielä ole."
+    "empty": "Tulevia tapahtumia ei vielä ole.",
+    "soonest": "Pian",
+    "forYou": "Sinulle",
+    "trending": "Suosittua",
+    "forYouEmpty": "Sinulle ei ole vielä poimittu mitään. Lisää kiinnostuksen kohteita profiiliisi ja seuraa järjestäjiä, niin saat ehdotuksia.",
+    "trendingEmpty": "Mikään ei ole juuri nyt suosittua."
   },
   "nearby": {
     "locationFailed": "Sijaintiasi ei voitu selvittää.",

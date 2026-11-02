@@ -16,3 +16,9 @@ class NearbyPagination(LimitOffsetPagination):
     # per request from the caller's position, so plain offsets are used here.
     default_limit = 20
     max_limit = 50
+
+
+class RankedPagination(LimitOffsetPagination):
+    # Scores are computed per request, so there's no column for a cursor.
+    default_limit = 20
+    max_limit = 50

@@ -1,5 +1,5 @@
 /**
- * Infinite-scrolling hooks for the three feeds.
+ * Infinite-scrolling hooks for the feeds.
  *
  * The backend returns DRF-style pages with a `next` URL; each hook reads the
  * next page's cursor or offset from it.
@@ -8,18 +8,22 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 
 import {
   feedsFollowingListInfiniteQueryKey,
+  feedsForYouListInfiniteQueryKey,
   feedsNearbyListInfiniteQueryKey,
+  feedsTrendingListInfiniteQueryKey,
   feedsUpcomingListInfiniteQueryKey,
   meEventsListInfiniteQueryKey,
 } from './generated/@tanstack/react-query.gen';
 import {
   feedsFollowingList,
+  feedsForYouList,
   feedsNearbyList,
+  feedsTrendingList,
   feedsUpcomingList,
   meEventsList,
 } from './generated/sdk.gen';
 import type { LatLng } from './generated/types.gen';
-import { queryParam } from './pagination';
+import { nextOffset, queryParam } from './pagination';
 
 /** Narrows the upcoming and nearby feeds. */
 export type FeedFilters = {
@@ -60,10 +64,45 @@ export function useNearbyFeed(position: LatLng, radiusKm?: number, filters: Feed
       return data;
     },
     initialPageParam: 0,
-    getNextPageParam: (page) => {
-      const offset = queryParam(page.next, 'offset');
-      return offset === undefined ? undefined : Number(offset);
+    getNextPageParam: (page) => nextOffset(page.next),
+  });
+}
+
+/** Upcoming events gaining the most RSVPs lately. */
+export function useTrendingFeed(filters: FeedFilters = {}) {
+  return useInfiniteQuery({
+    queryKey: feedsTrendingListInfiniteQueryKey({ query: filters }),
+    queryFn: async ({ pageParam, signal }) => {
+      const { data } = await feedsTrendingList({
+        query: { ...filters, offset: pageParam },
+        signal,
+        throwOnError: true,
+      });
+      return data;
     },
+    initialPageParam: 0,
+    getNextPageParam: (page) => nextOffset(page.next),
+  });
+}
+
+/**
+ * Upcoming events picked for the signed-in user. With a position, nearby
+ * events rank higher.
+ */
+export function useForYouFeed(position: LatLng | null, filters: FeedFilters = {}) {
+  const query = { ...(position ?? {}), ...filters };
+  return useInfiniteQuery({
+    queryKey: feedsForYouListInfiniteQueryKey({ query }),
+    queryFn: async ({ pageParam, signal }) => {
+      const { data } = await feedsForYouList({
+        query: { ...query, offset: pageParam },
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    initialPageParam: 0,
+    getNextPageParam: (page) => nextOffset(page.next),
   });
 }
 
@@ -98,9 +137,6 @@ export function useManagedEvents(when: 'upcoming' | 'past') {
       return data;
     },
     initialPageParam: 0,
-    getNextPageParam: (page) => {
-      const offset = queryParam(page.next, 'offset');
-      return offset === undefined ? undefined : Number(offset);
-    },
+    getNextPageParam: (page) => nextOffset(page.next),
   });
 }

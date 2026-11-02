@@ -27,7 +27,12 @@
     "loadFailed": "Flödet kunde inte laddas."
   },
   "upcoming": {
-    "empty": "Inga kommande evenemang än."
+    "empty": "Inga kommande evenemang än.",
+    "soonest": "Snart",
+    "forYou": "För dig",
+    "trending": "Populärt",
+    "forYouEmpty": "Inget valt åt dig än. Lägg till intressen i din profil och följ arrangörer för att få förslag.",
+    "trendingEmpty": "Inget är populärt just nu."
   },
   "nearby": {
     "locationFailed": "Det gick inte att avgöra var du är.",

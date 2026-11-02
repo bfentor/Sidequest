@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { categoriesList, eventsAttendanceDestroy, eventsAttendanceUpdate, eventsCoHostCreate, eventsCoHostDestroy, eventsCoHostList, eventsCreate, eventsDestroy, eventsPartialUpdate, eventsRetrieve, feedsFollowingList, feedsNearbyList, feedsUpcomingList, geocodeList, imagesCreate, meAcceptTermsCreate, meAccountDeleteCreate, meBlockedList, meEventsList, meExportRetrieve, meFollowRequestsCreate, meFollowRequestsDestroy, meFollowRequestsList, meInvitationsCreate, meInvitationsDestroy, meInvitationsList, meMutedList, mePartialUpdate, meProfilesList, meRetrieve, meSettingsPartialUpdate, meSettingsRetrieve, meStudentCreate, meStudentDestroy, meStudentRetrieve, meStudentVerifyCreate, notificationsList, notificationsReadCreate, notificationsUnreadRetrieve, type Options, organizationsCreate, organizationsInvitationsList, organizationsMembersCreate, organizationsMembersDestroy, organizationsMembersList, organizationsMembersPartialUpdate, organizationsPartialUpdate, organizationsVerificationCreate, postsCreate, postsDestroy, postsRetrieve, profilesBlockCreate, profilesBlockDestroy, profilesEventsList, profilesFollowCreate, profilesFollowDestroy, profilesFollowersList, profilesFollowingList, profilesMuteCreate, profilesMuteDestroy, profilesPostsList, profilesRetrieve, pushDevicesCreate, pushDevicesDestroy, reportsCreate, searchRetrieve, universitiesList } from '../sdk.gen';
-import type { CategoriesListData, CategoriesListResponse, EventsAttendanceDestroyData, EventsAttendanceDestroyResponse, EventsAttendanceUpdateData, EventsAttendanceUpdateResponse, EventsCoHostCreateData, EventsCoHostCreateResponse, EventsCoHostDestroyData, EventsCoHostDestroyResponse, EventsCoHostListData, EventsCoHostListResponse, EventsCreateData, EventsCreateResponse, EventsDestroyData, EventsDestroyResponse, EventsPartialUpdateData, EventsPartialUpdateResponse, EventsRetrieveData, EventsRetrieveResponse, FeedsFollowingListData, FeedsFollowingListResponse, FeedsNearbyListData, FeedsNearbyListResponse, FeedsUpcomingListData, FeedsUpcomingListResponse, GeocodeListData, GeocodeListResponse, ImagesCreateData, ImagesCreateResponse, MeAcceptTermsCreateData, MeAcceptTermsCreateResponse, MeAccountDeleteCreateData, MeAccountDeleteCreateResponse, MeBlockedListData, MeBlockedListResponse, MeEventsListData, MeEventsListResponse, MeExportRetrieveData, MeExportRetrieveResponse, MeFollowRequestsCreateData, MeFollowRequestsCreateResponse, MeFollowRequestsDestroyData, MeFollowRequestsDestroyResponse, MeFollowRequestsListData, MeFollowRequestsListResponse, MeInvitationsCreateData, MeInvitationsCreateResponse, MeInvitationsDestroyData, MeInvitationsDestroyResponse, MeInvitationsListData, MeInvitationsListResponse, MeMutedListData, MeMutedListResponse, MePartialUpdateData, MePartialUpdateResponse, MeProfilesListData, MeProfilesListResponse, MeRetrieveData, MeRetrieveResponse, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponse, MeSettingsRetrieveData, MeSettingsRetrieveResponse, MeStudentCreateData, MeStudentCreateResponse, MeStudentDestroyData, MeStudentDestroyResponse, MeStudentRetrieveData, MeStudentRetrieveResponse, MeStudentVerifyCreateData, MeStudentVerifyCreateResponse, NotificationsListData, NotificationsListResponse, NotificationsReadCreateData, NotificationsReadCreateResponse, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponse, OrganizationsCreateData, OrganizationsCreateResponse, OrganizationsInvitationsListData, OrganizationsInvitationsListResponse, OrganizationsMembersCreateData, OrganizationsMembersCreateResponse, OrganizationsMembersDestroyData, OrganizationsMembersDestroyResponse, OrganizationsMembersListData, OrganizationsMembersListResponse, OrganizationsMembersPartialUpdateData, OrganizationsMembersPartialUpdateResponse, OrganizationsPartialUpdateData, OrganizationsPartialUpdateResponse, OrganizationsVerificationCreateData, OrganizationsVerificationCreateResponse, PostsCreateData, PostsCreateResponse, PostsDestroyData, PostsDestroyResponse, PostsRetrieveData, PostsRetrieveResponse, ProfilesBlockCreateData, ProfilesBlockCreateResponse, ProfilesBlockDestroyData, ProfilesBlockDestroyResponse, ProfilesEventsListData, ProfilesEventsListResponse, ProfilesFollowCreateData, ProfilesFollowCreateResponse, ProfilesFollowDestroyData, ProfilesFollowDestroyResponse, ProfilesFollowersListData, ProfilesFollowersListResponse, ProfilesFollowingListData, ProfilesFollowingListResponse, ProfilesMuteCreateData, ProfilesMuteCreateResponse, ProfilesMuteDestroyData, ProfilesMuteDestroyResponse, ProfilesPostsListData, ProfilesPostsListResponse, ProfilesRetrieveData, ProfilesRetrieveResponse, PushDevicesCreateData, PushDevicesCreateResponse, PushDevicesDestroyData, PushDevicesDestroyResponse, ReportsCreateData, ReportsCreateResponse, SearchRetrieveData, SearchRetrieveResponse, UniversitiesListData, UniversitiesListResponse } from '../types.gen';
+import { categoriesList, eventsAttendanceDestroy, eventsAttendanceUpdate, eventsCoHostCreate, eventsCoHostDestroy, eventsCoHostList, eventsCreate, eventsDestroy, eventsPartialUpdate, eventsRetrieve, feedsFollowingList, feedsForYouList, feedsNearbyList, feedsTrendingList, feedsUpcomingList, geocodeList, imagesCreate, meAcceptTermsCreate, meAccountDeleteCreate, meBlockedList, meEventsList, meExportRetrieve, meFollowRequestsCreate, meFollowRequestsDestroy, meFollowRequestsList, meInvitationsCreate, meInvitationsDestroy, meInvitationsList, meMutedList, mePartialUpdate, meProfilesList, meRetrieve, meSettingsPartialUpdate, meSettingsRetrieve, meStudentCreate, meStudentDestroy, meStudentRetrieve, meStudentVerifyCreate, meSuggestionsList, notificationsList, notificationsReadCreate, notificationsUnreadRetrieve, type Options, organizationsCreate, organizationsInvitationsList, organizationsMembersCreate, organizationsMembersDestroy, organizationsMembersList, organizationsMembersPartialUpdate, organizationsPartialUpdate, organizationsVerificationCreate, postsCreate, postsDestroy, postsRetrieve, profilesBlockCreate, profilesBlockDestroy, profilesEventsList, profilesFollowCreate, profilesFollowDestroy, profilesFollowersList, profilesFollowingList, profilesMuteCreate, profilesMuteDestroy, profilesPostsList, profilesRetrieve, pushDevicesCreate, pushDevicesDestroy, reportsCreate, searchRetrieve, universitiesList } from '../sdk.gen';
+import type { CategoriesListData, CategoriesListResponse, EventsAttendanceDestroyData, EventsAttendanceDestroyResponse, EventsAttendanceUpdateData, EventsAttendanceUpdateResponse, EventsCoHostCreateData, EventsCoHostCreateResponse, EventsCoHostDestroyData, EventsCoHostDestroyResponse, EventsCoHostListData, EventsCoHostListResponse, EventsCreateData, EventsCreateResponse, EventsDestroyData, EventsDestroyResponse, EventsPartialUpdateData, EventsPartialUpdateResponse, EventsRetrieveData, EventsRetrieveResponse, FeedsFollowingListData, FeedsFollowingListResponse, FeedsForYouListData, FeedsForYouListResponse, FeedsNearbyListData, FeedsNearbyListResponse, FeedsTrendingListData, FeedsTrendingListResponse, FeedsUpcomingListData, FeedsUpcomingListResponse, GeocodeListData, GeocodeListResponse, ImagesCreateData, ImagesCreateResponse, MeAcceptTermsCreateData, MeAcceptTermsCreateResponse, MeAccountDeleteCreateData, MeAccountDeleteCreateResponse, MeBlockedListData, MeBlockedListResponse, MeEventsListData, MeEventsListResponse, MeExportRetrieveData, MeExportRetrieveResponse, MeFollowRequestsCreateData, MeFollowRequestsCreateResponse, MeFollowRequestsDestroyData, MeFollowRequestsDestroyResponse, MeFollowRequestsListData, MeFollowRequestsListResponse, MeInvitationsCreateData, MeInvitationsCreateResponse, MeInvitationsDestroyData, MeInvitationsDestroyResponse, MeInvitationsListData, MeInvitationsListResponse, MeMutedListData, MeMutedListResponse, MePartialUpdateData, MePartialUpdateResponse, MeProfilesListData, MeProfilesListResponse, MeRetrieveData, MeRetrieveResponse, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponse, MeSettingsRetrieveData, MeSettingsRetrieveResponse, MeStudentCreateData, MeStudentCreateResponse, MeStudentDestroyData, MeStudentDestroyResponse, MeStudentRetrieveData, MeStudentRetrieveResponse, MeStudentVerifyCreateData, MeStudentVerifyCreateResponse, MeSuggestionsListData, MeSuggestionsListResponse, NotificationsListData, NotificationsListResponse, NotificationsReadCreateData, NotificationsReadCreateResponse, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponse, OrganizationsCreateData, OrganizationsCreateResponse, OrganizationsInvitationsListData, OrganizationsInvitationsListResponse, OrganizationsMembersCreateData, OrganizationsMembersCreateResponse, OrganizationsMembersDestroyData, OrganizationsMembersDestroyResponse, OrganizationsMembersListData, OrganizationsMembersListResponse, OrganizationsMembersPartialUpdateData, OrganizationsMembersPartialUpdateResponse, OrganizationsPartialUpdateData, OrganizationsPartialUpdateResponse, OrganizationsVerificationCreateData, OrganizationsVerificationCreateResponse, PostsCreateData, PostsCreateResponse, PostsDestroyData, PostsDestroyResponse, PostsRetrieveData, PostsRetrieveResponse, ProfilesBlockCreateData, ProfilesBlockCreateResponse, ProfilesBlockDestroyData, ProfilesBlockDestroyResponse, ProfilesEventsListData, ProfilesEventsListResponse, ProfilesFollowCreateData, ProfilesFollowCreateResponse, ProfilesFollowDestroyData, ProfilesFollowDestroyResponse, ProfilesFollowersListData, ProfilesFollowersListResponse, ProfilesFollowingListData, ProfilesFollowingListResponse, ProfilesMuteCreateData, ProfilesMuteCreateResponse, ProfilesMuteDestroyData, ProfilesMuteDestroyResponse, ProfilesPostsListData, ProfilesPostsListResponse, ProfilesRetrieveData, ProfilesRetrieveResponse, PushDevicesCreateData, PushDevicesCreateResponse, PushDevicesDestroyData, PushDevicesDestroyResponse, ReportsCreateData, ReportsCreateResponse, SearchRetrieveData, SearchRetrieveResponse, UniversitiesListData, UniversitiesListResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -297,6 +297,58 @@ export const feedsFollowingListInfiniteOptions = (options?: Options<FeedsFollowi
     return opts as Omit<typeof opts, 'initialData'>;
 };
 
+export const feedsForYouListQueryKey = (options?: Options<FeedsForYouListData>) => createQueryKey('feedsForYouList', options);
+
+/**
+ * Upcoming events picked for the signed-in user; see feeds.ranking.for_you.
+ *
+ * The optional position favours nearby events and is never stored.
+ */
+export const feedsForYouListOptions = (options?: Options<FeedsForYouListData>) => queryOptions<FeedsForYouListResponse, DefaultError, FeedsForYouListResponse, ReturnType<typeof feedsForYouListQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await feedsForYouList({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: feedsForYouListQueryKey(options)
+});
+
+export const feedsForYouListInfiniteQueryKey = (options?: Options<FeedsForYouListData>): QueryKey<Options<FeedsForYouListData>> => createQueryKey('feedsForYouList', options, true);
+
+/**
+ * Upcoming events picked for the signed-in user; see feeds.ranking.for_you.
+ *
+ * The optional position favours nearby events and is never stored.
+ */
+export const feedsForYouListInfiniteOptions = (options?: Options<FeedsForYouListData>) => {
+    const opts = infiniteQueryOptions<FeedsForYouListResponse, DefaultError, InfiniteData<FeedsForYouListResponse>, QueryKey<Options<FeedsForYouListData>>, number | Pick<QueryKey<Options<FeedsForYouListData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<FeedsForYouListData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    offset: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            const { data } = await feedsForYouList({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: feedsForYouListInfiniteQueryKey(options)
+    });
+    return opts as Omit<typeof opts, 'initialData'>;
+};
+
 export const feedsNearbyListQueryKey = (options: Options<FeedsNearbyListData>) => createQueryKey('feedsNearbyList', options);
 
 /**
@@ -345,6 +397,54 @@ export const feedsNearbyListInfiniteOptions = (options: Options<FeedsNearbyListD
             return data;
         },
         queryKey: feedsNearbyListInfiniteQueryKey(options)
+    });
+    return opts as Omit<typeof opts, 'initialData'>;
+};
+
+export const feedsTrendingListQueryKey = (options?: Options<FeedsTrendingListData>) => createQueryKey('feedsTrendingList', options);
+
+/**
+ * Upcoming events gaining the most RSVPs lately.
+ */
+export const feedsTrendingListOptions = (options?: Options<FeedsTrendingListData>) => queryOptions<FeedsTrendingListResponse, DefaultError, FeedsTrendingListResponse, ReturnType<typeof feedsTrendingListQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await feedsTrendingList({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: feedsTrendingListQueryKey(options)
+});
+
+export const feedsTrendingListInfiniteQueryKey = (options?: Options<FeedsTrendingListData>): QueryKey<Options<FeedsTrendingListData>> => createQueryKey('feedsTrendingList', options, true);
+
+/**
+ * Upcoming events gaining the most RSVPs lately.
+ */
+export const feedsTrendingListInfiniteOptions = (options?: Options<FeedsTrendingListData>) => {
+    const opts = infiniteQueryOptions<FeedsTrendingListResponse, DefaultError, InfiniteData<FeedsTrendingListResponse>, QueryKey<Options<FeedsTrendingListData>>, number | Pick<QueryKey<Options<FeedsTrendingListData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<FeedsTrendingListData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    offset: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            const { data } = await feedsTrendingList({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: feedsTrendingListInfiniteQueryKey(options)
     });
     return opts as Omit<typeof opts, 'initialData'>;
 };
@@ -861,6 +961,24 @@ export const meStudentVerifyCreateMutation = (options?: Partial<Options<MeStuden
     };
     return mutationOptions;
 };
+
+export const meSuggestionsListQueryKey = (options?: Options<MeSuggestionsListData>) => createQueryKey('meSuggestionsList', options);
+
+/**
+ * Up to ten profiles the signed-in user might want to follow.
+ */
+export const meSuggestionsListOptions = (options?: Options<MeSuggestionsListData>) => queryOptions<MeSuggestionsListResponse, DefaultError, MeSuggestionsListResponse, ReturnType<typeof meSuggestionsListQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await meSuggestionsList({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: meSuggestionsListQueryKey(options)
+});
 
 export const notificationsListQueryKey = (options?: Options<NotificationsListData>) => createQueryKey('notificationsList', options);
 

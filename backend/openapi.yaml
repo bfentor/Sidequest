@@ -278,6 +278,78 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedPostList'
           description: ''
+  /api/feeds/for-you/:
+    get:
+      operationId: feeds_for_you_list
+      description: |-
+        Upcoming events picked for the signed-in user; see feeds.ranking.for_you.
+
+        The optional position favours nearby events and is never stored.
+      parameters:
+      - in: query
+        name: category
+        schema:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            pattern: ^[-a-zA-Z0-9_]+$
+        description: Category slugs; events in any of them.
+      - in: query
+        name: free
+        schema:
+          type: boolean
+          default: false
+        description: Free events only.
+      - in: query
+        name: lat
+        schema:
+          type: number
+          format: double
+          maximum: 90
+          minimum: -90
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: lng
+        schema:
+          type: number
+          format: double
+          maximum: 180
+          minimum: -180
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: starts_after
+        schema:
+          type: string
+          format: date-time
+        description: Events still going on after this time.
+      - in: query
+        name: starts_before
+        schema:
+          type: string
+          format: date-time
+        description: Events starting before this time.
+      tags:
+      - feeds
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEventList'
+          description: ''
   /api/feeds/nearby/:
     get:
       operationId: feeds_nearby_list
@@ -360,6 +432,62 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedNearbyEventList'
+          description: ''
+  /api/feeds/trending/:
+    get:
+      operationId: feeds_trending_list
+      description: Upcoming events gaining the most RSVPs lately.
+      parameters:
+      - in: query
+        name: category
+        schema:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            pattern: ^[-a-zA-Z0-9_]+$
+        description: Category slugs; events in any of them.
+      - in: query
+        name: free
+        schema:
+          type: boolean
+          default: false
+        description: Free events only.
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: starts_after
+        schema:
+          type: string
+          format: date-time
+        description: Events still going on after this time.
+      - in: query
+        name: starts_before
+        schema:
+          type: string
+          format: date-time
+        description: Events starting before this time.
+      tags:
+      - feeds
+      security:
+      - XSessionTokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEventList'
           description: ''
   /api/feeds/upcoming/:
     get:
@@ -866,6 +994,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StudentStatus'
+          description: ''
+  /api/me/suggestions/:
+    get:
+      operationId: me_suggestions_list
+      description: Up to ten profiles the signed-in user might want to follow.
+      parameters:
+      - in: query
+        name: kind
+        schema:
+          enum:
+          - person
+          - organization
+          type: string
+          minLength: 1
+        description: |-
+          Only people or organizations.
+
+          * `person` - Person
+          * `organization` - Organization
+      tags:
+      - me
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Profile'
           description: ''
   /api/notifications/:
     get:
@@ -2446,18 +2605,22 @@ components:
     PaginatedEventList:
       type: object
       required:
+      - count
       - results
       properties:
+        count:
+          type: integer
+          example: 123
         next:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+          example: http://api.example.org/accounts/?offset=400&limit=100
         previous:
           type: string
           nullable: true
           format: uri
-          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+          example: http://api.example.org/accounts/?offset=200&limit=100
         results:
           type: array
           items:

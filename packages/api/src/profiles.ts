@@ -14,7 +14,7 @@ import {
   profilesFollowingList,
   profilesPostsList,
 } from './generated/sdk.gen';
-import { queryParam } from './pagination';
+import { nextOffset, queryParam } from './pagination';
 
 /** A profile's posts, newest first. */
 export function useProfilePosts(handle: string) {
@@ -50,10 +50,7 @@ export function useProfileEvents(handle: string, when: 'upcoming' | 'past') {
       return data;
     },
     initialPageParam: 0,
-    getNextPageParam: (page) => {
-      const offset = queryParam(page.next, 'offset');
-      return offset === undefined ? undefined : Number(offset);
-    },
+    getNextPageParam: (page) => nextOffset(page.next),
   });
 }
 

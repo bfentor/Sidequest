@@ -2,7 +2,7 @@
 
 import { type Client, type ClientMeta, formDataBodySerializer, type Options as Options2, type RequestResult, type TDataShape } from './client';
 import { client } from './client.gen';
-import type { CategoriesListData, CategoriesListResponses, EventsAttendanceDestroyData, EventsAttendanceDestroyResponses, EventsAttendanceUpdateData, EventsAttendanceUpdateResponses, EventsCoHostCreateData, EventsCoHostCreateResponses, EventsCoHostDestroyData, EventsCoHostDestroyResponses, EventsCoHostListData, EventsCoHostListResponses, EventsCreateData, EventsCreateResponses, EventsDestroyData, EventsDestroyResponses, EventsPartialUpdateData, EventsPartialUpdateResponses, EventsRetrieveData, EventsRetrieveResponses, FeedsFollowingListData, FeedsFollowingListResponses, FeedsNearbyListData, FeedsNearbyListResponses, FeedsUpcomingListData, FeedsUpcomingListResponses, GeocodeListData, GeocodeListResponses, ImagesCreateData, ImagesCreateResponses, MeAcceptTermsCreateData, MeAcceptTermsCreateResponses, MeAccountDeleteCreateData, MeAccountDeleteCreateResponses, MeBlockedListData, MeBlockedListResponses, MeEventsListData, MeEventsListResponses, MeExportRetrieveData, MeExportRetrieveResponses, MeFollowRequestsCreateData, MeFollowRequestsCreateResponses, MeFollowRequestsDestroyData, MeFollowRequestsDestroyResponses, MeFollowRequestsListData, MeFollowRequestsListResponses, MeInvitationsCreateData, MeInvitationsCreateResponses, MeInvitationsDestroyData, MeInvitationsDestroyResponses, MeInvitationsListData, MeInvitationsListResponses, MeMutedListData, MeMutedListResponses, MePartialUpdateData, MePartialUpdateResponses, MeProfilesListData, MeProfilesListResponses, MeRetrieveData, MeRetrieveResponses, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponses, MeSettingsRetrieveData, MeSettingsRetrieveResponses, MeStudentCreateData, MeStudentCreateResponses, MeStudentDestroyData, MeStudentDestroyResponses, MeStudentRetrieveData, MeStudentRetrieveResponses, MeStudentVerifyCreateData, MeStudentVerifyCreateResponses, NotificationsListData, NotificationsListResponses, NotificationsReadCreateData, NotificationsReadCreateResponses, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponses, OrganizationsCreateData, OrganizationsCreateResponses, OrganizationsInvitationsListData, OrganizationsInvitationsListResponses, OrganizationsMembersCreateData, OrganizationsMembersCreateResponses, OrganizationsMembersDestroyData, OrganizationsMembersDestroyResponses, OrganizationsMembersListData, OrganizationsMembersListResponses, OrganizationsMembersPartialUpdateData, OrganizationsMembersPartialUpdateResponses, OrganizationsPartialUpdateData, OrganizationsPartialUpdateResponses, OrganizationsVerificationCreateData, OrganizationsVerificationCreateResponses, PostsCreateData, PostsCreateResponses, PostsDestroyData, PostsDestroyResponses, PostsRetrieveData, PostsRetrieveResponses, ProfilesBlockCreateData, ProfilesBlockCreateResponses, ProfilesBlockDestroyData, ProfilesBlockDestroyResponses, ProfilesEventsListData, ProfilesEventsListResponses, ProfilesFollowCreateData, ProfilesFollowCreateResponses, ProfilesFollowDestroyData, ProfilesFollowDestroyResponses, ProfilesFollowersListData, ProfilesFollowersListResponses, ProfilesFollowingListData, ProfilesFollowingListResponses, ProfilesMuteCreateData, ProfilesMuteCreateResponses, ProfilesMuteDestroyData, ProfilesMuteDestroyResponses, ProfilesPostsListData, ProfilesPostsListResponses, ProfilesRetrieveData, ProfilesRetrieveResponses, PushDevicesCreateData, PushDevicesCreateResponses, PushDevicesDestroyData, PushDevicesDestroyResponses, ReportsCreateData, ReportsCreateResponses, SearchRetrieveData, SearchRetrieveResponses, UniversitiesListData, UniversitiesListResponses } from './types.gen';
+import type { CategoriesListData, CategoriesListResponses, EventsAttendanceDestroyData, EventsAttendanceDestroyResponses, EventsAttendanceUpdateData, EventsAttendanceUpdateResponses, EventsCoHostCreateData, EventsCoHostCreateResponses, EventsCoHostDestroyData, EventsCoHostDestroyResponses, EventsCoHostListData, EventsCoHostListResponses, EventsCreateData, EventsCreateResponses, EventsDestroyData, EventsDestroyResponses, EventsPartialUpdateData, EventsPartialUpdateResponses, EventsRetrieveData, EventsRetrieveResponses, FeedsFollowingListData, FeedsFollowingListResponses, FeedsForYouListData, FeedsForYouListResponses, FeedsNearbyListData, FeedsNearbyListResponses, FeedsTrendingListData, FeedsTrendingListResponses, FeedsUpcomingListData, FeedsUpcomingListResponses, GeocodeListData, GeocodeListResponses, ImagesCreateData, ImagesCreateResponses, MeAcceptTermsCreateData, MeAcceptTermsCreateResponses, MeAccountDeleteCreateData, MeAccountDeleteCreateResponses, MeBlockedListData, MeBlockedListResponses, MeEventsListData, MeEventsListResponses, MeExportRetrieveData, MeExportRetrieveResponses, MeFollowRequestsCreateData, MeFollowRequestsCreateResponses, MeFollowRequestsDestroyData, MeFollowRequestsDestroyResponses, MeFollowRequestsListData, MeFollowRequestsListResponses, MeInvitationsCreateData, MeInvitationsCreateResponses, MeInvitationsDestroyData, MeInvitationsDestroyResponses, MeInvitationsListData, MeInvitationsListResponses, MeMutedListData, MeMutedListResponses, MePartialUpdateData, MePartialUpdateResponses, MeProfilesListData, MeProfilesListResponses, MeRetrieveData, MeRetrieveResponses, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponses, MeSettingsRetrieveData, MeSettingsRetrieveResponses, MeStudentCreateData, MeStudentCreateResponses, MeStudentDestroyData, MeStudentDestroyResponses, MeStudentRetrieveData, MeStudentRetrieveResponses, MeStudentVerifyCreateData, MeStudentVerifyCreateResponses, MeSuggestionsListData, MeSuggestionsListResponses, NotificationsListData, NotificationsListResponses, NotificationsReadCreateData, NotificationsReadCreateResponses, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponses, OrganizationsCreateData, OrganizationsCreateResponses, OrganizationsInvitationsListData, OrganizationsInvitationsListResponses, OrganizationsMembersCreateData, OrganizationsMembersCreateResponses, OrganizationsMembersDestroyData, OrganizationsMembersDestroyResponses, OrganizationsMembersListData, OrganizationsMembersListResponses, OrganizationsMembersPartialUpdateData, OrganizationsMembersPartialUpdateResponses, OrganizationsPartialUpdateData, OrganizationsPartialUpdateResponses, OrganizationsVerificationCreateData, OrganizationsVerificationCreateResponses, PostsCreateData, PostsCreateResponses, PostsDestroyData, PostsDestroyResponses, PostsRetrieveData, PostsRetrieveResponses, ProfilesBlockCreateData, ProfilesBlockCreateResponses, ProfilesBlockDestroyData, ProfilesBlockDestroyResponses, ProfilesEventsListData, ProfilesEventsListResponses, ProfilesFollowCreateData, ProfilesFollowCreateResponses, ProfilesFollowDestroyData, ProfilesFollowDestroyResponses, ProfilesFollowersListData, ProfilesFollowersListResponses, ProfilesFollowingListData, ProfilesFollowingListResponses, ProfilesMuteCreateData, ProfilesMuteCreateResponses, ProfilesMuteDestroyData, ProfilesMuteDestroyResponses, ProfilesPostsListData, ProfilesPostsListResponses, ProfilesRetrieveData, ProfilesRetrieveResponses, PushDevicesCreateData, PushDevicesCreateResponses, PushDevicesDestroyData, PushDevicesDestroyResponses, ReportsCreateData, ReportsCreateResponses, SearchRetrieveData, SearchRetrieveResponses, UniversitiesListData, UniversitiesListResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -136,6 +136,17 @@ export const feedsFollowingList = <ThrowOnError extends boolean = false>(options
 });
 
 /**
+ * Upcoming events picked for the signed-in user; see feeds.ranking.for_you.
+ *
+ * The optional position favours nearby events and is never stored.
+ */
+export const feedsForYouList = <ThrowOnError extends boolean = false>(options?: Options<FeedsForYouListData, ThrowOnError>): RequestResult<FeedsForYouListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<FeedsForYouListResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/feeds/for-you/',
+    ...options
+});
+
+/**
  * Ongoing and future events within a radius of the given position, nearest first.
  *
  * The position is only used for this query and is never stored.
@@ -143,6 +154,15 @@ export const feedsFollowingList = <ThrowOnError extends boolean = false>(options
 export const feedsNearbyList = <ThrowOnError extends boolean = false>(options: Options<FeedsNearbyListData, ThrowOnError>): RequestResult<FeedsNearbyListResponses, unknown, ThrowOnError> => (options.client ?? client).get<FeedsNearbyListResponses, unknown, ThrowOnError>({
     security: [{ name: 'X-Session-Token', type: 'apiKey' }],
     url: '/api/feeds/nearby/',
+    ...options
+});
+
+/**
+ * Upcoming events gaining the most RSVPs lately.
+ */
+export const feedsTrendingList = <ThrowOnError extends boolean = false>(options?: Options<FeedsTrendingListData, ThrowOnError>): RequestResult<FeedsTrendingListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<FeedsTrendingListResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/feeds/trending/',
     ...options
 });
 
@@ -388,6 +408,15 @@ export const meStudentVerifyCreate = <ThrowOnError extends boolean = false>(opti
         'Content-Type': 'application/json',
         ...options.headers
     }
+});
+
+/**
+ * Up to ten profiles the signed-in user might want to follow.
+ */
+export const meSuggestionsList = <ThrowOnError extends boolean = false>(options?: Options<MeSuggestionsListData, ThrowOnError>): RequestResult<MeSuggestionsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<MeSuggestionsListResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/me/suggestions/',
+    ...options
 });
 
 /**

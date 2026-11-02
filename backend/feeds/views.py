@@ -14,7 +14,13 @@ from moderation.visibility import viewer_profile
 from posts.models import Post
 from posts.serializers import PostSerializer
 
-from .pagination import NearbyPagination, NewestFirstCursorPagination, UpcomingCursorPagination
+from .pagination import (
+    NearbyPagination,
+    NewestFirstCursorPagination,
+    RankedPagination,
+    UpcomingCursorPagination,
+)
+from .ranking import for_you, trending
 
 
 class FeedFilterSerializer(serializers.Serializer):
@@ -86,6 +92,52 @@ class NearbyFeedView(generics.ListAPIView):
             .near(point, params.validated_data["radius_km"])
             .for_display(viewer)
         )
+
+
+@extend_schema(parameters=[FeedFilterSerializer])
+class TrendingFeedView(generics.ListAPIView):
+    """Upcoming events gaining the most RSVPs lately."""
+
+    serializer_class = EventSerializer
+    pagination_class = RankedPagination
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        viewer = viewer_profile(self.request)
+        events = Event.objects.not_ended().in_feeds_of(viewer)
+        return trending(filter_events(events, self.request.query_params)).for_display(viewer)
+
+
+class ForYouQuerySerializer(serializers.Serializer):
+    lat = serializers.FloatField(min_value=-90, max_value=90, required=False)
+    lng = serializers.FloatField(min_value=-180, max_value=180, required=False)
+
+    def validate(self, attrs):
+        if ("lat" in attrs) != ("lng" in attrs):
+            raise serializers.ValidationError("Give both lat and lng, or neither.")
+        return attrs
+
+
+@extend_schema(parameters=[ForYouQuerySerializer, FeedFilterSerializer])
+class ForYouFeedView(generics.ListAPIView):
+    """Upcoming events picked for the signed-in user; see feeds.ranking.for_you.
+
+    The optional position favours nearby events and is never stored.
+    """
+
+    serializer_class = EventSerializer
+    pagination_class = RankedPagination
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        params = ForYouQuerySerializer(data=self.request.query_params)
+        params.is_valid(raise_exception=True)
+        data = params.validated_data
+        point = Point(data["lng"], data["lat"], srid=4326) if "lat" in data else None
+        viewer = self.request.user.profile
+        events = Event.objects.not_ended().in_feeds_of(viewer)
+        events = filter_events(events, self.request.query_params)
+        return for_you(events, viewer, point).for_display(viewer)
 
 
 class FollowingQuerySerializer(serializers.Serializer):

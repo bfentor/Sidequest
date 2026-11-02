@@ -11,7 +11,7 @@ import { screenStyles } from './screen';
 import { ThemedText } from './themed-text';
 
 /** The parts of a TanStack infinite query over paginated results that a feed needs. */
-type FeedQuery<T> = {
+export type FeedQuery<T> = {
   data?: { pages: { results: T[] }[] };
   isPending: boolean;
   isError: boolean;

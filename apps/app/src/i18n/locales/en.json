@@ -27,7 +27,12 @@
     "loadFailed": "Couldn't load this feed."
   },
   "upcoming": {
-    "empty": "No upcoming events yet."
+    "empty": "No upcoming events yet.",
+    "soonest": "Soonest",
+    "forYou": "For you",
+    "trending": "Trending",
+    "forYouEmpty": "Nothing picked for you yet. Add interests to your profile and follow organizers to get suggestions.",
+    "trendingEmpty": "Nothing is trending right now."
   },
   "nearby": {
     "locationFailed": "Couldn't determine your location.",

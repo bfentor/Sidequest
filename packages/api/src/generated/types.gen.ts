@@ -356,6 +356,7 @@ export type OrganizationCreateRequest = {
 };
 
 export type PaginatedEventList = {
+    count: number;
     next?: string | null;
     previous?: string | null;
     results: Array<Event>;
@@ -755,6 +756,7 @@ export type NearbyEventWritable = {
 };
 
 export type PaginatedEventListWritable = {
+    count: number;
     next?: string | null;
     previous?: string | null;
     results: Array<EventWritable>;
@@ -1113,6 +1115,46 @@ export type FeedsFollowingListResponses = {
 
 export type FeedsFollowingListResponse = FeedsFollowingListResponses[keyof FeedsFollowingListResponses];
 
+export type FeedsForYouListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Category slugs; events in any of them.
+         */
+        category?: Array<string>;
+        /**
+         * Free events only.
+         */
+        free?: boolean;
+        lat?: number;
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        lng?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Events still going on after this time.
+         */
+        starts_after?: string;
+        /**
+         * Events starting before this time.
+         */
+        starts_before?: string;
+    };
+    url: '/api/feeds/for-you/';
+};
+
+export type FeedsForYouListResponses = {
+    200: PaginatedEventList;
+};
+
+export type FeedsForYouListResponse = FeedsForYouListResponses[keyof FeedsForYouListResponses];
+
 export type FeedsNearbyListData = {
     body?: never;
     path?: never;
@@ -1153,6 +1195,44 @@ export type FeedsNearbyListResponses = {
 };
 
 export type FeedsNearbyListResponse = FeedsNearbyListResponses[keyof FeedsNearbyListResponses];
+
+export type FeedsTrendingListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Category slugs; events in any of them.
+         */
+        category?: Array<string>;
+        /**
+         * Free events only.
+         */
+        free?: boolean;
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Events still going on after this time.
+         */
+        starts_after?: string;
+        /**
+         * Events starting before this time.
+         */
+        starts_before?: string;
+    };
+    url: '/api/feeds/trending/';
+};
+
+export type FeedsTrendingListResponses = {
+    200: PaginatedEventList;
+};
+
+export type FeedsTrendingListResponse = FeedsTrendingListResponses[keyof FeedsTrendingListResponses];
 
 export type FeedsUpcomingListData = {
     body?: never;
@@ -1537,6 +1617,27 @@ export type MeStudentVerifyCreateResponses = {
 };
 
 export type MeStudentVerifyCreateResponse = MeStudentVerifyCreateResponses[keyof MeStudentVerifyCreateResponses];
+
+export type MeSuggestionsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Only people or organizations.
+         *
+         * * `person` - Person
+         * * `organization` - Organization
+         */
+        kind?: 'person' | 'organization';
+    };
+    url: '/api/me/suggestions/';
+};
+
+export type MeSuggestionsListResponses = {
+    200: Array<Profile>;
+};
+
+export type MeSuggestionsListResponse = MeSuggestionsListResponses[keyof MeSuggestionsListResponses];
 
 export type NotificationsListData = {
     body?: never;
