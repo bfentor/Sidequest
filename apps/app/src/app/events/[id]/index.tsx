@@ -1,4 +1,13 @@
-import { eventsDestroyMutation, eventsRetrieveOptions, type Event } from '@sidequest/api';
+import {
+  eventsCoHostCreate,
+  eventsCoHostDestroy,
+  eventsCoHostListOptions,
+  eventsDestroyMutation,
+  eventsPartialUpdate,
+  eventsRetrieveOptions,
+  type Event,
+  type EventStatusEnum,
+} from '@sidequest/api';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link, router, Stack, useLocalSearchParams } from 'expo-router';
 import type { TFunction } from 'i18next';
@@ -6,19 +15,52 @@ import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Linking, Pressable, StyleSheet, View } from 'react-native';
 
 import type { MenuAction } from '@/components/action-menu';
+import { useAuth } from '@/auth/auth-provider';
+import { Button } from '@/components/button';
 import { CategoryChips } from '@/components/category-chips';
 import { ContentMenu } from '@/components/content-menu';
 import { RemoteImage } from '@/components/remote-image';
 import { RsvpBar } from '@/components/rsvp-bar';
 import { Screen } from '@/components/screen';
 import { ThemedText } from '@/components/themed-text';
+import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
 import { useFormat } from '@/lib/format';
 import { goBack } from '@/lib/navigation';
 
 /** What an event's organizer (or its organization's members) can do from the "…" menu. */
-function organizerActions(event: Event, t: TFunction, onDelete: () => void): MenuAction[] {
+function organizerActions(
+  event: Event,
+  t: TFunction,
+  onDelete: () => void,
+  setStatus: (status: EventStatusEnum) => void,
+): MenuAction[] {
+  const statusActions: MenuAction[] =
+    event.status === 'active'
+      ? [
+          {
+            label: t('eventStatus.postpone'),
+            onPress: () => setStatus('postponed'),
+            confirm: {
+              title: t('eventStatus.postponeConfirm'),
+              message: t('eventStatus.notifyAttendees'),
+              confirmLabel: t('eventStatus.postpone'),
+            },
+          },
+          {
+            label: t('eventStatus.cancel'),
+            destructive: true,
+            onPress: () => setStatus('cancelled'),
+            confirm: {
+              title: t('eventStatus.cancelConfirm'),
+              message: t('eventStatus.notifyAttendees'),
+              confirmLabel: t('eventStatus.cancel'),
+            },
+          },
+        ]
+      : [{ label: t('eventStatus.reactivate'), onPress: () => setStatus('active') }];
   return [
+    ...statusActions,
     {
       label: t('eventForm.edit'),
       onPress: () => router.push({ pathname: '/events/[id]/edit', params: { id: event.id } }),
@@ -57,6 +99,11 @@ export default function EventScreen() {
       goBack('/');
     },
   });
+  const setStatus = useMutation({
+    mutationFn: async (status: EventStatusEnum) =>
+      eventsPartialUpdate({ path: { id: Number(id) }, body: { status }, throwOnError: true }),
+    onSuccess: () => queryClient.invalidateQueries(),
+  });
 
   return (
     <Screen hasHeader>
@@ -68,8 +115,11 @@ export default function EventScreen() {
                 <ContentMenu
                   target={{ type: 'event', id: String(event.id) }}
                   owner={event.organizer}
-                  ownActions={organizerActions(event, t, () =>
-                    destroy.mutate({ path: { id: event.id } }),
+                  ownActions={organizerActions(
+                    event,
+                    t,
+                    () => destroy.mutate({ path: { id: event.id } }),
+                    (status) => setStatus.mutate(status),
                   )}
                 />
               )
@@ -85,6 +135,8 @@ export default function EventScreen() {
           {event.cover ? (
             <RemoteImage image={event.cover} style={styles.cover} contentFit="cover" />
           ) : null}
+          <EventBanners event={event} />
+          <CoHostInvitation eventId={event.id} />
           <ThemedText type="smallBold" themeColor="tint">
             {format.eventTime(event.starts_at, event.ends_at)}
           </ThemedText>
@@ -98,7 +150,14 @@ export default function EventScreen() {
               })}
             </ThemedText>
           </Link>
-          <RsvpBar event={event} />
+          {event.co_hosts?.length ? (
+            <ThemedText type="small" themeColor="textSecondary">
+              {t('event.withCoHosts', {
+                names: event.co_hosts.map((profile) => profile.display_name).join(', '),
+              })}
+            </ThemedText>
+          ) : null}
+          {event.status === 'cancelled' ? null : <RsvpBar event={event} />}
           {event.venue_name || event.address ? (
             <ThemedText>{[event.venue_name, event.address].filter(Boolean).join(', ')}</ThemedText>
           ) : null}
@@ -123,7 +182,68 @@ export default function EventScreen() {
   );
 }
 
+/** Cancelled, postponed, draft, scheduled and recurring notes at the top of an event. */
+function EventBanners({ event }: { event: Event }) {
+  const { t } = useTranslation();
+  const format = useFormat();
+  const notes = [
+    event.status === 'cancelled' ? t('eventStatus.cancelled') : null,
+    event.status === 'postponed' ? t('eventStatus.postponed') : null,
+    !event.published_at ? t('eventStatus.draft') : null,
+    event.published_at && new Date(event.published_at) > new Date()
+      ? t('eventStatus.scheduled', { when: format.dateTime(event.published_at) })
+      : null,
+    event.series_id ? t('eventStatus.series') : null,
+  ].filter((note) => note !== null);
+
+  return notes.map((note) => (
+    <ThemedView key={note} type="backgroundElement" style={styles.banner}>
+      <ThemedText type="smallBold">{note}</ThemedText>
+    </ThemedView>
+  ));
+}
+
+/** Lets an invited co-host (a profile you manage) accept or decline. */
+function CoHostInvitation({ eventId }: { eventId: number }) {
+  const { t } = useTranslation();
+  const { status } = useAuth();
+  const queryClient = useQueryClient();
+  const pending = useQuery({
+    ...eventsCoHostListOptions({ path: { id: eventId } }),
+    enabled: status === 'signed-in',
+  });
+  const answer = useMutation({
+    mutationFn: async ({ handle, accept }: { handle: string; accept: boolean }) => {
+      const options = { path: { id: eventId, handle }, throwOnError: true } as const;
+      await (accept ? eventsCoHostCreate(options) : eventsCoHostDestroy(options));
+    },
+    onSuccess: () => queryClient.invalidateQueries(),
+  });
+
+  return (pending.data ?? []).map((profile) => (
+    <ThemedView key={profile.handle} type="backgroundElement" style={styles.banner}>
+      <ThemedText>{t('event.coHostInvite', { name: profile.display_name })}</ThemedText>
+      <View style={styles.price}>
+        <Button
+          title={t('organizations.join')}
+          onPress={() => answer.mutate({ handle: profile.handle, accept: true })}
+        />
+        <Button
+          title={t('followRequests.decline')}
+          variant="secondary"
+          onPress={() => answer.mutate({ handle: profile.handle, accept: false })}
+        />
+      </View>
+    </ThemedView>
+  ));
+}
+
 const styles = StyleSheet.create({
+  banner: {
+    gap: Spacing.two,
+    padding: Spacing.three,
+    borderRadius: Spacing.three,
+  },
   cover: {
     width: '100%',
     aspectRatio: 16 / 9,

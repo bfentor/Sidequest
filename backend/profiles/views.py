@@ -1,3 +1,4 @@
+from django.db import models
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.utils.translation import gettext as _
@@ -138,8 +139,7 @@ class ProfileViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
         posts = (
             Post.objects.visible_to(viewer_profile(request))
             .filter(author=profile)
-            .select_related("author__avatar", "event__organizer__avatar")
-            .prefetch_related("event__categories")
+            .for_display(viewer_profile(request))
         )
         return self._page(posts, PostSerializer, ProfileListPagination)
 
@@ -159,12 +159,15 @@ class ProfileViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
         if when not in ("upcoming", "past"):
             raise serializers.ValidationError({"when": _("Use upcoming or past.")})
         viewer = viewer_profile(request)
+        hosted = models.Q(organizer=profile) | models.Q(
+            co_host_links__profile=profile, co_host_links__accepted_at__isnull=False
+        )
         events = (
             Event.objects.visible_to(viewer)
-            .filter(organizer=profile)
-            .with_attendance(viewer)
-            .select_related("organizer__avatar")
-            .prefetch_related("categories")
+            .filter(published_at__lte=timezone.now())
+            .filter(hosted)
+            .distinct()
+            .for_display(viewer)
         )
         now = timezone.now()
         events = (

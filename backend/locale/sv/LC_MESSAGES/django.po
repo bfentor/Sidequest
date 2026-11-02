@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sidequest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-02 16:59+0200\n"
-"PO-Revision-Date: 2026-11-02 16:59+0200\n"
+"POT-Creation-Date: 2026-11-02 17:13+0200\n"
+"PO-Revision-Date: 2026-11-02 17:13+0200\n"
 "Last-Translator: Sidequest <dev@sidequest.invalid>\n"
 "Language-Team: Swedish\n"
 "Language: sv\n"
@@ -18,8 +18,18 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#, python-format
+msgid "No profile has the username %(handle)s."
+msgstr "Ingen profil har användarnamnet %(handle)s."
+
 msgid "Must be after the start time."
 msgstr "Måste vara efter starttiden."
+
+msgid "This event was cancelled."
+msgstr "Evenemanget är inställt."
+
+msgid "This profile wasn't invited to co-host."
+msgstr "Den här profilen bjöds inte in som medarrangör."
 
 msgid "The picture is too large (at most 10 MB)."
 msgstr "Bilden är för stor (högst 10 MB)."
@@ -93,6 +103,12 @@ msgstr "Ändringar i evenemang du ska gå på"
 msgid "Cancelled events"
 msgstr "Inställda evenemang"
 
+msgid "Postponed events"
+msgstr "Uppskjutna evenemang"
+
+msgid "Invitations to co-host events"
+msgstr "Inbjudningar att arrangera evenemang tillsammans"
+
 msgid "Event reminders"
 msgstr "Påminnelser om evenemang"
 
@@ -134,8 +150,12 @@ msgstr "Nytt evenemang från %(name)s."
 msgid "The time or place of this event changed."
 msgstr "Tiden eller platsen för evenemanget har ändrats."
 
-msgid "This event was cancelled."
-msgstr "Evenemanget är inställt."
+msgid "This event was postponed."
+msgstr "Evenemanget har skjutits upp."
+
+#, python-format
+msgid "%(name)s invited you to co-host this event."
+msgstr "%(name)s bjöd in dig att arrangera evenemanget tillsammans."
 
 #, python-format
 msgid "Starts at %(time)s."

@@ -7,16 +7,21 @@ from profiles.models import Follow, Profile
 
 class PostQuerySet(models.QuerySet):
     def visible_to(self, viewer):
-        """Not removed, by a visible author, and sharing nothing the viewer may not see."""
-        hidden = hidden_profiles(viewer)
-        private = private_profiles(viewer)
+        """Not removed, by a visible author, and sharing no event the viewer may not see."""
         return (
             self.filter(removed_at__isnull=True, author__removed_at__isnull=True)
-            .exclude(author__in=hidden)
-            .exclude(author__in=private)
-            .exclude(event__removed_at__isnull=False)
-            .exclude(event__organizer__in=hidden)
-            .exclude(event__organizer__in=private)
+            .exclude(author__in=hidden_profiles(viewer))
+            .exclude(author__in=private_profiles(viewer))
+            .filter(
+                models.Q(event__isnull=True)
+                | models.Q(event__in=Event.objects.visible_to(viewer).values("pk"))
+            )
+        )
+
+    def for_display(self, viewer):
+        """Everything a post's serializer shows; shared events come with their attendance."""
+        return self.select_related("author__avatar").prefetch_related(
+            models.Prefetch("event", queryset=Event.objects.for_display(viewer))
         )
 
     def in_feeds_of(self, viewer):

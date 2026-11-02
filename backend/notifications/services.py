@@ -1,6 +1,6 @@
 from events.models import Attendance
 from moderation.models import Block, Mute
-from profiles.models import Profile
+from profiles.models import Membership, Profile
 
 from .models import Notification
 
@@ -32,6 +32,18 @@ def followers_of(profile):
     return Profile.objects.filter(follows__followee=profile, user__isnull=False).select_related(
         "user"
     )
+
+
+def managers_of(profile):
+    """Who acts for a profile: the person themselves, or an organization's admins."""
+    if profile.user_id:
+        return [profile.user]
+    return [
+        membership.user
+        for membership in profile.memberships.filter(role=Membership.Role.ADMIN).select_related(
+            "user"
+        )
+    ]
 
 
 def attendees_of(event):

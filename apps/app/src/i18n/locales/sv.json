@@ -73,7 +73,9 @@
     "byOrganizerWithHandle": "av {{name}} (@{{handle}})",
     "joinOnline": "Delta online",
     "free": "Gratis",
-    "tickets": "Biljetter"
+    "tickets": "Biljetter",
+    "withCoHosts": "tillsammans med {{names}}",
+    "coHostInvite": "{{name}} är inbjuden som medarrangör."
   },
   "auth": {
     "signInTitle": "Välkommen tillbaka",
@@ -104,7 +106,9 @@
       "reaction": "Gilla-markeringar",
       "follow_request": "Följarförfrågningar",
       "follow_accepted": "Godkända följarförfrågningar",
-      "organization_invite": "Inbjudningar till organisationer"
+      "organization_invite": "Inbjudningar till organisationer",
+      "event_postponed": "Uppskjutna evenemang",
+      "co_host_invite": "Inbjudningar att arrangera evenemang tillsammans"
     }
   },
   "posts": {
@@ -171,7 +175,9 @@
     "reaction": "{{name}} gillade ditt inlägg.",
     "followRequest": "{{name}} vill följa dig.",
     "followAccepted": "{{name}} godkände din följarförfrågan.",
-    "organizationInvite": "{{name}} bjöd in dig som medlem."
+    "organizationInvite": "{{name}} bjöd in dig som medlem.",
+    "eventPostponed": "{{title}} har skjutits upp.",
+    "coHostInvite": "{{name}} bjöd in dig att arrangera {{title}} tillsammans."
   },
   "editProfile": {
     "changeCover": "Byt omslagsbild",
@@ -254,6 +260,51 @@
     "capacityPlaceholder": "Ingen gräns",
     "free": "Gratis",
     "price": "Pris (€)",
-    "ticketUrl": "Biljettlänk"
+    "ticketUrl": "Biljettlänk",
+    "saveDraft": "Spara utkast",
+    "schedule": "Schemalägg",
+    "visibility": "Vem ser det",
+    "visibilityPublic": "Alla",
+    "visibilityFollowers": "Följare",
+    "visibilityUnlisted": "Bara länk",
+    "visibilityHint": {
+      "public": "Visas i alla flöden.",
+      "followers": "Bara dina följare ser det.",
+      "unlisted": "Visas inte i flöden; alla med länken kan öppna det."
+    },
+    "coHosts": "Medarrangörer",
+    "coHostsHint": "Andra personer eller organisationer som ordnar det här med dig. De visas när de har godkänt.",
+    "addCoHost": "Lägg till",
+    "removeCoHost": "Ta bort @{{handle}}",
+    "repeat": "Upprepas",
+    "repeatNone": "En gång",
+    "repeatWeekly": "Varje vecka",
+    "repeatBiweekly": "Varannan vecka",
+    "repeatMonthly": "Varje månad",
+    "repeatCount": "Hur många gånger (2–26)",
+    "publishing": "Publicering",
+    "publishNow": "Nu",
+    "draft": "Utkast",
+    "publishAt": "Publiceras"
+  },
+  "eventStatus": {
+    "active": "Blir av",
+    "cancelled": "Inställt",
+    "postponed": "Uppskjutet",
+    "draft": "Utkast: bara du och din organisation ser det.",
+    "scheduled": "Publiceras {{when}}.",
+    "series": "Del av en återkommande serie.",
+    "postpone": "Skjut upp",
+    "cancel": "Ställ in evenemanget",
+    "reactivate": "Markera som av",
+    "postponeConfirm": "Skjuta upp evenemanget?",
+    "cancelConfirm": "Ställa in evenemanget?",
+    "notifyAttendees": "Alla som kommer eller är intresserade får en notis."
+  },
+  "myEvents": {
+    "title": "Mina evenemang",
+    "upcoming": "Kommande",
+    "past": "Tidigare",
+    "empty": "Du har inte skapat några evenemang än."
   }
 }

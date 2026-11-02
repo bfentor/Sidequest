@@ -1,8 +1,10 @@
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from django.utils.translation import gettext as _
 from drf_spectacular.utils import OpenApiParameter, extend_schema
-from rest_framework import generics, mixins, permissions, viewsets
+from rest_framework import generics, mixins, permissions, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 from rest_framework.throttling import ScopedRateThrottle
@@ -13,10 +15,11 @@ from notifications.models import Kind
 from notifications.services import attendees_of, notify
 from profiles.models import Profile
 from profiles.permissions import CanActAsOwner
+from profiles.serializers import ProfileSummarySerializer
 
 from . import attendance as rsvps
 from . import geocoding
-from .models import Category, Event
+from .models import Category, CoHost, Event
 from .serializers import (
     AttendanceSummarySerializer,
     CategorySerializer,
@@ -44,12 +47,7 @@ class EventViewSet(
 
     def get_queryset(self):
         viewer = viewer_profile(self.request)
-        return (
-            Event.objects.visible_to(viewer)
-            .with_attendance(viewer)
-            .select_related("organizer__avatar")
-            .prefetch_related("categories")
-        )
+        return Event.objects.visible_to(viewer).for_display(viewer)
 
     def perform_destroy(self, event):
         # The notification can't point at a deleted event, so it keeps the title.
@@ -82,6 +80,8 @@ class EventViewSet(
         # Not get_object(): anyone who can see the event may RSVP, not only its organizer.
         event = get_object_or_404(self.get_queryset(), pk=pk)
         profile = request.user.profile
+        if event.status == Event.Status.CANCELLED and request.method == "PUT":
+            raise ValidationError(_("This event was cancelled."))
         if request.method == "PUT":
             serializer = RsvpSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
@@ -98,6 +98,51 @@ class CategoryListView(generics.ListAPIView):
     serializer_class = CategorySerializer
     permission_classes = [permissions.AllowAny]
     pagination_class = None
+
+
+def _co_host_links(request, pk):
+    """Co-host links of this event (its whole series) for profiles the user manages."""
+    event = get_object_or_404(Event.objects.visible_to(viewer_profile(request)), pk=pk)
+    managed = Profile.objects.manageable_by(request.user)
+    events = Event.objects.filter(series_id=event.series_id) if event.series_id else [event]
+    return CoHost.objects.filter(event__in=events, profile__in=managed)
+
+
+class CoHostInvitationsView(APIView):
+    """Pending co-host invitations of this event for profiles you manage."""
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    @extend_schema(responses=ProfileSummarySerializer(many=True))
+    def get(self, request, pk):
+        pending = _co_host_links(request, pk).filter(event_id=pk, accepted_at__isnull=True)
+        profiles = [link.profile for link in pending.select_related("profile__avatar")]
+        return Response(ProfileSummarySerializer(profiles, many=True).data)
+
+
+class CoHostAnswerView(APIView):
+    """Accept co-hosting as one of your profiles (POST), or decline or stop (DELETE).
+
+    Answering for one date of a series answers for all of them.
+    """
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def _links(self, request, pk, handle):
+        links = _co_host_links(request, pk).filter(profile__handle=handle)
+        if not links.exists():
+            raise ValidationError({"handle": _("This profile wasn't invited to co-host.")})
+        return links
+
+    @extend_schema(request=None, responses={204: None})
+    def post(self, request, pk, handle):
+        self._links(request, pk, handle).update(accepted_at=timezone.now())
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @extend_schema(request=None, responses={204: None})
+    def delete(self, request, pk, handle):
+        self._links(request, pk, handle).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class GeocodeView(APIView):
@@ -137,12 +182,7 @@ class ManagedEventsView(generics.ListAPIView):
     def get_queryset(self):
         viewer = self.request.user.profile
         managed = Profile.objects.manageable_by(self.request.user)
-        events = (
-            Event.objects.filter(organizer__in=managed)
-            .with_attendance(viewer)
-            .select_related("organizer__avatar", "cover")
-            .prefetch_related("categories")
-        )
+        events = Event.objects.filter(organizer__in=managed).for_display(viewer)
         now = timezone.now()
         if self.request.query_params.get("when") == "past":
             return events.filter(ends_at__lt=now).order_by("-starts_at", "-id")

@@ -2,7 +2,7 @@
 
 import { type Client, type ClientMeta, formDataBodySerializer, type Options as Options2, type RequestResult, type TDataShape } from './client';
 import { client } from './client.gen';
-import type { CategoriesListData, CategoriesListResponses, EventsAttendanceDestroyData, EventsAttendanceDestroyResponses, EventsAttendanceUpdateData, EventsAttendanceUpdateResponses, EventsCreateData, EventsCreateResponses, EventsDestroyData, EventsDestroyResponses, EventsPartialUpdateData, EventsPartialUpdateResponses, EventsRetrieveData, EventsRetrieveResponses, FeedsFollowingListData, FeedsFollowingListResponses, FeedsNearbyListData, FeedsNearbyListResponses, FeedsUpcomingListData, FeedsUpcomingListResponses, GeocodeListData, GeocodeListResponses, ImagesCreateData, ImagesCreateResponses, MeBlockedListData, MeBlockedListResponses, MeEventsListData, MeEventsListResponses, MeFollowRequestsCreateData, MeFollowRequestsCreateResponses, MeFollowRequestsDestroyData, MeFollowRequestsDestroyResponses, MeFollowRequestsListData, MeFollowRequestsListResponses, MeInvitationsCreateData, MeInvitationsCreateResponses, MeInvitationsDestroyData, MeInvitationsDestroyResponses, MeInvitationsListData, MeInvitationsListResponses, MeMutedListData, MeMutedListResponses, MePartialUpdateData, MePartialUpdateResponses, MeProfilesListData, MeProfilesListResponses, MeRetrieveData, MeRetrieveResponses, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponses, MeSettingsRetrieveData, MeSettingsRetrieveResponses, NotificationsListData, NotificationsListResponses, NotificationsReadCreateData, NotificationsReadCreateResponses, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponses, OrganizationsCreateData, OrganizationsCreateResponses, OrganizationsInvitationsListData, OrganizationsInvitationsListResponses, OrganizationsMembersCreateData, OrganizationsMembersCreateResponses, OrganizationsMembersDestroyData, OrganizationsMembersDestroyResponses, OrganizationsMembersListData, OrganizationsMembersListResponses, OrganizationsMembersPartialUpdateData, OrganizationsMembersPartialUpdateResponses, OrganizationsPartialUpdateData, OrganizationsPartialUpdateResponses, OrganizationsVerificationCreateData, OrganizationsVerificationCreateResponses, PostsCreateData, PostsCreateResponses, PostsDestroyData, PostsDestroyResponses, PostsRetrieveData, PostsRetrieveResponses, ProfilesBlockCreateData, ProfilesBlockCreateResponses, ProfilesBlockDestroyData, ProfilesBlockDestroyResponses, ProfilesEventsListData, ProfilesEventsListResponses, ProfilesFollowCreateData, ProfilesFollowCreateResponses, ProfilesFollowDestroyData, ProfilesFollowDestroyResponses, ProfilesFollowersListData, ProfilesFollowersListResponses, ProfilesFollowingListData, ProfilesFollowingListResponses, ProfilesMuteCreateData, ProfilesMuteCreateResponses, ProfilesMuteDestroyData, ProfilesMuteDestroyResponses, ProfilesPostsListData, ProfilesPostsListResponses, ProfilesRetrieveData, ProfilesRetrieveResponses, PushDevicesCreateData, PushDevicesCreateResponses, PushDevicesDestroyData, PushDevicesDestroyResponses, ReportsCreateData, ReportsCreateResponses } from './types.gen';
+import type { CategoriesListData, CategoriesListResponses, EventsAttendanceDestroyData, EventsAttendanceDestroyResponses, EventsAttendanceUpdateData, EventsAttendanceUpdateResponses, EventsCoHostCreateData, EventsCoHostCreateResponses, EventsCoHostDestroyData, EventsCoHostDestroyResponses, EventsCoHostListData, EventsCoHostListResponses, EventsCreateData, EventsCreateResponses, EventsDestroyData, EventsDestroyResponses, EventsPartialUpdateData, EventsPartialUpdateResponses, EventsRetrieveData, EventsRetrieveResponses, FeedsFollowingListData, FeedsFollowingListResponses, FeedsNearbyListData, FeedsNearbyListResponses, FeedsUpcomingListData, FeedsUpcomingListResponses, GeocodeListData, GeocodeListResponses, ImagesCreateData, ImagesCreateResponses, MeBlockedListData, MeBlockedListResponses, MeEventsListData, MeEventsListResponses, MeFollowRequestsCreateData, MeFollowRequestsCreateResponses, MeFollowRequestsDestroyData, MeFollowRequestsDestroyResponses, MeFollowRequestsListData, MeFollowRequestsListResponses, MeInvitationsCreateData, MeInvitationsCreateResponses, MeInvitationsDestroyData, MeInvitationsDestroyResponses, MeInvitationsListData, MeInvitationsListResponses, MeMutedListData, MeMutedListResponses, MePartialUpdateData, MePartialUpdateResponses, MeProfilesListData, MeProfilesListResponses, MeRetrieveData, MeRetrieveResponses, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponses, MeSettingsRetrieveData, MeSettingsRetrieveResponses, NotificationsListData, NotificationsListResponses, NotificationsReadCreateData, NotificationsReadCreateResponses, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponses, OrganizationsCreateData, OrganizationsCreateResponses, OrganizationsInvitationsListData, OrganizationsInvitationsListResponses, OrganizationsMembersCreateData, OrganizationsMembersCreateResponses, OrganizationsMembersDestroyData, OrganizationsMembersDestroyResponses, OrganizationsMembersListData, OrganizationsMembersListResponses, OrganizationsMembersPartialUpdateData, OrganizationsMembersPartialUpdateResponses, OrganizationsPartialUpdateData, OrganizationsPartialUpdateResponses, OrganizationsVerificationCreateData, OrganizationsVerificationCreateResponses, PostsCreateData, PostsCreateResponses, PostsDestroyData, PostsDestroyResponses, PostsRetrieveData, PostsRetrieveResponses, ProfilesBlockCreateData, ProfilesBlockCreateResponses, ProfilesBlockDestroyData, ProfilesBlockDestroyResponses, ProfilesEventsListData, ProfilesEventsListResponses, ProfilesFollowCreateData, ProfilesFollowCreateResponses, ProfilesFollowDestroyData, ProfilesFollowDestroyResponses, ProfilesFollowersListData, ProfilesFollowersListResponses, ProfilesFollowingListData, ProfilesFollowingListResponses, ProfilesMuteCreateData, ProfilesMuteCreateResponses, ProfilesMuteDestroyData, ProfilesMuteDestroyResponses, ProfilesPostsListData, ProfilesPostsListResponses, ProfilesRetrieveData, ProfilesRetrieveResponses, PushDevicesCreateData, PushDevicesCreateResponses, PushDevicesDestroyData, PushDevicesDestroyResponses, ReportsCreateData, ReportsCreateResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -91,6 +91,37 @@ export const eventsAttendanceUpdate = <ThrowOnError extends boolean = false>(opt
         'Content-Type': 'application/json',
         ...options.headers
     }
+});
+
+/**
+ * Pending co-host invitations of this event for profiles you manage.
+ */
+export const eventsCoHostList = <ThrowOnError extends boolean = false>(options: Options<EventsCoHostListData, ThrowOnError>): RequestResult<EventsCoHostListResponses, unknown, ThrowOnError> => (options.client ?? client).get<EventsCoHostListResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/events/{id}/co-host/',
+    ...options
+});
+
+/**
+ * Accept co-hosting as one of your profiles (POST), or decline or stop (DELETE).
+ *
+ * Answering for one date of a series answers for all of them.
+ */
+export const eventsCoHostDestroy = <ThrowOnError extends boolean = false>(options: Options<EventsCoHostDestroyData, ThrowOnError>): RequestResult<EventsCoHostDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<EventsCoHostDestroyResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/events/{id}/co-host/{handle}/',
+    ...options
+});
+
+/**
+ * Accept co-hosting as one of your profiles (POST), or decline or stop (DELETE).
+ *
+ * Answering for one date of a series answers for all of them.
+ */
+export const eventsCoHostCreate = <ThrowOnError extends boolean = false>(options: Options<EventsCoHostCreateData, ThrowOnError>): RequestResult<EventsCoHostCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<EventsCoHostCreateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/events/{id}/co-host/{handle}/',
+    ...options
 });
 
 /**

@@ -81,6 +81,17 @@ export type Event = {
      */
     price?: string | null;
     ticket_url?: string | string;
+    visibility?: EventVisibilityEnum;
+    status?: EventStatusEnum;
+    /**
+     * Leave out to publish now; empty for a draft; a future time to schedule.
+     */
+    published_at?: string | null;
+    readonly series_id: string | null;
+    /**
+     * Co-hosts who accepted.
+     */
+    readonly co_hosts: Array<ProfileSummary>;
     attendance: AttendanceSummary;
     readonly created_at: string;
     readonly updated_at: string;
@@ -102,7 +113,27 @@ export type EventRequest = {
      */
     price?: string | null;
     ticket_url?: string | string;
+    visibility?: EventVisibilityEnum;
+    status?: EventStatusEnum;
+    /**
+     * Leave out to publish now; empty for a draft; a future time to schedule.
+     */
+    published_at?: string | null;
 };
+
+/**
+ * * `active` - Active
+ * * `postponed` - Postponed
+ * * `cancelled` - Cancelled
+ */
+export type EventStatusEnum = 'active' | 'postponed' | 'cancelled';
+
+/**
+ * * `public` - Public
+ * * `followers` - Followers
+ * * `unlisted` - Unlisted
+ */
+export type EventVisibilityEnum = 'public' | 'followers' | 'unlisted';
 
 export type FollowStatus = {
     /**
@@ -121,6 +152,13 @@ export type FollowStatus = {
  * * `none` - none
  */
 export type FollowStatusStatusEnum = 'following' | 'requested' | 'none';
+
+/**
+ * * `weekly` - weekly
+ * * `biweekly` - biweekly
+ * * `monthly` - monthly
+ */
+export type FrequencyEnum = 'weekly' | 'biweekly' | 'monthly';
 
 export type GeocodeResult = {
     label: string;
@@ -226,6 +264,17 @@ export type NearbyEvent = {
      */
     price?: string | null;
     ticket_url?: string | string;
+    visibility?: EventVisibilityEnum;
+    status?: EventStatusEnum;
+    /**
+     * Leave out to publish now; empty for a draft; a future time to schedule.
+     */
+    published_at?: string | null;
+    readonly series_id: string | null;
+    /**
+     * Co-hosts who accepted.
+     */
+    readonly co_hosts: Array<ProfileSummary>;
     attendance: AttendanceSummary;
     readonly created_at: string;
     readonly updated_at: string;
@@ -257,6 +306,8 @@ export type NotificationEvent = {
  * * `new_event` - New events from people you follow
  * * `event_changed` - Changes to events you're going to
  * * `event_cancelled` - Cancelled events
+ * * `event_postponed` - Postponed events
+ * * `co_host_invite` - Invitations to co-host events
  * * `event_reminder` - Event reminders
  * * `waitlist_promoted` - A spot opened up for you
  * * `announcement` - Announcements from organizers
@@ -264,7 +315,7 @@ export type NotificationEvent = {
  * * `comment` - Comments
  * * `reaction` - Likes
  */
-export type NotificationKindEnum = 'new_follower' | 'follow_request' | 'follow_accepted' | 'organization_invite' | 'new_event' | 'event_changed' | 'event_cancelled' | 'event_reminder' | 'waitlist_promoted' | 'announcement' | 'mention' | 'comment' | 'reaction';
+export type NotificationKindEnum = 'new_follower' | 'follow_request' | 'follow_accepted' | 'organization_invite' | 'new_event' | 'event_changed' | 'event_cancelled' | 'event_postponed' | 'co_host_invite' | 'event_reminder' | 'waitlist_promoted' | 'announcement' | 'mention' | 'comment' | 'reaction';
 
 export type NullEnum = never;
 
@@ -337,6 +388,12 @@ export type PatchedEventRequest = {
      */
     price?: string | null;
     ticket_url?: string | string;
+    visibility?: EventVisibilityEnum;
+    status?: EventStatusEnum;
+    /**
+     * Leave out to publish now; empty for a draft; a future time to schedule.
+     */
+    published_at?: string | null;
 };
 
 export type PatchedMemberRoleRequest = {
@@ -437,6 +494,22 @@ export type PushDeviceRequest = {
     token: string;
 };
 
+export type Repeat = {
+    frequency: FrequencyEnum;
+    /**
+     * How many dates in total, the first included.
+     */
+    count: number;
+};
+
+export type RepeatRequest = {
+    frequency: FrequencyEnum;
+    /**
+     * How many dates in total, the first included.
+     */
+    count: number;
+};
+
 export type Report = {
     readonly id: number;
     reason: ReportReasonEnum;
@@ -521,6 +594,12 @@ export type EventWritable = {
      */
     price?: string | null;
     ticket_url?: string | string;
+    visibility?: EventVisibilityEnum;
+    status?: EventStatusEnum;
+    /**
+     * Leave out to publish now; empty for a draft; a future time to schedule.
+     */
+    published_at?: string | null;
 };
 
 export type EventRequestWritable = {
@@ -547,6 +626,20 @@ export type EventRequestWritable = {
      */
     price?: string | null;
     ticket_url?: string | string;
+    visibility?: EventVisibilityEnum;
+    status?: EventStatusEnum;
+    /**
+     * Leave out to publish now; empty for a draft; a future time to schedule.
+     */
+    published_at?: string | null;
+    /**
+     * Profiles to ask to co-host; leaving one out removes it.
+     */
+    co_host_handles?: Array<string>;
+    /**
+     * Create a series of dates. Only on create.
+     */
+    repeat?: RepeatRequest;
 };
 
 export type MemberWritable = {
@@ -569,6 +662,12 @@ export type NearbyEventWritable = {
      */
     price?: string | null;
     ticket_url?: string | string;
+    visibility?: EventVisibilityEnum;
+    status?: EventStatusEnum;
+    /**
+     * Leave out to publish now; empty for a draft; a future time to schedule.
+     */
+    published_at?: string | null;
 };
 
 export type PaginatedEventListWritable = {
@@ -626,6 +725,20 @@ export type PatchedEventRequestWritable = {
      */
     price?: string | null;
     ticket_url?: string | string;
+    visibility?: EventVisibilityEnum;
+    status?: EventStatusEnum;
+    /**
+     * Leave out to publish now; empty for a draft; a future time to schedule.
+     */
+    published_at?: string | null;
+    /**
+     * Profiles to ask to co-host; leaving one out removes it.
+     */
+    co_host_handles?: Array<string>;
+    /**
+     * Create a series of dates. Only on create.
+     */
+    repeat?: RepeatRequest;
 };
 
 /**
@@ -833,6 +946,59 @@ export type EventsAttendanceUpdateResponses = {
 };
 
 export type EventsAttendanceUpdateResponse = EventsAttendanceUpdateResponses[keyof EventsAttendanceUpdateResponses];
+
+export type EventsCoHostListData = {
+    body?: never;
+    path: {
+        id: number;
+    };
+    query?: never;
+    url: '/api/events/{id}/co-host/';
+};
+
+export type EventsCoHostListResponses = {
+    200: Array<ProfileSummary>;
+};
+
+export type EventsCoHostListResponse = EventsCoHostListResponses[keyof EventsCoHostListResponses];
+
+export type EventsCoHostDestroyData = {
+    body?: never;
+    path: {
+        handle: string;
+        id: number;
+    };
+    query?: never;
+    url: '/api/events/{id}/co-host/{handle}/';
+};
+
+export type EventsCoHostDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type EventsCoHostDestroyResponse = EventsCoHostDestroyResponses[keyof EventsCoHostDestroyResponses];
+
+export type EventsCoHostCreateData = {
+    body?: never;
+    path: {
+        handle: string;
+        id: number;
+    };
+    query?: never;
+    url: '/api/events/{id}/co-host/{handle}/';
+};
+
+export type EventsCoHostCreateResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type EventsCoHostCreateResponse = EventsCoHostCreateResponses[keyof EventsCoHostCreateResponses];
 
 export type FeedsFollowingListData = {
     body?: never;

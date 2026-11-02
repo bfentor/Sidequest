@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
@@ -5,11 +6,12 @@ from rest_framework import serializers
 from images.serializers import ImageSerializer, OwnImageField
 from notifications.models import Kind
 from notifications.services import attendees_of, notify
+from profiles.models import Profile
 from profiles.serializers import ActingProfileField, ProfileSummarySerializer
 
 from .fields import LatLngField
-from .models import Attendance, Category, Event
-from .services import publish_event
+from .models import Attendance, Category, CoHost, Event
+from .services import REPEAT_FREQUENCIES, announce, invite_co_hosts, publish_event
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -64,6 +66,13 @@ class GeocodeResultSerializer(serializers.Serializer):
     lng = serializers.FloatField()
 
 
+class RepeatSerializer(serializers.Serializer):
+    frequency = serializers.ChoiceField(choices=REPEAT_FREQUENCIES)
+    count = serializers.IntegerField(
+        min_value=2, max_value=26, help_text="How many dates in total, the first included."
+    )
+
+
 class RsvpSerializer(serializers.Serializer):
     status = serializers.ChoiceField(
         choices=[Attendance.Status.GOING, Attendance.Status.INTERESTED],
@@ -100,6 +109,21 @@ class EventSerializer(serializers.ModelSerializer):
         help_text="In euros; empty for free events.",
     )
     attendance = serializers.SerializerMethodField()
+    co_hosts = serializers.SerializerMethodField(help_text="Co-hosts who accepted.")
+    co_host_handles = serializers.ListField(
+        child=serializers.CharField(),
+        write_only=True,
+        required=False,
+        help_text="Profiles to ask to co-host; leaving one out removes it.",
+    )
+    repeat = RepeatSerializer(
+        write_only=True, required=False, help_text="Create a series of dates. Only on create."
+    )
+    published_at = serializers.DateTimeField(
+        allow_null=True,
+        required=False,
+        help_text="Leave out to publish now; empty for a draft; a future time to schedule.",
+    )
 
     class Meta:
         model = Event
@@ -121,10 +145,32 @@ class EventSerializer(serializers.ModelSerializer):
             "online_url",
             "price",
             "ticket_url",
+            "visibility",
+            "status",
+            "published_at",
+            "series_id",
+            "co_hosts",
+            "co_host_handles",
+            "repeat",
             "attendance",
             "created_at",
             "updated_at",
         ]
+        read_only_fields = ["series_id"]
+
+    @extend_schema_field(ProfileSummarySerializer(many=True))
+    def get_co_hosts(self, event):
+        accepted = [link.profile for link in event.co_host_links.all() if link.accepted_at]
+        return ProfileSummarySerializer(accepted, many=True, context=self.context).data
+
+    def validate_co_host_handles(self, handles):
+        profiles = list(Profile.objects.filter(handle__in=handles, removed_at__isnull=True))
+        missing = set(handles) - {profile.handle for profile in profiles}
+        if missing:
+            raise serializers.ValidationError(
+                _("No profile has the username %(handle)s.") % {"handle": sorted(missing)[0]}
+            )
+        return profiles
 
     @extend_schema_field(AttendanceSummarySerializer)
     def get_attendance(self, event):
@@ -140,24 +186,45 @@ class EventSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        categories = validated_data.pop("categories", [])
-        event = publish_event(**validated_data)
-        event.categories.set(categories)
-        return event
+        validated_data.setdefault("published_at", timezone.now())
+        return publish_event(
+            categories=validated_data.pop("categories", []),
+            co_hosts=validated_data.pop("co_host_handles", []),
+            **validated_data,
+        )
 
     # Changing any of these tells everyone going or interested.
     NOTIFY_ON_CHANGE = ("starts_at", "ends_at", "location", "venue_name", "address", "online_url")
 
     def update(self, instance, validated_data):
-        # An event's organizer is fixed once it has been published.
+        # The organizer is fixed once published, and series are made on create only.
         validated_data.pop("organizer", None)
+        validated_data.pop("repeat", None)
+        co_hosts = validated_data.pop("co_host_handles", None)
+        old_status = instance.status
         changed = any(
             field in validated_data and validated_data[field] != getattr(instance, field)
             for field in self.NOTIFY_ON_CHANGE
         )
         event = super().update(instance, validated_data)
-        if changed:
-            notify(attendees_of(event), Kind.EVENT_CHANGED, actor=event.organizer, event=event)
+
+        if co_hosts is not None:
+            CoHost.objects.filter(event=event).exclude(profile__in=co_hosts).delete()
+            invite_co_hosts(event, co_hosts)
+        if event.published_at is not None and event.published_at <= timezone.now():
+            announce(event)
+
+        kind = None
+        if event.status != old_status:
+            kind = {
+                Event.Status.CANCELLED: Kind.EVENT_CANCELLED,
+                Event.Status.POSTPONED: Kind.EVENT_POSTPONED,
+                Event.Status.ACTIVE: Kind.EVENT_CHANGED,
+            }[event.status]
+        elif changed:
+            kind = Kind.EVENT_CHANGED
+        if kind is not None:
+            notify(attendees_of(event), kind, actor=event.organizer, event=event)
         return event
 
 

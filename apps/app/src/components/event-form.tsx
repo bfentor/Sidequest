@@ -1,4 +1,10 @@
-import type { Event, EventRequestWritable, Image } from '@sidequest/api';
+import type {
+  Event,
+  EventRequestWritable,
+  EventVisibilityEnum,
+  FrequencyEnum,
+  Image,
+} from '@sidequest/api';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,6 +21,7 @@ import { Button } from './button';
 import { DateTimeField } from './date-time-field';
 import { LocationSearch, type Place } from './location-search';
 import { RemoteImage } from './remote-image';
+import { SegmentedControl } from './segmented-control';
 import { TextField } from './text-field';
 import { ThemedText } from './themed-text';
 import { ThemedView } from './themed-view';
@@ -48,7 +55,11 @@ export function EventForm({ initial, mode, submitLabel, onSubmit }: EventFormPro
   const acting = useActingProfiles();
   const upload = useImageUpload();
 
-  const defaultStart = initial ? new Date(initial.starts_at) : tomorrowEvening();
+  // Computed once, not on every render.
+  const [defaultStart] = useState(() =>
+    initial ? new Date(initial.starts_at) : tomorrowEvening(),
+  );
+  const [openedAt] = useState(() => new Date());
   const [organizer, setOrganizer] = useState(initial?.organizer.handle);
   const [title, setTitle] = useState(initial?.title ?? '');
   const [description, setDescription] = useState(initial?.description ?? '');
@@ -69,6 +80,20 @@ export function EventForm({ initial, mode, submitLabel, onSubmit }: EventFormPro
   const [free, setFree] = useState(!initial?.price);
   const [price, setPrice] = useState(initial?.price ?? '');
   const [ticketUrl, setTicketUrl] = useState(initial?.ticket_url ?? '');
+  const [visibility, setVisibility] = useState<EventVisibilityEnum>(
+    initial?.visibility ?? 'public',
+  );
+  const isDraft = mode === 'edit' && !initial?.published_at;
+  const [publishMode, setPublishMode] = useState<'now' | 'schedule' | 'draft'>(
+    mode === 'edit' ? (isDraft ? 'draft' : 'now') : 'now',
+  );
+  const [publishAt, setPublishAt] = useState(() => new Date(openedAt.getTime() + HOUR));
+  const [repeat, setRepeat] = useState<FrequencyEnum | 'none'>('none');
+  const [repeatCount, setRepeatCount] = useState('4');
+  const [coHosts, setCoHosts] = useState<string[]>(
+    initial?.co_hosts?.map((profile) => profile.handle) ?? [],
+  );
+  const [coHostInput, setCoHostInput] = useState('');
   const [errors, setErrors] = useState<EventFieldErrors>({});
 
   const changeStart = (date: Date) => {
@@ -95,7 +120,23 @@ export function EventForm({ initial, mode, submitLabel, onSubmit }: EventFormPro
         capacity: capacity ? Number(capacity) : null,
         price: free || !price ? null : price.replace(',', '.'),
         ticket_url: ticketUrl,
+        visibility,
+        co_host_handles: coHosts,
         ...(mode === 'create' && organizer ? { organizer_handle: organizer } : {}),
+        ...(mode === 'create' && repeat !== 'none'
+          ? { repeat: { frequency: repeat, count: Number(repeatCount) || 2 } }
+          : {}),
+        // Published events keep their publishing time when edited.
+        ...(mode === 'create' || isDraft
+          ? {
+              published_at:
+                publishMode === 'draft'
+                  ? null
+                  : publishMode === 'schedule'
+                    ? publishAt.toISOString()
+                    : new Date().toISOString(),
+            }
+          : {}),
       };
       const fieldErrors = await onSubmit(body);
       if (fieldErrors) {
@@ -272,10 +313,119 @@ export function EventForm({ initial, mode, submitLabel, onSubmit }: EventFormPro
         keyboardType="url"
       />
       {errorsFor('ticket_url')}
+
+      <View style={styles.section}>
+        <ThemedText type="smallBold">{t('eventForm.visibility')}</ThemedText>
+        <SegmentedControl
+          value={visibility}
+          onChange={setVisibility}
+          options={[
+            { value: 'public', label: t('eventForm.visibilityPublic') },
+            { value: 'followers', label: t('eventForm.visibilityFollowers') },
+            { value: 'unlisted', label: t('eventForm.visibilityUnlisted') },
+          ]}
+        />
+        <ThemedText type="small" themeColor="textSecondary">
+          {t(`eventForm.visibilityHint.${visibility}`)}
+        </ThemedText>
+      </View>
+
+      <View style={styles.section}>
+        <ThemedText type="smallBold">{t('eventForm.coHosts')}</ThemedText>
+        <ThemedText type="small" themeColor="textSecondary">
+          {t('eventForm.coHostsHint')}
+        </ThemedText>
+        <View style={styles.coHostInput}>
+          <View style={styles.coHostField}>
+            <TextField
+              label={t('editProfile.handle')}
+              value={coHostInput}
+              onChangeText={setCoHostInput}
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          </View>
+          <Button
+            title={t('eventForm.addCoHost')}
+            variant="secondary"
+            disabled={!coHostInput.trim()}
+            onPress={() => {
+              const handle = coHostInput.replace(/^@/, '').trim().toLowerCase();
+              setCoHosts((current) => (current.includes(handle) ? current : [...current, handle]));
+              setCoHostInput('');
+            }}
+          />
+        </View>
+        <View style={styles.chips}>
+          {coHosts.map((handle) => (
+            <Pressable
+              key={handle}
+              accessibilityLabel={t('eventForm.removeCoHost', { handle })}
+              onPress={() => setCoHosts((current) => current.filter((h) => h !== handle))}
+              style={[styles.chip, { backgroundColor: theme.backgroundElement }]}>
+              <ThemedText type="small">@{handle} ✕</ThemedText>
+            </Pressable>
+          ))}
+        </View>
+        {errorsFor('co_host_handles')}
+      </View>
+
+      {mode === 'create' ? (
+        <View style={styles.section}>
+          <ThemedText type="smallBold">{t('eventForm.repeat')}</ThemedText>
+          <SegmentedControl
+            value={repeat}
+            onChange={setRepeat}
+            options={[
+              { value: 'none', label: t('eventForm.repeatNone') },
+              { value: 'weekly', label: t('eventForm.repeatWeekly') },
+              { value: 'biweekly', label: t('eventForm.repeatBiweekly') },
+              { value: 'monthly', label: t('eventForm.repeatMonthly') },
+            ]}
+          />
+          {repeat !== 'none' ? (
+            <TextField
+              label={t('eventForm.repeatCount')}
+              value={repeatCount}
+              onChangeText={(text) => setRepeatCount(text.replace(/\D/g, ''))}
+              keyboardType="number-pad"
+              maxLength={2}
+            />
+          ) : null}
+          {errorsFor('repeat')}
+        </View>
+      ) : null}
+
+      {mode === 'create' || isDraft ? (
+        <View style={styles.section}>
+          <ThemedText type="smallBold">{t('eventForm.publishing')}</ThemedText>
+          <SegmentedControl
+            value={publishMode}
+            onChange={setPublishMode}
+            options={[
+              { value: 'now', label: t('eventForm.publishNow') },
+              { value: 'schedule', label: t('eventForm.schedule') },
+              { value: 'draft', label: t('eventForm.draft') },
+            ]}
+          />
+          {publishMode === 'schedule' ? (
+            <DateTimeField
+              label={t('eventForm.publishAt')}
+              value={publishAt}
+              onChange={setPublishAt}
+              minimumDate={openedAt}
+            />
+          ) : null}
+        </View>
+      ) : null}
       {errorsFor('non_field_errors')}
 
       <Button
-        title={submitLabel}
+        title={
+          (mode === 'create' || isDraft) && publishMode !== 'now'
+            ? t(publishMode === 'draft' ? 'eventForm.saveDraft' : 'eventForm.schedule')
+            : submitLabel
+        }
         disabled={!title.trim()}
         loading={submit.isPending}
         onPress={() => submit.mutate()}
@@ -319,6 +469,14 @@ const styles = StyleSheet.create({
     minHeight: 96,
     paddingTop: Spacing.two,
     textAlignVertical: 'top',
+  },
+  coHostInput: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    gap: Spacing.two,
+  },
+  coHostField: {
+    flex: 1,
   },
   switchRow: {
     flexDirection: 'row',

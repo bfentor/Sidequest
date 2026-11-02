@@ -10,8 +10,14 @@ import {
   feedsFollowingListInfiniteQueryKey,
   feedsNearbyListInfiniteQueryKey,
   feedsUpcomingListInfiniteQueryKey,
+  meEventsListInfiniteQueryKey,
 } from './generated/@tanstack/react-query.gen';
-import { feedsFollowingList, feedsNearbyList, feedsUpcomingList } from './generated/sdk.gen';
+import {
+  feedsFollowingList,
+  feedsNearbyList,
+  feedsUpcomingList,
+  meEventsList,
+} from './generated/sdk.gen';
 import type { LatLng } from './generated/types.gen';
 import { queryParam } from './pagination';
 
@@ -65,5 +71,25 @@ export function useFollowingFeed({ enabled = true } = {}) {
     initialPageParam: undefined as string | undefined,
     getNextPageParam: (page) => queryParam(page.next, 'cursor'),
     enabled,
+  });
+}
+
+/** Events the signed-in user or their organizations host, drafts included. */
+export function useManagedEvents(when: 'upcoming' | 'past') {
+  return useInfiniteQuery({
+    queryKey: meEventsListInfiniteQueryKey({ query: { when } }),
+    queryFn: async ({ pageParam, signal }) => {
+      const { data } = await meEventsList({
+        query: { when, offset: pageParam },
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    initialPageParam: 0,
+    getNextPageParam: (page) => {
+      const offset = queryParam(page.next, 'offset');
+      return offset === undefined ? undefined : Number(offset);
+    },
   });
 }

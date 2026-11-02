@@ -73,7 +73,9 @@
     "byOrganizerWithHandle": "Järjestäjä: {{name}} (@{{handle}})",
     "joinOnline": "Osallistu verkossa",
     "free": "Maksuton",
-    "tickets": "Liput"
+    "tickets": "Liput",
+    "withCoHosts": "yhdessä: {{names}}",
+    "coHostInvite": "{{name}} on kutsuttu tapahtuman yhteisjärjestäjäksi."
   },
   "auth": {
     "signInTitle": "Tervetuloa takaisin",
@@ -104,7 +106,9 @@
       "reaction": "Tykkäykset",
       "follow_request": "Seuraamispyynnöt",
       "follow_accepted": "Hyväksytyt seuraamispyynnöt",
-      "organization_invite": "Kutsut järjestöihin"
+      "organization_invite": "Kutsut järjestöihin",
+      "event_postponed": "Siirretyt tapahtumat",
+      "co_host_invite": "Kutsut tapahtumien yhteisjärjestäjäksi"
     }
   },
   "posts": {
@@ -171,7 +175,9 @@
     "reaction": "{{name}} tykkäsi julkaisustasi.",
     "followRequest": "{{name}} pyysi saada seurata sinua.",
     "followAccepted": "{{name}} hyväksyi seuraamispyyntösi.",
-    "organizationInvite": "{{name}} kutsui sinut jäseneksi."
+    "organizationInvite": "{{name}} kutsui sinut jäseneksi.",
+    "eventPostponed": "{{title}} on siirretty.",
+    "coHostInvite": "{{name}} kutsui sinut järjestämään tapahtumaa {{title}}."
   },
   "editProfile": {
     "changeCover": "Vaihda kansikuva",
@@ -254,6 +260,51 @@
     "capacityPlaceholder": "Ei rajaa",
     "free": "Maksuton",
     "price": "Hinta (€)",
-    "ticketUrl": "Lippulinkki"
+    "ticketUrl": "Lippulinkki",
+    "saveDraft": "Tallenna luonnos",
+    "schedule": "Ajasta",
+    "visibility": "Kuka näkee",
+    "visibilityPublic": "Kaikki",
+    "visibilityFollowers": "Seuraajat",
+    "visibilityUnlisted": "Linkillä",
+    "visibilityHint": {
+      "public": "Näkyy kaikissa syötteissä.",
+      "followers": "Vain seuraajasi näkevät sen.",
+      "unlisted": "Ei näy syötteissä; kuka tahansa linkin saanut voi avata sen."
+    },
+    "coHosts": "Yhteisjärjestäjät",
+    "coHostsHint": "Muut ihmiset tai järjestöt, jotka järjestävät tämän kanssasi. Heidät näytetään, kun he hyväksyvät.",
+    "addCoHost": "Lisää",
+    "removeCoHost": "Poista @{{handle}}",
+    "repeat": "Toistuu",
+    "repeatNone": "Kerran",
+    "repeatWeekly": "Viikoittain",
+    "repeatBiweekly": "Joka toinen viikko",
+    "repeatMonthly": "Kuukausittain",
+    "repeatCount": "Montako kertaa (2–26)",
+    "publishing": "Julkaisu",
+    "publishNow": "Nyt",
+    "draft": "Luonnos",
+    "publishAt": "Julkaisuaika"
+  },
+  "eventStatus": {
+    "active": "Käynnissä",
+    "cancelled": "Peruttu",
+    "postponed": "Siirretty",
+    "draft": "Luonnos: vain sinä ja järjestösi näette sen.",
+    "scheduled": "Julkaistaan {{when}}.",
+    "series": "Osa toistuvaa sarjaa.",
+    "postpone": "Siirrä",
+    "cancel": "Peru tapahtuma",
+    "reactivate": "Merkitse toteutuvaksi",
+    "postponeConfirm": "Siirretäänkö tapahtuma?",
+    "cancelConfirm": "Perutaanko tapahtuma?",
+    "notifyAttendees": "Kaikki osallistujat ja kiinnostuneet saavat ilmoituksen."
+  },
+  "myEvents": {
+    "title": "Omat tapahtumat",
+    "upcoming": "Tulevat",
+    "past": "Menneet",
+    "empty": "Et ole vielä luonut tapahtumia."
   }
 }

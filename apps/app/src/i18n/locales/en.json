@@ -73,7 +73,9 @@
     "byOrganizerWithHandle": "by {{name}} (@{{handle}})",
     "joinOnline": "Join online",
     "free": "Free",
-    "tickets": "Tickets"
+    "tickets": "Tickets",
+    "withCoHosts": "with {{names}}",
+    "coHostInvite": "{{name}} is invited to co-host this event."
   },
   "auth": {
     "signInTitle": "Welcome back",
@@ -104,7 +106,9 @@
       "reaction": "Likes",
       "follow_request": "Follow requests",
       "follow_accepted": "Accepted follow requests",
-      "organization_invite": "Invitations to organizations"
+      "organization_invite": "Invitations to organizations",
+      "event_postponed": "Postponed events",
+      "co_host_invite": "Invitations to co-host events"
     }
   },
   "posts": {
@@ -171,7 +175,9 @@
     "reaction": "{{name}} liked your post.",
     "followRequest": "{{name}} asked to follow you.",
     "followAccepted": "{{name}} accepted your follow request.",
-    "organizationInvite": "{{name}} invited you to join them."
+    "organizationInvite": "{{name}} invited you to join them.",
+    "eventPostponed": "{{title}} was postponed.",
+    "coHostInvite": "{{name}} invited you to co-host {{title}}."
   },
   "editProfile": {
     "changeCover": "Change cover picture",
@@ -254,6 +260,51 @@
     "capacityPlaceholder": "No limit",
     "free": "Free",
     "price": "Price (€)",
-    "ticketUrl": "Ticket link"
+    "ticketUrl": "Ticket link",
+    "saveDraft": "Save draft",
+    "schedule": "Schedule",
+    "visibility": "Who can see it",
+    "visibilityPublic": "Everyone",
+    "visibilityFollowers": "Followers",
+    "visibilityUnlisted": "Link only",
+    "visibilityHint": {
+      "public": "Shown in every feed.",
+      "followers": "Only your followers see it.",
+      "unlisted": "Not in any feed; anyone with the link can open it."
+    },
+    "coHosts": "Co-hosts",
+    "coHostsHint": "Other people or organizations running this with you. They're shown once they accept.",
+    "addCoHost": "Add",
+    "removeCoHost": "Remove @{{handle}}",
+    "repeat": "Repeats",
+    "repeatNone": "Once",
+    "repeatWeekly": "Weekly",
+    "repeatBiweekly": "Every 2 weeks",
+    "repeatMonthly": "Monthly",
+    "repeatCount": "How many dates (2–26)",
+    "publishing": "Publishing",
+    "publishNow": "Now",
+    "draft": "Draft",
+    "publishAt": "Publish at"
+  },
+  "eventStatus": {
+    "active": "On",
+    "cancelled": "Cancelled",
+    "postponed": "Postponed",
+    "draft": "Draft: only you and your organization see it.",
+    "scheduled": "Scheduled to publish {{when}}.",
+    "series": "Part of a repeating series.",
+    "postpone": "Postpone",
+    "cancel": "Cancel event",
+    "reactivate": "Mark as happening",
+    "postponeConfirm": "Postpone this event?",
+    "cancelConfirm": "Cancel this event?",
+    "notifyAttendees": "Everyone going or interested gets a notification."
+  },
+  "myEvents": {
+    "title": "My events",
+    "upcoming": "Upcoming",
+    "past": "Past",
+    "empty": "You haven't created any events yet."
   }
 }

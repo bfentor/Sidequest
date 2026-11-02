@@ -30,6 +30,10 @@ function describe(notification: Notification, t: TFunction) {
       return t('notifications.eventChanged', { title });
     case 'event_cancelled':
       return t('notifications.eventCancelled', { title });
+    case 'event_postponed':
+      return t('notifications.eventPostponed', { title });
+    case 'co_host_invite':
+      return t('notifications.coHostInvite', { name, title });
     case 'event_reminder':
       return t('notifications.eventReminder', { title });
     case 'waitlist_promoted':

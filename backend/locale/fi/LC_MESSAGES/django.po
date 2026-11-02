@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sidequest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-02 16:59+0200\n"
-"PO-Revision-Date: 2026-11-02 16:59+0200\n"
+"POT-Creation-Date: 2026-11-02 17:13+0200\n"
+"PO-Revision-Date: 2026-11-02 17:13+0200\n"
 "Last-Translator: Sidequest <dev@sidequest.invalid>\n"
 "Language-Team: Finnish\n"
 "Language: fi\n"
@@ -18,8 +18,18 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#, python-format
+msgid "No profile has the username %(handle)s."
+msgstr "Millään profiililla ei ole käyttäjänimeä %(handle)s."
+
 msgid "Must be after the start time."
 msgstr "Täytyy olla alkamisajan jälkeen."
+
+msgid "This event was cancelled."
+msgstr "Tapahtuma on peruttu."
+
+msgid "This profile wasn't invited to co-host."
+msgstr "Tätä profiilia ei kutsuttu yhteisjärjestäjäksi."
 
 msgid "The picture is too large (at most 10 MB)."
 msgstr "Kuva on liian suuri (enintään 10 Mt)."
@@ -93,6 +103,12 @@ msgstr "Muutokset tapahtumiin, joihin osallistut"
 msgid "Cancelled events"
 msgstr "Perutut tapahtumat"
 
+msgid "Postponed events"
+msgstr "Siirretyt tapahtumat"
+
+msgid "Invitations to co-host events"
+msgstr "Kutsut tapahtumien yhteisjärjestäjäksi"
+
 msgid "Event reminders"
 msgstr "Tapahtumamuistutukset"
 
@@ -134,8 +150,12 @@ msgstr "Uusi tapahtuma: %(name)s."
 msgid "The time or place of this event changed."
 msgstr "Tapahtuman aika tai paikka muuttui."
 
-msgid "This event was cancelled."
-msgstr "Tapahtuma on peruttu."
+msgid "This event was postponed."
+msgstr "Tapahtuma on siirretty."
+
+#, python-format
+msgid "%(name)s invited you to co-host this event."
+msgstr "%(name)s kutsui sinut tapahtuman yhteisjärjestäjäksi."
 
 #, python-format
 msgid "Starts at %(time)s."

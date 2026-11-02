@@ -52,14 +52,14 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 - [x] Cover image
 - [ ] Categories and tags (party, sports, academic, career, culture and so on)
 - [x] Online events with a meeting link
-- [ ] Recurring events (weekly club meetings)
+- [x] Recurring events (weekly club meetings)
 - [x] Price or "free", and a link to buy tickets
 - [x] Capacity limit and waitlist
-- [ ] Visibility: public, followers only, invite only, or unlisted
+- [x] Visibility: public, followers only, or unlisted (link only)
 - [ ] Audience restrictions: only students of a given university, or 18+
-- [ ] Drafts and scheduled publishing
-- [ ] Mark an event as cancelled or postponed, and notify people who are going
-- [ ] Co-hosts, so several organizations run one event
+- [x] Drafts and scheduled publishing
+- [x] Mark an event as cancelled or postponed, and notify people who are going
+- [x] Co-hosts, so several organizations run one event
 - [x] Duplicate an event
 
 ## 6. Going to events
@@ -104,7 +104,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 - [x] Push notifications
 - [x] In-app notification inbox
 - [ ] Event reminders
-- [ ] Alerts when an event you're going to changes or gets cancelled
+- [x] Alerts when an event you're going to changes or gets cancelled
 - [x] New follower and new event from someone you follow
 - [ ] Weekly email digest of upcoming events
 - [x] Settings for which notifications you receive

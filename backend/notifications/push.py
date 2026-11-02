@@ -46,6 +46,10 @@ def render(notification) -> tuple[str, str]:
             return title, _("The time or place of this event changed.")
         case Kind.EVENT_CANCELLED:
             return title, _("This event was cancelled.")
+        case Kind.EVENT_POSTPONED:
+            return title, _("This event was postponed.")
+        case Kind.CO_HOST_INVITE:
+            return title, _("%(name)s invited you to co-host this event.") % {"name": actor}
         case Kind.EVENT_REMINDER:
             starts = formats.date_format(timezone.localtime(event.starts_at), "TIME_FORMAT")
             return title, _("Starts at %(time)s.") % {"time": starts}

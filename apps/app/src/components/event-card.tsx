@@ -27,9 +27,16 @@ export function EventCard({ event, distanceM }: EventCardProps) {
     <Link href={{ pathname: '/events/[id]', params: { id: event.id } }} asChild>
       <Pressable style={({ pressed }) => pressed && styles.pressed}>
         <ThemedView type="backgroundElement" style={styles.card}>
-          <ThemedText type="smallBold" themeColor="tint">
-            {format.eventTime(event.starts_at, event.ends_at)}
+          <ThemedText type="smallBold" themeColor={event.status === 'active' ? 'tint' : 'danger'}>
+            {event.status === 'active'
+              ? format.eventTime(event.starts_at, event.ends_at)
+              : `${t(`eventStatus.${event.status ?? 'active'}`)} · ${format.eventTime(event.starts_at, event.ends_at)}`}
           </ThemedText>
+          {!event.published_at ? (
+            <ThemedText type="small" themeColor="textSecondary">
+              {t('eventStatus.draft')}
+            </ThemedText>
+          ) : null}
           <ThemedText type="heading">{event.title}</ThemedText>
           {place ? (
             <ThemedText type="small" themeColor="textSecondary">

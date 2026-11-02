@@ -11,16 +11,37 @@ from profiles.models import Profile
 
 class EventQuerySet(models.QuerySet):
     def visible_to(self, viewer):
-        """Not removed, and not organized by a profile blocked either way or removed."""
-        return (
+        """Events the viewer may open.
+
+        Published public or unlisted events, followers-only events of profiles they
+        follow, and every event (drafts too) of profiles they manage. Never removed
+        events, or ones whose organizer is removed, blocked either way or private.
+        """
+        queryset = (
             self.filter(removed_at__isnull=True, organizer__removed_at__isnull=True)
             .exclude(organizer__in=hidden_profiles(viewer))
             .exclude(organizer__in=private_profiles(viewer))
         )
+        audience = models.Q(visibility__in=[Event.Visibility.PUBLIC, Event.Visibility.UNLISTED])
+        if viewer is None:
+            return queryset.filter(audience, published_at__lte=timezone.now())
+        followed = Profile.objects.filter(followed_by__follower=viewer)
+        audience |= models.Q(visibility=Event.Visibility.FOLLOWERS, organizer__in=followed)
+        managed = Profile.objects.manageable_by(viewer.user)
+        return queryset.filter(
+            (audience & models.Q(published_at__lte=timezone.now()))
+            | models.Q(organizer__in=managed)
+        )
 
     def in_feeds_of(self, viewer):
-        """Like visible_to, also leaving out profiles the viewer muted."""
-        return self.visible_to(viewer).exclude(organizer__in=muted_profiles(viewer))
+        """What feeds list: visible, published, not unlisted or cancelled, nor muted."""
+        return (
+            self.visible_to(viewer)
+            .filter(published_at__lte=timezone.now())
+            .exclude(visibility=Event.Visibility.UNLISTED)
+            .exclude(status=Event.Status.CANCELLED)
+            .exclude(organizer__in=muted_profiles(viewer))
+        )
 
     def with_attendance(self, viewer):
         """Annotate attendance counts and the viewer's own status (None if not attending)."""
@@ -38,6 +59,14 @@ class EventQuerySet(models.QuerySet):
             return queryset.annotate(my_status=models.Value(None, models.CharField()))
         mine = Attendance.objects.filter(event=models.OuterRef("pk"), profile=viewer)
         return queryset.annotate(my_status=models.Subquery(mine.values("status")[:1]))
+
+    def for_display(self, viewer):
+        """Everything an event's serializer shows, fetched in as few queries as possible."""
+        return (
+            self.with_attendance(viewer)
+            .select_related("organizer__avatar", "cover")
+            .prefetch_related("categories", "co_host_links__profile__avatar")
+        )
 
     def not_ended(self):
         """Events that are ongoing or yet to start."""
@@ -80,6 +109,19 @@ class Category(models.Model):
 
 
 class Event(models.Model):
+    class Visibility(models.TextChoices):
+        PUBLIC = "public"
+        # Only followers of the organizer see it.
+        FOLLOWERS = "followers"
+        # Anyone with the link; never listed in feeds.
+        UNLISTED = "unlisted"
+
+    class Status(models.TextChoices):
+        ACTIVE = "active"
+        # Not happening at the announced time; a new time may follow.
+        POSTPONED = "postponed"
+        CANCELLED = "cancelled"
+
     organizer = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="events")
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
@@ -109,6 +151,19 @@ class Event(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     # Set by moderators; hides the event everywhere.
     removed_at = models.DateTimeField(null=True, blank=True)
+    visibility = models.CharField(
+        max_length=20, choices=Visibility.choices, default=Visibility.PUBLIC
+    )
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.ACTIVE)
+    # Empty for drafts; in the future for scheduled events.
+    published_at = models.DateTimeField(null=True, blank=True, default=timezone.now)
+    # When followers were told about it (an announcement post and notifications).
+    announced_at = models.DateTimeField(null=True, blank=True)
+    # Shared by the occurrences of a recurring event.
+    series_id = models.UUIDField(null=True, blank=True, db_index=True)
+    co_hosts = models.ManyToManyField(
+        Profile, through="CoHost", blank=True, related_name="co_hosted_events"
+    )
 
     objects = EventQuerySet.as_manager()
 
@@ -151,3 +206,20 @@ class Attendance(models.Model):
 
     def __str__(self):
         return f"{self.profile} {self.status} {self.event}"
+
+
+class CoHost(models.Model):
+    """Another profile running an event together with its organizer; shown once they accept."""
+
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="co_host_links")
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="co_host_links")
+    accepted_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["event", "profile"], name="unique_co_host"),
+        ]
+
+    def __str__(self):
+        return f"{self.profile} co-hosts {self.event}"

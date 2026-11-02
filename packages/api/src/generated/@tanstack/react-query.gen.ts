@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { categoriesList, eventsAttendanceDestroy, eventsAttendanceUpdate, eventsCreate, eventsDestroy, eventsPartialUpdate, eventsRetrieve, feedsFollowingList, feedsNearbyList, feedsUpcomingList, geocodeList, imagesCreate, meBlockedList, meEventsList, meFollowRequestsCreate, meFollowRequestsDestroy, meFollowRequestsList, meInvitationsCreate, meInvitationsDestroy, meInvitationsList, meMutedList, mePartialUpdate, meProfilesList, meRetrieve, meSettingsPartialUpdate, meSettingsRetrieve, notificationsList, notificationsReadCreate, notificationsUnreadRetrieve, type Options, organizationsCreate, organizationsInvitationsList, organizationsMembersCreate, organizationsMembersDestroy, organizationsMembersList, organizationsMembersPartialUpdate, organizationsPartialUpdate, organizationsVerificationCreate, postsCreate, postsDestroy, postsRetrieve, profilesBlockCreate, profilesBlockDestroy, profilesEventsList, profilesFollowCreate, profilesFollowDestroy, profilesFollowersList, profilesFollowingList, profilesMuteCreate, profilesMuteDestroy, profilesPostsList, profilesRetrieve, pushDevicesCreate, pushDevicesDestroy, reportsCreate } from '../sdk.gen';
-import type { CategoriesListData, CategoriesListResponse, EventsAttendanceDestroyData, EventsAttendanceDestroyResponse, EventsAttendanceUpdateData, EventsAttendanceUpdateResponse, EventsCreateData, EventsCreateResponse, EventsDestroyData, EventsDestroyResponse, EventsPartialUpdateData, EventsPartialUpdateResponse, EventsRetrieveData, EventsRetrieveResponse, FeedsFollowingListData, FeedsFollowingListResponse, FeedsNearbyListData, FeedsNearbyListResponse, FeedsUpcomingListData, FeedsUpcomingListResponse, GeocodeListData, GeocodeListResponse, ImagesCreateData, ImagesCreateResponse, MeBlockedListData, MeBlockedListResponse, MeEventsListData, MeEventsListResponse, MeFollowRequestsCreateData, MeFollowRequestsCreateResponse, MeFollowRequestsDestroyData, MeFollowRequestsDestroyResponse, MeFollowRequestsListData, MeFollowRequestsListResponse, MeInvitationsCreateData, MeInvitationsCreateResponse, MeInvitationsDestroyData, MeInvitationsDestroyResponse, MeInvitationsListData, MeInvitationsListResponse, MeMutedListData, MeMutedListResponse, MePartialUpdateData, MePartialUpdateResponse, MeProfilesListData, MeProfilesListResponse, MeRetrieveData, MeRetrieveResponse, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponse, MeSettingsRetrieveData, MeSettingsRetrieveResponse, NotificationsListData, NotificationsListResponse, NotificationsReadCreateData, NotificationsReadCreateResponse, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponse, OrganizationsCreateData, OrganizationsCreateResponse, OrganizationsInvitationsListData, OrganizationsInvitationsListResponse, OrganizationsMembersCreateData, OrganizationsMembersCreateResponse, OrganizationsMembersDestroyData, OrganizationsMembersDestroyResponse, OrganizationsMembersListData, OrganizationsMembersListResponse, OrganizationsMembersPartialUpdateData, OrganizationsMembersPartialUpdateResponse, OrganizationsPartialUpdateData, OrganizationsPartialUpdateResponse, OrganizationsVerificationCreateData, OrganizationsVerificationCreateResponse, PostsCreateData, PostsCreateResponse, PostsDestroyData, PostsDestroyResponse, PostsRetrieveData, PostsRetrieveResponse, ProfilesBlockCreateData, ProfilesBlockCreateResponse, ProfilesBlockDestroyData, ProfilesBlockDestroyResponse, ProfilesEventsListData, ProfilesEventsListResponse, ProfilesFollowCreateData, ProfilesFollowCreateResponse, ProfilesFollowDestroyData, ProfilesFollowDestroyResponse, ProfilesFollowersListData, ProfilesFollowersListResponse, ProfilesFollowingListData, ProfilesFollowingListResponse, ProfilesMuteCreateData, ProfilesMuteCreateResponse, ProfilesMuteDestroyData, ProfilesMuteDestroyResponse, ProfilesPostsListData, ProfilesPostsListResponse, ProfilesRetrieveData, ProfilesRetrieveResponse, PushDevicesCreateData, PushDevicesCreateResponse, PushDevicesDestroyData, PushDevicesDestroyResponse, ReportsCreateData, ReportsCreateResponse } from '../types.gen';
+import { categoriesList, eventsAttendanceDestroy, eventsAttendanceUpdate, eventsCoHostCreate, eventsCoHostDestroy, eventsCoHostList, eventsCreate, eventsDestroy, eventsPartialUpdate, eventsRetrieve, feedsFollowingList, feedsNearbyList, feedsUpcomingList, geocodeList, imagesCreate, meBlockedList, meEventsList, meFollowRequestsCreate, meFollowRequestsDestroy, meFollowRequestsList, meInvitationsCreate, meInvitationsDestroy, meInvitationsList, meMutedList, mePartialUpdate, meProfilesList, meRetrieve, meSettingsPartialUpdate, meSettingsRetrieve, notificationsList, notificationsReadCreate, notificationsUnreadRetrieve, type Options, organizationsCreate, organizationsInvitationsList, organizationsMembersCreate, organizationsMembersDestroy, organizationsMembersList, organizationsMembersPartialUpdate, organizationsPartialUpdate, organizationsVerificationCreate, postsCreate, postsDestroy, postsRetrieve, profilesBlockCreate, profilesBlockDestroy, profilesEventsList, profilesFollowCreate, profilesFollowDestroy, profilesFollowersList, profilesFollowingList, profilesMuteCreate, profilesMuteDestroy, profilesPostsList, profilesRetrieve, pushDevicesCreate, pushDevicesDestroy, reportsCreate } from '../sdk.gen';
+import type { CategoriesListData, CategoriesListResponse, EventsAttendanceDestroyData, EventsAttendanceDestroyResponse, EventsAttendanceUpdateData, EventsAttendanceUpdateResponse, EventsCoHostCreateData, EventsCoHostCreateResponse, EventsCoHostDestroyData, EventsCoHostDestroyResponse, EventsCoHostListData, EventsCoHostListResponse, EventsCreateData, EventsCreateResponse, EventsDestroyData, EventsDestroyResponse, EventsPartialUpdateData, EventsPartialUpdateResponse, EventsRetrieveData, EventsRetrieveResponse, FeedsFollowingListData, FeedsFollowingListResponse, FeedsNearbyListData, FeedsNearbyListResponse, FeedsUpcomingListData, FeedsUpcomingListResponse, GeocodeListData, GeocodeListResponse, ImagesCreateData, ImagesCreateResponse, MeBlockedListData, MeBlockedListResponse, MeEventsListData, MeEventsListResponse, MeFollowRequestsCreateData, MeFollowRequestsCreateResponse, MeFollowRequestsDestroyData, MeFollowRequestsDestroyResponse, MeFollowRequestsListData, MeFollowRequestsListResponse, MeInvitationsCreateData, MeInvitationsCreateResponse, MeInvitationsDestroyData, MeInvitationsDestroyResponse, MeInvitationsListData, MeInvitationsListResponse, MeMutedListData, MeMutedListResponse, MePartialUpdateData, MePartialUpdateResponse, MeProfilesListData, MeProfilesListResponse, MeRetrieveData, MeRetrieveResponse, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponse, MeSettingsRetrieveData, MeSettingsRetrieveResponse, NotificationsListData, NotificationsListResponse, NotificationsReadCreateData, NotificationsReadCreateResponse, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponse, OrganizationsCreateData, OrganizationsCreateResponse, OrganizationsInvitationsListData, OrganizationsInvitationsListResponse, OrganizationsMembersCreateData, OrganizationsMembersCreateResponse, OrganizationsMembersDestroyData, OrganizationsMembersDestroyResponse, OrganizationsMembersListData, OrganizationsMembersListResponse, OrganizationsMembersPartialUpdateData, OrganizationsMembersPartialUpdateResponse, OrganizationsPartialUpdateData, OrganizationsPartialUpdateResponse, OrganizationsVerificationCreateData, OrganizationsVerificationCreateResponse, PostsCreateData, PostsCreateResponse, PostsDestroyData, PostsDestroyResponse, PostsRetrieveData, PostsRetrieveResponse, ProfilesBlockCreateData, ProfilesBlockCreateResponse, ProfilesBlockDestroyData, ProfilesBlockDestroyResponse, ProfilesEventsListData, ProfilesEventsListResponse, ProfilesFollowCreateData, ProfilesFollowCreateResponse, ProfilesFollowDestroyData, ProfilesFollowDestroyResponse, ProfilesFollowersListData, ProfilesFollowersListResponse, ProfilesFollowingListData, ProfilesFollowingListResponse, ProfilesMuteCreateData, ProfilesMuteCreateResponse, ProfilesMuteDestroyData, ProfilesMuteDestroyResponse, ProfilesPostsListData, ProfilesPostsListResponse, ProfilesRetrieveData, ProfilesRetrieveResponse, PushDevicesCreateData, PushDevicesCreateResponse, PushDevicesDestroyData, PushDevicesDestroyResponse, ReportsCreateData, ReportsCreateResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -150,6 +150,62 @@ export const eventsAttendanceUpdateMutation = (options?: Partial<Options<EventsA
     const mutationOptions: UseMutationOptions<EventsAttendanceUpdateResponse, DefaultError, Options<EventsAttendanceUpdateData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await eventsAttendanceUpdate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const eventsCoHostListQueryKey = (options: Options<EventsCoHostListData>) => createQueryKey('eventsCoHostList', options);
+
+/**
+ * Pending co-host invitations of this event for profiles you manage.
+ */
+export const eventsCoHostListOptions = (options: Options<EventsCoHostListData>) => queryOptions<EventsCoHostListResponse, DefaultError, EventsCoHostListResponse, ReturnType<typeof eventsCoHostListQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await eventsCoHostList({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: eventsCoHostListQueryKey(options)
+});
+
+/**
+ * Accept co-hosting as one of your profiles (POST), or decline or stop (DELETE).
+ *
+ * Answering for one date of a series answers for all of them.
+ */
+export const eventsCoHostDestroyMutation = (options?: Partial<Options<EventsCoHostDestroyData>>): UseMutationOptions<EventsCoHostDestroyResponse, DefaultError, Options<EventsCoHostDestroyData>> => {
+    const mutationOptions: UseMutationOptions<EventsCoHostDestroyResponse, DefaultError, Options<EventsCoHostDestroyData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await eventsCoHostDestroy({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Accept co-hosting as one of your profiles (POST), or decline or stop (DELETE).
+ *
+ * Answering for one date of a series answers for all of them.
+ */
+export const eventsCoHostCreateMutation = (options?: Partial<Options<EventsCoHostCreateData>>): UseMutationOptions<EventsCoHostCreateResponse, DefaultError, Options<EventsCoHostCreateData>> => {
+    const mutationOptions: UseMutationOptions<EventsCoHostCreateResponse, DefaultError, Options<EventsCoHostCreateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await eventsCoHostCreate({
                 ...options,
                 ...fnOptions,
                 throwOnError: true

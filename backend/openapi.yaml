@@ -175,6 +175,78 @@ paths:
               schema:
                 $ref: '#/components/schemas/AttendanceSummary'
           description: ''
+  /api/events/{id}/co-host/:
+    get:
+      operationId: events_co_host_list
+      description: Pending co-host invitations of this event for profiles you manage.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - events
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProfileSummary'
+          description: ''
+  /api/events/{id}/co-host/{handle}/:
+    post:
+      operationId: events_co_host_create
+      description: |-
+        Accept co-hosting as one of your profiles (POST), or decline or stop (DELETE).
+
+        Answering for one date of a series answers for all of them.
+      parameters:
+      - in: path
+        name: handle
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - events
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '204':
+          description: No response body
+    delete:
+      operationId: events_co_host_destroy
+      description: |-
+        Accept co-hosting as one of your profiles (POST), or decline or stop (DELETE).
+
+        Answering for one date of a series answers for all of them.
+      parameters:
+      - in: path
+        name: handle
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - events
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/feeds/following/:
     get:
       operationId: feeds_following_list
@@ -1458,6 +1530,27 @@ components:
             maxLength: 200
           - type: string
             maxLength: 0
+        visibility:
+          $ref: '#/components/schemas/EventVisibilityEnum'
+        status:
+          $ref: '#/components/schemas/EventStatusEnum'
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Leave out to publish now; empty for a draft; a future time
+            to schedule.
+        series_id:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        co_hosts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProfileSummary'
+          readOnly: true
+          description: Co-hosts who accepted.
         attendance:
           allOf:
           - $ref: '#/components/schemas/AttendanceSummary'
@@ -1472,11 +1565,13 @@ components:
           readOnly: true
       required:
       - attendance
+      - co_hosts
       - cover
       - created_at
       - ends_at
       - id
       - organizer
+      - series_id
       - starts_at
       - title
       - updated_at
@@ -1545,10 +1640,52 @@ components:
             maxLength: 200
           - type: string
             maxLength: 0
+        visibility:
+          $ref: '#/components/schemas/EventVisibilityEnum'
+        status:
+          $ref: '#/components/schemas/EventStatusEnum'
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Leave out to publish now; empty for a draft; a future time
+            to schedule.
+        co_host_handles:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          writeOnly: true
+          description: Profiles to ask to co-host; leaving one out removes it.
+        repeat:
+          allOf:
+          - $ref: '#/components/schemas/RepeatRequest'
+          writeOnly: true
+          description: Create a series of dates. Only on create.
       required:
       - ends_at
       - starts_at
       - title
+    EventStatusEnum:
+      enum:
+      - active
+      - postponed
+      - cancelled
+      type: string
+      description: |-
+        * `active` - Active
+        * `postponed` - Postponed
+        * `cancelled` - Cancelled
+    EventVisibilityEnum:
+      enum:
+      - public
+      - followers
+      - unlisted
+      type: string
+      description: |-
+        * `public` - Public
+        * `followers` - Followers
+        * `unlisted` - Unlisted
     FollowStatus:
       type: object
       properties:
@@ -1573,6 +1710,16 @@ components:
         * `following` - following
         * `requested` - requested
         * `none` - none
+    FrequencyEnum:
+      enum:
+      - weekly
+      - biweekly
+      - monthly
+      type: string
+      description: |-
+        * `weekly` - weekly
+        * `biweekly` - biweekly
+        * `monthly` - monthly
     GeocodeResult:
       type: object
       properties:
@@ -1819,6 +1966,27 @@ components:
             maxLength: 200
           - type: string
             maxLength: 0
+        visibility:
+          $ref: '#/components/schemas/EventVisibilityEnum'
+        status:
+          $ref: '#/components/schemas/EventStatusEnum'
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Leave out to publish now; empty for a draft; a future time
+            to schedule.
+        series_id:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        co_hosts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProfileSummary'
+          readOnly: true
+          description: Co-hosts who accepted.
         attendance:
           allOf:
           - $ref: '#/components/schemas/AttendanceSummary'
@@ -1837,12 +2005,14 @@ components:
           readOnly: true
       required:
       - attendance
+      - co_hosts
       - cover
       - created_at
       - distance_m
       - ends_at
       - id
       - organizer
+      - series_id
       - starts_at
       - title
       - updated_at
@@ -1915,6 +2085,8 @@ components:
       - new_event
       - event_changed
       - event_cancelled
+      - event_postponed
+      - co_host_invite
       - event_reminder
       - waitlist_promoted
       - announcement
@@ -1930,6 +2102,8 @@ components:
         * `new_event` - New events from people you follow
         * `event_changed` - Changes to events you're going to
         * `event_cancelled` - Cancelled events
+        * `event_postponed` - Postponed events
+        * `co_host_invite` - Invitations to co-host events
         * `event_reminder` - Event reminders
         * `waitlist_promoted` - A spot opened up for you
         * `announcement` - Announcements from organizers
@@ -2148,6 +2322,28 @@ components:
             maxLength: 200
           - type: string
             maxLength: 0
+        visibility:
+          $ref: '#/components/schemas/EventVisibilityEnum'
+        status:
+          $ref: '#/components/schemas/EventStatusEnum'
+        published_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: Leave out to publish now; empty for a draft; a future time
+            to schedule.
+        co_host_handles:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          writeOnly: true
+          description: Profiles to ask to co-host; leaving one out removes it.
+        repeat:
+          allOf:
+          - $ref: '#/components/schemas/RepeatRequest'
+          writeOnly: true
+          description: Create a series of dates. Only on create.
     PatchedMemberRoleRequest:
       type: object
       properties:
@@ -2415,6 +2611,32 @@ components:
           maxLength: 255
       required:
       - token
+    Repeat:
+      type: object
+      properties:
+        frequency:
+          $ref: '#/components/schemas/FrequencyEnum'
+        count:
+          type: integer
+          maximum: 26
+          minimum: 2
+          description: How many dates in total, the first included.
+      required:
+      - count
+      - frequency
+    RepeatRequest:
+      type: object
+      properties:
+        frequency:
+          $ref: '#/components/schemas/FrequencyEnum'
+        count:
+          type: integer
+          maximum: 26
+          minimum: 2
+          description: How many dates in total, the first included.
+      required:
+      - count
+      - frequency
     Report:
       type: object
       properties:
