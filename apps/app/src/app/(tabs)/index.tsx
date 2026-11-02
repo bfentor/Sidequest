@@ -9,6 +9,7 @@ import { EventCard } from '@/components/event-card';
 import { FeedList } from '@/components/feed-list';
 import { IconButton } from '@/components/icon-button';
 import { ThemedText } from '@/components/themed-text';
+import { Spacing } from '@/constants/theme';
 
 export default function UpcomingScreen() {
   const feed = useUpcomingFeed();
@@ -21,14 +22,22 @@ export default function UpcomingScreen() {
       header={
         <View style={styles.header}>
           <ThemedText type="subtitle">{t('tabs.upcoming')}</ThemedText>
-          {status === 'signed-in' ? (
+          <View style={styles.actions}>
             <IconButton
-              icon={{ ios: 'plus.circle.fill', material: 'add_circle' }}
-              label={t('eventForm.newEvent')}
-              size={32}
-              onPress={() => router.push('/events/new')}
+              icon={{ ios: 'magnifyingglass', material: 'search' }}
+              label={t('search.title')}
+              size={28}
+              onPress={() => router.push('/search')}
             />
-          ) : null}
+            {status === 'signed-in' ? (
+              <IconButton
+                icon={{ ios: 'plus.circle.fill', material: 'add_circle' }}
+                label={t('eventForm.newEvent')}
+                size={32}
+                onPress={() => router.push('/events/new')}
+              />
+            ) : null}
+          </View>
         </View>
       }
       renderItem={(event) => <EventCard event={event} />}
@@ -43,5 +52,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  actions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.two,
   },
 });

@@ -402,5 +402,13 @@
     "unknownDevice": "Unknown device",
     "lastSeen": "Last active {{when}}",
     "signOutOthers": "Sign out everywhere else"
+  },
+  "search": {
+    "title": "Search",
+    "label": "Search",
+    "placeholder": "Events, people, organizations",
+    "nothing": "Nothing matches “{{query}}”.",
+    "people": "People and organizations",
+    "events": "Events"
   }
 }

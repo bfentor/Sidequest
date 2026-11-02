@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.gis",
+    "django.contrib.postgres",
     # The site's name ("Sidequest") is what allauth's emails are signed with.
     "django.contrib.sites",
     # Third party
@@ -61,6 +62,7 @@ INSTALLED_APPS = [
     "posts",
     "feeds",
     "students",
+    "search",
 ]
 
 MIDDLEWARE = [

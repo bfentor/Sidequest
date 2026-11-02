@@ -1,7 +1,9 @@
 from django.contrib.gis.db import models as gis_models
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.measure import D
+from django.contrib.postgres.indexes import GinIndex, OpClass
 from django.db import models
+from django.db.models.functions import Upper
 from django.utils import timezone
 from django.utils.translation import get_language
 
@@ -181,6 +183,8 @@ class Event(models.Model):
         indexes = [
             models.Index(fields=["starts_at", "id"]),
             models.Index(fields=["ends_at"]),
+            # Typo-tolerant title search (search/views.py).
+            GinIndex(OpClass(Upper("title"), name="gin_trgm_ops"), name="event_title_trgm"),
         ]
         constraints = [
             models.CheckConstraint(

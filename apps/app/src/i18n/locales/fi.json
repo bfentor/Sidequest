@@ -402,5 +402,13 @@
     "unknownDevice": "Tuntematon laite",
     "lastSeen": "Viimeksi aktiivinen {{when}}",
     "signOutOthers": "Kirjaudu ulos kaikkialta muualta"
+  },
+  "search": {
+    "title": "Haku",
+    "label": "Hae",
+    "placeholder": "Tapahtumat, ihmiset, järjestöt",
+    "nothing": "Mikään ei vastaa hakua ”{{query}}”.",
+    "people": "Ihmiset ja järjestöt",
+    "events": "Tapahtumat"
   }
 }

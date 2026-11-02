@@ -1492,6 +1492,35 @@ paths:
               schema:
                 $ref: '#/components/schemas/Report'
           description: ''
+  /api/search/:
+    get:
+      operationId: search_retrieve
+      description: Events and profiles matching a search, best matches first.
+      parameters:
+      - in: query
+        name: include_past
+        schema:
+          type: boolean
+          default: false
+        description: Also events that have ended.
+      - in: query
+        name: q
+        schema:
+          type: string
+        description: What to look for.
+        required: true
+      tags:
+      - search
+      security:
+      - XSessionTokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResults'
+          description: ''
   /api/universities/:
     get:
       operationId: universities_list
@@ -2950,6 +2979,20 @@ components:
       description: |-
         * `going` - going
         * `interested` - interested
+    SearchResults:
+      type: object
+      properties:
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+        profiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProfileSummary'
+      required:
+      - events
+      - profiles
     StudentCodeRequest:
       type: object
       properties:

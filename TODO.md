@@ -80,7 +80,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 
 ## 7. Feeds, search and discovery
 
-- [ ] Search for events, people and organizations
+- [x] Search for events, people and organizations
 - [ ] Filters: date range, category, free only, distance
 - [ ] Quick filters: today, tonight, this weekend
 - [ ] Map view for the nearby feed

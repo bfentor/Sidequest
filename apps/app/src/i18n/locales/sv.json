@@ -402,5 +402,13 @@
     "unknownDevice": "Okänd enhet",
     "lastSeen": "Senast aktiv {{when}}",
     "signOutOthers": "Logga ut överallt annars"
+  },
+  "search": {
+    "title": "Sök",
+    "label": "Sök",
+    "placeholder": "Evenemang, personer, organisationer",
+    "nothing": "Inget matchar ”{{query}}”.",
+    "people": "Personer och organisationer",
+    "events": "Evenemang"
   }
 }

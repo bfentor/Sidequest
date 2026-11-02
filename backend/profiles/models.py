@@ -1,7 +1,9 @@
 from django.conf import settings
+from django.contrib.postgres.indexes import GinIndex, OpClass
 from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models import Count, Exists, OuterRef, Q
+from django.db.models.functions import Upper
 from django.utils.translation import gettext_lazy as _
 
 handle_validator = RegexValidator(
@@ -114,6 +116,10 @@ class Profile(models.Model):
     objects = ProfileQuerySet.as_manager()
 
     class Meta:
+        indexes = [
+            # Typo-tolerant name search (search/views.py).
+            GinIndex(OpClass(Upper("display_name"), name="gin_trgm_ops"), name="profile_name_trgm"),
+        ]
         constraints = [
             models.CheckConstraint(
                 condition=(
