@@ -1,4 +1,6 @@
 from django.utils.translation import gettext_lazy as _
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
 from .models import Image
@@ -37,6 +39,8 @@ class ImageUploadSerializer(ImageSerializer):
         return Image.objects.create(uploader=self.context["request"].user, **validated_data)
 
 
+# The queryset depends on the request, so the schema can't infer the id's type.
+@extend_schema_field(OpenApiTypes.INT)
 class OwnImageField(serializers.PrimaryKeyRelatedField):
     """Refers to an image the requesting user uploaded."""
 

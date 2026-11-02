@@ -1487,8 +1487,8 @@ paths:
   /api/posts/:
     post:
       operationId: posts_create
-      description: Create, view and delete single posts. Listing happens through the
-        feeds.
+      description: Create, view, edit and delete single posts. Listing happens through
+        the feeds.
       tags:
       - posts
       requestBody:
@@ -1514,8 +1514,8 @@ paths:
   /api/posts/{id}/:
     get:
       operationId: posts_retrieve
-      description: Create, view and delete single posts. Listing happens through the
-        feeds.
+      description: Create, view, edit and delete single posts. Listing happens through
+        the feeds.
       parameters:
       - in: path
         name: id
@@ -1535,10 +1535,43 @@ paths:
               schema:
                 $ref: '#/components/schemas/Post'
           description: ''
+    patch:
+      operationId: posts_partial_update
+      description: Create, view, edit and delete single posts. Listing happens through
+        the feeds.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this post.
+        required: true
+      tags:
+      - posts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPostRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPostRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPostRequest'
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+          description: ''
     delete:
       operationId: posts_destroy
-      description: Create, view and delete single posts. Listing happens through the
-        feeds.
+      description: Create, view, edit and delete single posts. Listing happens through
+        the feeds.
       parameters:
       - in: path
         name: id
@@ -3015,6 +3048,31 @@ components:
       properties:
         role:
           $ref: '#/components/schemas/MembershipRoleEnum'
+    PatchedPostRequest:
+      type: object
+      properties:
+        author_handle:
+          type: string
+          minLength: 1
+          writeOnly: true
+          description: Post as this profile (yourself or an organization you belong
+            to). Defaults to your own profile.
+        body:
+          type: string
+          maxLength: 2000
+        event_id:
+          type: integer
+          writeOnly: true
+          nullable: true
+          description: Attach (share) an existing event.
+        image_ids:
+          type: array
+          items:
+            type: integer
+          writeOnly: true
+          description: Up to 4 images uploaded with POST /api/images/, in order. On
+            edit, replaces the post's pictures.
+          maxItems: 4
     PatchedProfileRequest:
       type: object
       description: Full profile. Expects a queryset annotated with `with_social_stats`.
@@ -3098,15 +3156,28 @@ components:
           allOf:
           - $ref: '#/components/schemas/Event'
           readOnly: true
+          nullable: true
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+          readOnly: true
         created_at:
           type: string
           format: date-time
           readOnly: true
+        edited_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
       required:
       - author
       - created_at
+      - edited_at
       - event
       - id
+      - images
     PostRequest:
       type: object
       properties:
@@ -3124,6 +3195,14 @@ components:
           writeOnly: true
           nullable: true
           description: Attach (share) an existing event.
+        image_ids:
+          type: array
+          items:
+            type: integer
+          writeOnly: true
+          description: Up to 4 images uploaded with POST /api/images/, in order. On
+            edit, replaces the post's pictures.
+          maxItems: 4
     Profile:
       type: object
       description: Full profile. Expects a queryset annotated with `with_social_stats`.

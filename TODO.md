@@ -92,12 +92,12 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 
 ## 8. Posts and social features
 
-- [ ] **[API ready]** Write a post (text, or sharing an event)
-- [ ] Images in posts
-- [ ] Edit and delete posts
+- [x] Write a post (text, or sharing an event)
+- [x] Images in posts
+- [x] Edit and delete posts
 - [ ] Likes and reactions
 - [ ] Comments
-- [ ] Reposting or sharing events to your followers
+- [x] Reposting or sharing events to your followers
 - [ ] @mentions, hashtags and link previews
 - [ ] Direct messages (a large feature with heavy moderation needs)
 - [ ] A group chat for each event

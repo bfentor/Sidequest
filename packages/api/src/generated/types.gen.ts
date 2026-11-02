@@ -451,6 +451,10 @@ export type PatchedMemberRoleRequest = {
     role?: MembershipRoleEnum;
 };
 
+export type PatchedPostRequest = {
+    body?: string;
+};
+
 /**
  * Full profile. Expects a queryset annotated with `with_social_stats`.
  */
@@ -477,8 +481,10 @@ export type Post = {
     readonly id: number;
     author: ProfileSummary;
     body?: string;
-    event: Event;
+    event: Event | null;
+    readonly images: Array<Image>;
     readonly created_at: string;
+    readonly edited_at: string | null;
 };
 
 export type PostRequest = {
@@ -870,6 +876,22 @@ export type PatchedEventRequestWritable = {
     repeat?: RepeatRequest;
 };
 
+export type PatchedPostRequestWritable = {
+    /**
+     * Post as this profile (yourself or an organization you belong to). Defaults to your own profile.
+     */
+    author_handle?: string;
+    body?: string;
+    /**
+     * Attach (share) an existing event.
+     */
+    event_id?: number | null;
+    /**
+     * Up to 4 images uploaded with POST /api/images/, in order. On edit, replaces the post's pictures.
+     */
+    image_ids?: Array<number>;
+};
+
 /**
  * Full profile. Expects a queryset annotated with `with_social_stats`.
  */
@@ -914,6 +936,10 @@ export type PostRequestWritable = {
      * Attach (share) an existing event.
      */
     event_id?: number | null;
+    /**
+     * Up to 4 images uploaded with POST /api/images/, in order. On edit, replaces the post's pictures.
+     */
+    image_ids?: Array<number>;
 };
 
 /**
@@ -2018,6 +2044,24 @@ export type PostsRetrieveResponses = {
 };
 
 export type PostsRetrieveResponse = PostsRetrieveResponses[keyof PostsRetrieveResponses];
+
+export type PostsPartialUpdateData = {
+    body?: PatchedPostRequestWritable;
+    path: {
+        /**
+         * A unique integer value identifying this post.
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/api/posts/{id}/';
+};
+
+export type PostsPartialUpdateResponses = {
+    200: Post;
+};
+
+export type PostsPartialUpdateResponse = PostsPartialUpdateResponses[keyof PostsPartialUpdateResponses];
 
 export type ProfilesRetrieveData = {
     body?: never;

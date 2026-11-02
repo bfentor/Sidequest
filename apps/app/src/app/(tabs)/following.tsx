@@ -16,9 +16,21 @@ import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
 import { useBooleanPreference } from '@/lib/preferences';
 
-function Header() {
+function Header({ canPost = false }: { canPost?: boolean }) {
   const { t } = useTranslation();
-  return <ThemedText type="subtitle">{t('tabs.following')}</ThemedText>;
+  return (
+    <View style={styles.titleRow}>
+      <ThemedText type="subtitle">{t('tabs.following')}</ThemedText>
+      {canPost ? (
+        <IconButton
+          icon={{ ios: 'square.and.pencil', material: 'edit_square' }}
+          label={t('posts.new')}
+          size={28}
+          onPress={() => router.push('/posts/new')}
+        />
+      ) : null}
+    </View>
+  );
 }
 
 export default function FollowingScreen() {
@@ -58,7 +70,7 @@ function FollowingFeed() {
       query={feed}
       header={
         <View style={styles.header}>
-          <Header />
+          <Header canPost />
           {hideSuggestions ? null : (
             <ThemedView type="backgroundElement" style={styles.suggestions}>
               <FollowSuggestions
@@ -95,6 +107,11 @@ function FollowingFeed() {
 }
 
 const styles = StyleSheet.create({
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   header: {
     gap: Spacing.three,
   },

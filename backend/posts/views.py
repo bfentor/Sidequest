@@ -10,15 +10,17 @@ from .serializers import PostSerializer
 class PostViewSet(
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
     mixins.DestroyModelMixin,
     viewsets.GenericViewSet,
 ):
-    """Create, view and delete single posts. Listing happens through the feeds."""
+    """Create, view, edit and delete single posts. Listing happens through the feeds."""
 
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, CanActAsOwner]
     owner_field = "author"
     throttle_scope = "posts"
+    http_method_names = ["get", "post", "patch", "delete", "options"]
 
     def get_queryset(self):
         viewer = viewer_profile(self.request)

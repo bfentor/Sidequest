@@ -1,8 +1,10 @@
 import type { Event } from '@sidequest/api';
+import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Linking, StyleSheet, View } from 'react-native';
 
+import { useAuth } from '@/auth/auth-provider';
 import { Spacing } from '@/constants/theme';
 import { eventIcs, googleCalendarUrl } from '@/lib/calendar';
 import { WEB_URL } from '@/lib/config';
@@ -17,9 +19,13 @@ function eventUrl(event: Pick<Event, 'id'>) {
   return `${WEB_URL}/events/${event.id}`;
 }
 
-/** "Add to calendar" (a calendar file or Google Calendar) and "Share" for an event. */
+/**
+ * "Add to calendar" (a calendar file or Google Calendar), "Share", and for
+ * signed-in people, posting about the event to their followers.
+ */
 export function EventActions({ event }: { event: Event }) {
   const { t } = useTranslation();
+  const { status } = useAuth();
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const url = eventUrl(event);
@@ -48,6 +54,13 @@ export function EventActions({ event }: { event: Event }) {
           <Button title={t('eventActions.share')} variant="secondary" onPress={share} />
         </View>
       </View>
+      {status === 'signed-in' && event.status !== 'cancelled' ? (
+        <Button
+          title={t('eventActions.postAbout')}
+          variant="secondary"
+          onPress={() => router.push({ pathname: '/posts/new', params: { event: event.id } })}
+        />
+      ) : null}
       {copied ? (
         <ThemedText type="small" themeColor="textSecondary" role="status">
           {t('eventActions.linkCopied')}

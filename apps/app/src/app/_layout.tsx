@@ -51,6 +51,8 @@ function RootStack() {
       <Stack.Screen name="events/[id]/edit" options={{ title: t('eventForm.edit') }} />
       <Stack.Screen name="events/[id]/attendees" options={{ title: t('attendees.title') }} />
       <Stack.Screen name="events/new" options={{ title: t('eventForm.newEvent') }} />
+      <Stack.Screen name="posts/new" options={{ title: t('posts.new') }} />
+      <Stack.Screen name="posts/[id]/edit" options={{ title: t('posts.edit') }} />
       <Stack.Screen name="my-events" options={{ title: t('myEvents.title') }} />
       <Stack.Screen name="legal/[document]" options={{ title: '' }} />
       <Stack.Screen name="verify-email" options={{ title: t('verifyEmail.title') }} />

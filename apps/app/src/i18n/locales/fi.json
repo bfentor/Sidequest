@@ -129,7 +129,18 @@
   },
   "posts": {
     "delete": "Poista julkaisu",
-    "deleteConfirmTitle": "Poistetaanko julkaisu?"
+    "deleteConfirmTitle": "Poistetaanko julkaisu?",
+    "new": "Uusi julkaisu",
+    "edit": "Muokkaa julkaisua",
+    "edited": "muokattu",
+    "publish": "Julkaise",
+    "postAs": "Julkaise nimellä",
+    "body": "Mitä kuuluu?",
+    "placeholder": "Jaa uutisia, suunnitelmia tai kuvia seuraajillesi",
+    "aboutEventPlaceholder": "Kerro jotain tästä tapahtumasta",
+    "addImage": "Lisää kuva",
+    "removeImage": "Poista kuva",
+    "loadFailed": "Julkaisua ei voitu ladata."
   },
   "moderation": {
     "report": "Ilmoita",
@@ -459,6 +470,7 @@
     "share": "Jaa",
     "linkCopied": "Linkki kopioitu.",
     "calendarFile": "Kalenteritiedosto (Apple, Outlook…)",
-    "googleCalendar": "Google-kalenteri"
+    "googleCalendar": "Google-kalenteri",
+    "postAbout": "Julkaise tästä tapahtumasta"
   }
 }

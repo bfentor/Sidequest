@@ -22,7 +22,8 @@ class PostQuerySet(models.QuerySet):
     def for_display(self, viewer):
         """Everything a post's serializer shows; shared events come with their attendance."""
         return self.select_related("author__avatar").prefetch_related(
-            models.Prefetch("event", queryset=Event.objects.for_display(viewer))
+            models.Prefetch("event", queryset=Event.objects.for_display(viewer)),
+            "image_links__image",
         )
 
     def in_feeds_of(self, viewer):
@@ -50,10 +51,11 @@ class PostQuerySet(models.QuerySet):
 
 
 class Post(models.Model):
-    """An entry in the following feed: a text update, an event, or both.
+    """An entry in the following feed: text, pictures, an event, or a mix.
 
     Publishing an event creates a post linking to it, so events reach
-    followers through the same feed as everything else.
+    followers through the same feed as everything else. That a post isn't
+    empty is checked by its serializer, since pictures live in PostImage.
     """
 
     author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="posts")
@@ -62,6 +64,8 @@ class Post(models.Model):
         Event, on_delete=models.CASCADE, null=True, blank=True, related_name="posts"
     )
     created_at = models.DateTimeField(auto_now_add=True)
+    # When the author last changed the text or pictures.
+    edited_at = models.DateTimeField(null=True, blank=True)
     # Set by moderators; hides the post everywhere.
     removed_at = models.DateTimeField(null=True, blank=True)
 
@@ -69,12 +73,23 @@ class Post(models.Model):
 
     class Meta:
         indexes = [models.Index(fields=["author", "-created_at"])]
-        constraints = [
-            models.CheckConstraint(
-                condition=~models.Q(body="") | models.Q(event__isnull=False),
-                name="post_has_body_or_event",
-            ),
-        ]
 
     def __str__(self):
         return f"Post by {self.author} at {self.created_at:%Y-%m-%d %H:%M}"
+
+
+class PostImage(models.Model):
+    """A picture in a post, in the order the author chose."""
+
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="image_links")
+    image = models.ForeignKey("images.Image", on_delete=models.CASCADE, related_name="post_links")
+    position = models.PositiveSmallIntegerField()
+
+    class Meta:
+        ordering = ["position"]
+        constraints = [
+            models.UniqueConstraint(fields=["post", "image"], name="unique_post_image"),
+        ]
+
+    def __str__(self):
+        return f"Picture {self.position + 1} of {self.post}"

@@ -11,13 +11,12 @@ import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet, Switch, View } from 'react-native';
 
 import { Spacing } from '@/constants/theme';
-import { useActingProfiles } from '@/hooks/use-acting-profiles';
 import { useCategories } from '@/hooks/use-categories';
 import { useImageUpload } from '@/hooks/use-image-upload';
 import { useUniversities } from '@/hooks/use-universities';
 import { useTheme } from '@/hooks/use-theme';
 
-import { Avatar } from './avatar';
+import { ActingAsPicker } from './acting-as-picker';
 import { Button } from './button';
 import { DateTimeField } from './date-time-field';
 import { LocationSearch, type Place } from './location-search';
@@ -53,7 +52,6 @@ export function EventForm({ initial, mode, submitLabel, onSubmit }: EventFormPro
   const { t } = useTranslation();
   const theme = useTheme();
   const { categories } = useCategories();
-  const acting = useActingProfiles();
   const upload = useImageUpload();
 
   // Computed once, not on every render.
@@ -168,33 +166,12 @@ export function EventForm({ initial, mode, submitLabel, onSubmit }: EventFormPro
 
   return (
     <>
-      {mode === 'create' && acting.length > 1 ? (
-        <View style={styles.section}>
-          <ThemedText type="smallBold">{t('eventForm.publishAs')}</ThemedText>
-          <View style={styles.chips}>
-            {acting.map((profile) => {
-              const selected = (organizer ?? acting[0]?.handle) === profile.handle;
-              return (
-                <Pressable
-                  key={profile.handle}
-                  role="radio"
-                  aria-checked={selected}
-                  onPress={() => setOrganizer(profile.handle)}
-                  style={[
-                    styles.organizer,
-                    {
-                      backgroundColor: selected
-                        ? theme.backgroundSelected
-                        : theme.backgroundElement,
-                    },
-                  ]}>
-                  <Avatar name={profile.display_name} image={profile.avatar} size={24} />
-                  <ThemedText type="small">{profile.display_name}</ThemedText>
-                </Pressable>
-              );
-            })}
-          </View>
-        </View>
+      {mode === 'create' ? (
+        <ActingAsPicker
+          label={t('eventForm.publishAs')}
+          value={organizer}
+          onChange={setOrganizer}
+        />
       ) : null}
 
       <Pressable onPress={pickCover} accessibilityLabel={t('eventForm.cover')}>
@@ -492,14 +469,6 @@ const styles = StyleSheet.create({
   chip: {
     paddingHorizontal: Spacing.three,
     paddingVertical: Spacing.one + 2,
-    borderRadius: 999,
-  },
-  organizer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Spacing.two,
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.one,
     borderRadius: 999,
   },
   cover: {

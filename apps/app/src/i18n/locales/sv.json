@@ -129,7 +129,18 @@
   },
   "posts": {
     "delete": "Ta bort inlägg",
-    "deleteConfirmTitle": "Ta bort inlägget?"
+    "deleteConfirmTitle": "Ta bort inlägget?",
+    "new": "Nytt inlägg",
+    "edit": "Redigera inlägg",
+    "edited": "redigerat",
+    "publish": "Publicera",
+    "postAs": "Publicera som",
+    "body": "Vad händer?",
+    "placeholder": "Dela nyheter, planer eller bilder med dina följare",
+    "aboutEventPlaceholder": "Säg något om det här evenemanget",
+    "addImage": "Lägg till en bild",
+    "removeImage": "Ta bort bild",
+    "loadFailed": "Inlägget kunde inte laddas."
   },
   "moderation": {
     "report": "Anmäl",
@@ -459,6 +470,7 @@
     "share": "Dela",
     "linkCopied": "Länken kopierades.",
     "calendarFile": "Kalenderfil (Apple, Outlook…)",
-    "googleCalendar": "Google Kalender"
+    "googleCalendar": "Google Kalender",
+    "postAbout": "Gör ett inlägg om evenemanget"
   }
 }

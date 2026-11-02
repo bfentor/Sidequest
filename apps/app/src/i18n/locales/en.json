@@ -129,7 +129,18 @@
   },
   "posts": {
     "delete": "Delete post",
-    "deleteConfirmTitle": "Delete this post?"
+    "deleteConfirmTitle": "Delete this post?",
+    "new": "New post",
+    "edit": "Edit post",
+    "edited": "edited",
+    "publish": "Post",
+    "postAs": "Post as",
+    "body": "What's happening?",
+    "placeholder": "Share news, plans or photos with your followers",
+    "aboutEventPlaceholder": "Say something about this event",
+    "addImage": "Add a picture",
+    "removeImage": "Remove picture",
+    "loadFailed": "Couldn't load this post."
   },
   "moderation": {
     "report": "Report",
@@ -459,6 +470,7 @@
     "share": "Share",
     "linkCopied": "Link copied.",
     "calendarFile": "Calendar file (Apple, Outlook…)",
-    "googleCalendar": "Google Calendar"
+    "googleCalendar": "Google Calendar",
+    "postAbout": "Post about this event"
   }
 }
