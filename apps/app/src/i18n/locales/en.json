@@ -497,5 +497,19 @@
     "send": "Send",
     "sent_one": "Sent to {{count}} person.",
     "sent_other": "Sent to {{count}} people."
+  },
+  "onboarding": {
+    "title": "Welcome to Sidequest",
+    "step": "Step {{current}} of {{total}}",
+    "interestsTitle": "What are you into?",
+    "interestsHint": "Pick a few, and we'll suggest events and organizations to match.",
+    "followTitle": "Follow some organizations",
+    "followHint": "Their events and posts show up in your Following feed.",
+    "noSuggestions": "No suggestions yet. You can find organizations through search later.",
+    "locationTitle": "Events near you",
+    "locationOn": "Location is on. The Nearby tab shows what's happening around you.",
+    "next": "Next",
+    "back": "Back",
+    "finish": "Get started"
   }
 }

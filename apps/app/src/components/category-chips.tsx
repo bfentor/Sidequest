@@ -1,6 +1,6 @@
 import type { AndroidSymbol } from 'expo-symbols';
 import { SymbolView } from 'expo-symbols';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Spacing } from '@/constants/theme';
 import { useCategories } from '@/hooks/use-categories';
@@ -41,6 +41,47 @@ export function CategoryChips({ slugs }: { slugs: string[] }) {
   );
 }
 
+/** Toggleable chips for choosing categories (an event's, or someone's interests). */
+export function CategoryPicker({
+  value,
+  onChange,
+}: {
+  value: string[];
+  onChange: (slugs: string[]) => void;
+}) {
+  const { categories } = useCategories();
+  const theme = useTheme();
+
+  return (
+    <View style={styles.row}>
+      {categories.map((category) => {
+        const selected = value.includes(category.slug);
+        return (
+          <Pressable
+            key={category.slug}
+            role="checkbox"
+            aria-checked={selected}
+            onPress={() =>
+              onChange(
+                selected
+                  ? value.filter((slug) => slug !== category.slug)
+                  : [...value, category.slug],
+              )
+            }
+            style={[
+              styles.option,
+              { backgroundColor: selected ? theme.tint : theme.backgroundElement },
+            ]}>
+            <ThemedText type="small" style={selected && { color: theme.onTint }}>
+              {category.name}
+            </ThemedText>
+          </Pressable>
+        );
+      })}
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
@@ -53,6 +94,11 @@ const styles = StyleSheet.create({
     gap: Spacing.one,
     paddingHorizontal: Spacing.three,
     paddingVertical: Spacing.one,
+    borderRadius: 999,
+  },
+  option: {
+    paddingHorizontal: Spacing.three,
+    paddingVertical: Spacing.one + 2,
     borderRadius: 999,
   },
 });

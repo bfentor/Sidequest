@@ -497,5 +497,19 @@
     "send": "Skicka",
     "sent_one": "Skickat till {{count}} person.",
     "sent_other": "Skickat till {{count}} personer."
+  },
+  "onboarding": {
+    "title": "Välkommen till Sidequest",
+    "step": "Steg {{current}} av {{total}}",
+    "interestsTitle": "Vad är du intresserad av?",
+    "interestsHint": "Välj några, så föreslår vi evenemang och organisationer som passar dig.",
+    "followTitle": "Följ några organisationer",
+    "followHint": "Deras evenemang och inlägg visas i ditt Följer-flöde.",
+    "noSuggestions": "Inga förslag än. Du kan hitta organisationer via sökningen senare.",
+    "locationTitle": "Evenemang nära dig",
+    "locationOn": "Platstjänster är på. Fliken I närheten visar vad som händer runt dig.",
+    "next": "Nästa",
+    "back": "Tillbaka",
+    "finish": "Kom igång"
   }
 }

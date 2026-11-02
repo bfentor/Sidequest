@@ -497,5 +497,19 @@
     "send": "Lähetä",
     "sent_one": "Lähetetty {{count}} henkilölle.",
     "sent_other": "Lähetetty {{count}} henkilölle."
+  },
+  "onboarding": {
+    "title": "Tervetuloa Sidequestiin",
+    "step": "Vaihe {{current}}/{{total}}",
+    "interestsTitle": "Mistä olet kiinnostunut?",
+    "interestsHint": "Valitse muutama, niin ehdotamme sinulle sopivia tapahtumia ja järjestöjä.",
+    "followTitle": "Seuraa järjestöjä",
+    "followHint": "Niiden tapahtumat ja julkaisut näkyvät Seuratut-syötteessäsi.",
+    "noSuggestions": "Ehdotuksia ei vielä ole. Voit etsiä järjestöjä myöhemmin haun kautta.",
+    "locationTitle": "Tapahtumia lähelläsi",
+    "locationOn": "Sijainti on käytössä. Lähellä-välilehti näyttää, mitä ympärilläsi tapahtuu.",
+    "next": "Seuraava",
+    "back": "Takaisin",
+    "finish": "Aloitetaan"
   }
 }

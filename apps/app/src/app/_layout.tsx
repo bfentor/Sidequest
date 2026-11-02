@@ -8,6 +8,7 @@ import { AuthProvider, useAuth } from '@/auth/auth-provider';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { applyPreferredLanguage, type Language } from '@/i18n';
+import { OnboardingGate } from '@/components/onboarding-gate';
 import { TermsGate } from '@/components/terms-gate';
 import { NotificationHandler } from '@/notifications/notification-handler';
 
@@ -35,6 +36,7 @@ export default function RootLayout() {
         <ThemeProvider value={navigationTheme}>
           <RootStack />
           <TermsGate />
+          <OnboardingGate />
         </ThemeProvider>
       </AuthProvider>
     </QueryClientProvider>
@@ -66,6 +68,11 @@ function RootStack() {
       <Stack.Screen name="edit-profile" options={{ title: t('profile.edit') }} />
       <Stack.Screen name="follow-requests" options={{ title: t('followRequests.title') }} />
       <Stack.Screen name="suggestions" options={{ title: t('suggestions.title') }} />
+      <Stack.Screen
+        name="onboarding"
+        // Leaving goes through the steps' own buttons, which mark onboarding as done.
+        options={{ title: t('onboarding.title'), headerLeft: () => null, gestureEnabled: false }}
+      />
       <Stack.Screen name="organizations/index" options={{ title: t('organizations.title') }} />
       <Stack.Screen name="organizations/new" options={{ title: t('organizations.create') }} />
       <Stack.Screen

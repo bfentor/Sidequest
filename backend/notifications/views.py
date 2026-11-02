@@ -102,6 +102,7 @@ class AccountSettingsView(APIView):
             "birth_date": user.birth_date,
             "terms_version": user.terms_version,
             "current_terms_version": settings.TERMS_VERSION,
+            "onboarded": user.onboarded_at is not None,
         }
 
     @extend_schema(responses=AccountSettingsSerializer)
@@ -121,6 +122,9 @@ class AccountSettingsView(APIView):
                 raise ValidationError({"birth_date": _("Your birth date is already set.")})
             user.birth_date = serializer.validated_data["birth_date"]
             user.save(update_fields=["birth_date"])
+        if "onboarded" in serializer.validated_data:
+            user.onboarded_at = timezone.now() if serializer.validated_data["onboarded"] else None
+            user.save(update_fields=["onboarded_at"])
         for kind, enabled in serializer.validated_data.get("push", {}).items():
             PushSetting.objects.update_or_create(
                 user=user, kind=kind, defaults={"enabled": enabled}

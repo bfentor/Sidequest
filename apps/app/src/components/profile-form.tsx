@@ -5,10 +5,9 @@ import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet, Switch, View } from 'react-native';
 
 import { Spacing } from '@/constants/theme';
-import { useCategories } from '@/hooks/use-categories';
 import { useImageUpload } from '@/hooks/use-image-upload';
-import { useTheme } from '@/hooks/use-theme';
 
+import { CategoryPicker } from './category-chips';
 import { Avatar } from './avatar';
 import { Button } from './button';
 import { RemoteImage } from './remote-image';
@@ -30,8 +29,6 @@ type ProfileFormProps = {
 /** Pictures, details, interests and privacy of a profile (a person's or an organization's). */
 export function ProfileForm({ profile, showPrivacy, onSave, onSaved }: ProfileFormProps) {
   const { t } = useTranslation();
-  const { categories } = useCategories();
-  const theme = useTheme();
   const upload = useImageUpload();
 
   const [avatar, setAvatar] = useState<Image | null | undefined>(profile.avatar);
@@ -148,32 +145,7 @@ export function ProfileForm({ profile, showPrivacy, onSave, onSaved }: ProfileFo
 
       <View style={styles.interests}>
         <ThemedText type="smallBold">{t('editProfile.interests')}</ThemedText>
-        <View style={styles.chips}>
-          {categories.map((category) => {
-            const selected = interests.includes(category.slug);
-            return (
-              <Pressable
-                key={category.slug}
-                role="checkbox"
-                aria-checked={selected}
-                onPress={() =>
-                  setInterests((current) =>
-                    selected
-                      ? current.filter((slug) => slug !== category.slug)
-                      : [...current, category.slug],
-                  )
-                }
-                style={[
-                  styles.chip,
-                  { backgroundColor: selected ? theme.tint : theme.backgroundElement },
-                ]}>
-                <ThemedText type="small" style={selected && { color: theme.onTint }}>
-                  {category.name}
-                </ThemedText>
-              </Pressable>
-            );
-          })}
-        </View>
+        <CategoryPicker value={interests} onChange={setInterests} />
       </View>
 
       {showPrivacy ? (
@@ -237,11 +209,6 @@ const styles = StyleSheet.create({
   interests: {
     gap: Spacing.two,
   },
-  chips: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: Spacing.two,
-  },
   privacy: {
     gap: Spacing.three,
   },
@@ -252,10 +219,5 @@ const styles = StyleSheet.create({
   },
   switchText: {
     flex: 1,
-  },
-  chip: {
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.one + 2,
-    borderRadius: 999,
   },
 });

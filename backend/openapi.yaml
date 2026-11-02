@@ -2210,6 +2210,9 @@ components:
         current_terms_version:
           type: string
           readOnly: true
+        onboarded:
+          type: boolean
+          description: Whether the first-run steps are done; set it once they are.
         push:
           type: object
           additionalProperties:
@@ -3254,6 +3257,9 @@ components:
           type: string
           format: date
           description: Can only be added when missing (older accounts).
+        onboarded:
+          type: boolean
+          description: Whether the first-run steps are done; set it once they are.
         push:
           type: object
           additionalProperties:

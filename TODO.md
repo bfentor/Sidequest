@@ -27,7 +27,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 - [x] Student verification through a university email domain, plus a "verified student" badge
 - [x] Change email or password
 - [x] Two-factor authentication (allauth supports it)
-- [ ] Onboarding after signup: pick interests, follow suggested organizations, allow location
+- [x] Onboarding after signup: pick interests, follow suggested organizations, allow location
 - [x] See and sign out other devices
 
 ## 3. Profiles
@@ -44,7 +44,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 
 - [x] Create an organization in the app (currently only possible through the admin)
 - [x] Invite and remove members, and assign roles (admin, editor)
-- [ ] **[API ready]** Switch which profile you're acting as when posting
+- [x] **[API ready]** Switch which profile you're acting as when posting
 - [x] Organization page with tabs for upcoming events, past events, posts and members
 - [x] Verification process for student unions, guilds and clubs
 
@@ -53,7 +53,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 - [x] **[API ready]** Create, edit and delete events
 - [ ] Location picker: address search plus a map pin (address search done; map pin comes with the map view)
 - [x] Cover image
-- [ ] Categories and tags (party, sports, academic, career, culture and so on)
+- [x] Categories and tags (party, sports, academic, career, culture and so on)
 - [x] Online events with a meeting link
 - [x] Recurring events (weekly club meetings)
 - [x] Price or "free", and a link to buy tickets

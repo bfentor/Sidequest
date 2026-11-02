@@ -91,3 +91,10 @@ def test_age_limited_events(auth_client, user, make_user, make_event):
     user.birth_date = user.birth_date.replace(year=user.birth_date.year - 2)
     user.save()
     assert auth_client.put(url, {"status": "going"}, format="json").status_code == 200
+
+
+def test_onboarding_is_done_once(auth_client):
+    assert auth_client.get("/api/me/settings/").json()["onboarded"] is False
+    response = auth_client.patch("/api/me/settings/", {"onboarded": True}, format="json")
+    assert response.json()["onboarded"] is True
+    assert auth_client.get("/api/me/settings/").json()["onboarded"] is True

@@ -31,10 +31,12 @@ type FollowSuggestionsProps = {
   kind?: ProfileKindEnum;
   /** Shown above the list, only when there are suggestions. */
   title?: ReactNode;
+  /** Shown instead of the list when there's no one to suggest. */
+  empty?: ReactNode;
 };
 
-/** "Who to follow" for the signed-in user. Renders nothing when there's no one to suggest. */
-export function FollowSuggestions({ limit, kind, title }: FollowSuggestionsProps) {
+/** "Who to follow" for the signed-in user. Renders `empty` (or nothing) when there's no one to suggest. */
+export function FollowSuggestions({ limit, kind, title, empty = null }: FollowSuggestionsProps) {
   const suggestions = useQuery(meSuggestionsListOptions({ query: kind ? { kind } : {} }));
 
   if (suggestions.isPending) {
@@ -42,7 +44,7 @@ export function FollowSuggestions({ limit, kind, title }: FollowSuggestionsProps
   }
   const profiles = (suggestions.data ?? []).slice(0, limit);
   if (!profiles.length) {
-    return null;
+    return empty;
   }
   return (
     <>

@@ -20,6 +20,10 @@ export type AccountSettings = {
     readonly terms_version: string;
     readonly current_terms_version: string;
     /**
+     * Whether the first-run steps are done; set it once they are.
+     */
+    onboarded?: boolean;
+    /**
      * Push on (true) or off (false), by notification kind. Missing kinds are on.
      */
     push?: {
@@ -447,6 +451,10 @@ export type PatchedAccountSettingsRequest = {
      */
     birth_date?: string;
     /**
+     * Whether the first-run steps are done; set it once they are.
+     */
+    onboarded?: boolean;
+    /**
      * Push on (true) or off (false), by notification kind. Missing kinds are on.
      */
     push?: {
@@ -713,6 +721,10 @@ export type AccountSettingsWritable = {
      * Can only be added when missing (older accounts).
      */
     birth_date?: string;
+    /**
+     * Whether the first-run steps are done; set it once they are.
+     */
+    onboarded?: boolean;
     /**
      * Push on (true) or off (false), by notification kind. Missing kinds are on.
      */

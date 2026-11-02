@@ -45,6 +45,8 @@ class User(AbstractUser):
     # Which version of the terms of service (settings.TERMS_VERSION) they accepted, and when.
     terms_version = models.CharField(max_length=20, blank=True)
     terms_accepted_at = models.DateTimeField(null=True, blank=True)
+    # When they finished (or skipped) the app's first-run steps; None shows them again.
+    onboarded_at = models.DateTimeField(null=True, blank=True)
 
     @property
     def age(self):

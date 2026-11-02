@@ -11,11 +11,11 @@ import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet, Switch, View } from 'react-native';
 
 import { Spacing } from '@/constants/theme';
-import { useCategories } from '@/hooks/use-categories';
 import { useImageUpload } from '@/hooks/use-image-upload';
 import { useUniversities } from '@/hooks/use-universities';
 import { useTheme } from '@/hooks/use-theme';
 
+import { CategoryPicker } from './category-chips';
 import { ActingAsPicker } from './acting-as-picker';
 import { Button } from './button';
 import { DateTimeField } from './date-time-field';
@@ -51,7 +51,6 @@ function tomorrowEvening() {
 export function EventForm({ initial, mode, submitLabel, onSubmit }: EventFormProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { categories } = useCategories();
   const upload = useImageUpload();
 
   // Computed once, not on every render.
@@ -236,32 +235,7 @@ export function EventForm({ initial, mode, submitLabel, onSubmit }: EventFormPro
 
       <View style={styles.section}>
         <ThemedText type="smallBold">{t('eventForm.categories')}</ThemedText>
-        <View style={styles.chips}>
-          {categories.map((category) => {
-            const selected = selectedCategories.includes(category.slug);
-            return (
-              <Pressable
-                key={category.slug}
-                role="checkbox"
-                aria-checked={selected}
-                onPress={() =>
-                  setSelectedCategories((current) =>
-                    selected
-                      ? current.filter((slug) => slug !== category.slug)
-                      : [...current, category.slug],
-                  )
-                }
-                style={[
-                  styles.chip,
-                  { backgroundColor: selected ? theme.tint : theme.backgroundElement },
-                ]}>
-                <ThemedText type="small" style={selected && { color: theme.onTint }}>
-                  {category.name}
-                </ThemedText>
-              </Pressable>
-            );
-          })}
-        </View>
+        <CategoryPicker value={selectedCategories} onChange={setSelectedCategories} />
       </View>
 
       <TextField
