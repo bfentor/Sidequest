@@ -75,7 +75,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 - [x] Shareable event links
 - [x] Reminders before an event
 - [x] Q&A or comments on events
-- [ ] QR check-in at the door
+- (Idea) QR check-in at the door
 - [ ] Photos and feedback after the event
 
 ## 7. Feeds, search and discovery
@@ -124,7 +124,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 
 - [x] Public event pages that search engines can index, with link previews when shared on WhatsApp, Instagram and similar
 - [ ] A landing page for people who don't have the app
-- [ ] Installable as a web app (PWA)
+- [x] Installable as a web app (PWA)
 - [ ] Keyboard shortcuts and a wider desktop layout (for example a side panel with event details)
 
 ## 12. Safety and abuse prevention
