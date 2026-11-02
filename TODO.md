@@ -101,13 +101,13 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 
 ## 9. Notifications
 
-- [ ] Push notifications
-- [ ] In-app notification inbox
+- [x] Push notifications
+- [x] In-app notification inbox
 - [ ] Event reminders
 - [ ] Alerts when an event you're going to changes or gets cancelled
-- [ ] New follower and new event from someone you follow
+- [x] New follower and new event from someone you follow
 - [ ] Weekly email digest of upcoming events
-- [ ] Settings for which notifications you receive
+- [x] Settings for which notifications you receive
 
 ## 10. Organizer tools (mostly for the desktop web app)
 

@@ -6,7 +6,7 @@ export type TabDefinition = {
   name: string;
   href: Href;
   /** Key under `tabs` in the translation files. */
-  label: 'upcoming' | 'nearby' | 'following' | 'profile';
+  label: 'upcoming' | 'nearby' | 'following' | 'notifications' | 'profile';
   /** SF Symbol on iOS; Material Symbol on Android and web. */
   icon: { ios: SFSymbol; material: AndroidSymbol };
 };
@@ -30,6 +30,12 @@ export const TABS: TabDefinition[] = [
     href: '/following',
     label: 'following',
     icon: { ios: 'person.2', material: 'group' },
+  },
+  {
+    name: 'notifications',
+    href: '/notifications',
+    label: 'notifications',
+    icon: { ios: 'bell', material: 'notifications' },
   },
   {
     name: 'profile',

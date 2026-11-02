@@ -3,7 +3,8 @@
     "upcoming": "Tulossa",
     "nearby": "Lähellä",
     "following": "Seuratut",
-    "profile": "Profiili"
+    "profile": "Profiili",
+    "notifications": "Ilmoitukset"
   },
   "common": {
     "tryAgain": "Yritä uudelleen",
@@ -62,7 +63,21 @@
   },
   "settings": {
     "language": "Kieli",
-    "languageAutomatic": "Sama kuin laitteessa"
+    "languageAutomatic": "Sama kuin laitteessa",
+    "pushTitle": "Push-ilmoitukset",
+    "pushHint": "Kaikki näkyy myös ilmoituksissasi sovelluksessa.",
+    "pushKinds": {
+      "new_follower": "Uudet seuraajat",
+      "new_event": "Uudet tapahtumat seuraamiltasi",
+      "event_changed": "Muutokset tapahtumiin, joihin osallistut",
+      "event_cancelled": "Perutut tapahtumat",
+      "event_reminder": "Tapahtumamuistutukset",
+      "waitlist_promoted": "Sinulle vapautui paikka",
+      "announcement": "Järjestäjien tiedotteet",
+      "mention": "Maininnat",
+      "comment": "Kommentit",
+      "reaction": "Tykkäykset"
+    }
   },
   "posts": {
     "delete": "Poista julkaisu",
@@ -108,5 +123,23 @@
     "capacity_other": "{{count}} paikkaa",
     "fullHint": "Tapahtuma on täynnä. Jos valitset Osallistun, pääset jonoon.",
     "waitlistHint": "Saat paikan automaattisesti, jos joku peruu."
+  },
+  "notifications": {
+    "signInPrompt": "Kirjaudu sisään saadaksesi ilmoituksia uusista seuraajista, seuraamiesi tapahtumista ja suunnitelmiesi muutoksista.",
+    "empty": "Ei vielä ilmoituksia.",
+    "unread": "Lukematon",
+    "pushPrompt": "Saat puhelimeesi ilmoituksen, kun jotain tapahtuu.",
+    "enablePush": "Ota push-ilmoitukset käyttöön",
+    "pushDenied": "Sidequestin push-ilmoitukset ovat pois päältä. Voit sallia ne puhelimesi asetuksista.",
+    "newFollower": "{{name}} alkoi seurata sinua.",
+    "newEvent": "Uusi tapahtuma ({{name}}): {{title}}",
+    "eventChanged": "Tapahtuman {{title}} aika tai paikka muuttui.",
+    "eventCancelled": "{{title}} on peruttu.",
+    "eventReminder": "{{title}} alkaa pian.",
+    "waitlistPromoted": "Tapahtumaan {{title}} vapautui paikka. Osallistut!",
+    "announcement": "{{name}} tapahtumasta {{title}}: {{message}}",
+    "mention": "{{name}} mainitsi sinut.",
+    "comment": "{{name}} kommentoi.",
+    "reaction": "{{name}} tykkäsi julkaisustasi."
   }
 }

@@ -373,6 +373,107 @@ paths:
                 items:
                   $ref: '#/components/schemas/ProfileSummary'
           description: ''
+  /api/me/settings/:
+    get:
+      operationId: me_settings_retrieve
+      description: 'Account-level settings: language and which notifications are pushed.'
+      tags:
+      - me
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountSettings'
+          description: ''
+    patch:
+      operationId: me_settings_partial_update
+      description: 'Account-level settings: language and which notifications are pushed.'
+      tags:
+      - me
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAccountSettingsRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAccountSettingsRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAccountSettingsRequest'
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountSettings'
+          description: ''
+  /api/notifications/:
+    get:
+      operationId: notifications_list
+      description: The signed-in user's inbox, newest first.
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
+      tags:
+      - notifications
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNotificationList'
+          description: ''
+  /api/notifications/read/:
+    post:
+      operationId: notifications_read_create
+      tags:
+      - notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MarkReadRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MarkReadRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MarkReadRequest'
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnreadCount'
+          description: ''
+  /api/notifications/unread/:
+    get:
+      operationId: notifications_unread_retrieve
+      tags:
+      - notifications
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnreadCount'
+          description: ''
   /api/posts/:
     post:
       operationId: posts_create
@@ -560,6 +661,46 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/push-devices/:
+    post:
+      operationId: push_devices_create
+      description: Register this device for push notifications.
+      tags:
+      - push-devices
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PushDeviceRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PushDeviceRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PushDeviceRequest'
+        required: true
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/push-devices/{token}/:
+    delete:
+      operationId: push_devices_destroy
+      description: Stop push notifications to a device, e.g. when signing out on it.
+      parameters:
+      - in: path
+        name: token
+        schema:
+          type: string
+        required: true
+      tags:
+      - push-devices
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/reports/:
     post:
       operationId: reports_create
@@ -589,6 +730,17 @@ paths:
           description: ''
 components:
   schemas:
+    AccountSettings:
+      type: object
+      properties:
+        language:
+          $ref: '#/components/schemas/LanguageEnum'
+        push:
+          type: object
+          additionalProperties:
+            type: boolean
+          description: Push on (true) or off (false), by notification kind. Missing
+            kinds are on.
     AttendanceStatusEnum:
       enum:
       - going
@@ -801,6 +953,16 @@ components:
           writeOnly: true
       required:
       - file
+    LanguageEnum:
+      enum:
+      - en
+      - fi
+      - sv
+      type: string
+      description: |-
+        * `en` - English
+        * `fi` - Suomi
+        * `sv` - Svenska
     LatLng:
       type: object
       properties:
@@ -833,6 +995,14 @@ components:
       required:
       - lat
       - lng
+    MarkReadRequest:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: integer
+          description: Notifications to mark read; all of them when left out.
     NearbyEvent:
       type: object
       properties:
@@ -898,6 +1068,90 @@ components:
       - starts_at
       - title
       - updated_at
+    Notification:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/NotificationKindEnum'
+          readOnly: true
+        actor:
+          allOf:
+          - $ref: '#/components/schemas/ProfileSummary'
+          readOnly: true
+          nullable: true
+        event:
+          allOf:
+          - $ref: '#/components/schemas/NotificationEvent'
+          readOnly: true
+          nullable: true
+        post:
+          type: integer
+          readOnly: true
+          nullable: true
+        message:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        read:
+          type: boolean
+          readOnly: true
+      required:
+      - actor
+      - created_at
+      - event
+      - id
+      - kind
+      - message
+      - post
+      - read
+    NotificationEvent:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          readOnly: true
+        starts_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - id
+      - starts_at
+      - title
+    NotificationKindEnum:
+      enum:
+      - new_follower
+      - new_event
+      - event_changed
+      - event_cancelled
+      - event_reminder
+      - waitlist_promoted
+      - announcement
+      - mention
+      - comment
+      - reaction
+      type: string
+      description: |-
+        * `new_follower` - New followers
+        * `new_event` - New events from people you follow
+        * `event_changed` - Changes to events you're going to
+        * `event_cancelled` - Cancelled events
+        * `event_reminder` - Event reminders
+        * `waitlist_promoted` - A spot opened up for you
+        * `announcement` - Announcements from organizers
+        * `mention` - Mentions
+        * `comment` - Comments
+        * `reaction` - Likes
     NullEnum:
       enum:
       - null
@@ -943,6 +1197,25 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NearbyEvent'
+    PaginatedNotificationList:
+      type: object
+      required:
+      - results
+      properties:
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
     PaginatedPostList:
       type: object
       required:
@@ -962,6 +1235,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Post'
+    PatchedAccountSettingsRequest:
+      type: object
+      properties:
+        language:
+          $ref: '#/components/schemas/LanguageEnum'
+        push:
+          type: object
+          additionalProperties:
+            type: boolean
+          description: Push on (true) or off (false), by notification kind. Missing
+            kinds are on.
     PatchedEventRequest:
       type: object
       properties:
@@ -1162,6 +1446,16 @@ components:
       - display_name
       - handle
       - kind
+    PushDeviceRequest:
+      type: object
+      properties:
+        token:
+          type: string
+          minLength: 1
+          description: The device's Expo push token.
+          maxLength: 255
+      required:
+      - token
     Report:
       type: object
       properties:
@@ -1251,6 +1545,13 @@ components:
         * `post` - post
         * `event` - event
         * `profile` - profile
+    UnreadCount:
+      type: object
+      properties:
+        unread:
+          type: integer
+      required:
+      - unread
   securitySchemes:
     XSessionTokenAuth:
       type: apiKey

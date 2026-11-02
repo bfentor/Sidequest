@@ -1,5 +1,8 @@
 from django.db import transaction
 
+from notifications.models import Kind
+from notifications.services import notify
+
 from .models import Attendance, Event
 
 
@@ -56,4 +59,5 @@ def _promote_from_waitlist(event: Event) -> Attendance | None:
     if first is not None:
         first.status = Attendance.Status.GOING
         first.save(update_fields=["status", "updated_at"])
+        notify([first.profile], Kind.WAITLIST_PROMOTED, event=event)
     return first

@@ -1,9 +1,11 @@
+import { useUnreadCount } from '@sidequest/api';
 import { TabList, TabSlot, TabTrigger, Tabs, type TabListProps } from 'expo-router/ui';
 import { SymbolView, type AndroidSymbol } from 'expo-symbols';
 import type { ComponentProps } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet } from 'react-native';
 
+import { useAuth } from '@/auth/auth-provider';
 import { ThemedText } from '@/components/themed-text';
 import { useTheme } from '@/hooks/use-theme';
 
@@ -17,6 +19,8 @@ import { TABS } from './tabs';
  */
 export default function AppTabs() {
   const { t } = useTranslation();
+  const { status } = useAuth();
+  const unread = useUnreadCount({ enabled: status === 'signed-in' });
 
   return (
     <Tabs asChild>
@@ -25,7 +29,11 @@ export default function AppTabs() {
           <NavBar>
             {TABS.map((tab) => (
               <TabTrigger key={tab.name} name={tab.name} href={tab.href} asChild>
-                <TabButton icon={tab.icon.material}>{t(`tabs.${tab.label}`)}</TabButton>
+                <TabButton
+                  icon={tab.icon.material}
+                  badge={tab.name === 'notifications' ? unread : 0}>
+                  {t(`tabs.${tab.label}`)}
+                </TabButton>
               </TabTrigger>
             ))}
           </NavBar>
@@ -54,11 +62,13 @@ function NavBar({ children }: TabListProps) {
 type TabButtonProps = Omit<ComponentProps<typeof Pressable>, 'children'> & {
   icon: AndroidSymbol;
   children: string;
+  /** A count shown next to the label, e.g. unread notifications. */
+  badge?: number;
   /** Injected by `<TabTrigger asChild>`. */
   isFocused?: boolean;
 };
 
-function TabButton({ icon, children, isFocused, ...props }: TabButtonProps) {
+function TabButton({ icon, children, badge = 0, isFocused, ...props }: TabButtonProps) {
   const theme = useTheme();
   const color = isFocused ? theme.tint : theme.textSecondary;
 
@@ -69,6 +79,11 @@ function TabButton({ icon, children, isFocused, ...props }: TabButtonProps) {
         <ThemedText type="smallBold" style={{ color }}>
           {children}
         </ThemedText>
+        {badge > 0 ? (
+          <span className={classes.badge} style={{ backgroundColor: theme.tint }}>
+            {badge > 99 ? '99+' : badge}
+          </span>
+        ) : null}
       </div>
     </Pressable>
   );

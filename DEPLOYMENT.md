@@ -128,6 +128,7 @@ Environment variables:
 | `ALLAUTH_TRUSTED_CLIENT_IP_HEADER` | `CF-Connecting-IP` (the visitor's address behind Cloudflare, for sign-in rate limits) |
 | `ACCOUNT_EMAIL_VERIFICATION` | `optional` on staging |
 | `MAILER_BACKEND` | Leave unset (emails go to the log) until an email service is chosen |
+| `EXPO_ACCESS_TOKEN` | Optional: needed only if "enhanced push security" is turned on for the Expo project |
 | `SENTRY_DSN`, `SENTRY_ENVIRONMENT` | Optional: Sentry's DSN, and `staging` |
 | `AWS_STORAGE_BUCKET_NAME`, `AWS_S3_ENDPOINT_URL`, `AWS_S3_REGION_NAME`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` | Optional: object storage for uploads. Without them, uploads are stored in the container, so also add Persistent Storage › Directory Mount `/srv/sidequest/staging/media` → `/app/media` |
 

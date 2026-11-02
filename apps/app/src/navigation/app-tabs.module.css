@@ -35,6 +35,15 @@
   border-radius: 12px;
 }
 
+.badge {
+  min-width: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  color: #fff;
+  font: 600 11px/18px var(--font-display);
+  text-align: center;
+}
+
 .tabButton:hover {
   background-color: rgba(127, 127, 127, 0.12);
 }

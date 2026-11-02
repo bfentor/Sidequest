@@ -3,7 +3,8 @@
     "upcoming": "Kommande",
     "nearby": "I närheten",
     "following": "Följer",
-    "profile": "Profil"
+    "profile": "Profil",
+    "notifications": "Notiser"
   },
   "common": {
     "tryAgain": "Försök igen",
@@ -62,7 +63,21 @@
   },
   "settings": {
     "language": "Språk",
-    "languageAutomatic": "Samma som enheten"
+    "languageAutomatic": "Samma som enheten",
+    "pushTitle": "Pushnotiser",
+    "pushHint": "Allt syns också bland notiserna i appen.",
+    "pushKinds": {
+      "new_follower": "Nya följare",
+      "new_event": "Nya evenemang från dem du följer",
+      "event_changed": "Ändringar i evenemang du ska gå på",
+      "event_cancelled": "Inställda evenemang",
+      "event_reminder": "Påminnelser om evenemang",
+      "waitlist_promoted": "En plats blev ledig åt dig",
+      "announcement": "Meddelanden från arrangörer",
+      "mention": "Omnämnanden",
+      "comment": "Kommentarer",
+      "reaction": "Gilla-markeringar"
+    }
   },
   "posts": {
     "delete": "Ta bort inlägg",
@@ -108,5 +123,23 @@
     "capacity_other": "{{count}} platser",
     "fullHint": "Evenemanget är fullt. Väljer du Kommer hamnar du på väntelistan.",
     "waitlistHint": "Du får en plats automatiskt om någon avbokar."
+  },
+  "notifications": {
+    "signInPrompt": "Logga in för att få notiser om nya följare, evenemang från dem du följer och ändringar i dina planer.",
+    "empty": "Inga notiser än.",
+    "unread": "Oläst",
+    "pushPrompt": "Få en notis i telefonen när något händer.",
+    "enablePush": "Slå på pushnotiser",
+    "pushDenied": "Pushnotiser är avstängda för Sidequest. Du kan slå på dem i telefonens inställningar.",
+    "newFollower": "{{name}} började följa dig.",
+    "newEvent": "Nytt evenemang från {{name}}: {{title}}",
+    "eventChanged": "Tiden eller platsen för {{title}} har ändrats.",
+    "eventCancelled": "{{title}} är inställt.",
+    "eventReminder": "{{title}} börjar snart.",
+    "waitlistPromoted": "En plats blev ledig på {{title}}. Du kommer!",
+    "announcement": "{{name}} om {{title}}: {{message}}",
+    "mention": "{{name}} nämnde dig.",
+    "comment": "{{name}} kommenterade.",
+    "reaction": "{{name}} gillade ditt inlägg."
   }
 }

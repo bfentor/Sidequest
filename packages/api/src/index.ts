@@ -6,4 +6,5 @@ export * from './generated/@tanstack/react-query.gen';
 export * from './auth';
 export { configureApi, type ApiConfig } from './config';
 export * from './feeds';
+export * from './notifications';
 export * from './uploads';

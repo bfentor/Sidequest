@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "accounts",
     "images",
     "moderation",
+    "notifications",
     "profiles",
     "events",
     "posts",
@@ -144,6 +145,9 @@ MAILERS = {
         "BACKEND": env("MAILER_BACKEND", default="django.core.mail.backends.console.EmailBackend"),
     },
 }
+# Optional: Expo's "enhanced push security" access token.
+EXPO_ACCESS_TOKEN = env("EXPO_ACCESS_TOKEN", default="")
+
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="Sidequest <noreply@localhost>")
 
 

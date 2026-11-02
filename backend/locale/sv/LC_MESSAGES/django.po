@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sidequest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-02 16:31+0200\n"
-"PO-Revision-Date: 2026-11-02 16:31+0200\n"
+"POT-Creation-Date: 2026-11-02 16:40+0200\n"
+"PO-Revision-Date: 2026-11-02 16:40+0200\n"
 "Last-Translator: Sidequest <dev@sidequest.invalid>\n"
 "Language-Team: Swedish\n"
 "Language: sv\n"
@@ -71,6 +71,69 @@ msgstr "Du kan inte blockera dig själv."
 
 msgid "You cannot mute yourself."
 msgstr "Du kan inte tysta dig själv."
+
+msgid "New followers"
+msgstr "Nya följare"
+
+msgid "New events from people you follow"
+msgstr "Nya evenemang från dem du följer"
+
+msgid "Changes to events you're going to"
+msgstr "Ändringar i evenemang du ska gå på"
+
+msgid "Cancelled events"
+msgstr "Inställda evenemang"
+
+msgid "Event reminders"
+msgstr "Påminnelser om evenemang"
+
+msgid "A spot opened up for you"
+msgstr "En plats blev ledig åt dig"
+
+msgid "Announcements from organizers"
+msgstr "Meddelanden från arrangörer"
+
+msgid "Mentions"
+msgstr "Omnämnanden"
+
+msgid "Comments"
+msgstr "Kommentarer"
+
+msgid "Likes"
+msgstr "Gilla-markeringar"
+
+#, python-format
+msgid "%(name)s started following you."
+msgstr "%(name)s började följa dig."
+
+#, python-format
+msgid "New event from %(name)s."
+msgstr "Nytt evenemang från %(name)s."
+
+msgid "The time or place of this event changed."
+msgstr "Tiden eller platsen för evenemanget har ändrats."
+
+msgid "This event was cancelled."
+msgstr "Evenemanget är inställt."
+
+#, python-format
+msgid "Starts at %(time)s."
+msgstr "Börjar kl. %(time)s."
+
+msgid "A spot opened up: you're going!"
+msgstr "En plats blev ledig: du kommer!"
+
+#, python-format
+msgid "%(name)s mentioned you."
+msgstr "%(name)s nämnde dig."
+
+#, python-format
+msgid "%(name)s commented."
+msgstr "%(name)s kommenterade."
+
+#, python-format
+msgid "%(name)s liked your post."
+msgstr "%(name)s gillade ditt inlägg."
 
 msgid "A post needs a body, an event, or both."
 msgstr "Ett inlägg behöver text, ett evenemang eller båda."

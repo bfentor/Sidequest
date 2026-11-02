@@ -2,6 +2,8 @@ import * as api from '@sidequest/api';
 import { useQueryClient } from '@tanstack/react-query';
 import { createContext, use, useEffect, useState, type PropsWithChildren } from 'react';
 
+import { disablePush } from '@/notifications/push';
+
 import { session } from './session';
 
 type Credentials = { email: string; password: string };
@@ -45,6 +47,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
     signIn: (credentials) => authenticate(api.signIn(credentials)),
     signUp: (credentials) => authenticate(api.signUp(credentials)),
     signOut: async () => {
+      // While the session is still valid, so the API can forget this phone.
+      await disablePush();
       await api.signOut();
       await session.clear();
       queryClient.clear();

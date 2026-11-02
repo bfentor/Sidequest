@@ -1,12 +1,14 @@
+import { meSettingsPartialUpdate } from '@sidequest/api';
 import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { AuthProvider } from '@/auth/auth-provider';
+import { AuthProvider, useAuth } from '@/auth/auth-provider';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import { applyPreferredLanguage } from '@/i18n';
+import { applyPreferredLanguage, type Language } from '@/i18n';
+import { NotificationHandler } from '@/notifications/notification-handler';
 
 export default function RootLayout() {
   const scheme = useColorScheme() === 'dark' ? 'dark' : 'light';
@@ -26,8 +28,9 @@ export default function RootLayout() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <LanguageSync />
       <AuthProvider>
+        <LanguageSync />
+        <NotificationHandler />
         <ThemeProvider value={navigationTheme}>
           <RootStack />
         </ThemeProvider>
@@ -53,10 +56,20 @@ function RootStack() {
   );
 }
 
-/** Applies the preferred language once mounted, and refetches data when it changes. */
+/**
+ * Applies the preferred language once mounted, refetches data when it changes,
+ * and tells the API, which writes push notifications in it.
+ */
 function LanguageSync() {
   const { i18n } = useTranslation();
   const queryClient = useQueryClient();
+  const { status } = useAuth();
+
+  useEffect(() => {
+    if (status === 'signed-in') {
+      meSettingsPartialUpdate({ body: { language: i18n.language as Language } });
+    }
+  }, [i18n.language, status]);
 
   useEffect(() => {
     applyPreferredLanguage();

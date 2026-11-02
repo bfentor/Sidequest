@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sidequest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-02 16:31+0200\n"
-"PO-Revision-Date: 2026-11-02 16:31+0200\n"
+"POT-Creation-Date: 2026-11-02 16:40+0200\n"
+"PO-Revision-Date: 2026-11-02 16:40+0200\n"
 "Last-Translator: Sidequest <dev@sidequest.invalid>\n"
 "Language-Team: Finnish\n"
 "Language: fi\n"
@@ -71,6 +71,69 @@ msgstr "Et voi estää itseäsi."
 
 msgid "You cannot mute yourself."
 msgstr "Et voi mykistää itseäsi."
+
+msgid "New followers"
+msgstr "Uudet seuraajat"
+
+msgid "New events from people you follow"
+msgstr "Uudet tapahtumat seuraamiltasi"
+
+msgid "Changes to events you're going to"
+msgstr "Muutokset tapahtumiin, joihin osallistut"
+
+msgid "Cancelled events"
+msgstr "Perutut tapahtumat"
+
+msgid "Event reminders"
+msgstr "Tapahtumamuistutukset"
+
+msgid "A spot opened up for you"
+msgstr "Sinulle vapautui paikka"
+
+msgid "Announcements from organizers"
+msgstr "Järjestäjien tiedotteet"
+
+msgid "Mentions"
+msgstr "Maininnat"
+
+msgid "Comments"
+msgstr "Kommentit"
+
+msgid "Likes"
+msgstr "Tykkäykset"
+
+#, python-format
+msgid "%(name)s started following you."
+msgstr "%(name)s alkoi seurata sinua."
+
+#, python-format
+msgid "New event from %(name)s."
+msgstr "Uusi tapahtuma: %(name)s."
+
+msgid "The time or place of this event changed."
+msgstr "Tapahtuman aika tai paikka muuttui."
+
+msgid "This event was cancelled."
+msgstr "Tapahtuma on peruttu."
+
+#, python-format
+msgid "Starts at %(time)s."
+msgstr "Alkaa klo %(time)s."
+
+msgid "A spot opened up: you're going!"
+msgstr "Paikka vapautui: osallistut!"
+
+#, python-format
+msgid "%(name)s mentioned you."
+msgstr "%(name)s mainitsi sinut."
+
+#, python-format
+msgid "%(name)s commented."
+msgstr "%(name)s kommentoi."
+
+#, python-format
+msgid "%(name)s liked your post."
+msgstr "%(name)s tykkäsi julkaisustasi."
 
 msgid "A post needs a body, an event, or both."
 msgstr "Julkaisussa täytyy olla tekstiä, tapahtuma tai molemmat."

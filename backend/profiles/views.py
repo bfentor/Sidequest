@@ -8,6 +8,8 @@ from rest_framework.response import Response
 
 from moderation.models import Block
 from moderation.visibility import viewer_profile
+from notifications.models import Kind
+from notifications.services import notify
 
 from .models import Follow, Profile
 from .serializers import ProfileSerializer
@@ -39,7 +41,9 @@ class ProfileViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
                 raise ValidationError(_("You cannot follow yourself."))
             if Block.objects.filter(blocker=follower, blocked=followee).exists():
                 raise ValidationError(_("Unblock this profile to follow it."))
-            Follow.objects.get_or_create(follower=follower, followee=followee)
+            follow, created = Follow.objects.get_or_create(follower=follower, followee=followee)
+            if created:
+                notify([followee], Kind.NEW_FOLLOWER, actor=follower)
         else:
             Follow.objects.filter(follower=follower, followee=followee).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

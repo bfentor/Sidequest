@@ -1,6 +1,10 @@
 import {
   meBlockedListOptions,
   meMutedListOptions,
+  meSettingsPartialUpdate,
+  meSettingsRetrieveOptions,
+  meSettingsRetrieveQueryKey,
+  type AccountSettings,
   profilesBlockDestroyMutation,
   profilesMuteDestroyMutation,
   type ProfileSummary,
@@ -8,7 +12,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, Switch, View } from 'react-native';
 
 import { useAuth } from '@/auth/auth-provider';
 import { Avatar } from '@/components/avatar';
@@ -26,8 +30,61 @@ export default function SettingsScreen() {
   return (
     <Screen hasHeader>
       <LanguagePicker />
-      {status === 'signed-in' ? <BlockedAndMuted /> : null}
+      {status === 'signed-in' ? (
+        <>
+          <PushSettings />
+          <BlockedAndMuted />
+        </>
+      ) : null}
     </Screen>
+  );
+}
+
+const PUSH_KINDS = [
+  'new_follower',
+  'new_event',
+  'event_changed',
+  'event_cancelled',
+  'event_reminder',
+  'waitlist_promoted',
+  'announcement',
+  'mention',
+  'comment',
+  'reaction',
+] as const;
+
+function PushSettings() {
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  const { data } = useQuery(meSettingsRetrieveOptions());
+  const update = useMutation({
+    mutationFn: async (push: Record<string, boolean>) =>
+      (await meSettingsPartialUpdate({ body: { push }, throwOnError: true })).data,
+    onSuccess: (settings) =>
+      queryClient.setQueryData<AccountSettings>(meSettingsRetrieveQueryKey(), settings),
+  });
+
+  if (!data?.push) {
+    return null;
+  }
+
+  return (
+    <View style={styles.section}>
+      <ThemedText type="heading">{t('settings.pushTitle')}</ThemedText>
+      <ThemedText type="small" themeColor="textSecondary">
+        {t('settings.pushHint')}
+      </ThemedText>
+      {PUSH_KINDS.map((kind) => (
+        <View key={kind} style={styles.switchRow}>
+          <ThemedText style={styles.switchLabel}>{t(`settings.pushKinds.${kind}`)}</ThemedText>
+          <Switch
+            value={data.push?.[kind] ?? true}
+            onValueChange={(enabled) => update.mutate({ [kind]: enabled })}
+            accessibilityLabel={t(`settings.pushKinds.${kind}`)}
+          />
+        </View>
+      ))}
+    </View>
   );
 }
 
@@ -165,6 +222,14 @@ const styles = StyleSheet.create({
     gap: Spacing.two,
   },
   profileName: {
+    flex: 1,
+  },
+  switchRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.three,
+  },
+  switchLabel: {
     flex: 1,
   },
 });

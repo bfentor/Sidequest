@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { categoriesList, eventsAttendanceDestroy, eventsAttendanceUpdate, eventsCreate, eventsDestroy, eventsPartialUpdate, eventsRetrieve, feedsFollowingList, feedsNearbyList, feedsUpcomingList, imagesCreate, meBlockedList, meMutedList, mePartialUpdate, meRetrieve, type Options, postsCreate, postsDestroy, postsRetrieve, profilesBlockCreate, profilesBlockDestroy, profilesFollowCreate, profilesFollowDestroy, profilesMuteCreate, profilesMuteDestroy, profilesRetrieve, reportsCreate } from '../sdk.gen';
-import type { CategoriesListData, CategoriesListResponse, EventsAttendanceDestroyData, EventsAttendanceDestroyResponse, EventsAttendanceUpdateData, EventsAttendanceUpdateResponse, EventsCreateData, EventsCreateResponse, EventsDestroyData, EventsDestroyResponse, EventsPartialUpdateData, EventsPartialUpdateResponse, EventsRetrieveData, EventsRetrieveResponse, FeedsFollowingListData, FeedsFollowingListResponse, FeedsNearbyListData, FeedsNearbyListResponse, FeedsUpcomingListData, FeedsUpcomingListResponse, ImagesCreateData, ImagesCreateResponse, MeBlockedListData, MeBlockedListResponse, MeMutedListData, MeMutedListResponse, MePartialUpdateData, MePartialUpdateResponse, MeRetrieveData, MeRetrieveResponse, PostsCreateData, PostsCreateResponse, PostsDestroyData, PostsDestroyResponse, PostsRetrieveData, PostsRetrieveResponse, ProfilesBlockCreateData, ProfilesBlockCreateResponse, ProfilesBlockDestroyData, ProfilesBlockDestroyResponse, ProfilesFollowCreateData, ProfilesFollowCreateResponse, ProfilesFollowDestroyData, ProfilesFollowDestroyResponse, ProfilesMuteCreateData, ProfilesMuteCreateResponse, ProfilesMuteDestroyData, ProfilesMuteDestroyResponse, ProfilesRetrieveData, ProfilesRetrieveResponse, ReportsCreateData, ReportsCreateResponse } from '../types.gen';
+import { categoriesList, eventsAttendanceDestroy, eventsAttendanceUpdate, eventsCreate, eventsDestroy, eventsPartialUpdate, eventsRetrieve, feedsFollowingList, feedsNearbyList, feedsUpcomingList, imagesCreate, meBlockedList, meMutedList, mePartialUpdate, meRetrieve, meSettingsPartialUpdate, meSettingsRetrieve, notificationsList, notificationsReadCreate, notificationsUnreadRetrieve, type Options, postsCreate, postsDestroy, postsRetrieve, profilesBlockCreate, profilesBlockDestroy, profilesFollowCreate, profilesFollowDestroy, profilesMuteCreate, profilesMuteDestroy, profilesRetrieve, pushDevicesCreate, pushDevicesDestroy, reportsCreate } from '../sdk.gen';
+import type { CategoriesListData, CategoriesListResponse, EventsAttendanceDestroyData, EventsAttendanceDestroyResponse, EventsAttendanceUpdateData, EventsAttendanceUpdateResponse, EventsCreateData, EventsCreateResponse, EventsDestroyData, EventsDestroyResponse, EventsPartialUpdateData, EventsPartialUpdateResponse, EventsRetrieveData, EventsRetrieveResponse, FeedsFollowingListData, FeedsFollowingListResponse, FeedsNearbyListData, FeedsNearbyListResponse, FeedsUpcomingListData, FeedsUpcomingListResponse, ImagesCreateData, ImagesCreateResponse, MeBlockedListData, MeBlockedListResponse, MeMutedListData, MeMutedListResponse, MePartialUpdateData, MePartialUpdateResponse, MeRetrieveData, MeRetrieveResponse, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponse, MeSettingsRetrieveData, MeSettingsRetrieveResponse, NotificationsListData, NotificationsListResponse, NotificationsReadCreateData, NotificationsReadCreateResponse, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponse, PostsCreateData, PostsCreateResponse, PostsDestroyData, PostsDestroyResponse, PostsRetrieveData, PostsRetrieveResponse, ProfilesBlockCreateData, ProfilesBlockCreateResponse, ProfilesBlockDestroyData, ProfilesBlockDestroyResponse, ProfilesFollowCreateData, ProfilesFollowCreateResponse, ProfilesFollowDestroyData, ProfilesFollowDestroyResponse, ProfilesMuteCreateData, ProfilesMuteCreateResponse, ProfilesMuteDestroyData, ProfilesMuteDestroyResponse, ProfilesRetrieveData, ProfilesRetrieveResponse, PushDevicesCreateData, PushDevicesCreateResponse, PushDevicesDestroyData, PushDevicesDestroyResponse, ReportsCreateData, ReportsCreateResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -425,6 +425,118 @@ export const meMutedListOptions = (options?: Options<MeMutedListData>) => queryO
     queryKey: meMutedListQueryKey(options)
 });
 
+export const meSettingsRetrieveQueryKey = (options?: Options<MeSettingsRetrieveData>) => createQueryKey('meSettingsRetrieve', options);
+
+/**
+ * Account-level settings: language and which notifications are pushed.
+ */
+export const meSettingsRetrieveOptions = (options?: Options<MeSettingsRetrieveData>) => queryOptions<MeSettingsRetrieveResponse, DefaultError, MeSettingsRetrieveResponse, ReturnType<typeof meSettingsRetrieveQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await meSettingsRetrieve({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: meSettingsRetrieveQueryKey(options)
+});
+
+/**
+ * Account-level settings: language and which notifications are pushed.
+ */
+export const meSettingsPartialUpdateMutation = (options?: Partial<Options<MeSettingsPartialUpdateData>>): UseMutationOptions<MeSettingsPartialUpdateResponse, DefaultError, Options<MeSettingsPartialUpdateData>> => {
+    const mutationOptions: UseMutationOptions<MeSettingsPartialUpdateResponse, DefaultError, Options<MeSettingsPartialUpdateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await meSettingsPartialUpdate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const notificationsListQueryKey = (options?: Options<NotificationsListData>) => createQueryKey('notificationsList', options);
+
+/**
+ * The signed-in user's inbox, newest first.
+ */
+export const notificationsListOptions = (options?: Options<NotificationsListData>) => queryOptions<NotificationsListResponse, DefaultError, NotificationsListResponse, ReturnType<typeof notificationsListQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await notificationsList({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: notificationsListQueryKey(options)
+});
+
+export const notificationsListInfiniteQueryKey = (options?: Options<NotificationsListData>): QueryKey<Options<NotificationsListData>> => createQueryKey('notificationsList', options, true);
+
+/**
+ * The signed-in user's inbox, newest first.
+ */
+export const notificationsListInfiniteOptions = (options?: Options<NotificationsListData>) => {
+    const opts = infiniteQueryOptions<NotificationsListResponse, DefaultError, InfiniteData<NotificationsListResponse>, QueryKey<Options<NotificationsListData>>, string | Pick<QueryKey<Options<NotificationsListData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<NotificationsListData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    cursor: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            const { data } = await notificationsList({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: notificationsListInfiniteQueryKey(options)
+    });
+    return opts as Omit<typeof opts, 'initialData'>;
+};
+
+export const notificationsReadCreateMutation = (options?: Partial<Options<NotificationsReadCreateData>>): UseMutationOptions<NotificationsReadCreateResponse, DefaultError, Options<NotificationsReadCreateData>> => {
+    const mutationOptions: UseMutationOptions<NotificationsReadCreateResponse, DefaultError, Options<NotificationsReadCreateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await notificationsReadCreate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const notificationsUnreadRetrieveQueryKey = (options?: Options<NotificationsUnreadRetrieveData>) => createQueryKey('notificationsUnreadRetrieve', options);
+
+export const notificationsUnreadRetrieveOptions = (options?: Options<NotificationsUnreadRetrieveData>) => queryOptions<NotificationsUnreadRetrieveResponse, DefaultError, NotificationsUnreadRetrieveResponse, ReturnType<typeof notificationsUnreadRetrieveQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await notificationsUnreadRetrieve({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: notificationsUnreadRetrieveQueryKey(options)
+});
+
 /**
  * Create, view and delete single posts. Listing happens through the feeds.
  */
@@ -578,6 +690,40 @@ export const profilesMuteCreateMutation = (options?: Partial<Options<ProfilesMut
     const mutationOptions: UseMutationOptions<ProfilesMuteCreateResponse, DefaultError, Options<ProfilesMuteCreateData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await profilesMuteCreate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Register this device for push notifications.
+ */
+export const pushDevicesCreateMutation = (options?: Partial<Options<PushDevicesCreateData>>): UseMutationOptions<PushDevicesCreateResponse, DefaultError, Options<PushDevicesCreateData>> => {
+    const mutationOptions: UseMutationOptions<PushDevicesCreateResponse, DefaultError, Options<PushDevicesCreateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await pushDevicesCreate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Stop push notifications to a device, e.g. when signing out on it.
+ */
+export const pushDevicesDestroyMutation = (options?: Partial<Options<PushDevicesDestroyData>>): UseMutationOptions<PushDevicesDestroyResponse, DefaultError, Options<PushDevicesDestroyData>> => {
+    const mutationOptions: UseMutationOptions<PushDevicesDestroyResponse, DefaultError, Options<PushDevicesDestroyData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await pushDevicesDestroy({
                 ...options,
                 ...fnOptions,
                 throwOnError: true

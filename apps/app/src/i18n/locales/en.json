@@ -3,7 +3,8 @@
     "upcoming": "Upcoming",
     "nearby": "Nearby",
     "following": "Following",
-    "profile": "Profile"
+    "profile": "Profile",
+    "notifications": "Notifications"
   },
   "common": {
     "tryAgain": "Try again",
@@ -62,7 +63,21 @@
   },
   "settings": {
     "language": "Language",
-    "languageAutomatic": "Same as device"
+    "languageAutomatic": "Same as device",
+    "pushTitle": "Push notifications",
+    "pushHint": "Everything also appears in your notifications inbox.",
+    "pushKinds": {
+      "new_follower": "New followers",
+      "new_event": "New events from people you follow",
+      "event_changed": "Changes to events you're going to",
+      "event_cancelled": "Cancelled events",
+      "event_reminder": "Event reminders",
+      "waitlist_promoted": "A spot opened up for you",
+      "announcement": "Announcements from organizers",
+      "mention": "Mentions",
+      "comment": "Comments",
+      "reaction": "Likes"
+    }
   },
   "posts": {
     "delete": "Delete post",
@@ -108,5 +123,23 @@
     "capacity_other": "{{count}} spots",
     "fullHint": "This event is full. Choosing Going puts you on the waitlist.",
     "waitlistHint": "You'll get a spot automatically if someone cancels."
+  },
+  "notifications": {
+    "signInPrompt": "Sign in to get notified about new followers, events from people you follow and changes to your plans.",
+    "empty": "No notifications yet.",
+    "unread": "Unread",
+    "pushPrompt": "Get a notification on your phone when something happens.",
+    "enablePush": "Turn on push notifications",
+    "pushDenied": "Push notifications are off for Sidequest. You can turn them on in your phone's settings.",
+    "newFollower": "{{name}} started following you.",
+    "newEvent": "New event from {{name}}: {{title}}",
+    "eventChanged": "The time or place of {{title}} changed.",
+    "eventCancelled": "{{title}} was cancelled.",
+    "eventReminder": "{{title}} starts soon.",
+    "waitlistPromoted": "A spot opened up at {{title}}. You're going!",
+    "announcement": "{{name}} about {{title}}: {{message}}",
+    "mention": "{{name}} mentioned you.",
+    "comment": "{{name}} commented.",
+    "reaction": "{{name}} liked your post."
   }
 }

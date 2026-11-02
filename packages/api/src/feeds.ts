@@ -13,10 +13,7 @@ import {
 } from './generated/@tanstack/react-query.gen';
 import { feedsFollowingList, feedsNearbyList, feedsUpcomingList } from './generated/sdk.gen';
 import type { LatLng } from './generated/types.gen';
-
-function queryParam(url: string | null | undefined, name: string) {
-  return url ? (new URL(url).searchParams.get(name) ?? undefined) : undefined;
-}
+import { queryParam } from './pagination';
 
 export function useUpcomingFeed() {
   return useInfiniteQuery({

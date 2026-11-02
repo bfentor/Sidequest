@@ -9,6 +9,7 @@ from .health import healthz
 api_patterns = [
     path("", include("images.urls")),
     path("", include("moderation.urls")),
+    path("", include("notifications.urls")),
     path("", include("profiles.urls")),
     path("", include("events.urls")),
     path("", include("posts.urls")),

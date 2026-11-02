@@ -2,7 +2,7 @@
 
 import { type Client, type ClientMeta, formDataBodySerializer, type Options as Options2, type RequestResult, type TDataShape } from './client';
 import { client } from './client.gen';
-import type { CategoriesListData, CategoriesListResponses, EventsAttendanceDestroyData, EventsAttendanceDestroyResponses, EventsAttendanceUpdateData, EventsAttendanceUpdateResponses, EventsCreateData, EventsCreateResponses, EventsDestroyData, EventsDestroyResponses, EventsPartialUpdateData, EventsPartialUpdateResponses, EventsRetrieveData, EventsRetrieveResponses, FeedsFollowingListData, FeedsFollowingListResponses, FeedsNearbyListData, FeedsNearbyListResponses, FeedsUpcomingListData, FeedsUpcomingListResponses, ImagesCreateData, ImagesCreateResponses, MeBlockedListData, MeBlockedListResponses, MeMutedListData, MeMutedListResponses, MePartialUpdateData, MePartialUpdateResponses, MeRetrieveData, MeRetrieveResponses, PostsCreateData, PostsCreateResponses, PostsDestroyData, PostsDestroyResponses, PostsRetrieveData, PostsRetrieveResponses, ProfilesBlockCreateData, ProfilesBlockCreateResponses, ProfilesBlockDestroyData, ProfilesBlockDestroyResponses, ProfilesFollowCreateData, ProfilesFollowCreateResponses, ProfilesFollowDestroyData, ProfilesFollowDestroyResponses, ProfilesMuteCreateData, ProfilesMuteCreateResponses, ProfilesMuteDestroyData, ProfilesMuteDestroyResponses, ProfilesRetrieveData, ProfilesRetrieveResponses, ReportsCreateData, ReportsCreateResponses } from './types.gen';
+import type { CategoriesListData, CategoriesListResponses, EventsAttendanceDestroyData, EventsAttendanceDestroyResponses, EventsAttendanceUpdateData, EventsAttendanceUpdateResponses, EventsCreateData, EventsCreateResponses, EventsDestroyData, EventsDestroyResponses, EventsPartialUpdateData, EventsPartialUpdateResponses, EventsRetrieveData, EventsRetrieveResponses, FeedsFollowingListData, FeedsFollowingListResponses, FeedsNearbyListData, FeedsNearbyListResponses, FeedsUpcomingListData, FeedsUpcomingListResponses, ImagesCreateData, ImagesCreateResponses, MeBlockedListData, MeBlockedListResponses, MeMutedListData, MeMutedListResponses, MePartialUpdateData, MePartialUpdateResponses, MeRetrieveData, MeRetrieveResponses, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponses, MeSettingsRetrieveData, MeSettingsRetrieveResponses, NotificationsListData, NotificationsListResponses, NotificationsReadCreateData, NotificationsReadCreateResponses, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponses, PostsCreateData, PostsCreateResponses, PostsDestroyData, PostsDestroyResponses, PostsRetrieveData, PostsRetrieveResponses, ProfilesBlockCreateData, ProfilesBlockCreateResponses, ProfilesBlockDestroyData, ProfilesBlockDestroyResponses, ProfilesFollowCreateData, ProfilesFollowCreateResponses, ProfilesFollowDestroyData, ProfilesFollowDestroyResponses, ProfilesMuteCreateData, ProfilesMuteCreateResponses, ProfilesMuteDestroyData, ProfilesMuteDestroyResponses, ProfilesRetrieveData, ProfilesRetrieveResponses, PushDevicesCreateData, PushDevicesCreateResponses, PushDevicesDestroyData, PushDevicesDestroyResponses, ReportsCreateData, ReportsCreateResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -177,6 +177,53 @@ export const meMutedList = <ThrowOnError extends boolean = false>(options?: Opti
 });
 
 /**
+ * Account-level settings: language and which notifications are pushed.
+ */
+export const meSettingsRetrieve = <ThrowOnError extends boolean = false>(options?: Options<MeSettingsRetrieveData, ThrowOnError>): RequestResult<MeSettingsRetrieveResponses, unknown, ThrowOnError> => (options?.client ?? client).get<MeSettingsRetrieveResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/me/settings/',
+    ...options
+});
+
+/**
+ * Account-level settings: language and which notifications are pushed.
+ */
+export const meSettingsPartialUpdate = <ThrowOnError extends boolean = false>(options?: Options<MeSettingsPartialUpdateData, ThrowOnError>): RequestResult<MeSettingsPartialUpdateResponses, unknown, ThrowOnError> => (options?.client ?? client).patch<MeSettingsPartialUpdateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/me/settings/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+    }
+});
+
+/**
+ * The signed-in user's inbox, newest first.
+ */
+export const notificationsList = <ThrowOnError extends boolean = false>(options?: Options<NotificationsListData, ThrowOnError>): RequestResult<NotificationsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<NotificationsListResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/notifications/',
+    ...options
+});
+
+export const notificationsReadCreate = <ThrowOnError extends boolean = false>(options?: Options<NotificationsReadCreateData, ThrowOnError>): RequestResult<NotificationsReadCreateResponses, unknown, ThrowOnError> => (options?.client ?? client).post<NotificationsReadCreateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/notifications/read/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+    }
+});
+
+export const notificationsUnreadRetrieve = <ThrowOnError extends boolean = false>(options?: Options<NotificationsUnreadRetrieveData, ThrowOnError>): RequestResult<NotificationsUnreadRetrieveResponses, unknown, ThrowOnError> => (options?.client ?? client).get<NotificationsUnreadRetrieveResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/notifications/unread/',
+    ...options
+});
+
+/**
  * Create, view and delete single posts. Listing happens through the feeds.
  */
 export const postsCreate = <ThrowOnError extends boolean = false>(options?: Options<PostsCreateData, ThrowOnError>): RequestResult<PostsCreateResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PostsCreateResponses, unknown, ThrowOnError>({
@@ -258,6 +305,28 @@ export const profilesMuteDestroy = <ThrowOnError extends boolean = false>(option
 export const profilesMuteCreate = <ThrowOnError extends boolean = false>(options: Options<ProfilesMuteCreateData, ThrowOnError>): RequestResult<ProfilesMuteCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<ProfilesMuteCreateResponses, unknown, ThrowOnError>({
     security: [{ name: 'X-Session-Token', type: 'apiKey' }],
     url: '/api/profiles/{handle}/mute/',
+    ...options
+});
+
+/**
+ * Register this device for push notifications.
+ */
+export const pushDevicesCreate = <ThrowOnError extends boolean = false>(options: Options<PushDevicesCreateData, ThrowOnError>): RequestResult<PushDevicesCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<PushDevicesCreateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/push-devices/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Stop push notifications to a device, e.g. when signing out on it.
+ */
+export const pushDevicesDestroy = <ThrowOnError extends boolean = false>(options: Options<PushDevicesDestroyData, ThrowOnError>): RequestResult<PushDevicesDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<PushDevicesDestroyResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/push-devices/{token}/',
     ...options
 });
 

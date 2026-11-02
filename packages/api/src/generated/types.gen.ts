@@ -4,6 +4,16 @@ export type ClientOptions = {
     baseUrl: `${string}://${string}` | (string & {});
 };
 
+export type AccountSettings = {
+    language?: LanguageEnum;
+    /**
+     * Push on (true) or off (false), by notification kind. Missing kinds are on.
+     */
+    push?: {
+        [key: string]: boolean;
+    };
+};
+
 /**
  * * `going` - Going
  * * `interested` - Interested
@@ -91,6 +101,13 @@ export type ImageUploadRequest = {
     file: Blob | File;
 };
 
+/**
+ * * `en` - English
+ * * `fi` - Suomi
+ * * `sv` - Svenska
+ */
+export type LanguageEnum = 'en' | 'fi' | 'sv';
+
 export type LatLng = {
     lat: number;
     lng: number;
@@ -99,6 +116,13 @@ export type LatLng = {
 export type LatLngRequest = {
     lat: number;
     lng: number;
+};
+
+export type MarkReadRequest = {
+    /**
+     * Notifications to mark read; all of them when left out.
+     */
+    ids?: Array<number>;
 };
 
 export type NearbyEvent = {
@@ -119,6 +143,37 @@ export type NearbyEvent = {
     readonly distance_m: number;
 };
 
+export type Notification = {
+    readonly id: number;
+    kind: NotificationKindEnum;
+    actor: ProfileSummary | null;
+    event: NotificationEvent | null;
+    readonly post: number | null;
+    readonly message: string;
+    readonly created_at: string;
+    readonly read: boolean;
+};
+
+export type NotificationEvent = {
+    readonly id: number;
+    readonly title: string;
+    readonly starts_at: string;
+};
+
+/**
+ * * `new_follower` - New followers
+ * * `new_event` - New events from people you follow
+ * * `event_changed` - Changes to events you're going to
+ * * `event_cancelled` - Cancelled events
+ * * `event_reminder` - Event reminders
+ * * `waitlist_promoted` - A spot opened up for you
+ * * `announcement` - Announcements from organizers
+ * * `mention` - Mentions
+ * * `comment` - Comments
+ * * `reaction` - Likes
+ */
+export type NotificationKindEnum = 'new_follower' | 'new_event' | 'event_changed' | 'event_cancelled' | 'event_reminder' | 'waitlist_promoted' | 'announcement' | 'mention' | 'comment' | 'reaction';
+
 export type NullEnum = never;
 
 export type PaginatedEventList = {
@@ -134,10 +189,26 @@ export type PaginatedNearbyEventList = {
     results: Array<NearbyEvent>;
 };
 
+export type PaginatedNotificationList = {
+    next?: string | null;
+    previous?: string | null;
+    results: Array<Notification>;
+};
+
 export type PaginatedPostList = {
     next?: string | null;
     previous?: string | null;
     results: Array<Post>;
+};
+
+export type PatchedAccountSettingsRequest = {
+    language?: LanguageEnum;
+    /**
+     * Push on (true) or off (false), by notification kind. Missing kinds are on.
+     */
+    push?: {
+        [key: string]: boolean;
+    };
 };
 
 export type PatchedEventRequest = {
@@ -214,6 +285,13 @@ export type ProfileSummary = {
     avatar: Image | null;
 };
 
+export type PushDeviceRequest = {
+    /**
+     * The device's Expo push token.
+     */
+    token: string;
+};
+
 export type Report = {
     readonly id: number;
     reason: ReportReasonEnum;
@@ -259,6 +337,10 @@ export type StatusEnum = 'going' | 'interested';
  * * `profile` - profile
  */
 export type TargetTypeEnum = 'post' | 'event' | 'profile';
+
+export type UnreadCount = {
+    unread: number;
+};
 
 export type EventWritable = {
     title: string;
@@ -311,6 +393,12 @@ export type PaginatedNearbyEventListWritable = {
     next?: string | null;
     previous?: string | null;
     results: Array<NearbyEventWritable>;
+};
+
+export type PaginatedNotificationListWritable = {
+    next?: string | null;
+    previous?: string | null;
+    results: Array<unknown>;
 };
 
 export type PaginatedPostListWritable = {
@@ -641,6 +729,76 @@ export type MeMutedListResponses = {
 
 export type MeMutedListResponse = MeMutedListResponses[keyof MeMutedListResponses];
 
+export type MeSettingsRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/me/settings/';
+};
+
+export type MeSettingsRetrieveResponses = {
+    200: AccountSettings;
+};
+
+export type MeSettingsRetrieveResponse = MeSettingsRetrieveResponses[keyof MeSettingsRetrieveResponses];
+
+export type MeSettingsPartialUpdateData = {
+    body?: PatchedAccountSettingsRequest;
+    path?: never;
+    query?: never;
+    url: '/api/me/settings/';
+};
+
+export type MeSettingsPartialUpdateResponses = {
+    200: AccountSettings;
+};
+
+export type MeSettingsPartialUpdateResponse = MeSettingsPartialUpdateResponses[keyof MeSettingsPartialUpdateResponses];
+
+export type NotificationsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * The pagination cursor value.
+         */
+        cursor?: string;
+    };
+    url: '/api/notifications/';
+};
+
+export type NotificationsListResponses = {
+    200: PaginatedNotificationList;
+};
+
+export type NotificationsListResponse = NotificationsListResponses[keyof NotificationsListResponses];
+
+export type NotificationsReadCreateData = {
+    body?: MarkReadRequest;
+    path?: never;
+    query?: never;
+    url: '/api/notifications/read/';
+};
+
+export type NotificationsReadCreateResponses = {
+    200: UnreadCount;
+};
+
+export type NotificationsReadCreateResponse = NotificationsReadCreateResponses[keyof NotificationsReadCreateResponses];
+
+export type NotificationsUnreadRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/notifications/unread/';
+};
+
+export type NotificationsUnreadRetrieveResponses = {
+    200: UnreadCount;
+};
+
+export type NotificationsUnreadRetrieveResponse = NotificationsUnreadRetrieveResponses[keyof NotificationsUnreadRetrieveResponses];
+
 export type PostsCreateData = {
     body?: PostRequestWritable;
     path?: never;
@@ -815,6 +973,40 @@ export type ProfilesMuteCreateResponses = {
 };
 
 export type ProfilesMuteCreateResponse = ProfilesMuteCreateResponses[keyof ProfilesMuteCreateResponses];
+
+export type PushDevicesCreateData = {
+    body: PushDeviceRequest;
+    path?: never;
+    query?: never;
+    url: '/api/push-devices/';
+};
+
+export type PushDevicesCreateResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type PushDevicesCreateResponse = PushDevicesCreateResponses[keyof PushDevicesCreateResponses];
+
+export type PushDevicesDestroyData = {
+    body?: never;
+    path: {
+        token: string;
+    };
+    query?: never;
+    url: '/api/push-devices/{token}/';
+};
+
+export type PushDevicesDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type PushDevicesDestroyResponse = PushDevicesDestroyResponses[keyof PushDevicesDestroyResponses];
 
 export type ReportsCreateData = {
     body: ReportRequestWritable;

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 
@@ -33,6 +34,10 @@ class User(AbstractUser):
 
     username = None
     email = models.EmailField("email address", unique=True)
+    # The app's language, for things sent outside the app (push notifications, emails).
+    language = models.CharField(
+        max_length=8, choices=settings.LANGUAGES, default=settings.LANGUAGE_CODE
+    )
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
