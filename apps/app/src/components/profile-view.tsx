@@ -1,4 +1,5 @@
 import {
+  organizationsMembersListOptions,
   profilesRetrieveOptions,
   useProfileEvents,
   useProfilePosts,
@@ -16,11 +17,12 @@ import { EventCard } from './event-card';
 import { FeedList } from './feed-list';
 import { PostCard } from './post-card';
 import { ProfileHeader } from './profile-header';
+import { ProfileRow } from './profile-row';
 import { Screen } from './screen';
 import { SegmentedControl } from './segmented-control';
 import { ThemedText } from './themed-text';
 
-type Tab = 'posts' | 'events' | 'past';
+type Tab = 'posts' | 'events' | 'past' | 'members';
 
 type ProfileViewProps = {
   handle: string;
@@ -72,10 +74,17 @@ export function ProfileView({ handle, actions, hasHeader }: ProfileViewProps) {
           { value: 'posts', label: t('profile.tabs.posts') },
           { value: 'events', label: t('profile.tabs.events') },
           { value: 'past', label: t('profile.tabs.past') },
+          ...(profile.data.kind === 'organization'
+            ? [{ value: 'members' as const, label: t('organizations.members') }]
+            : []),
         ]}
       />
     </View>
   );
+
+  if (tab === 'members') {
+    return <OrganizationMembers handle={handle} header={header} hasHeader={hasHeader} />;
+  }
 
   return tab === 'posts' ? (
     <ProfilePosts handle={handle} header={header} hasHeader={hasHeader} />
@@ -103,6 +112,27 @@ function ProfilePosts({ handle, header, hasHeader }: ListProps) {
       keyExtractor={(post) => String(post.id)}
       emptyText={t('profile.noPosts')}
     />
+  );
+}
+
+function OrganizationMembers({ handle, header, hasHeader }: ListProps) {
+  const { t } = useTranslation();
+  const members = useQuery(organizationsMembersListOptions({ path: { handle } }));
+  return (
+    <Screen hasHeader={hasHeader}>
+      {header}
+      {members.data?.map((member) => (
+        <ProfileRow
+          key={member.profile.handle}
+          profile={member.profile}
+          action={
+            <ThemedText type="small" themeColor="textSecondary">
+              {t(`organizations.roles.${member.role ?? 'editor'}`)}
+            </ThemedText>
+          }
+        />
+      ))}
+    </Screen>
   );
 }
 

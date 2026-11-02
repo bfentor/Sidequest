@@ -100,7 +100,8 @@
       "comment": "Kommentit",
       "reaction": "Tykkäykset",
       "follow_request": "Seuraamispyynnöt",
-      "follow_accepted": "Hyväksytyt seuraamispyynnöt"
+      "follow_accepted": "Hyväksytyt seuraamispyynnöt",
+      "organization_invite": "Kutsut järjestöihin"
     }
   },
   "posts": {
@@ -166,7 +167,8 @@
     "comment": "{{name}} kommentoi.",
     "reaction": "{{name}} tykkäsi julkaisustasi.",
     "followRequest": "{{name}} pyysi saada seurata sinua.",
-    "followAccepted": "{{name}} hyväksyi seuraamispyyntösi."
+    "followAccepted": "{{name}} hyväksyi seuraamispyyntösi.",
+    "organizationInvite": "{{name}} kutsui sinut jäseneksi."
   },
   "editProfile": {
     "changeCover": "Vaihda kansikuva",
@@ -193,5 +195,34 @@
     "accept": "Hyväksy",
     "decline": "Hylkää",
     "empty": "Ei seuraamispyyntöjä."
+  },
+  "organizations": {
+    "title": "Järjestöt",
+    "yours": "Järjestösi",
+    "none": "Et ole vielä minkään järjestön jäsen.",
+    "create": "Luo järjestö",
+    "createHint": "Järjestöt julkaisevat tapahtumia ja julkaisuja omissa nimissään. Sinusta tulee sen ensimmäinen ylläpitäjä, ja voit kutsua muita.",
+    "invitations": "Kutsut",
+    "invitedAs": "Kutsuttu rooliin {{role}}",
+    "join": "Liity",
+    "roles": {
+      "admin": "Ylläpitäjä",
+      "editor": "Muokkaaja"
+    },
+    "rolesHint": "Ylläpitäjät hallinnoivat järjestöä ja sen jäseniä. Muokkaajat julkaisevat tapahtumia ja julkaisuja.",
+    "manage": "Hallinnoi",
+    "profile": "Profiili",
+    "saved": "Tallennettu.",
+    "members": "Jäsenet",
+    "remove": "Poista",
+    "needsAdmin": "Järjestöllä täytyy olla vähintään yksi ylläpitäjä.",
+    "invite": "Kutsu jäseneksi",
+    "sendInvite": "Lähetä kutsu",
+    "pending": "Odottaa vastausta",
+    "verification": "Vahvistusmerkki",
+    "verificationHint": "Viralliset ylioppilaskunnat, ainejärjestöt ja kerhot voivat saada vahvistusmerkin. Kerro moderaattoreille, keitä olette ja miten sen voi varmistaa.",
+    "verificationMessage": "Viesti moderaattoreille",
+    "requestVerification": "Pyydä vahvistusta",
+    "verificationSent": "Pyyntö lähetetty. Moderaattorit ovat yhteydessä."
   }
 }

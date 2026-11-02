@@ -25,6 +25,13 @@ export default function ProfileTab() {
             </View>
             <View style={{ flex: 1 }}>
               <Button
+                title={t('organizations.title')}
+                variant="secondary"
+                onPress={() => router.push('/organizations')}
+              />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Button
                 title={t('common.settings')}
                 variant="secondary"
                 onPress={() => router.push('/settings')}

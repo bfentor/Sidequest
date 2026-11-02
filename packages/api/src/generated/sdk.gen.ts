@@ -2,7 +2,7 @@
 
 import { type Client, type ClientMeta, formDataBodySerializer, type Options as Options2, type RequestResult, type TDataShape } from './client';
 import { client } from './client.gen';
-import type { CategoriesListData, CategoriesListResponses, EventsAttendanceDestroyData, EventsAttendanceDestroyResponses, EventsAttendanceUpdateData, EventsAttendanceUpdateResponses, EventsCreateData, EventsCreateResponses, EventsDestroyData, EventsDestroyResponses, EventsPartialUpdateData, EventsPartialUpdateResponses, EventsRetrieveData, EventsRetrieveResponses, FeedsFollowingListData, FeedsFollowingListResponses, FeedsNearbyListData, FeedsNearbyListResponses, FeedsUpcomingListData, FeedsUpcomingListResponses, ImagesCreateData, ImagesCreateResponses, MeBlockedListData, MeBlockedListResponses, MeFollowRequestsCreateData, MeFollowRequestsCreateResponses, MeFollowRequestsDestroyData, MeFollowRequestsDestroyResponses, MeFollowRequestsListData, MeFollowRequestsListResponses, MeMutedListData, MeMutedListResponses, MePartialUpdateData, MePartialUpdateResponses, MeRetrieveData, MeRetrieveResponses, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponses, MeSettingsRetrieveData, MeSettingsRetrieveResponses, NotificationsListData, NotificationsListResponses, NotificationsReadCreateData, NotificationsReadCreateResponses, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponses, PostsCreateData, PostsCreateResponses, PostsDestroyData, PostsDestroyResponses, PostsRetrieveData, PostsRetrieveResponses, ProfilesBlockCreateData, ProfilesBlockCreateResponses, ProfilesBlockDestroyData, ProfilesBlockDestroyResponses, ProfilesEventsListData, ProfilesEventsListResponses, ProfilesFollowCreateData, ProfilesFollowCreateResponses, ProfilesFollowDestroyData, ProfilesFollowDestroyResponses, ProfilesFollowersListData, ProfilesFollowersListResponses, ProfilesFollowingListData, ProfilesFollowingListResponses, ProfilesMuteCreateData, ProfilesMuteCreateResponses, ProfilesMuteDestroyData, ProfilesMuteDestroyResponses, ProfilesPostsListData, ProfilesPostsListResponses, ProfilesRetrieveData, ProfilesRetrieveResponses, PushDevicesCreateData, PushDevicesCreateResponses, PushDevicesDestroyData, PushDevicesDestroyResponses, ReportsCreateData, ReportsCreateResponses } from './types.gen';
+import type { CategoriesListData, CategoriesListResponses, EventsAttendanceDestroyData, EventsAttendanceDestroyResponses, EventsAttendanceUpdateData, EventsAttendanceUpdateResponses, EventsCreateData, EventsCreateResponses, EventsDestroyData, EventsDestroyResponses, EventsPartialUpdateData, EventsPartialUpdateResponses, EventsRetrieveData, EventsRetrieveResponses, FeedsFollowingListData, FeedsFollowingListResponses, FeedsNearbyListData, FeedsNearbyListResponses, FeedsUpcomingListData, FeedsUpcomingListResponses, ImagesCreateData, ImagesCreateResponses, MeBlockedListData, MeBlockedListResponses, MeFollowRequestsCreateData, MeFollowRequestsCreateResponses, MeFollowRequestsDestroyData, MeFollowRequestsDestroyResponses, MeFollowRequestsListData, MeFollowRequestsListResponses, MeInvitationsCreateData, MeInvitationsCreateResponses, MeInvitationsDestroyData, MeInvitationsDestroyResponses, MeInvitationsListData, MeInvitationsListResponses, MeMutedListData, MeMutedListResponses, MePartialUpdateData, MePartialUpdateResponses, MeProfilesListData, MeProfilesListResponses, MeRetrieveData, MeRetrieveResponses, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponses, MeSettingsRetrieveData, MeSettingsRetrieveResponses, NotificationsListData, NotificationsListResponses, NotificationsReadCreateData, NotificationsReadCreateResponses, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponses, OrganizationsCreateData, OrganizationsCreateResponses, OrganizationsInvitationsListData, OrganizationsInvitationsListResponses, OrganizationsMembersCreateData, OrganizationsMembersCreateResponses, OrganizationsMembersDestroyData, OrganizationsMembersDestroyResponses, OrganizationsMembersListData, OrganizationsMembersListResponses, OrganizationsMembersPartialUpdateData, OrganizationsMembersPartialUpdateResponses, OrganizationsPartialUpdateData, OrganizationsPartialUpdateResponses, OrganizationsVerificationCreateData, OrganizationsVerificationCreateResponses, PostsCreateData, PostsCreateResponses, PostsDestroyData, PostsDestroyResponses, PostsRetrieveData, PostsRetrieveResponses, ProfilesBlockCreateData, ProfilesBlockCreateResponses, ProfilesBlockDestroyData, ProfilesBlockDestroyResponses, ProfilesEventsListData, ProfilesEventsListResponses, ProfilesFollowCreateData, ProfilesFollowCreateResponses, ProfilesFollowDestroyData, ProfilesFollowDestroyResponses, ProfilesFollowersListData, ProfilesFollowersListResponses, ProfilesFollowingListData, ProfilesFollowingListResponses, ProfilesMuteCreateData, ProfilesMuteCreateResponses, ProfilesMuteDestroyData, ProfilesMuteDestroyResponses, ProfilesPostsListData, ProfilesPostsListResponses, ProfilesRetrieveData, ProfilesRetrieveResponses, PushDevicesCreateData, PushDevicesCreateResponses, PushDevicesDestroyData, PushDevicesDestroyResponses, ReportsCreateData, ReportsCreateResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -195,11 +195,47 @@ export const meFollowRequestsCreate = <ThrowOnError extends boolean = false>(opt
 });
 
 /**
+ * Invitations to organizations waiting for the signed-in user's answer.
+ */
+export const meInvitationsList = <ThrowOnError extends boolean = false>(options?: Options<MeInvitationsListData, ThrowOnError>): RequestResult<MeInvitationsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<MeInvitationsListResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/me/invitations/',
+    ...options
+});
+
+/**
+ * Accept (POST) or decline (DELETE) an invitation.
+ */
+export const meInvitationsDestroy = <ThrowOnError extends boolean = false>(options: Options<MeInvitationsDestroyData, ThrowOnError>): RequestResult<MeInvitationsDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<MeInvitationsDestroyResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/me/invitations/{id}/',
+    ...options
+});
+
+/**
+ * Accept (POST) or decline (DELETE) an invitation.
+ */
+export const meInvitationsCreate = <ThrowOnError extends boolean = false>(options: Options<MeInvitationsCreateData, ThrowOnError>): RequestResult<MeInvitationsCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<MeInvitationsCreateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/me/invitations/{id}/',
+    ...options
+});
+
+/**
  * Profiles the signed-in user has muted.
  */
 export const meMutedList = <ThrowOnError extends boolean = false>(options?: Options<MeMutedListData, ThrowOnError>): RequestResult<MeMutedListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<MeMutedListResponses, unknown, ThrowOnError>({
     security: [{ name: 'X-Session-Token', type: 'apiKey' }],
     url: '/api/me/muted/',
+    ...options
+});
+
+/**
+ * Profiles the signed-in user can publish as: their own, then their organizations.
+ */
+export const meProfilesList = <ThrowOnError extends boolean = false>(options?: Options<MeProfilesListData, ThrowOnError>): RequestResult<MeProfilesListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<MeProfilesListResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/me/profiles/',
     ...options
 });
 
@@ -248,6 +284,102 @@ export const notificationsUnreadRetrieve = <ThrowOnError extends boolean = false
     security: [{ name: 'X-Session-Token', type: 'apiKey' }],
     url: '/api/notifications/unread/',
     ...options
+});
+
+/**
+ * Create organizations and manage them. They are shown like any profile (/api/profiles/).
+ */
+export const organizationsCreate = <ThrowOnError extends boolean = false>(options: Options<OrganizationsCreateData, ThrowOnError>): RequestResult<OrganizationsCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<OrganizationsCreateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/organizations/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Edit the organization's profile (admins).
+ */
+export const organizationsPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<OrganizationsPartialUpdateData, ThrowOnError>): RequestResult<OrganizationsPartialUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).patch<OrganizationsPartialUpdateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/organizations/{handle}/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Invitations not answered yet (admins).
+ */
+export const organizationsInvitationsList = <ThrowOnError extends boolean = false>(options: Options<OrganizationsInvitationsListData, ThrowOnError>): RequestResult<OrganizationsInvitationsListResponses, unknown, ThrowOnError> => (options.client ?? client).get<OrganizationsInvitationsListResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/organizations/{handle}/invitations/',
+    ...options
+});
+
+/**
+ * List the members (GET), or invite someone by handle (POST, admins).
+ */
+export const organizationsMembersList = <ThrowOnError extends boolean = false>(options: Options<OrganizationsMembersListData, ThrowOnError>): RequestResult<OrganizationsMembersListResponses, unknown, ThrowOnError> => (options.client ?? client).get<OrganizationsMembersListResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/organizations/{handle}/members/',
+    ...options
+});
+
+/**
+ * List the members (GET), or invite someone by handle (POST, admins).
+ */
+export const organizationsMembersCreate = <ThrowOnError extends boolean = false>(options: Options<OrganizationsMembersCreateData, ThrowOnError>): RequestResult<OrganizationsMembersCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<OrganizationsMembersCreateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/organizations/{handle}/members/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Change a member's role (PATCH, admins), or remove them (DELETE, admins).
+ *
+ * Members can also DELETE themselves to leave.
+ */
+export const organizationsMembersDestroy = <ThrowOnError extends boolean = false>(options: Options<OrganizationsMembersDestroyData, ThrowOnError>): RequestResult<OrganizationsMembersDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<OrganizationsMembersDestroyResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/organizations/{handle}/members/{member}/',
+    ...options
+});
+
+/**
+ * Change a member's role (PATCH, admins), or remove them (DELETE, admins).
+ *
+ * Members can also DELETE themselves to leave.
+ */
+export const organizationsMembersPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<OrganizationsMembersPartialUpdateData, ThrowOnError>): RequestResult<OrganizationsMembersPartialUpdateResponses, unknown, ThrowOnError> => (options.client ?? client).patch<OrganizationsMembersPartialUpdateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/organizations/{handle}/members/{member}/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Ask moderators for the verified badge (admins).
+ */
+export const organizationsVerificationCreate = <ThrowOnError extends boolean = false>(options: Options<OrganizationsVerificationCreateData, ThrowOnError>): RequestResult<OrganizationsVerificationCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<OrganizationsVerificationCreateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/organizations/{handle}/verification/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
 });
 
 /**

@@ -21,6 +21,8 @@ function describe(notification: Notification, t: TFunction) {
       return t('notifications.followRequest', { name });
     case 'follow_accepted':
       return t('notifications.followAccepted', { name });
+    case 'organization_invite':
+      return t('notifications.organizationInvite', { name });
     case 'new_event':
       return t('notifications.newEvent', { name, title });
     case 'event_changed':
@@ -45,6 +47,8 @@ function describe(notification: Notification, t: TFunction) {
 function open(notification: Notification) {
   if (notification.kind === 'follow_request') {
     router.push('/follow-requests');
+  } else if (notification.kind === 'organization_invite') {
+    router.push('/organizations');
   } else if (notification.event) {
     router.push({ pathname: '/events/[id]', params: { id: notification.event.id } });
   } else if (notification.actor) {

@@ -14,6 +14,8 @@ export function TextField({ label, style, ...inputProps }: TextFieldProps) {
     <View style={styles.field}>
       <ThemedText type="smallBold">{label}</ThemedText>
       <TextInput
+        // Screen readers (and the web's <label> semantics) announce the field by its label.
+        accessibilityLabel={label}
         placeholderTextColor={theme.textSecondary}
         style={[
           styles.input,

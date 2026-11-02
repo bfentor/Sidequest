@@ -50,6 +50,8 @@ function RootStack() {
       <Stack.Screen name="settings" options={{ title: t('common.settings') }} />
       <Stack.Screen name="edit-profile" options={{ title: t('profile.edit') }} />
       <Stack.Screen name="follow-requests" options={{ title: t('followRequests.title') }} />
+      <Stack.Screen name="organizations/index" options={{ title: t('organizations.title') }} />
+      <Stack.Screen name="organizations/new" options={{ title: t('organizations.create') }} />
       <Stack.Screen
         name="report"
         options={{ title: t('moderation.report'), presentation: 'modal' }}

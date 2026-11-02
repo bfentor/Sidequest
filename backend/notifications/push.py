@@ -35,6 +35,8 @@ def render(notification) -> tuple[str, str]:
             return "Sidequest", _("%(name)s started following you.") % {"name": actor}
         case Kind.FOLLOW_REQUEST:
             return "Sidequest", _("%(name)s asked to follow you.") % {"name": actor}
+        case Kind.ORGANIZATION_INVITE:
+            return "Sidequest", _("%(name)s invited you to join them.") % {"name": actor}
         case Kind.FOLLOW_ACCEPTED:
             return "Sidequest", _("%(name)s accepted your follow request.") % {"name": actor}
         case Kind.NEW_EVENT:
@@ -65,6 +67,8 @@ def link(notification) -> str:
         return f"/events/{notification.event_id}"
     if notification.kind == Kind.FOLLOW_REQUEST:
         return "/follow-requests"
+    if notification.kind == Kind.ORGANIZATION_INVITE:
+        return "/invitations"
     if notification.kind in (Kind.NEW_FOLLOWER, Kind.FOLLOW_ACCEPTED) and notification.actor:
         return f"/profiles/{notification.actor.handle}"
     return "/notifications"

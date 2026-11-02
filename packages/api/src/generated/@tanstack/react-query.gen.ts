@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { categoriesList, eventsAttendanceDestroy, eventsAttendanceUpdate, eventsCreate, eventsDestroy, eventsPartialUpdate, eventsRetrieve, feedsFollowingList, feedsNearbyList, feedsUpcomingList, imagesCreate, meBlockedList, meFollowRequestsCreate, meFollowRequestsDestroy, meFollowRequestsList, meMutedList, mePartialUpdate, meRetrieve, meSettingsPartialUpdate, meSettingsRetrieve, notificationsList, notificationsReadCreate, notificationsUnreadRetrieve, type Options, postsCreate, postsDestroy, postsRetrieve, profilesBlockCreate, profilesBlockDestroy, profilesEventsList, profilesFollowCreate, profilesFollowDestroy, profilesFollowersList, profilesFollowingList, profilesMuteCreate, profilesMuteDestroy, profilesPostsList, profilesRetrieve, pushDevicesCreate, pushDevicesDestroy, reportsCreate } from '../sdk.gen';
-import type { CategoriesListData, CategoriesListResponse, EventsAttendanceDestroyData, EventsAttendanceDestroyResponse, EventsAttendanceUpdateData, EventsAttendanceUpdateResponse, EventsCreateData, EventsCreateResponse, EventsDestroyData, EventsDestroyResponse, EventsPartialUpdateData, EventsPartialUpdateResponse, EventsRetrieveData, EventsRetrieveResponse, FeedsFollowingListData, FeedsFollowingListResponse, FeedsNearbyListData, FeedsNearbyListResponse, FeedsUpcomingListData, FeedsUpcomingListResponse, ImagesCreateData, ImagesCreateResponse, MeBlockedListData, MeBlockedListResponse, MeFollowRequestsCreateData, MeFollowRequestsCreateResponse, MeFollowRequestsDestroyData, MeFollowRequestsDestroyResponse, MeFollowRequestsListData, MeFollowRequestsListResponse, MeMutedListData, MeMutedListResponse, MePartialUpdateData, MePartialUpdateResponse, MeRetrieveData, MeRetrieveResponse, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponse, MeSettingsRetrieveData, MeSettingsRetrieveResponse, NotificationsListData, NotificationsListResponse, NotificationsReadCreateData, NotificationsReadCreateResponse, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponse, PostsCreateData, PostsCreateResponse, PostsDestroyData, PostsDestroyResponse, PostsRetrieveData, PostsRetrieveResponse, ProfilesBlockCreateData, ProfilesBlockCreateResponse, ProfilesBlockDestroyData, ProfilesBlockDestroyResponse, ProfilesEventsListData, ProfilesEventsListResponse, ProfilesFollowCreateData, ProfilesFollowCreateResponse, ProfilesFollowDestroyData, ProfilesFollowDestroyResponse, ProfilesFollowersListData, ProfilesFollowersListResponse, ProfilesFollowingListData, ProfilesFollowingListResponse, ProfilesMuteCreateData, ProfilesMuteCreateResponse, ProfilesMuteDestroyData, ProfilesMuteDestroyResponse, ProfilesPostsListData, ProfilesPostsListResponse, ProfilesRetrieveData, ProfilesRetrieveResponse, PushDevicesCreateData, PushDevicesCreateResponse, PushDevicesDestroyData, PushDevicesDestroyResponse, ReportsCreateData, ReportsCreateResponse } from '../types.gen';
+import { categoriesList, eventsAttendanceDestroy, eventsAttendanceUpdate, eventsCreate, eventsDestroy, eventsPartialUpdate, eventsRetrieve, feedsFollowingList, feedsNearbyList, feedsUpcomingList, imagesCreate, meBlockedList, meFollowRequestsCreate, meFollowRequestsDestroy, meFollowRequestsList, meInvitationsCreate, meInvitationsDestroy, meInvitationsList, meMutedList, mePartialUpdate, meProfilesList, meRetrieve, meSettingsPartialUpdate, meSettingsRetrieve, notificationsList, notificationsReadCreate, notificationsUnreadRetrieve, type Options, organizationsCreate, organizationsInvitationsList, organizationsMembersCreate, organizationsMembersDestroy, organizationsMembersList, organizationsMembersPartialUpdate, organizationsPartialUpdate, organizationsVerificationCreate, postsCreate, postsDestroy, postsRetrieve, profilesBlockCreate, profilesBlockDestroy, profilesEventsList, profilesFollowCreate, profilesFollowDestroy, profilesFollowersList, profilesFollowingList, profilesMuteCreate, profilesMuteDestroy, profilesPostsList, profilesRetrieve, pushDevicesCreate, pushDevicesDestroy, reportsCreate } from '../sdk.gen';
+import type { CategoriesListData, CategoriesListResponse, EventsAttendanceDestroyData, EventsAttendanceDestroyResponse, EventsAttendanceUpdateData, EventsAttendanceUpdateResponse, EventsCreateData, EventsCreateResponse, EventsDestroyData, EventsDestroyResponse, EventsPartialUpdateData, EventsPartialUpdateResponse, EventsRetrieveData, EventsRetrieveResponse, FeedsFollowingListData, FeedsFollowingListResponse, FeedsNearbyListData, FeedsNearbyListResponse, FeedsUpcomingListData, FeedsUpcomingListResponse, ImagesCreateData, ImagesCreateResponse, MeBlockedListData, MeBlockedListResponse, MeFollowRequestsCreateData, MeFollowRequestsCreateResponse, MeFollowRequestsDestroyData, MeFollowRequestsDestroyResponse, MeFollowRequestsListData, MeFollowRequestsListResponse, MeInvitationsCreateData, MeInvitationsCreateResponse, MeInvitationsDestroyData, MeInvitationsDestroyResponse, MeInvitationsListData, MeInvitationsListResponse, MeMutedListData, MeMutedListResponse, MePartialUpdateData, MePartialUpdateResponse, MeProfilesListData, MeProfilesListResponse, MeRetrieveData, MeRetrieveResponse, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponse, MeSettingsRetrieveData, MeSettingsRetrieveResponse, NotificationsListData, NotificationsListResponse, NotificationsReadCreateData, NotificationsReadCreateResponse, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponse, OrganizationsCreateData, OrganizationsCreateResponse, OrganizationsInvitationsListData, OrganizationsInvitationsListResponse, OrganizationsMembersCreateData, OrganizationsMembersCreateResponse, OrganizationsMembersDestroyData, OrganizationsMembersDestroyResponse, OrganizationsMembersListData, OrganizationsMembersListResponse, OrganizationsMembersPartialUpdateData, OrganizationsMembersPartialUpdateResponse, OrganizationsPartialUpdateData, OrganizationsPartialUpdateResponse, OrganizationsVerificationCreateData, OrganizationsVerificationCreateResponse, PostsCreateData, PostsCreateResponse, PostsDestroyData, PostsDestroyResponse, PostsRetrieveData, PostsRetrieveResponse, ProfilesBlockCreateData, ProfilesBlockCreateResponse, ProfilesBlockDestroyData, ProfilesBlockDestroyResponse, ProfilesEventsListData, ProfilesEventsListResponse, ProfilesFollowCreateData, ProfilesFollowCreateResponse, ProfilesFollowDestroyData, ProfilesFollowDestroyResponse, ProfilesFollowersListData, ProfilesFollowersListResponse, ProfilesFollowingListData, ProfilesFollowingListResponse, ProfilesMuteCreateData, ProfilesMuteCreateResponse, ProfilesMuteDestroyData, ProfilesMuteDestroyResponse, ProfilesPostsListData, ProfilesPostsListResponse, ProfilesRetrieveData, ProfilesRetrieveResponse, PushDevicesCreateData, PushDevicesCreateResponse, PushDevicesDestroyData, PushDevicesDestroyResponse, ReportsCreateData, ReportsCreateResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -489,6 +489,58 @@ export const meFollowRequestsCreateMutation = (options?: Partial<Options<MeFollo
     return mutationOptions;
 };
 
+export const meInvitationsListQueryKey = (options?: Options<MeInvitationsListData>) => createQueryKey('meInvitationsList', options);
+
+/**
+ * Invitations to organizations waiting for the signed-in user's answer.
+ */
+export const meInvitationsListOptions = (options?: Options<MeInvitationsListData>) => queryOptions<MeInvitationsListResponse, DefaultError, MeInvitationsListResponse, ReturnType<typeof meInvitationsListQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await meInvitationsList({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: meInvitationsListQueryKey(options)
+});
+
+/**
+ * Accept (POST) or decline (DELETE) an invitation.
+ */
+export const meInvitationsDestroyMutation = (options?: Partial<Options<MeInvitationsDestroyData>>): UseMutationOptions<MeInvitationsDestroyResponse, DefaultError, Options<MeInvitationsDestroyData>> => {
+    const mutationOptions: UseMutationOptions<MeInvitationsDestroyResponse, DefaultError, Options<MeInvitationsDestroyData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await meInvitationsDestroy({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Accept (POST) or decline (DELETE) an invitation.
+ */
+export const meInvitationsCreateMutation = (options?: Partial<Options<MeInvitationsCreateData>>): UseMutationOptions<MeInvitationsCreateResponse, DefaultError, Options<MeInvitationsCreateData>> => {
+    const mutationOptions: UseMutationOptions<MeInvitationsCreateResponse, DefaultError, Options<MeInvitationsCreateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await meInvitationsCreate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
 export const meMutedListQueryKey = (options?: Options<MeMutedListData>) => createQueryKey('meMutedList', options);
 
 /**
@@ -505,6 +557,24 @@ export const meMutedListOptions = (options?: Options<MeMutedListData>) => queryO
         return data;
     },
     queryKey: meMutedListQueryKey(options)
+});
+
+export const meProfilesListQueryKey = (options?: Options<MeProfilesListData>) => createQueryKey('meProfilesList', options);
+
+/**
+ * Profiles the signed-in user can publish as: their own, then their organizations.
+ */
+export const meProfilesListOptions = (options?: Options<MeProfilesListData>) => queryOptions<MeProfilesListResponse, DefaultError, MeProfilesListResponse, ReturnType<typeof meProfilesListQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await meProfilesList({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: meProfilesListQueryKey(options)
 });
 
 export const meSettingsRetrieveQueryKey = (options?: Options<MeSettingsRetrieveData>) => createQueryKey('meSettingsRetrieve', options);
@@ -618,6 +688,148 @@ export const notificationsUnreadRetrieveOptions = (options?: Options<Notificatio
     },
     queryKey: notificationsUnreadRetrieveQueryKey(options)
 });
+
+/**
+ * Create organizations and manage them. They are shown like any profile (/api/profiles/).
+ */
+export const organizationsCreateMutation = (options?: Partial<Options<OrganizationsCreateData>>): UseMutationOptions<OrganizationsCreateResponse, DefaultError, Options<OrganizationsCreateData>> => {
+    const mutationOptions: UseMutationOptions<OrganizationsCreateResponse, DefaultError, Options<OrganizationsCreateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await organizationsCreate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Edit the organization's profile (admins).
+ */
+export const organizationsPartialUpdateMutation = (options?: Partial<Options<OrganizationsPartialUpdateData>>): UseMutationOptions<OrganizationsPartialUpdateResponse, DefaultError, Options<OrganizationsPartialUpdateData>> => {
+    const mutationOptions: UseMutationOptions<OrganizationsPartialUpdateResponse, DefaultError, Options<OrganizationsPartialUpdateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await organizationsPartialUpdate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const organizationsInvitationsListQueryKey = (options: Options<OrganizationsInvitationsListData>) => createQueryKey('organizationsInvitationsList', options);
+
+/**
+ * Invitations not answered yet (admins).
+ */
+export const organizationsInvitationsListOptions = (options: Options<OrganizationsInvitationsListData>) => queryOptions<OrganizationsInvitationsListResponse, DefaultError, OrganizationsInvitationsListResponse, ReturnType<typeof organizationsInvitationsListQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await organizationsInvitationsList({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: organizationsInvitationsListQueryKey(options)
+});
+
+export const organizationsMembersListQueryKey = (options: Options<OrganizationsMembersListData>) => createQueryKey('organizationsMembersList', options);
+
+/**
+ * List the members (GET), or invite someone by handle (POST, admins).
+ */
+export const organizationsMembersListOptions = (options: Options<OrganizationsMembersListData>) => queryOptions<OrganizationsMembersListResponse, DefaultError, OrganizationsMembersListResponse, ReturnType<typeof organizationsMembersListQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await organizationsMembersList({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: organizationsMembersListQueryKey(options)
+});
+
+/**
+ * List the members (GET), or invite someone by handle (POST, admins).
+ */
+export const organizationsMembersCreateMutation = (options?: Partial<Options<OrganizationsMembersCreateData>>): UseMutationOptions<OrganizationsMembersCreateResponse, DefaultError, Options<OrganizationsMembersCreateData>> => {
+    const mutationOptions: UseMutationOptions<OrganizationsMembersCreateResponse, DefaultError, Options<OrganizationsMembersCreateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await organizationsMembersCreate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Change a member's role (PATCH, admins), or remove them (DELETE, admins).
+ *
+ * Members can also DELETE themselves to leave.
+ */
+export const organizationsMembersDestroyMutation = (options?: Partial<Options<OrganizationsMembersDestroyData>>): UseMutationOptions<OrganizationsMembersDestroyResponse, DefaultError, Options<OrganizationsMembersDestroyData>> => {
+    const mutationOptions: UseMutationOptions<OrganizationsMembersDestroyResponse, DefaultError, Options<OrganizationsMembersDestroyData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await organizationsMembersDestroy({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Change a member's role (PATCH, admins), or remove them (DELETE, admins).
+ *
+ * Members can also DELETE themselves to leave.
+ */
+export const organizationsMembersPartialUpdateMutation = (options?: Partial<Options<OrganizationsMembersPartialUpdateData>>): UseMutationOptions<OrganizationsMembersPartialUpdateResponse, DefaultError, Options<OrganizationsMembersPartialUpdateData>> => {
+    const mutationOptions: UseMutationOptions<OrganizationsMembersPartialUpdateResponse, DefaultError, Options<OrganizationsMembersPartialUpdateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await organizationsMembersPartialUpdate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Ask moderators for the verified badge (admins).
+ */
+export const organizationsVerificationCreateMutation = (options?: Partial<Options<OrganizationsVerificationCreateData>>): UseMutationOptions<OrganizationsVerificationCreateResponse, DefaultError, Options<OrganizationsVerificationCreateData>> => {
+    const mutationOptions: UseMutationOptions<OrganizationsVerificationCreateResponse, DefaultError, Options<OrganizationsVerificationCreateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await organizationsVerificationCreate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
 
 /**
  * Create, view and delete single posts. Listing happens through the feeds.

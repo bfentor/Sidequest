@@ -412,6 +412,56 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/me/invitations/:
+    get:
+      operationId: me_invitations_list
+      description: Invitations to organizations waiting for the signed-in user's answer.
+      tags:
+      - me
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Invitation'
+          description: ''
+  /api/me/invitations/{id}/:
+    post:
+      operationId: me_invitations_create
+      description: Accept (POST) or decline (DELETE) an invitation.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - me
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '204':
+          description: No response body
+    delete:
+      operationId: me_invitations_destroy
+      description: Accept (POST) or decline (DELETE) an invitation.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - me
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/me/muted/:
     get:
       operationId: me_muted_list
@@ -428,6 +478,24 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ProfileSummary'
+          description: ''
+  /api/me/profiles/:
+    get:
+      operationId: me_profiles_list
+      description: 'Profiles the signed-in user can publish as: their own, then their
+        organizations.'
+      tags:
+      - me
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActingProfile'
           description: ''
   /api/me/settings/:
     get:
@@ -529,6 +597,242 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UnreadCount'
+          description: ''
+  /api/organizations/:
+    post:
+      operationId: organizations_create
+      description: Create organizations and manage them. They are shown like any profile
+        (/api/profiles/).
+      tags:
+      - organizations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationCreateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrganizationCreateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrganizationCreateRequest'
+        required: true
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationCreate'
+          description: ''
+  /api/organizations/{handle}/:
+    patch:
+      operationId: organizations_partial_update
+      description: Edit the organization's profile (admins).
+      parameters:
+      - in: path
+        name: handle
+        schema:
+          type: string
+        required: true
+      tags:
+      - organizations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProfileRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProfileRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProfileRequest'
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileSummary'
+          description: ''
+  /api/organizations/{handle}/invitations/:
+    get:
+      operationId: organizations_invitations_list
+      description: Invitations not answered yet (admins).
+      parameters:
+      - in: path
+        name: handle
+        schema:
+          type: string
+        required: true
+      tags:
+      - organizations
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Invitation'
+          description: ''
+  /api/organizations/{handle}/members/:
+    get:
+      operationId: organizations_members_list
+      description: List the members (GET), or invite someone by handle (POST, admins).
+      parameters:
+      - in: path
+        name: handle
+        schema:
+          type: string
+        required: true
+      tags:
+      - organizations
+      security:
+      - XSessionTokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Member'
+          description: ''
+    post:
+      operationId: organizations_members_create
+      description: List the members (GET), or invite someone by handle (POST, admins).
+      parameters:
+      - in: path
+        name: handle
+        schema:
+          type: string
+        required: true
+      tags:
+      - organizations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InviteRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/InviteRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/InviteRequest'
+        required: true
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invitation'
+          description: ''
+  /api/organizations/{handle}/members/{member}/:
+    patch:
+      operationId: organizations_members_partial_update
+      description: |-
+        Change a member's role (PATCH, admins), or remove them (DELETE, admins).
+
+        Members can also DELETE themselves to leave.
+      parameters:
+      - in: path
+        name: handle
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: member
+        schema:
+          type: string
+        required: true
+      tags:
+      - organizations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedMemberRoleRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedMemberRoleRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedMemberRoleRequest'
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+          description: ''
+    delete:
+      operationId: organizations_members_destroy
+      description: |-
+        Change a member's role (PATCH, admins), or remove them (DELETE, admins).
+
+        Members can also DELETE themselves to leave.
+      parameters:
+      - in: path
+        name: handle
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: member
+        schema:
+          type: string
+        required: true
+      tags:
+      - organizations
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/organizations/{handle}/verification/:
+    post:
+      operationId: organizations_verification_create
+      description: Ask moderators for the verified badge (admins).
+      parameters:
+      - in: path
+        name: handle
+        schema:
+          type: string
+        required: true
+      tags:
+      - organizations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerificationRequestRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VerificationRequestRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VerificationRequestRequest'
+        required: true
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificationRequest'
           description: ''
   /api/posts/:
     post:
@@ -933,6 +1237,46 @@ components:
             type: boolean
           description: Push on (true) or off (false), by notification kind. Missing
             kinds are on.
+    ActingProfile:
+      type: object
+      description: Compact profile representation embedded in events and posts.
+      properties:
+        handle:
+          type: string
+          readOnly: true
+        display_name:
+          type: string
+          readOnly: true
+        kind:
+          allOf:
+          - $ref: '#/components/schemas/ProfileKindEnum'
+          readOnly: true
+        avatar:
+          allOf:
+          - $ref: '#/components/schemas/Image'
+          readOnly: true
+          nullable: true
+        verified:
+          type: boolean
+          readOnly: true
+        role:
+          allOf:
+          - $ref: '#/components/schemas/ActingProfileRoleEnum'
+          description: self for your own profile, otherwise your role in the organization.
+          readOnly: true
+      required:
+      - avatar
+      - display_name
+      - handle
+      - kind
+      - role
+      - verified
+    ActingProfileRoleEnum:
+      enum:
+      - self
+      - admin
+      - editor
+      type: string
     AttendanceStatusEnum:
       enum:
       - going
@@ -1169,6 +1513,47 @@ components:
           writeOnly: true
       required:
       - file
+    Invitation:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        organization:
+          allOf:
+          - $ref: '#/components/schemas/ProfileSummary'
+          readOnly: true
+        invitee:
+          allOf:
+          - $ref: '#/components/schemas/ProfileSummary'
+          readOnly: true
+        role:
+          allOf:
+          - $ref: '#/components/schemas/MembershipRoleEnum'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - invitee
+      - organization
+      - role
+    InviteRequest:
+      type: object
+      properties:
+        handle:
+          type: string
+          minLength: 1
+          description: The person's handle.
+        role:
+          allOf:
+          - $ref: '#/components/schemas/MembershipRoleEnum'
+          default: editor
+      required:
+      - handle
     LanguageEnum:
       enum:
       - en
@@ -1219,6 +1604,30 @@ components:
           items:
             type: integer
           description: Notifications to mark read; all of them when left out.
+    Member:
+      type: object
+      properties:
+        profile:
+          allOf:
+          - $ref: '#/components/schemas/ProfileSummary'
+          readOnly: true
+        role:
+          $ref: '#/components/schemas/MembershipRoleEnum'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - profile
+    MembershipRoleEnum:
+      enum:
+      - admin
+      - editor
+      type: string
+      description: |-
+        * `admin` - Admin
+        * `editor` - Editor
     NearbyEvent:
       type: object
       properties:
@@ -1349,6 +1758,7 @@ components:
       - new_follower
       - follow_request
       - follow_accepted
+      - organization_invite
       - new_event
       - event_changed
       - event_cancelled
@@ -1363,6 +1773,7 @@ components:
         * `new_follower` - New followers
         * `follow_request` - Follow requests
         * `follow_accepted` - Accepted follow requests
+        * `organization_invite` - Invitations to organizations
         * `new_event` - New events from people you follow
         * `event_changed` - Changes to events you're going to
         * `event_cancelled` - Cancelled events
@@ -1375,6 +1786,40 @@ components:
     NullEnum:
       enum:
       - null
+    OrganizationCreate:
+      type: object
+      properties:
+        handle:
+          type: string
+          pattern: ^[a-z0-9_]+$
+          maxLength: 30
+        display_name:
+          type: string
+          maxLength: 80
+        bio:
+          type: string
+          maxLength: 500
+      required:
+      - display_name
+      - handle
+    OrganizationCreateRequest:
+      type: object
+      properties:
+        handle:
+          type: string
+          minLength: 1
+          pattern: ^[a-z0-9_]+$
+          maxLength: 30
+        display_name:
+          type: string
+          minLength: 1
+          maxLength: 80
+        bio:
+          type: string
+          maxLength: 500
+      required:
+      - display_name
+      - handle
     PaginatedEventList:
       type: object
       required:
@@ -1525,6 +1970,11 @@ components:
           type: integer
           minimum: 1
           nullable: true
+    PatchedMemberRoleRequest:
+      type: object
+      properties:
+        role:
+          $ref: '#/components/schemas/MembershipRoleEnum'
     PatchedProfileRequest:
       type: object
       description: Full profile. Expects a queryset annotated with `with_social_stats`.
@@ -1883,6 +2333,47 @@ components:
           type: integer
       required:
       - unread
+    VerificationRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        message:
+          type: string
+          maxLength: 2000
+        status:
+          allOf:
+          - $ref: '#/components/schemas/VerificationStatusEnum'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - message
+      - status
+    VerificationRequestRequest:
+      type: object
+      properties:
+        message:
+          type: string
+          minLength: 1
+          maxLength: 2000
+      required:
+      - message
+    VerificationStatusEnum:
+      enum:
+      - pending
+      - approved
+      - rejected
+      type: string
+      description: |-
+        * `pending` - Pending
+        * `approved` - Approved
+        * `rejected` - Rejected
   securitySchemes:
     XSessionTokenAuth:
       type: apiKey

@@ -100,7 +100,8 @@
       "comment": "Comments",
       "reaction": "Likes",
       "follow_request": "Follow requests",
-      "follow_accepted": "Accepted follow requests"
+      "follow_accepted": "Accepted follow requests",
+      "organization_invite": "Invitations to organizations"
     }
   },
   "posts": {
@@ -166,7 +167,8 @@
     "comment": "{{name}} commented.",
     "reaction": "{{name}} liked your post.",
     "followRequest": "{{name}} asked to follow you.",
-    "followAccepted": "{{name}} accepted your follow request."
+    "followAccepted": "{{name}} accepted your follow request.",
+    "organizationInvite": "{{name}} invited you to join them."
   },
   "editProfile": {
     "changeCover": "Change cover picture",
@@ -193,5 +195,34 @@
     "accept": "Accept",
     "decline": "Decline",
     "empty": "No follow requests."
+  },
+  "organizations": {
+    "title": "Organizations",
+    "yours": "Your organizations",
+    "none": "You're not in any organization yet.",
+    "create": "Create organization",
+    "createHint": "Organizations publish events and posts as themselves. You'll be its first admin and can invite others.",
+    "invitations": "Invitations",
+    "invitedAs": "Invited as {{role}}",
+    "join": "Join",
+    "roles": {
+      "admin": "Admin",
+      "editor": "Editor"
+    },
+    "rolesHint": "Admins manage the organization and its members. Editors publish events and posts.",
+    "manage": "Manage",
+    "profile": "Profile",
+    "saved": "Saved.",
+    "members": "Members",
+    "remove": "Remove",
+    "needsAdmin": "An organization needs at least one admin.",
+    "invite": "Invite someone",
+    "sendInvite": "Send invitation",
+    "pending": "Waiting for an answer",
+    "verification": "Verified badge",
+    "verificationHint": "Official student unions, guilds and clubs can get a verified badge. Tell the moderators who you are and how to confirm it.",
+    "verificationMessage": "Message to moderators",
+    "requestVerification": "Request verification",
+    "verificationSent": "Request sent. Moderators will get back to you."
   }
 }

@@ -185,6 +185,7 @@ SPECTACULAR_SETTINGS = {
         "AttendanceStatusEnum": "events.models.Attendance.Status",
         "ProfileKindEnum": "profiles.models.Profile.Kind",
         "ReportReasonEnum": "moderation.models.Report.Reason",
+        "MembershipRoleEnum": "profiles.models.Membership.Role",
     },
 }
 

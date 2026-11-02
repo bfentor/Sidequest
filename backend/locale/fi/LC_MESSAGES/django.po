@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sidequest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-02 16:53+0200\n"
-"PO-Revision-Date: 2026-11-02 16:53+0200\n"
+"POT-Creation-Date: 2026-11-02 16:59+0200\n"
+"PO-Revision-Date: 2026-11-02 16:59+0200\n"
 "Last-Translator: Sidequest <dev@sidequest.invalid>\n"
 "Language-Team: Finnish\n"
 "Language: fi\n"
@@ -81,6 +81,9 @@ msgstr "Seuraamispyynnöt"
 msgid "Accepted follow requests"
 msgstr "Hyväksytyt seuraamispyynnöt"
 
+msgid "Invitations to organizations"
+msgstr "Kutsut järjestöihin"
+
 msgid "New events from people you follow"
 msgstr "Uudet tapahtumat seuraamiltasi"
 
@@ -113,12 +116,14 @@ msgid "%(name)s started following you."
 msgstr "%(name)s alkoi seurata sinua."
 
 #, python-format
-#| msgid "%(name)s started following you."
 msgid "%(name)s asked to follow you."
 msgstr "%(name)s pyysi saada seurata sinua."
 
 #, python-format
-#| msgid "%(name)s started following you."
+msgid "%(name)s invited you to join them."
+msgstr "%(name)s kutsui sinut jäseneksi."
+
+#, python-format
 msgid "%(name)s accepted your follow request."
 msgstr "%(name)s hyväksyi seuraamispyyntösi."
 
@@ -160,15 +165,41 @@ msgstr "Käytä vain pieniä kirjaimia, numeroita ja alaviivoja."
 msgid "Enter an Instagram username without the @."
 msgstr "Anna Instagram-käyttäjänimi ilman @-merkkiä."
 
+msgid "Pending"
+msgstr "Odottaa"
+
+msgid "Approved"
+msgstr "Hyväksytty"
+
+msgid "Rejected"
+msgstr "Hylätty"
+
+msgid "Only the organization's admins can do this."
+msgstr "Vain järjestön ylläpitäjät voivat tehdä tämän."
+
+msgid "No person has this username."
+msgstr "Kenelläkään ei ole tätä käyttäjänimeä."
+
+msgid "They are already a member."
+msgstr "Hän on jo jäsen."
+
+msgid "This organization is already verified."
+msgstr "Järjestö on jo vahvistettu."
+
+msgid "An organization needs at least one admin."
+msgstr "Järjestöllä täytyy olla vähintään yksi ylläpitäjä."
+
 msgid "You cannot follow yourself."
 msgstr "Et voi seurata itseäsi."
 
 msgid "Unblock this profile to follow it."
 msgstr "Poista profiilin esto seurataksesi sitä."
 
-#| msgid "Unblock this profile to follow it."
 msgid "This profile's followers are hidden."
 msgstr "Tämän profiilin seuraajat on piilotettu."
 
 msgid "Use upcoming or past."
 msgstr "Käytä arvoa upcoming tai past."
+
+#~ msgid "Choose admin or editor."
+#~ msgstr "Valitse ylläpitäjä tai muokkaaja."

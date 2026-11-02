@@ -186,3 +186,47 @@ class FollowRequest(models.Model):
 
     def __str__(self):
         return f"{self.requester} asks to follow {self.target}"
+
+
+class Invitation(models.Model):
+    """An organization asking someone to become a member; they accept or decline."""
+
+    organization = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="invitations")
+    invitee = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="invitations"
+    )
+    role = models.CharField(max_length=20, choices=Membership.Role.choices)
+    invited_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="+"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["organization", "invitee"], name="unique_invitation"),
+        ]
+
+    def __str__(self):
+        return f"{self.invitee} invited to {self.organization}"
+
+
+class VerificationRequest(models.Model):
+    """An organization asking moderators for the verified badge."""
+
+    class Status(models.TextChoices):
+        PENDING = "pending", _("Pending")
+        APPROVED = "approved", _("Approved")
+        REJECTED = "rejected", _("Rejected")
+
+    organization = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name="verification_requests"
+    )
+    requested_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="+"
+    )
+    message = models.TextField(max_length=2000)
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Verification of {self.organization} ({self.status})"

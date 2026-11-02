@@ -39,11 +39,11 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 
 ## 4. Organizations
 
-- [ ] Create an organization in the app (currently only possible through the admin)
-- [ ] Invite and remove members, and assign roles (admin, editor)
+- [x] Create an organization in the app (currently only possible through the admin)
+- [x] Invite and remove members, and assign roles (admin, editor)
 - [ ] **[API ready]** Switch which profile you're acting as when posting
-- [ ] Organization page with tabs for upcoming events, past events, posts and members
-- [ ] Verification process for student unions, guilds and clubs
+- [x] Organization page with tabs for upcoming events, past events, posts and members
+- [x] Verification process for student unions, guilds and clubs
 
 ## 5. Creating and editing events
 

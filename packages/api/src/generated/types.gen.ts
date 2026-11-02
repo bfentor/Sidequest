@@ -15,6 +15,23 @@ export type AccountSettings = {
 };
 
 /**
+ * Compact profile representation embedded in events and posts.
+ */
+export type ActingProfile = {
+    readonly handle: string;
+    readonly display_name: string;
+    kind: ProfileKindEnum;
+    avatar: Image | null;
+    readonly verified: boolean;
+    /**
+     * self for your own profile, otherwise your role in the organization.
+     */
+    role: ActingProfileRoleEnum;
+};
+
+export type ActingProfileRoleEnum = 'self' | 'admin' | 'editor';
+
+/**
  * * `going` - Going
  * * `interested` - Interested
  * * `waitlisted` - Waitlisted
@@ -119,6 +136,22 @@ export type ImageUploadRequest = {
     file: Blob | File;
 };
 
+export type Invitation = {
+    readonly id: number;
+    organization: ProfileSummary;
+    invitee: ProfileSummary;
+    role: MembershipRoleEnum;
+    readonly created_at: string;
+};
+
+export type InviteRequest = {
+    /**
+     * The person's handle.
+     */
+    handle: string;
+    role?: MembershipRoleEnum;
+};
+
 /**
  * * `en` - English
  * * `fi` - Suomi
@@ -142,6 +175,18 @@ export type MarkReadRequest = {
      */
     ids?: Array<number>;
 };
+
+export type Member = {
+    profile: ProfileSummary;
+    role?: MembershipRoleEnum;
+    readonly created_at: string;
+};
+
+/**
+ * * `admin` - Admin
+ * * `editor` - Editor
+ */
+export type MembershipRoleEnum = 'admin' | 'editor';
 
 export type NearbyEvent = {
     readonly id: number;
@@ -182,6 +227,7 @@ export type NotificationEvent = {
  * * `new_follower` - New followers
  * * `follow_request` - Follow requests
  * * `follow_accepted` - Accepted follow requests
+ * * `organization_invite` - Invitations to organizations
  * * `new_event` - New events from people you follow
  * * `event_changed` - Changes to events you're going to
  * * `event_cancelled` - Cancelled events
@@ -192,9 +238,21 @@ export type NotificationEvent = {
  * * `comment` - Comments
  * * `reaction` - Likes
  */
-export type NotificationKindEnum = 'new_follower' | 'follow_request' | 'follow_accepted' | 'new_event' | 'event_changed' | 'event_cancelled' | 'event_reminder' | 'waitlist_promoted' | 'announcement' | 'mention' | 'comment' | 'reaction';
+export type NotificationKindEnum = 'new_follower' | 'follow_request' | 'follow_accepted' | 'organization_invite' | 'new_event' | 'event_changed' | 'event_cancelled' | 'event_reminder' | 'waitlist_promoted' | 'announcement' | 'mention' | 'comment' | 'reaction';
 
 export type NullEnum = never;
+
+export type OrganizationCreate = {
+    handle: string;
+    display_name: string;
+    bio?: string;
+};
+
+export type OrganizationCreateRequest = {
+    handle: string;
+    display_name: string;
+    bio?: string;
+};
 
 export type PaginatedEventList = {
     next?: string | null;
@@ -247,6 +305,10 @@ export type PatchedEventRequest = {
     location?: LatLngRequest | null;
     categories?: Array<string>;
     capacity?: number | null;
+};
+
+export type PatchedMemberRoleRequest = {
+    role?: MembershipRoleEnum;
 };
 
 /**
@@ -393,6 +455,24 @@ export type UnreadCount = {
     unread: number;
 };
 
+export type VerificationRequest = {
+    readonly id: number;
+    message: string;
+    status: VerificationStatusEnum;
+    readonly created_at: string;
+};
+
+export type VerificationRequestRequest = {
+    message: string;
+};
+
+/**
+ * * `pending` - Pending
+ * * `approved` - Approved
+ * * `rejected` - Rejected
+ */
+export type VerificationStatusEnum = 'pending' | 'approved' | 'rejected';
+
 export type EventWritable = {
     title: string;
     description?: string;
@@ -419,6 +499,10 @@ export type EventRequestWritable = {
     location?: LatLngRequest | null;
     categories?: Array<string>;
     capacity?: number | null;
+};
+
+export type MemberWritable = {
+    role?: MembershipRoleEnum;
 };
 
 export type NearbyEventWritable = {
@@ -561,6 +645,10 @@ export type ReportRequestWritable = {
     target_id: string;
     reason: ReportReasonEnum;
     details?: string;
+};
+
+export type VerificationRequestWritable = {
+    message: string;
 };
 
 export type CategoriesListData = {
@@ -849,6 +937,55 @@ export type MeFollowRequestsCreateResponses = {
 
 export type MeFollowRequestsCreateResponse = MeFollowRequestsCreateResponses[keyof MeFollowRequestsCreateResponses];
 
+export type MeInvitationsListData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/me/invitations/';
+};
+
+export type MeInvitationsListResponses = {
+    200: Array<Invitation>;
+};
+
+export type MeInvitationsListResponse = MeInvitationsListResponses[keyof MeInvitationsListResponses];
+
+export type MeInvitationsDestroyData = {
+    body?: never;
+    path: {
+        id: number;
+    };
+    query?: never;
+    url: '/api/me/invitations/{id}/';
+};
+
+export type MeInvitationsDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type MeInvitationsDestroyResponse = MeInvitationsDestroyResponses[keyof MeInvitationsDestroyResponses];
+
+export type MeInvitationsCreateData = {
+    body?: never;
+    path: {
+        id: number;
+    };
+    query?: never;
+    url: '/api/me/invitations/{id}/';
+};
+
+export type MeInvitationsCreateResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type MeInvitationsCreateResponse = MeInvitationsCreateResponses[keyof MeInvitationsCreateResponses];
+
 export type MeMutedListData = {
     body?: never;
     path?: never;
@@ -861,6 +998,19 @@ export type MeMutedListResponses = {
 };
 
 export type MeMutedListResponse = MeMutedListResponses[keyof MeMutedListResponses];
+
+export type MeProfilesListData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/me/profiles/';
+};
+
+export type MeProfilesListResponses = {
+    200: Array<ActingProfile>;
+};
+
+export type MeProfilesListResponse = MeProfilesListResponses[keyof MeProfilesListResponses];
 
 export type MeSettingsRetrieveData = {
     body?: never;
@@ -931,6 +1081,129 @@ export type NotificationsUnreadRetrieveResponses = {
 };
 
 export type NotificationsUnreadRetrieveResponse = NotificationsUnreadRetrieveResponses[keyof NotificationsUnreadRetrieveResponses];
+
+export type OrganizationsCreateData = {
+    body: OrganizationCreateRequest;
+    path?: never;
+    query?: never;
+    url: '/api/organizations/';
+};
+
+export type OrganizationsCreateResponses = {
+    201: OrganizationCreate;
+};
+
+export type OrganizationsCreateResponse = OrganizationsCreateResponses[keyof OrganizationsCreateResponses];
+
+export type OrganizationsPartialUpdateData = {
+    body?: PatchedProfileRequestWritable;
+    path: {
+        handle: string;
+    };
+    query?: never;
+    url: '/api/organizations/{handle}/';
+};
+
+export type OrganizationsPartialUpdateResponses = {
+    200: ProfileSummary;
+};
+
+export type OrganizationsPartialUpdateResponse = OrganizationsPartialUpdateResponses[keyof OrganizationsPartialUpdateResponses];
+
+export type OrganizationsInvitationsListData = {
+    body?: never;
+    path: {
+        handle: string;
+    };
+    query?: never;
+    url: '/api/organizations/{handle}/invitations/';
+};
+
+export type OrganizationsInvitationsListResponses = {
+    200: Array<Invitation>;
+};
+
+export type OrganizationsInvitationsListResponse = OrganizationsInvitationsListResponses[keyof OrganizationsInvitationsListResponses];
+
+export type OrganizationsMembersListData = {
+    body?: never;
+    path: {
+        handle: string;
+    };
+    query?: never;
+    url: '/api/organizations/{handle}/members/';
+};
+
+export type OrganizationsMembersListResponses = {
+    200: Array<Member>;
+};
+
+export type OrganizationsMembersListResponse = OrganizationsMembersListResponses[keyof OrganizationsMembersListResponses];
+
+export type OrganizationsMembersCreateData = {
+    body: InviteRequest;
+    path: {
+        handle: string;
+    };
+    query?: never;
+    url: '/api/organizations/{handle}/members/';
+};
+
+export type OrganizationsMembersCreateResponses = {
+    200: Invitation;
+};
+
+export type OrganizationsMembersCreateResponse = OrganizationsMembersCreateResponses[keyof OrganizationsMembersCreateResponses];
+
+export type OrganizationsMembersDestroyData = {
+    body?: never;
+    path: {
+        handle: string;
+        member: string;
+    };
+    query?: never;
+    url: '/api/organizations/{handle}/members/{member}/';
+};
+
+export type OrganizationsMembersDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type OrganizationsMembersDestroyResponse = OrganizationsMembersDestroyResponses[keyof OrganizationsMembersDestroyResponses];
+
+export type OrganizationsMembersPartialUpdateData = {
+    body?: PatchedMemberRoleRequest;
+    path: {
+        handle: string;
+        member: string;
+    };
+    query?: never;
+    url: '/api/organizations/{handle}/members/{member}/';
+};
+
+export type OrganizationsMembersPartialUpdateResponses = {
+    200: Member;
+};
+
+export type OrganizationsMembersPartialUpdateResponse = OrganizationsMembersPartialUpdateResponses[keyof OrganizationsMembersPartialUpdateResponses];
+
+export type OrganizationsVerificationCreateData = {
+    body: VerificationRequestRequest;
+    path: {
+        handle: string;
+    };
+    query?: never;
+    url: '/api/organizations/{handle}/verification/';
+};
+
+export type OrganizationsVerificationCreateResponses = {
+    200: VerificationRequest;
+};
+
+export type OrganizationsVerificationCreateResponse = OrganizationsVerificationCreateResponses[keyof OrganizationsVerificationCreateResponses];
 
 export type PostsCreateData = {
     body?: PostRequestWritable;
