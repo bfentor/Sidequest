@@ -435,6 +435,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/Profile'
           description: ''
+  /api/me/accept-terms/:
+    post:
+      operationId: me_accept_terms_create
+      description: Accept the current terms of service and privacy policy.
+      tags:
+      - me
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/me/account/delete/:
     post:
       operationId: me_account_delete_create
@@ -1404,12 +1415,26 @@ components:
       properties:
         language:
           $ref: '#/components/schemas/LanguageEnum'
+        birth_date:
+          type: string
+          format: date
+          description: Can only be added when missing (older accounts).
+        terms_version:
+          type: string
+          readOnly: true
+          description: The version you accepted.
+        current_terms_version:
+          type: string
+          readOnly: true
         push:
           type: object
           additionalProperties:
             type: boolean
           description: Push on (true) or off (false), by notification kind. Missing
             kinds are on.
+      required:
+      - current_terms_version
+      - terms_version
     ActingProfile:
       type: object
       description: Compact profile representation embedded in events and posts.
@@ -1570,6 +1595,11 @@ components:
             maxLength: 200
           - type: string
             maxLength: 0
+        min_age:
+          type: integer
+          maximum: 32767
+          minimum: 0
+          nullable: true
         visibility:
           $ref: '#/components/schemas/EventVisibilityEnum'
         status:
@@ -1680,6 +1710,11 @@ components:
             maxLength: 200
           - type: string
             maxLength: 0
+        min_age:
+          type: integer
+          maximum: 32767
+          minimum: 0
+          nullable: true
         visibility:
           $ref: '#/components/schemas/EventVisibilityEnum'
         status:
@@ -2006,6 +2041,11 @@ components:
             maxLength: 200
           - type: string
             maxLength: 0
+        min_age:
+          type: integer
+          maximum: 32767
+          minimum: 0
+          nullable: true
         visibility:
           $ref: '#/components/schemas/EventVisibilityEnum'
         status:
@@ -2300,6 +2340,10 @@ components:
       properties:
         language:
           $ref: '#/components/schemas/LanguageEnum'
+        birth_date:
+          type: string
+          format: date
+          description: Can only be added when missing (older accounts).
         push:
           type: object
           additionalProperties:
@@ -2371,6 +2415,11 @@ components:
             maxLength: 200
           - type: string
             maxLength: 0
+        min_age:
+          type: integer
+          maximum: 32767
+          minimum: 0
+          nullable: true
         visibility:
           $ref: '#/components/schemas/EventVisibilityEnum'
         status:

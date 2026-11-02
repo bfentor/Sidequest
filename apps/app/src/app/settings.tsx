@@ -10,6 +10,7 @@ import {
   type ProfileSummary,
 } from '@sidequest/api';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Link } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet, Switch, View } from 'react-native';
@@ -33,6 +34,15 @@ export default function SettingsScreen() {
   return (
     <Screen hasHeader>
       <LanguagePicker />
+      <View style={styles.section}>
+        <ThemedText type="heading">{t('legal.about')}</ThemedText>
+        <Link href={{ pathname: '/legal/[document]', params: { document: 'terms' } }}>
+          <ThemedText themeColor="tint">{t('legal.terms')}</ThemedText>
+        </Link>
+        <Link href={{ pathname: '/legal/[document]', params: { document: 'privacy' } }}>
+          <ThemedText themeColor="tint">{t('legal.privacy')}</ThemedText>
+        </Link>
+      </View>
       {status === 'signed-in' ? (
         <>
           <PushSettings />

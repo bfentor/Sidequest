@@ -12,11 +12,14 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 - [x] **[store]** Report posts, events and profiles
 - [x] **[store]** Block and mute users
 - [x] **[store]** Moderation queue where reported content gets reviewed and removed
-- [ ] **[store]** Terms of service and privacy policy, linked in the app and accepted at signup
+- [x] **[store]** Terms of service and privacy policy, linked in the app and accepted at signup
 - [ ] **[store]** Sign in with Apple, if any other social login is added
 - [ ] Email verification
 - [ ] Password reset screens (backend part done)
 - [x] GDPR: export my data, and delete my data
+
+- [ ] Write the real terms of service and privacy policy (placeholders in `apps/app/src/legal/documents.ts`; bump `TERMS_VERSION` in the API settings when they change)
+- [ ] Decide the minimum age (`MINIMUM_AGE`, now 16; Finland's age of digital consent is 13)
 
 ## 2. Accounts and sign-in
 
@@ -56,7 +59,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 - [x] Price or "free", and a link to buy tickets
 - [x] Capacity limit and waitlist
 - [x] Visibility: public, followers only, or unlisted (link only)
-- [ ] Audience restrictions: only students of a given university, or 18+
+- [ ] Audience restrictions: only students of a given university, or 18+ (18+ done)
 - [x] Drafts and scheduled publishing
 - [x] Mark an event as cancelled or postponed, and notify people who are going
 - [x] Co-hosts, so several organizations run one event
@@ -129,7 +132,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 - [x] Rate limiting on posting, following and signup
 - [ ] Spam and profanity filters, and moderation of uploaded images
 - [x] Audit log of moderation actions
-- [ ] Age gate or minimum age
+- [x] Age gate or minimum age
 
 ## 13. Language and accessibility
 

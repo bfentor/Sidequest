@@ -7,6 +7,15 @@ export type ClientOptions = {
 export type AccountSettings = {
     language?: LanguageEnum;
     /**
+     * Can only be added when missing (older accounts).
+     */
+    birth_date?: string;
+    /**
+     * The version you accepted.
+     */
+    readonly terms_version: string;
+    readonly current_terms_version: string;
+    /**
      * Push on (true) or off (false), by notification kind. Missing kinds are on.
      */
     push?: {
@@ -81,6 +90,7 @@ export type Event = {
      */
     price?: string | null;
     ticket_url?: string | string;
+    min_age?: number | null;
     visibility?: EventVisibilityEnum;
     status?: EventStatusEnum;
     /**
@@ -113,6 +123,7 @@ export type EventRequest = {
      */
     price?: string | null;
     ticket_url?: string | string;
+    min_age?: number | null;
     visibility?: EventVisibilityEnum;
     status?: EventStatusEnum;
     /**
@@ -264,6 +275,7 @@ export type NearbyEvent = {
      */
     price?: string | null;
     ticket_url?: string | string;
+    min_age?: number | null;
     visibility?: EventVisibilityEnum;
     status?: EventStatusEnum;
     /**
@@ -369,6 +381,10 @@ export type PasswordRequest = {
 export type PatchedAccountSettingsRequest = {
     language?: LanguageEnum;
     /**
+     * Can only be added when missing (older accounts).
+     */
+    birth_date?: string;
+    /**
      * Push on (true) or off (false), by notification kind. Missing kinds are on.
      */
     push?: {
@@ -392,6 +408,7 @@ export type PatchedEventRequest = {
      */
     price?: string | null;
     ticket_url?: string | string;
+    min_age?: number | null;
     visibility?: EventVisibilityEnum;
     status?: EventStatusEnum;
     /**
@@ -582,6 +599,20 @@ export type VerificationRequestRequest = {
  */
 export type VerificationStatusEnum = 'pending' | 'approved' | 'rejected';
 
+export type AccountSettingsWritable = {
+    language?: LanguageEnum;
+    /**
+     * Can only be added when missing (older accounts).
+     */
+    birth_date?: string;
+    /**
+     * Push on (true) or off (false), by notification kind. Missing kinds are on.
+     */
+    push?: {
+        [key: string]: boolean;
+    };
+};
+
 export type EventWritable = {
     title: string;
     description?: string;
@@ -598,6 +629,7 @@ export type EventWritable = {
      */
     price?: string | null;
     ticket_url?: string | string;
+    min_age?: number | null;
     visibility?: EventVisibilityEnum;
     status?: EventStatusEnum;
     /**
@@ -630,6 +662,7 @@ export type EventRequestWritable = {
      */
     price?: string | null;
     ticket_url?: string | string;
+    min_age?: number | null;
     visibility?: EventVisibilityEnum;
     status?: EventStatusEnum;
     /**
@@ -666,6 +699,7 @@ export type NearbyEventWritable = {
      */
     price?: string | null;
     ticket_url?: string | string;
+    min_age?: number | null;
     visibility?: EventVisibilityEnum;
     status?: EventStatusEnum;
     /**
@@ -729,6 +763,7 @@ export type PatchedEventRequestWritable = {
      */
     price?: string | null;
     ticket_url?: string | string;
+    min_age?: number | null;
     visibility?: EventVisibilityEnum;
     status?: EventStatusEnum;
     /**
@@ -1121,6 +1156,22 @@ export type MePartialUpdateResponses = {
 };
 
 export type MePartialUpdateResponse = MePartialUpdateResponses[keyof MePartialUpdateResponses];
+
+export type MeAcceptTermsCreateData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/me/accept-terms/';
+};
+
+export type MeAcceptTermsCreateResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type MeAcceptTermsCreateResponse = MeAcceptTermsCreateResponses[keyof MeAcceptTermsCreateResponses];
 
 export type MeAccountDeleteCreateData = {
     body: PasswordRequest;

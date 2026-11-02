@@ -168,6 +168,9 @@ export default function EventScreen() {
           ) : null}
           <View style={styles.price}>
             <ThemedText>{event.price ? format.price(event.price) : t('event.free')}</ThemedText>
+            {event.min_age ? (
+              <ThemedText type="smallBold">{t('event.minAge', { age: event.min_age })}</ThemedText>
+            ) : null}
             {event.ticket_url ? (
               <Pressable role="link" onPress={() => Linking.openURL(event.ticket_url ?? '')}>
                 <ThemedText themeColor="tint">{t('event.tickets')}</ThemedText>

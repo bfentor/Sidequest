@@ -145,6 +145,8 @@ class Event(models.Model):
     # Empty for free events.
     price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
     ticket_url = models.URLField(blank=True)
+    # E.g. 18 for parties with alcohol; checked when someone RSVPs.
+    min_age = models.PositiveSmallIntegerField(null=True, blank=True)
     # How many can attend; empty for no limit. Beyond it, people join the waitlist.
     capacity = models.PositiveIntegerField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

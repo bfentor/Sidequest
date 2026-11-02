@@ -1,7 +1,10 @@
+from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from django.utils.translation import gettext as _
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics, permissions, status
+from rest_framework.exceptions import ValidationError
 from rest_framework.pagination import CursorPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -92,7 +95,13 @@ class AccountSettingsView(APIView):
         disabled = set(
             PushSetting.objects.filter(user=user, enabled=False).values_list("kind", flat=True)
         )
-        return {"language": user.language, "push": {k: k not in disabled for k in Kind.values}}
+        return {
+            "language": user.language,
+            "push": {k: k not in disabled for k in Kind.values},
+            "birth_date": user.birth_date,
+            "terms_version": user.terms_version,
+            "current_terms_version": settings.TERMS_VERSION,
+        }
 
     @extend_schema(responses=AccountSettingsSerializer)
     def get(self, request):
@@ -106,6 +115,11 @@ class AccountSettingsView(APIView):
         if "language" in serializer.validated_data:
             user.language = serializer.validated_data["language"]
             user.save(update_fields=["language"])
+        if "birth_date" in serializer.validated_data:
+            if user.birth_date is not None:
+                raise ValidationError({"birth_date": _("Your birth date is already set.")})
+            user.birth_date = serializer.validated_data["birth_date"]
+            user.save(update_fields=["birth_date"])
         for kind, enabled in serializer.validated_data.get("push", {}).items():
             PushSetting.objects.update_or_create(
                 user=user, kind=kind, defaults={"enabled": enabled}

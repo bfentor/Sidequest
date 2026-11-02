@@ -12,10 +12,20 @@ type DateTimeFieldProps = {
   value: Date;
   onChange: (value: Date) => void;
   minimumDate?: Date;
+  maximumDate?: Date;
+  /** Only the date (e.g. a birth date), or date and time. */
+  mode?: 'date' | 'datetime';
 };
 
 /** Date and time input: the inline picker on iOS, the system dialogs on Android. */
-export function DateTimeField({ label, value, onChange, minimumDate }: DateTimeFieldProps) {
+export function DateTimeField({
+  label,
+  value,
+  onChange,
+  minimumDate,
+  maximumDate,
+  mode = 'datetime',
+}: DateTimeFieldProps) {
   const theme = useTheme();
   const format = useFormat();
 
@@ -25,9 +35,10 @@ export function DateTimeField({ label, value, onChange, minimumDate }: DateTimeF
         <ThemedText type="smallBold">{label}</ThemedText>
         <DateTimePicker
           value={value}
-          mode="datetime"
+          mode={mode}
           display="compact"
           minimumDate={minimumDate}
+          maximumDate={maximumDate}
           onValueChange={(_event, date) => onChange(date)}
           accessibilityLabel={label}
         />
@@ -35,19 +46,22 @@ export function DateTimeField({ label, value, onChange, minimumDate }: DateTimeF
     );
   }
 
-  // Android asks for the date first, then the time.
+  // Android asks for the date first, then (unless date-only) the time.
   const open = () =>
     DateTimePickerAndroid.open({
       value,
       mode: 'date',
       minimumDate,
+      maximumDate,
       onValueChange: (_event, date) =>
-        DateTimePickerAndroid.open({
-          value: date,
-          mode: 'time',
-          is24Hour: true,
-          onValueChange: (_timeEvent, time) => onChange(time),
-        }),
+        mode === 'date'
+          ? onChange(date)
+          : DateTimePickerAndroid.open({
+              value: date,
+              mode: 'time',
+              is24Hour: true,
+              onValueChange: (_timeEvent, time) => onChange(time),
+            }),
     });
 
   return (
@@ -58,7 +72,7 @@ export function DateTimeField({ label, value, onChange, minimumDate }: DateTimeF
         accessibilityLabel={label}
         onPress={open}
         style={[styles.input, { backgroundColor: theme.backgroundElement }]}>
-        <ThemedText>{format.dateTime(value)}</ThemedText>
+        <ThemedText>{mode === 'date' ? format.date(value) : format.dateTime(value)}</ThemedText>
       </Pressable>
     </View>
   );

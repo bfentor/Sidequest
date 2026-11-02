@@ -13,7 +13,12 @@ def test_every_new_user_gets_a_unique_person_profile(make_user):
 def test_sign_up_and_use_session_token(api_client, db):
     response = api_client.post(
         "/_allauth/app/v1/auth/signup",
-        {"email": "new@uni.example", "password": "a-long-passphrase"},
+        {
+            "email": "new@uni.example",
+            "password": "a-long-passphrase",
+            "birth_date": "2004-05-06",
+            "accept_terms": True,
+        },
         format="json",
     )
     assert response.status_code == 200

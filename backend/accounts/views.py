@@ -1,5 +1,6 @@
 import json
 
+from django.conf import settings
 from django.http import HttpResponse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -48,3 +49,16 @@ class ExportView(APIView):
         )
         response["Content-Disposition"] = f'attachment; filename="{filename}"'
         return response
+
+
+class AcceptTermsView(APIView):
+    """Accept the current terms of service and privacy policy."""
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    @extend_schema(request=None, responses={204: None})
+    def post(self, request):
+        request.user.terms_version = settings.TERMS_VERSION
+        request.user.terms_accepted_at = timezone.now()
+        request.user.save(update_fields=["terms_version", "terms_accepted_at"])
+        return Response(status=status.HTTP_204_NO_CONTENT)

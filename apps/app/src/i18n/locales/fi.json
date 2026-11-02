@@ -75,7 +75,8 @@
     "free": "Maksuton",
     "tickets": "Liput",
     "withCoHosts": "yhdessä: {{names}}",
-    "coHostInvite": "{{name}} on kutsuttu tapahtuman yhteisjärjestäjäksi."
+    "coHostInvite": "{{name}} on kutsuttu tapahtuman yhteisjärjestäjäksi.",
+    "minAge": "K{{age}}"
   },
   "auth": {
     "signInTitle": "Tervetuloa takaisin",
@@ -86,7 +87,13 @@
     "switchToSignUp": "Uusi täällä? Luo tili",
     "switchToSignIn": "Onko sinulla jo tili? Kirjaudu sisään",
     "verifyEmail": "Vahvista sähköpostiosoitteesi saapuneiden viestien linkistä ja kirjaudu sitten sisään.",
-    "moreSteps": "Kirjautumisen viimeistely vaatii lisävaiheita."
+    "moreSteps": "Kirjautumisen viimeistely vaatii lisävaiheita.",
+    "birthDate": "Syntymäaika",
+    "acceptTermsShort": "Hyväksyn käyttöehdot ja tietosuojaselosteen",
+    "acceptTermsStart": "Hyväksyn ",
+    "acceptTermsAnd": " ja ",
+    "termsLink": "käyttöehdot",
+    "privacyLink": "tietosuojaselosteen"
   },
   "settings": {
     "language": "Kieli",
@@ -285,7 +292,9 @@
     "publishing": "Julkaisu",
     "publishNow": "Nyt",
     "draft": "Luonnos",
-    "publishAt": "Julkaisuaika"
+    "publishAt": "Julkaisuaika",
+    "adultsOnly": "Vain täysi-ikäisille",
+    "adultsOnlyHint": "Vain 18 vuotta täyttäneet voivat ilmoittautua."
   },
   "eventStatus": {
     "active": "Käynnissä",
@@ -315,6 +324,17 @@
     "deleteConfirmTitle": "Poistetaanko tilisi?",
     "deleteConfirmMessage": "Profiilisi, julkaisusi, tapahtumasi, ilmoittautumisesi ja seurauksesi poistetaan pysyvästi. Ylläpitämäsi järjestöt siirtyvät toiselle jäsenelle. Vahvista salasanallasi.",
     "deleteForever": "Poista pysyvästi",
-    "wrongPassword": "Salasana on väärä."
+    "wrongPassword": "Salasana on väärä.",
+    "birthDate": "Syntymäaika: {{date}}",
+    "addBirthDateHint": "Lisää syntymäaikasi osallistuaksesi ikärajallisiin tapahtumiin. Sitä ei voi muuttaa myöhemmin.",
+    "addBirthDate": "Tallenna syntymäaika"
+  },
+  "legal": {
+    "about": "Tietoa",
+    "terms": "Käyttöehdot",
+    "privacy": "Tietosuojaseloste",
+    "updatedTitle": "Ehtomme ovat muuttuneet",
+    "updatedMessage": "Lue ja hyväksy päivitetyt käyttöehdot ja tietosuojaseloste jatkaaksesi Sidequestin käyttöä.",
+    "accept": "Hyväksy"
   }
 }

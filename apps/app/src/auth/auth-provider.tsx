@@ -11,7 +11,7 @@ type Credentials = { email: string; password: string };
 type AuthContextValue = {
   status: 'loading' | 'signed-in' | 'signed-out';
   signIn: (credentials: Credentials) => Promise<api.AuthResult>;
-  signUp: (credentials: Credentials) => Promise<api.AuthResult>;
+  signUp: (details: api.SignUpDetails) => Promise<api.AuthResult>;
   signOut: () => Promise<void>;
   /** Drops the local session without asking the server, e.g. after deleting the account. */
   forgetSession: () => Promise<void>;
@@ -54,7 +54,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const value: AuthContextValue = {
     status,
     signIn: (credentials) => authenticate(api.signIn(credentials)),
-    signUp: (credentials) => authenticate(api.signUp(credentials)),
+    signUp: (details) => authenticate(api.signUp(details)),
     signOut: async () => {
       // While the session is still valid, so the API can forget this phone.
       await disablePush();

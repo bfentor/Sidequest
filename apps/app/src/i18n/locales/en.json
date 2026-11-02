@@ -75,7 +75,8 @@
     "free": "Free",
     "tickets": "Tickets",
     "withCoHosts": "with {{names}}",
-    "coHostInvite": "{{name}} is invited to co-host this event."
+    "coHostInvite": "{{name}} is invited to co-host this event.",
+    "minAge": "{{age}}+"
   },
   "auth": {
     "signInTitle": "Welcome back",
@@ -86,7 +87,13 @@
     "switchToSignUp": "New here? Create an account",
     "switchToSignIn": "Have an account? Sign in",
     "verifyEmail": "Check your inbox to verify your email address, then sign in.",
-    "moreSteps": "Additional steps are required to finish signing in."
+    "moreSteps": "Additional steps are required to finish signing in.",
+    "birthDate": "Birth date",
+    "acceptTermsShort": "I accept the terms of service and privacy policy",
+    "acceptTermsStart": "I accept the ",
+    "acceptTermsAnd": " and the ",
+    "termsLink": "terms of service",
+    "privacyLink": "privacy policy"
   },
   "settings": {
     "language": "Language",
@@ -285,7 +292,9 @@
     "publishing": "Publishing",
     "publishNow": "Now",
     "draft": "Draft",
-    "publishAt": "Publish at"
+    "publishAt": "Publish at",
+    "adultsOnly": "18+ only",
+    "adultsOnlyHint": "Only people aged 18 or over can RSVP."
   },
   "eventStatus": {
     "active": "On",
@@ -315,6 +324,17 @@
     "deleteConfirmTitle": "Delete your account?",
     "deleteConfirmMessage": "Your profile, posts, events, RSVPs and follows are deleted for good. Organizations you run pass to another member. Enter your password to confirm.",
     "deleteForever": "Delete forever",
-    "wrongPassword": "The password is wrong."
+    "wrongPassword": "The password is wrong.",
+    "birthDate": "Birth date: {{date}}",
+    "addBirthDateHint": "Add your birth date to join events with an age limit. It can't be changed later.",
+    "addBirthDate": "Save birth date"
+  },
+  "legal": {
+    "about": "About",
+    "terms": "Terms of service",
+    "privacy": "Privacy policy",
+    "updatedTitle": "Our terms have changed",
+    "updatedMessage": "Please read and accept the updated terms of service and privacy policy to keep using Sidequest.",
+    "accept": "Accept"
   }
 }

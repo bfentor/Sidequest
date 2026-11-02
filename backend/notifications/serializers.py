@@ -46,6 +46,11 @@ class PushDeviceSerializer(serializers.Serializer):
 
 class AccountSettingsSerializer(serializers.Serializer):
     language = serializers.ChoiceField(choices=settings.LANGUAGES, required=False)
+    birth_date = serializers.DateField(
+        required=False, help_text="Can only be added when missing (older accounts)."
+    )
+    terms_version = serializers.CharField(read_only=True, help_text="The version you accepted.")
+    current_terms_version = serializers.CharField(read_only=True)
     push = serializers.DictField(
         child=serializers.BooleanField(),
         required=False,

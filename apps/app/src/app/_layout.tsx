@@ -8,6 +8,7 @@ import { AuthProvider, useAuth } from '@/auth/auth-provider';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { applyPreferredLanguage, type Language } from '@/i18n';
+import { TermsGate } from '@/components/terms-gate';
 import { NotificationHandler } from '@/notifications/notification-handler';
 
 export default function RootLayout() {
@@ -33,6 +34,7 @@ export default function RootLayout() {
         <NotificationHandler />
         <ThemeProvider value={navigationTheme}>
           <RootStack />
+          <TermsGate />
         </ThemeProvider>
       </AuthProvider>
     </QueryClientProvider>
@@ -49,6 +51,7 @@ function RootStack() {
       <Stack.Screen name="events/[id]/edit" options={{ title: t('eventForm.edit') }} />
       <Stack.Screen name="events/new" options={{ title: t('eventForm.newEvent') }} />
       <Stack.Screen name="my-events" options={{ title: t('myEvents.title') }} />
+      <Stack.Screen name="legal/[document]" options={{ title: '' }} />
       <Stack.Screen name="sign-in" options={{ title: t('common.signIn'), presentation: 'modal' }} />
       <Stack.Screen name="settings" options={{ title: t('common.settings') }} />
       <Stack.Screen name="edit-profile" options={{ title: t('profile.edit') }} />

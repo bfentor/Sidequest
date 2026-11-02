@@ -80,6 +80,7 @@ export function EventForm({ initial, mode, submitLabel, onSubmit }: EventFormPro
   const [free, setFree] = useState(!initial?.price);
   const [price, setPrice] = useState(initial?.price ?? '');
   const [ticketUrl, setTicketUrl] = useState(initial?.ticket_url ?? '');
+  const [adultsOnly, setAdultsOnly] = useState(initial?.min_age === 18);
   const [visibility, setVisibility] = useState<EventVisibilityEnum>(
     initial?.visibility ?? 'public',
   );
@@ -120,6 +121,7 @@ export function EventForm({ initial, mode, submitLabel, onSubmit }: EventFormPro
         capacity: capacity ? Number(capacity) : null,
         price: free || !price ? null : price.replace(',', '.'),
         ticket_url: ticketUrl,
+        min_age: adultsOnly ? 18 : null,
         visibility,
         co_host_handles: coHosts,
         ...(mode === 'create' && organizer ? { organizer_handle: organizer } : {}),
@@ -313,6 +315,20 @@ export function EventForm({ initial, mode, submitLabel, onSubmit }: EventFormPro
         keyboardType="url"
       />
       {errorsFor('ticket_url')}
+
+      <View style={styles.switchRow}>
+        <View style={styles.switchLabel}>
+          <ThemedText>{t('eventForm.adultsOnly')}</ThemedText>
+          <ThemedText type="small" themeColor="textSecondary">
+            {t('eventForm.adultsOnlyHint')}
+          </ThemedText>
+        </View>
+        <Switch
+          value={adultsOnly}
+          onValueChange={setAdultsOnly}
+          accessibilityLabel={t('eventForm.adultsOnly')}
+        />
+      </View>
 
       <View style={styles.section}>
         <ThemedText type="smallBold">{t('eventForm.visibility')}</ThemedText>

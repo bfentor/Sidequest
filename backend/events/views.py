@@ -82,6 +82,14 @@ class EventViewSet(
         profile = request.user.profile
         if event.status == Event.Status.CANCELLED and request.method == "PUT":
             raise ValidationError(_("This event was cancelled."))
+        if event.min_age and request.method == "PUT":
+            age = request.user.age
+            if age is None:
+                raise ValidationError(_("Add your birth date in Settings to join this event."))
+            if age < event.min_age:
+                raise ValidationError(
+                    _("This event is for people aged %(age)s or over.") % {"age": event.min_age}
+                )
         if request.method == "PUT":
             serializer = RsvpSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)

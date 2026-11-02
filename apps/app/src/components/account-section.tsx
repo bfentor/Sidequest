@@ -1,15 +1,24 @@
-import { meAccountDeleteCreate, meExportRetrieve } from '@sidequest/api';
-import { useMutation } from '@tanstack/react-query';
+import {
+  meAccountDeleteCreate,
+  meExportRetrieve,
+  meSettingsPartialUpdate,
+  meSettingsRetrieveOptions,
+  meSettingsRetrieveQueryKey,
+} from '@sidequest/api';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modal, StyleSheet, View } from 'react-native';
 
 import { useAuth } from '@/auth/auth-provider';
 import { Spacing } from '@/constants/theme';
+import { toIsoDate } from '@/lib/dates';
+import { useFormat } from '@/lib/format';
 import { goBack } from '@/lib/navigation';
 import { saveTextFile } from '@/lib/save-file';
 
 import { Button } from './button';
+import { DateTimeField } from './date-time-field';
 import { TextField } from './text-field';
 import { ThemedText } from './themed-text';
 import { ThemedView } from './themed-view';
@@ -37,6 +46,7 @@ export function AccountSection() {
       <ThemedText type="small" themeColor="textSecondary">
         {t('account.exportHint')}
       </ThemedText>
+      <BirthDate />
       <Button
         title={t('account.export')}
         variant="secondary"
@@ -46,6 +56,45 @@ export function AccountSection() {
       <Button title={t('account.delete')} variant="danger" onPress={() => setDeleting(true)} />
       <DeleteAccountDialog visible={deleting} onClose={() => setDeleting(false)} />
     </View>
+  );
+}
+
+/** Shows the birth date; accounts made before it was asked can add it once. */
+function BirthDate() {
+  const { t } = useTranslation();
+  const format = useFormat();
+  const queryClient = useQueryClient();
+  const settings = useQuery(meSettingsRetrieveOptions());
+  const [value, setValue] = useState(() => new Date(2005, 0, 1));
+  const save = useMutation({
+    mutationFn: () =>
+      meSettingsPartialUpdate({ body: { birth_date: toIsoDate(value) }, throwOnError: true }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: meSettingsRetrieveQueryKey() }),
+  });
+
+  if (!settings.data) {
+    return null;
+  }
+  if (settings.data.birth_date) {
+    return (
+      <ThemedText type="small" themeColor="textSecondary">
+        {t('account.birthDate', { date: format.date(settings.data.birth_date) })}
+      </ThemedText>
+    );
+  }
+  return (
+    <>
+      <ThemedText type="small" themeColor="textSecondary">
+        {t('account.addBirthDateHint')}
+      </ThemedText>
+      <DateTimeField label={t('auth.birthDate')} mode="date" value={value} onChange={setValue} />
+      <Button
+        title={t('account.addBirthDate')}
+        variant="secondary"
+        loading={save.isPending}
+        onPress={() => save.mutate()}
+      />
+    </>
   );
 }
 

@@ -122,6 +122,12 @@ ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*"]
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_VERIFICATION = env("ACCOUNT_EMAIL_VERIFICATION", default="optional")
+# Birth date and acceptance of the terms at signup (accounts/signup.py).
+ACCOUNT_SIGNUP_FORM_CLASS = "accounts.signup.SignupForm"
+# To review with a lawyer: Finland's age of digital consent is 13.
+MINIMUM_AGE = env.int("MINIMUM_AGE", default=16)
+# Bump when the terms of service or privacy policy change; people accept again.
+TERMS_VERSION = "2026-11-01"
 
 # Every frontend (iOS, Android and web) authenticates with the X-Session-Token
 # header, so only allauth's "app" client is enabled.

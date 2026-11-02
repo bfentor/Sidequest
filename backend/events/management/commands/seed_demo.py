@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import date, timedelta
 
 from django.conf import settings
 from django.contrib.gis.geos import Point
@@ -39,8 +39,17 @@ class Command(BaseCommand):
 
     @transaction.atomic
     def seed(self):
-        demo = User.objects.create_user(email="demo@sidequest.test", password=DEMO_PASSWORD)
-        friend = User.objects.create_user(email="sam@sidequest.test", password=DEMO_PASSWORD)
+        adult = {
+            "birth_date": date(2002, 5, 17),
+            "terms_version": settings.TERMS_VERSION,
+            "terms_accepted_at": timezone.now(),
+        }
+        demo = User.objects.create_user(
+            email="demo@sidequest.test", password=DEMO_PASSWORD, **adult
+        )
+        friend = User.objects.create_user(
+            email="sam@sidequest.test", password=DEMO_PASSWORD, **adult
+        )
         union = Profile.objects.create(
             kind=Profile.Kind.ORGANIZATION,
             handle="student_union",

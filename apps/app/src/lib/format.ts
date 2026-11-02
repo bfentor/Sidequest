@@ -12,6 +12,11 @@ function createFormatters(locale: string) {
     minute: '2-digit',
   });
   const timeOnly = new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' });
+  const dateOnly = new Intl.DateTimeFormat(locale, {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
   const decimal = new Intl.NumberFormat(locale, { maximumFractionDigits: 1 });
   const euros = new Intl.NumberFormat(locale, { style: 'currency', currency: 'EUR' });
 
@@ -25,6 +30,9 @@ function createFormatters(locale: string) {
     },
     dateTime(value: string | Date) {
       return dateTime.format(new Date(value));
+    },
+    date(value: string | Date) {
+      return dateOnly.format(new Date(value));
     },
     /** A decimal string from the API, e.g. "12.50" → "12,50 €". */
     price(amount: string) {

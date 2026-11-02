@@ -145,6 +145,7 @@ class EventSerializer(serializers.ModelSerializer):
             "online_url",
             "price",
             "ticket_url",
+            "min_age",
             "visibility",
             "status",
             "published_at",

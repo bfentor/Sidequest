@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sidequest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-02 19:33+0200\n"
-"PO-Revision-Date: 2026-11-02 19:33+0200\n"
+"POT-Creation-Date: 2026-11-02 19:39+0200\n"
+"PO-Revision-Date: 2026-11-02 19:39+0200\n"
 "Last-Translator: Sidequest <dev@sidequest.invalid>\n"
 "Language-Team: Finnish\n"
 "Language: fi\n"
@@ -17,6 +17,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Accept the terms of service and privacy policy to continue."
+msgstr "Hyväksy käyttöehdot ja tietosuojaseloste jatkaaksesi."
+
+#, python-format
+msgid "You need to be at least %(age)s years old to use Sidequest."
+msgstr "Sidequestin käyttäjän täytyy olla vähintään %(age)s-vuotias."
 
 msgid "The password is wrong."
 msgstr "Salasana on väärä."
@@ -30,6 +37,13 @@ msgstr "Täytyy olla alkamisajan jälkeen."
 
 msgid "This event was cancelled."
 msgstr "Tapahtuma on peruttu."
+
+msgid "Add your birth date in Settings to join this event."
+msgstr "Lisää syntymäaikasi asetuksissa osallistuaksesi tähän tapahtumaan."
+
+#, python-format
+msgid "This event is for people aged %(age)s or over."
+msgstr "Tapahtuma on vähintään %(age)s-vuotiaille."
 
 msgid "This profile wasn't invited to co-host."
 msgstr "Tätä profiilia ei kutsuttu yhteisjärjestäjäksi."
@@ -178,6 +192,9 @@ msgstr "%(name)s kommentoi."
 #, python-format
 msgid "%(name)s liked your post."
 msgstr "%(name)s tykkäsi julkaisustasi."
+
+msgid "Your birth date is already set."
+msgstr "Syntymäaikasi on jo asetettu."
 
 msgid "A post needs a body, an event, or both."
 msgstr "Julkaisussa täytyy olla tekstiä, tapahtuma tai molemmat."

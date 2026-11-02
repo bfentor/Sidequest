@@ -75,7 +75,8 @@
     "free": "Gratis",
     "tickets": "Biljetter",
     "withCoHosts": "tillsammans med {{names}}",
-    "coHostInvite": "{{name}} är inbjuden som medarrangör."
+    "coHostInvite": "{{name}} är inbjuden som medarrangör.",
+    "minAge": "{{age}}+"
   },
   "auth": {
     "signInTitle": "Välkommen tillbaka",
@@ -86,7 +87,13 @@
     "switchToSignUp": "Ny här? Skapa ett konto",
     "switchToSignIn": "Har du ett konto? Logga in",
     "verifyEmail": "Bekräfta din e-postadress via länken i inkorgen och logga sedan in.",
-    "moreSteps": "Fler steg krävs för att slutföra inloggningen."
+    "moreSteps": "Fler steg krävs för att slutföra inloggningen.",
+    "birthDate": "Födelsedatum",
+    "acceptTermsShort": "Jag godkänner användarvillkoren och integritetspolicyn",
+    "acceptTermsStart": "Jag godkänner ",
+    "acceptTermsAnd": " och ",
+    "termsLink": "användarvillkoren",
+    "privacyLink": "integritetspolicyn"
   },
   "settings": {
     "language": "Språk",
@@ -285,7 +292,9 @@
     "publishing": "Publicering",
     "publishNow": "Nu",
     "draft": "Utkast",
-    "publishAt": "Publiceras"
+    "publishAt": "Publiceras",
+    "adultsOnly": "Endast 18+",
+    "adultsOnlyHint": "Bara personer som fyllt 18 kan anmäla sig."
   },
   "eventStatus": {
     "active": "Blir av",
@@ -315,6 +324,17 @@
     "deleteConfirmTitle": "Radera ditt konto?",
     "deleteConfirmMessage": "Din profil, dina inlägg, evenemang, anmälningar och följningar raderas för gott. Organisationer du sköter går över till en annan medlem. Bekräfta med ditt lösenord.",
     "deleteForever": "Radera för alltid",
-    "wrongPassword": "Lösenordet är fel."
+    "wrongPassword": "Lösenordet är fel.",
+    "birthDate": "Födelsedatum: {{date}}",
+    "addBirthDateHint": "Lägg till ditt födelsedatum för att delta i evenemang med åldersgräns. Det går inte att ändra senare.",
+    "addBirthDate": "Spara födelsedatum"
+  },
+  "legal": {
+    "about": "Om",
+    "terms": "Användarvillkor",
+    "privacy": "Integritetspolicy",
+    "updatedTitle": "Våra villkor har ändrats",
+    "updatedMessage": "Läs och godkänn de uppdaterade användarvillkoren och integritetspolicyn för att fortsätta använda Sidequest.",
+    "accept": "Godkänn"
   }
 }

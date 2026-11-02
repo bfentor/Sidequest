@@ -58,8 +58,16 @@ async function submit(url: string, body: object): Promise<AuthResult> {
   return toResult(data ?? error);
 }
 
-export function signUp(credentials: { email: string; password: string }) {
-  return submit('/auth/signup', credentials);
+export type SignUpDetails = {
+  email: string;
+  password: string;
+  /** YYYY-MM-DD */
+  birth_date: string;
+  accept_terms: boolean;
+};
+
+export function signUp(details: SignUpDetails) {
+  return submit('/auth/signup', details);
 }
 
 export function signIn(credentials: { email: string; password: string }) {
