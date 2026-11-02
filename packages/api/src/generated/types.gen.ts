@@ -74,6 +74,24 @@ export type EventRequest = {
     capacity?: number | null;
 };
 
+export type FollowStatus = {
+    /**
+     * requested: the profile is private and has to accept you first.
+     *
+     * * `following` - following
+     * * `requested` - requested
+     * * `none` - none
+     */
+    status: FollowStatusStatusEnum;
+};
+
+/**
+ * * `following` - following
+ * * `requested` - requested
+ * * `none` - none
+ */
+export type FollowStatusStatusEnum = 'following' | 'requested' | 'none';
+
 /**
  * How images appear inside other resources.
  */
@@ -162,6 +180,8 @@ export type NotificationEvent = {
 
 /**
  * * `new_follower` - New followers
+ * * `follow_request` - Follow requests
+ * * `follow_accepted` - Accepted follow requests
  * * `new_event` - New events from people you follow
  * * `event_changed` - Changes to events you're going to
  * * `event_cancelled` - Cancelled events
@@ -172,7 +192,7 @@ export type NotificationEvent = {
  * * `comment` - Comments
  * * `reaction` - Likes
  */
-export type NotificationKindEnum = 'new_follower' | 'new_event' | 'event_changed' | 'event_cancelled' | 'event_reminder' | 'waitlist_promoted' | 'announcement' | 'mention' | 'comment' | 'reaction';
+export type NotificationKindEnum = 'new_follower' | 'follow_request' | 'follow_accepted' | 'new_event' | 'event_changed' | 'event_cancelled' | 'event_reminder' | 'waitlist_promoted' | 'announcement' | 'mention' | 'comment' | 'reaction';
 
 export type NullEnum = never;
 
@@ -242,6 +262,9 @@ export type PatchedProfileRequest = {
     study_year?: number | null;
     website?: string | string;
     instagram?: string | string;
+    is_private?: boolean;
+    hide_followers?: boolean;
+    hide_attendance?: boolean;
     /**
      * Category slugs (GET /api/categories/).
      */
@@ -277,6 +300,9 @@ export type Profile = {
     website?: string | string;
     instagram?: string | string;
     readonly verified: boolean;
+    is_private?: boolean;
+    hide_followers?: boolean;
+    hide_attendance?: boolean;
     /**
      * Category slugs (GET /api/categories/).
      */
@@ -285,6 +311,10 @@ export type Profile = {
     readonly follower_count: number;
     readonly following_count: number;
     readonly is_followed: boolean;
+    /**
+     * The viewer asked to follow this private profile.
+     */
+    readonly is_requested: boolean;
     readonly is_blocked: boolean;
     readonly is_muted: boolean;
 };
@@ -343,14 +373,14 @@ export type RsvpRequest = {
      * * `going` - going
      * * `interested` - interested
      */
-    status: StatusEnum;
+    status: RsvpStatusEnum;
 };
 
 /**
  * * `going` - going
  * * `interested` - interested
  */
-export type StatusEnum = 'going' | 'interested';
+export type RsvpStatusEnum = 'going' | 'interested';
 
 /**
  * * `post` - post
@@ -471,6 +501,9 @@ export type PatchedProfileRequestWritable = {
     study_year?: number | null;
     website?: string | string;
     instagram?: string | string;
+    is_private?: boolean;
+    hide_followers?: boolean;
+    hide_attendance?: boolean;
     /**
      * Category slugs (GET /api/categories/).
      */
@@ -506,6 +539,9 @@ export type ProfileWritable = {
     study_year?: number | null;
     website?: string | string;
     instagram?: string | string;
+    is_private?: boolean;
+    hide_followers?: boolean;
+    hide_attendance?: boolean;
     /**
      * Category slugs (GET /api/categories/).
      */
@@ -759,6 +795,60 @@ export type MeBlockedListResponses = {
 
 export type MeBlockedListResponse = MeBlockedListResponses[keyof MeBlockedListResponses];
 
+export type MeFollowRequestsListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * The pagination cursor value.
+         */
+        cursor?: string;
+    };
+    url: '/api/me/follow-requests/';
+};
+
+export type MeFollowRequestsListResponses = {
+    200: PaginatedProfileSummaryList;
+};
+
+export type MeFollowRequestsListResponse = MeFollowRequestsListResponses[keyof MeFollowRequestsListResponses];
+
+export type MeFollowRequestsDestroyData = {
+    body?: never;
+    path: {
+        handle: string;
+    };
+    query?: never;
+    url: '/api/me/follow-requests/{handle}/';
+};
+
+export type MeFollowRequestsDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type MeFollowRequestsDestroyResponse = MeFollowRequestsDestroyResponses[keyof MeFollowRequestsDestroyResponses];
+
+export type MeFollowRequestsCreateData = {
+    body?: never;
+    path: {
+        handle: string;
+    };
+    query?: never;
+    url: '/api/me/follow-requests/{handle}/';
+};
+
+export type MeFollowRequestsCreateResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type MeFollowRequestsCreateResponse = MeFollowRequestsCreateResponses[keyof MeFollowRequestsCreateResponses];
+
 export type MeMutedListData = {
     body?: never;
     path?: never;
@@ -1001,10 +1091,7 @@ export type ProfilesFollowCreateData = {
 };
 
 export type ProfilesFollowCreateResponses = {
-    /**
-     * No response body
-     */
-    204: void;
+    200: FollowStatus;
 };
 
 export type ProfilesFollowCreateResponse = ProfilesFollowCreateResponses[keyof ProfilesFollowCreateResponses];

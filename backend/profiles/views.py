@@ -4,9 +4,10 @@ from django.utils.translation import gettext as _
 from drf_spectacular.utils import OpenApiParameter, extend_schema
 from rest_framework import generics, mixins, permissions, serializers, status, viewsets
 from rest_framework.decorators import action
-from rest_framework.exceptions import ValidationError
+from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.pagination import CursorPagination, LimitOffsetPagination
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from events.models import Event
 from events.serializers import EventSerializer
@@ -17,8 +18,8 @@ from notifications.services import notify
 from posts.models import Post
 from posts.serializers import PostSerializer
 
-from .models import Follow, Profile
-from .serializers import ProfileSerializer, ProfileSummarySerializer
+from .models import Follow, FollowRequest, Profile
+from .serializers import FollowStatusSerializer, ProfileSerializer, ProfileSummarySerializer
 
 
 class ProfileListPagination(CursorPagination):
@@ -45,24 +46,44 @@ class ProfileViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
             .prefetch_related("interests")
         )
 
-    @extend_schema(request=None, responses={204: None})
+    @extend_schema(request=None, responses=FollowStatusSerializer)
     @action(
         detail=True, methods=["post", "delete"], permission_classes=[permissions.IsAuthenticated]
     )
     def follow(self, request, handle=None):
+        """Follow (POST) or unfollow (DELETE). Private profiles get a follow request instead."""
         follower = request.user.profile
         followee = get_object_or_404(Profile.objects.visible_to(follower), handle=handle)
-        if request.method == "POST":
-            if followee == follower:
-                raise ValidationError(_("You cannot follow yourself."))
-            if Block.objects.filter(blocker=follower, blocked=followee).exists():
-                raise ValidationError(_("Unblock this profile to follow it."))
-            follow, created = Follow.objects.get_or_create(follower=follower, followee=followee)
-            if created:
-                notify([followee], Kind.NEW_FOLLOWER, actor=follower)
-        else:
+        if request.method == "DELETE":
             Follow.objects.filter(follower=follower, followee=followee).delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+            FollowRequest.objects.filter(requester=follower, target=followee).delete()
+            return Response({"status": "none"})
+
+        if followee == follower:
+            raise ValidationError(_("You cannot follow yourself."))
+        if Block.objects.filter(blocker=follower, blocked=followee).exists():
+            raise ValidationError(_("Unblock this profile to follow it."))
+        if Follow.objects.filter(follower=follower, followee=followee).exists():
+            return Response({"status": "following"})
+        if followee.is_private:
+            _request, created = FollowRequest.objects.get_or_create(
+                requester=follower, target=followee
+            )
+            if created:
+                notify([followee], Kind.FOLLOW_REQUEST, actor=follower)
+            return Response({"status": "requested"})
+        Follow.objects.create(follower=follower, followee=followee)
+        notify([followee], Kind.NEW_FOLLOWER, actor=follower)
+        return Response({"status": "following"})
+
+    def _lists_hidden(self, profile):
+        viewer = viewer_profile(self.request)
+        if viewer == profile:
+            return False
+        return (
+            profile.hide_followers
+            or Profile.objects.private_to(viewer).filter(pk=profile.pk).exists()
+        )
 
     def _profile(self, handle):
         return get_object_or_404(
@@ -82,6 +103,8 @@ class ProfileViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     def followers(self, request, handle=None):
         """Profiles following this one, most recent first."""
         profile = self._profile(handle)
+        if self._lists_hidden(profile):
+            raise PermissionDenied(_("This profile's followers are hidden."))
         follows = Follow.objects.filter(
             followee=profile, follower__in=Profile.objects.visible_to(viewer_profile(request))
         ).select_related("follower__avatar")
@@ -92,6 +115,8 @@ class ProfileViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     def following(self, request, handle=None):
         """Profiles this one follows, most recent first."""
         profile = self._profile(handle)
+        if self._lists_hidden(profile):
+            raise PermissionDenied(_("This profile's followers are hidden."))
         follows = Follow.objects.filter(
             follower=profile, followee__in=Profile.objects.visible_to(viewer_profile(request))
         ).select_related("followee__avatar")
@@ -153,6 +178,13 @@ class ProfileViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
 class MeView(generics.RetrieveUpdateAPIView):
     """The signed-in user's own profile."""
 
+    def perform_update(self, serializer):
+        was_private = serializer.instance.is_private
+        profile = serializer.save()
+        if was_private and not profile.is_private:
+            for follow_request in profile.follow_requests.select_related("requester"):
+                accept_follow_request(follow_request)
+
     serializer_class = ProfileSerializer
     permission_classes = [permissions.IsAuthenticated]
     http_method_names = ["get", "patch", "options"]
@@ -164,3 +196,43 @@ class MeView(generics.RetrieveUpdateAPIView):
             .prefetch_related("interests")
             .get(user=self.request.user)
         )
+
+
+def accept_follow_request(follow_request):
+    Follow.objects.get_or_create(follower=follow_request.requester, followee=follow_request.target)
+    follow_request.delete()
+    notify([follow_request.requester], Kind.FOLLOW_ACCEPTED, actor=follow_request.target)
+
+
+class FollowRequestListView(generics.ListAPIView):
+    """People asking to follow the signed-in user's private profile, newest first."""
+
+    serializer_class = ProfileSummarySerializer
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = ProfileListPagination
+
+    def get_queryset(self):
+        return Profile.objects.filter(
+            sent_requests__target=self.request.user.profile
+        ).select_related("avatar")
+
+
+class FollowRequestView(APIView):
+    """Accept (POST) or decline (DELETE) someone's request to follow you."""
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def _request(self, request, handle):
+        return get_object_or_404(
+            FollowRequest, target=request.user.profile, requester__handle=handle
+        )
+
+    @extend_schema(request=None, responses={204: None})
+    def post(self, request, handle):
+        accept_follow_request(self._request(request, handle))
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @extend_schema(request=None, responses={204: None})
+    def delete(self, request, handle):
+        self._request(request, handle).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

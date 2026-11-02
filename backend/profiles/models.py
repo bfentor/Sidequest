@@ -13,6 +13,13 @@ instagram_validator = RegexValidator(
 
 
 class ProfileQuerySet(models.QuerySet):
+    def private_to(self, viewer):
+        """Private profiles whose posts and events the viewer may not see."""
+        queryset = self.filter(is_private=True)
+        if viewer is None:
+            return queryset
+        return queryset.exclude(pk=viewer.pk).exclude(followed_by__follower=viewer)
+
     def visible_to(self, viewer):
         """Profiles the viewer may see: not removed, and not ones that blocked the viewer."""
         queryset = self.filter(removed_at__isnull=True)
@@ -40,9 +47,14 @@ class ProfileQuerySet(models.QuerySet):
         )
         if viewer is None:
             false = models.Value(False)
-            return qs.annotate(is_followed=false, is_blocked=false, is_muted=false)
+            return qs.annotate(
+                is_followed=false, is_requested=false, is_blocked=false, is_muted=false
+            )
         return qs.annotate(
             is_followed=Exists(Follow.objects.filter(follower=viewer, followee=OuterRef("pk"))),
+            is_requested=Exists(
+                FollowRequest.objects.filter(requester=viewer, target=OuterRef("pk"))
+            ),
             is_blocked=Exists(Block.objects.filter(blocker=viewer, blocked=OuterRef("pk"))),
             is_muted=Exists(Mute.objects.filter(muter=viewer, muted=OuterRef("pk"))),
         )
@@ -82,6 +94,12 @@ class Profile(models.Model):
     instagram = models.CharField(max_length=30, blank=True, validators=[instagram_validator])
     # Set by moderators for official organizations (student unions, guilds, clubs).
     verified = models.BooleanField(default=False)
+    # Privacy. A private profile approves its followers, and only they see its
+    # posts and events.
+    is_private = models.BooleanField(default=False)
+    hide_followers = models.BooleanField(default=False)
+    # Leave this profile out of the lists of who's going to events.
+    hide_attendance = models.BooleanField(default=False)
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -152,3 +170,19 @@ class Follow(models.Model):
 
     def __str__(self):
         return f"{self.follower} follows {self.followee}"
+
+
+class FollowRequest(models.Model):
+    """Asking to follow a private profile; becomes a Follow when accepted."""
+
+    requester = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="sent_requests")
+    target = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="follow_requests")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["requester", "target"], name="unique_follow_request"),
+        ]
+
+    def __str__(self):
+        return f"{self.requester} asks to follow {self.target}"

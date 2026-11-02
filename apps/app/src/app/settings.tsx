@@ -52,6 +52,8 @@ export default function SettingsScreen() {
 
 const PUSH_KINDS = [
   'new_follower',
+  'follow_request',
+  'follow_accepted',
   'new_event',
   'event_changed',
   'event_cancelled',

@@ -9,7 +9,7 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, Switch, View } from 'react-native';
 
 import { Avatar } from '@/components/avatar';
 import { Button } from '@/components/button';
@@ -53,6 +53,11 @@ function EditProfileForm({ me }: { me: Profile }) {
     instagram: me.instagram ?? '',
   });
   const [interests, setInterests] = useState<string[]>(me.interests ?? []);
+  const [privacy, setPrivacy] = useState({
+    is_private: me.is_private ?? false,
+    hide_followers: me.hide_followers ?? false,
+    hide_attendance: me.hide_attendance ?? false,
+  });
   const [errors, setErrors] = useState<FieldErrors>({});
   const [uploadError, setUploadError] = useState<string | null>(null);
 
@@ -67,6 +72,7 @@ function EditProfileForm({ me }: { me: Profile }) {
         avatar_id: avatar?.id ?? null,
         cover_id: cover?.id ?? null,
         interests,
+        ...privacy,
       };
       const { data, error } = await mePartialUpdate({ body });
       if (error) {
@@ -182,6 +188,33 @@ function EditProfileForm({ me }: { me: Profile }) {
         </View>
       </View>
 
+      <View style={styles.privacy}>
+        <ThemedText type="smallBold">{t('editProfile.privacy')}</ThemedText>
+        {(
+          [
+            ['is_private', t('editProfile.isPrivate'), t('editProfile.isPrivateHint')],
+            ['hide_followers', t('editProfile.hideFollowers'), null],
+            ['hide_attendance', t('editProfile.hideAttendance'), null],
+          ] as const
+        ).map(([key, label, hint]) => (
+          <View key={key} style={styles.switchRow}>
+            <View style={styles.switchText}>
+              <ThemedText>{label}</ThemedText>
+              {hint ? (
+                <ThemedText type="small" themeColor="textSecondary">
+                  {hint}
+                </ThemedText>
+              ) : null}
+            </View>
+            <Switch
+              value={privacy[key]}
+              accessibilityLabel={label}
+              onValueChange={(value) => setPrivacy((current) => ({ ...current, [key]: value }))}
+            />
+          </View>
+        ))}
+      </View>
+
       <Button title={t('common.save')} loading={save.isPending} onPress={() => save.mutate()} />
     </Screen>
   );
@@ -221,6 +254,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: Spacing.two,
+  },
+  privacy: {
+    gap: Spacing.three,
+  },
+  switchRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.three,
+  },
+  switchText: {
+    flex: 1,
   },
   chip: {
     paddingHorizontal: Spacing.three,

@@ -62,7 +62,10 @@
     "followersTitle": "Followers",
     "followingTitle": "Following",
     "noFollowers": "No followers yet.",
-    "noFollowing": "Not following anyone yet."
+    "noFollowing": "Not following anyone yet.",
+    "requested": "Requested",
+    "privateAccount": "This account is private",
+    "privateHint": "Follow it to see its posts and events."
   },
   "event": {
     "title": "Event",
@@ -95,7 +98,9 @@
       "announcement": "Announcements from organizers",
       "mention": "Mentions",
       "comment": "Comments",
-      "reaction": "Likes"
+      "reaction": "Likes",
+      "follow_request": "Follow requests",
+      "follow_accepted": "Accepted follow requests"
     }
   },
   "posts": {
@@ -159,7 +164,9 @@
     "announcement": "{{name}} about {{title}}: {{message}}",
     "mention": "{{name}} mentioned you.",
     "comment": "{{name}} commented.",
-    "reaction": "{{name}} liked your post."
+    "reaction": "{{name}} liked your post.",
+    "followRequest": "{{name}} asked to follow you.",
+    "followAccepted": "{{name}} accepted your follow request."
   },
   "editProfile": {
     "changeCover": "Change cover picture",
@@ -174,6 +181,17 @@
     "studyYear": "Year of study",
     "website": "Website",
     "instagram": "Instagram username",
-    "interests": "Interests"
+    "interests": "Interests",
+    "privacy": "Privacy",
+    "isPrivate": "Private account",
+    "isPrivateHint": "People need your approval to follow you, and only followers see your posts and events.",
+    "hideFollowers": "Hide my followers and who I follow",
+    "hideAttendance": "Don't show me in who's going to events"
+  },
+  "followRequests": {
+    "title": "Follow requests",
+    "accept": "Accept",
+    "decline": "Decline",
+    "empty": "No follow requests."
   }
 }

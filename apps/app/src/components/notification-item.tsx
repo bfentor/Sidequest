@@ -17,6 +17,10 @@ function describe(notification: Notification, t: TFunction) {
   switch (notification.kind) {
     case 'new_follower':
       return t('notifications.newFollower', { name });
+    case 'follow_request':
+      return t('notifications.followRequest', { name });
+    case 'follow_accepted':
+      return t('notifications.followAccepted', { name });
     case 'new_event':
       return t('notifications.newEvent', { name, title });
     case 'event_changed':
@@ -39,7 +43,9 @@ function describe(notification: Notification, t: TFunction) {
 }
 
 function open(notification: Notification) {
-  if (notification.event) {
+  if (notification.kind === 'follow_request') {
+    router.push('/follow-requests');
+  } else if (notification.event) {
     router.push({ pathname: '/events/[id]', params: { id: notification.event.id } });
   } else if (notification.actor) {
     router.push({ pathname: '/profiles/[handle]', params: { handle: notification.actor.handle } });

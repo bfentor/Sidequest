@@ -1,12 +1,14 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 import {
+  meFollowRequestsListInfiniteQueryKey,
   profilesEventsListInfiniteQueryKey,
   profilesFollowersListInfiniteQueryKey,
   profilesFollowingListInfiniteQueryKey,
   profilesPostsListInfiniteQueryKey,
 } from './generated/@tanstack/react-query.gen';
 import {
+  meFollowRequestsList,
   profilesEventsList,
   profilesFollowersList,
   profilesFollowingList,
@@ -68,6 +70,23 @@ export function useFollowList(handle: string, direction: 'followers' | 'followin
     queryFn: async ({ pageParam, signal }) => {
       const { data } = await list({
         path,
+        query: { cursor: pageParam },
+        signal,
+        throwOnError: true,
+      });
+      return data;
+    },
+    initialPageParam: undefined as string | undefined,
+    getNextPageParam: (page) => queryParam(page.next, 'cursor'),
+  });
+}
+
+/** People asking to follow the signed-in user's private profile, newest first. */
+export function useFollowRequests() {
+  return useInfiniteQuery({
+    queryKey: meFollowRequestsListInfiniteQueryKey(),
+    queryFn: async ({ pageParam, signal }) => {
+      const { data } = await meFollowRequestsList({
         query: { cursor: pageParam },
         signal,
         throwOnError: true,

@@ -22,6 +22,11 @@ def hidden_profiles(viewer: Profile | None):
     ).values("pk")
 
 
+def private_profiles(viewer: Profile | None):
+    """Private profiles the viewer doesn't follow, whose content they may not see."""
+    return Profile.objects.private_to(viewer).values("pk")
+
+
 def muted_profiles(viewer: Profile | None):
     if viewer is None:
         return Profile.objects.none()

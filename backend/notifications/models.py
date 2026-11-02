@@ -5,6 +5,8 @@ from django.utils.translation import gettext_lazy as _
 
 class Kind(models.TextChoices):
     NEW_FOLLOWER = "new_follower", _("New followers")
+    FOLLOW_REQUEST = "follow_request", _("Follow requests")
+    FOLLOW_ACCEPTED = "follow_accepted", _("Accepted follow requests")
     NEW_EVENT = "new_event", _("New events from people you follow")
     EVENT_CHANGED = "event_changed", _("Changes to events you're going to")
     EVENT_CANCELLED = "event_cancelled", _("Cancelled events")

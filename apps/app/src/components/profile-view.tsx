@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, View } from 'react-native';
 
 import { Spacing } from '@/constants/theme';
+import { useMe } from '@/hooks/use-me';
 
 import { EventCard } from './event-card';
 import { FeedList } from './feed-list';
@@ -34,6 +35,7 @@ export function ProfileView({ handle, actions, hasHeader }: ProfileViewProps) {
   const { t } = useTranslation();
   const profile = useQuery(profilesRetrieveOptions({ path: { handle } }));
   const [tab, setTab] = useState<Tab>('posts');
+  const me = useMe();
 
   if (!profile.data) {
     return (
@@ -43,6 +45,19 @@ export function ProfileView({ handle, actions, hasHeader }: ProfileViewProps) {
         ) : (
           <ActivityIndicator />
         )}
+      </Screen>
+    );
+  }
+
+  const locked =
+    profile.data.is_private && !profile.data.is_followed && me?.handle !== profile.data.handle;
+
+  if (locked) {
+    return (
+      <Screen hasHeader={hasHeader}>
+        <ProfileHeader profile={profile.data} actions={actions?.(profile.data)} />
+        <ThemedText type="heading">{t('profile.privateAccount')}</ThemedText>
+        <ThemedText themeColor="textSecondary">{t('profile.privateHint')}</ThemedText>
       </Screen>
     );
   }

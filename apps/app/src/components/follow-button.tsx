@@ -12,20 +12,32 @@ import { useAuth } from '@/auth/auth-provider';
 
 import { Button } from './button';
 
-/** Follow / Following toggle that updates instantly and rolls back if the request fails. */
+type FollowState = 'following' | 'requested' | 'none';
+
+function stateOf(profile: Profile): FollowState {
+  return profile.is_followed ? 'following' : profile.is_requested ? 'requested' : 'none';
+}
+
+/**
+ * Follow / Requested / Following toggle. Private profiles get a request; the
+ * button updates instantly and rolls back if the request fails.
+ */
 export function FollowButton({ profile }: { profile: Profile }) {
   const { t } = useTranslation();
   const { status } = useAuth();
   const queryClient = useQueryClient();
   const queryKey = profilesRetrieveQueryKey({ path: { handle: profile.handle } });
+  const state = stateOf(profile);
 
-  const setFollowed = (followed: boolean) =>
+  const show = (next: FollowState) =>
     queryClient.setQueryData<Profile>(queryKey, (old) =>
       old
         ? {
             ...old,
-            is_followed: followed,
-            follower_count: old.follower_count + (followed ? 1 : -1),
+            is_followed: next === 'following',
+            is_requested: next === 'requested',
+            follower_count:
+              old.follower_count + (next === 'following' ? 1 : 0) - (old.is_followed ? 1 : 0),
           }
         : old,
     );
@@ -35,8 +47,11 @@ export function FollowButton({ profile }: { profile: Profile }) {
       const options = { path: { handle: profile.handle }, throwOnError: true } as const;
       await (follow ? profilesFollowCreate(options) : profilesFollowDestroy(options));
     },
-    onMutate: (follow) => setFollowed(follow),
-    onError: (_error, follow) => setFollowed(!follow),
+    onMutate: (follow) => {
+      show(follow ? (profile.is_private ? 'requested' : 'following') : 'none');
+      return { previous: state };
+    },
+    onError: (_error, _follow, context) => context && show(context.previous),
     onSettled: () => queryClient.invalidateQueries({ queryKey }),
   });
 
@@ -44,12 +59,18 @@ export function FollowButton({ profile }: { profile: Profile }) {
     return null;
   }
 
+  const title = {
+    following: t('profile.followingButton'),
+    requested: t('profile.requested'),
+    none: t('profile.follow'),
+  }[state];
+
   return (
     <Button
-      title={profile.is_followed ? t('profile.followingButton') : t('profile.follow')}
-      variant={profile.is_followed ? 'secondary' : 'primary'}
+      title={title}
+      variant={state === 'none' ? 'primary' : 'secondary'}
       onPress={() =>
-        status === 'signed-in' ? toggle.mutate(!profile.is_followed) : router.push('/sign-in')
+        status === 'signed-in' ? toggle.mutate(state === 'none') : router.push('/sign-in')
       }
     />
   );

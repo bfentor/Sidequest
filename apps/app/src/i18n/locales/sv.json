@@ -62,7 +62,10 @@
     "followersTitle": "Följare",
     "followingTitle": "Följer",
     "noFollowers": "Inga följare än.",
-    "noFollowing": "Följer ingen än."
+    "noFollowing": "Följer ingen än.",
+    "requested": "Förfrågan skickad",
+    "privateAccount": "Kontot är privat",
+    "privateHint": "Följ det för att se dess inlägg och evenemang."
   },
   "event": {
     "title": "Evenemang",
@@ -95,7 +98,9 @@
       "announcement": "Meddelanden från arrangörer",
       "mention": "Omnämnanden",
       "comment": "Kommentarer",
-      "reaction": "Gilla-markeringar"
+      "reaction": "Gilla-markeringar",
+      "follow_request": "Följarförfrågningar",
+      "follow_accepted": "Godkända följarförfrågningar"
     }
   },
   "posts": {
@@ -159,7 +164,9 @@
     "announcement": "{{name}} om {{title}}: {{message}}",
     "mention": "{{name}} nämnde dig.",
     "comment": "{{name}} kommenterade.",
-    "reaction": "{{name}} gillade ditt inlägg."
+    "reaction": "{{name}} gillade ditt inlägg.",
+    "followRequest": "{{name}} vill följa dig.",
+    "followAccepted": "{{name}} godkände din följarförfrågan."
   },
   "editProfile": {
     "changeCover": "Byt omslagsbild",
@@ -174,6 +181,17 @@
     "studyYear": "Årskurs",
     "website": "Webbplats",
     "instagram": "Instagram-användarnamn",
-    "interests": "Intressen"
+    "interests": "Intressen",
+    "privacy": "Integritet",
+    "isPrivate": "Privat konto",
+    "isPrivateHint": "Den som vill följa dig behöver ditt godkännande, och bara dina följare ser dina inlägg och evenemang.",
+    "hideFollowers": "Dölj mina följare och vilka jag följer",
+    "hideAttendance": "Visa mig inte bland dem som går på evenemang"
+  },
+  "followRequests": {
+    "title": "Följarförfrågningar",
+    "accept": "Godkänn",
+    "decline": "Avböj",
+    "empty": "Inga följarförfrågningar."
   }
 }

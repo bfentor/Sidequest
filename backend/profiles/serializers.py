@@ -49,6 +49,9 @@ class ProfileSerializer(serializers.ModelSerializer):
     follower_count = serializers.IntegerField(read_only=True)
     following_count = serializers.IntegerField(read_only=True)
     is_followed = serializers.BooleanField(read_only=True)
+    is_requested = serializers.BooleanField(
+        read_only=True, help_text="The viewer asked to follow this private profile."
+    )
     is_blocked = serializers.BooleanField(read_only=True)
     is_muted = serializers.BooleanField(read_only=True)
 
@@ -70,15 +73,26 @@ class ProfileSerializer(serializers.ModelSerializer):
             "website",
             "instagram",
             "verified",
+            "is_private",
+            "hide_followers",
+            "hide_attendance",
             "interests",
             "created_at",
             "follower_count",
             "following_count",
             "is_followed",
+            "is_requested",
             "is_blocked",
             "is_muted",
         ]
         read_only_fields = ["kind", "created_at", "verified"]
+
+
+class FollowStatusSerializer(serializers.Serializer):
+    status = serializers.ChoiceField(
+        choices=["following", "requested", "none"],
+        help_text="requested: the profile is private and has to accept you first.",
+    )
 
 
 class CurrentProfileDefault:

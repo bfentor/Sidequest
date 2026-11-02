@@ -62,7 +62,10 @@
     "followersTitle": "Seuraajat",
     "followingTitle": "Seurattavat",
     "noFollowers": "Ei vielä seuraajia.",
-    "noFollowing": "Ei vielä seuraa ketään."
+    "noFollowing": "Ei vielä seuraa ketään.",
+    "requested": "Pyydetty",
+    "privateAccount": "Tili on yksityinen",
+    "privateHint": "Seuraa sitä nähdäksesi sen julkaisut ja tapahtumat."
   },
   "event": {
     "title": "Tapahtuma",
@@ -95,7 +98,9 @@
       "announcement": "Järjestäjien tiedotteet",
       "mention": "Maininnat",
       "comment": "Kommentit",
-      "reaction": "Tykkäykset"
+      "reaction": "Tykkäykset",
+      "follow_request": "Seuraamispyynnöt",
+      "follow_accepted": "Hyväksytyt seuraamispyynnöt"
     }
   },
   "posts": {
@@ -159,7 +164,9 @@
     "announcement": "{{name}} tapahtumasta {{title}}: {{message}}",
     "mention": "{{name}} mainitsi sinut.",
     "comment": "{{name}} kommentoi.",
-    "reaction": "{{name}} tykkäsi julkaisustasi."
+    "reaction": "{{name}} tykkäsi julkaisustasi.",
+    "followRequest": "{{name}} pyysi saada seurata sinua.",
+    "followAccepted": "{{name}} hyväksyi seuraamispyyntösi."
   },
   "editProfile": {
     "changeCover": "Vaihda kansikuva",
@@ -174,6 +181,17 @@
     "studyYear": "Vuosikurssi",
     "website": "Verkkosivusto",
     "instagram": "Instagram-käyttäjänimi",
-    "interests": "Kiinnostuksen kohteet"
+    "interests": "Kiinnostuksen kohteet",
+    "privacy": "Yksityisyys",
+    "isPrivate": "Yksityinen tili",
+    "isPrivateHint": "Seuraajien täytyy saada hyväksyntäsi, ja vain seuraajasi näkevät julkaisusi ja tapahtumasi.",
+    "hideFollowers": "Piilota seuraajani ja seurattavani",
+    "hideAttendance": "Älä näytä minua tapahtumien osallistujissa"
+  },
+  "followRequests": {
+    "title": "Seuraamispyynnöt",
+    "accept": "Hyväksy",
+    "decline": "Hylkää",
+    "empty": "Ei seuraamispyyntöjä."
   }
 }

@@ -15,6 +15,7 @@ import { FeedList } from '@/components/feed-list';
 import { NotificationItem } from '@/components/notification-item';
 import { Screen } from '@/components/screen';
 import { ThemedText } from '@/components/themed-text';
+import { useMe } from '@/hooks/use-me';
 import { enablePush, pushSupport, type PushSupport } from '@/notifications/push';
 
 export default function NotificationsScreen() {
@@ -42,6 +43,7 @@ export default function NotificationsScreen() {
 
 function Inbox() {
   const { t } = useTranslation();
+  const me = useMe();
   const queryClient = useQueryClient();
   const notifications = useNotifications();
 
@@ -63,6 +65,13 @@ function Inbox() {
         <View>
           <ThemedText type="subtitle">{t('tabs.notifications')}</ThemedText>
           <PushPrompt />
+          {me?.is_private ? (
+            <Button
+              title={t('followRequests.title')}
+              variant="secondary"
+              onPress={() => router.push('/follow-requests')}
+            />
+          ) : null}
         </View>
       }
       renderItem={(notification) => <NotificationItem notification={notification} />}

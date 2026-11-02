@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sidequest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-02 16:48+0200\n"
-"PO-Revision-Date: 2026-11-02 16:48+0200\n"
+"POT-Creation-Date: 2026-11-02 16:53+0200\n"
+"PO-Revision-Date: 2026-11-02 16:53+0200\n"
 "Last-Translator: Sidequest <dev@sidequest.invalid>\n"
 "Language-Team: Swedish\n"
 "Language: sv\n"
@@ -75,6 +75,12 @@ msgstr "Du kan inte tysta dig själv."
 msgid "New followers"
 msgstr "Nya följare"
 
+msgid "Follow requests"
+msgstr "Följarförfrågningar"
+
+msgid "Accepted follow requests"
+msgstr "Godkända följarförfrågningar"
+
 msgid "New events from people you follow"
 msgstr "Nya evenemang från dem du följer"
 
@@ -105,6 +111,16 @@ msgstr "Gilla-markeringar"
 #, python-format
 msgid "%(name)s started following you."
 msgstr "%(name)s började följa dig."
+
+#, python-format
+#| msgid "%(name)s started following you."
+msgid "%(name)s asked to follow you."
+msgstr "%(name)s vill följa dig."
+
+#, python-format
+#| msgid "%(name)s started following you."
+msgid "%(name)s accepted your follow request."
+msgstr "%(name)s godkände din följarförfrågan."
 
 #, python-format
 msgid "New event from %(name)s."
@@ -149,6 +165,10 @@ msgstr "Du kan inte följa dig själv."
 
 msgid "Unblock this profile to follow it."
 msgstr "Häv blockeringen av profilen för att följa den."
+
+#| msgid "Unblock this profile to follow it."
+msgid "This profile's followers are hidden."
+msgstr "Den här profilens följare är dolda."
 
 msgid "Use upcoming or past."
 msgstr "Använd upcoming eller past."

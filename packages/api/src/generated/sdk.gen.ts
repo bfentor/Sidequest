@@ -2,7 +2,7 @@
 
 import { type Client, type ClientMeta, formDataBodySerializer, type Options as Options2, type RequestResult, type TDataShape } from './client';
 import { client } from './client.gen';
-import type { CategoriesListData, CategoriesListResponses, EventsAttendanceDestroyData, EventsAttendanceDestroyResponses, EventsAttendanceUpdateData, EventsAttendanceUpdateResponses, EventsCreateData, EventsCreateResponses, EventsDestroyData, EventsDestroyResponses, EventsPartialUpdateData, EventsPartialUpdateResponses, EventsRetrieveData, EventsRetrieveResponses, FeedsFollowingListData, FeedsFollowingListResponses, FeedsNearbyListData, FeedsNearbyListResponses, FeedsUpcomingListData, FeedsUpcomingListResponses, ImagesCreateData, ImagesCreateResponses, MeBlockedListData, MeBlockedListResponses, MeMutedListData, MeMutedListResponses, MePartialUpdateData, MePartialUpdateResponses, MeRetrieveData, MeRetrieveResponses, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponses, MeSettingsRetrieveData, MeSettingsRetrieveResponses, NotificationsListData, NotificationsListResponses, NotificationsReadCreateData, NotificationsReadCreateResponses, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponses, PostsCreateData, PostsCreateResponses, PostsDestroyData, PostsDestroyResponses, PostsRetrieveData, PostsRetrieveResponses, ProfilesBlockCreateData, ProfilesBlockCreateResponses, ProfilesBlockDestroyData, ProfilesBlockDestroyResponses, ProfilesEventsListData, ProfilesEventsListResponses, ProfilesFollowCreateData, ProfilesFollowCreateResponses, ProfilesFollowDestroyData, ProfilesFollowDestroyResponses, ProfilesFollowersListData, ProfilesFollowersListResponses, ProfilesFollowingListData, ProfilesFollowingListResponses, ProfilesMuteCreateData, ProfilesMuteCreateResponses, ProfilesMuteDestroyData, ProfilesMuteDestroyResponses, ProfilesPostsListData, ProfilesPostsListResponses, ProfilesRetrieveData, ProfilesRetrieveResponses, PushDevicesCreateData, PushDevicesCreateResponses, PushDevicesDestroyData, PushDevicesDestroyResponses, ReportsCreateData, ReportsCreateResponses } from './types.gen';
+import type { CategoriesListData, CategoriesListResponses, EventsAttendanceDestroyData, EventsAttendanceDestroyResponses, EventsAttendanceUpdateData, EventsAttendanceUpdateResponses, EventsCreateData, EventsCreateResponses, EventsDestroyData, EventsDestroyResponses, EventsPartialUpdateData, EventsPartialUpdateResponses, EventsRetrieveData, EventsRetrieveResponses, FeedsFollowingListData, FeedsFollowingListResponses, FeedsNearbyListData, FeedsNearbyListResponses, FeedsUpcomingListData, FeedsUpcomingListResponses, ImagesCreateData, ImagesCreateResponses, MeBlockedListData, MeBlockedListResponses, MeFollowRequestsCreateData, MeFollowRequestsCreateResponses, MeFollowRequestsDestroyData, MeFollowRequestsDestroyResponses, MeFollowRequestsListData, MeFollowRequestsListResponses, MeMutedListData, MeMutedListResponses, MePartialUpdateData, MePartialUpdateResponses, MeRetrieveData, MeRetrieveResponses, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponses, MeSettingsRetrieveData, MeSettingsRetrieveResponses, NotificationsListData, NotificationsListResponses, NotificationsReadCreateData, NotificationsReadCreateResponses, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponses, PostsCreateData, PostsCreateResponses, PostsDestroyData, PostsDestroyResponses, PostsRetrieveData, PostsRetrieveResponses, ProfilesBlockCreateData, ProfilesBlockCreateResponses, ProfilesBlockDestroyData, ProfilesBlockDestroyResponses, ProfilesEventsListData, ProfilesEventsListResponses, ProfilesFollowCreateData, ProfilesFollowCreateResponses, ProfilesFollowDestroyData, ProfilesFollowDestroyResponses, ProfilesFollowersListData, ProfilesFollowersListResponses, ProfilesFollowingListData, ProfilesFollowingListResponses, ProfilesMuteCreateData, ProfilesMuteCreateResponses, ProfilesMuteDestroyData, ProfilesMuteDestroyResponses, ProfilesPostsListData, ProfilesPostsListResponses, ProfilesRetrieveData, ProfilesRetrieveResponses, PushDevicesCreateData, PushDevicesCreateResponses, PushDevicesDestroyData, PushDevicesDestroyResponses, ReportsCreateData, ReportsCreateResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -168,6 +168,33 @@ export const meBlockedList = <ThrowOnError extends boolean = false>(options?: Op
 });
 
 /**
+ * People asking to follow the signed-in user's private profile, newest first.
+ */
+export const meFollowRequestsList = <ThrowOnError extends boolean = false>(options?: Options<MeFollowRequestsListData, ThrowOnError>): RequestResult<MeFollowRequestsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<MeFollowRequestsListResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/me/follow-requests/',
+    ...options
+});
+
+/**
+ * Accept (POST) or decline (DELETE) someone's request to follow you.
+ */
+export const meFollowRequestsDestroy = <ThrowOnError extends boolean = false>(options: Options<MeFollowRequestsDestroyData, ThrowOnError>): RequestResult<MeFollowRequestsDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<MeFollowRequestsDestroyResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/me/follow-requests/{handle}/',
+    ...options
+});
+
+/**
+ * Accept (POST) or decline (DELETE) someone's request to follow you.
+ */
+export const meFollowRequestsCreate = <ThrowOnError extends boolean = false>(options: Options<MeFollowRequestsCreateData, ThrowOnError>): RequestResult<MeFollowRequestsCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<MeFollowRequestsCreateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/me/follow-requests/{handle}/',
+    ...options
+});
+
+/**
  * Profiles the signed-in user has muted.
  */
 export const meMutedList = <ThrowOnError extends boolean = false>(options?: Options<MeMutedListData, ThrowOnError>): RequestResult<MeMutedListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<MeMutedListResponses, unknown, ThrowOnError>({
@@ -287,12 +314,18 @@ export const profilesEventsList = <ThrowOnError extends boolean = false>(options
     ...options
 });
 
+/**
+ * Follow (POST) or unfollow (DELETE). Private profiles get a follow request instead.
+ */
 export const profilesFollowDestroy = <ThrowOnError extends boolean = false>(options: Options<ProfilesFollowDestroyData, ThrowOnError>): RequestResult<ProfilesFollowDestroyResponses, unknown, ThrowOnError> => (options.client ?? client).delete<ProfilesFollowDestroyResponses, unknown, ThrowOnError>({
     security: [{ name: 'X-Session-Token', type: 'apiKey' }],
     url: '/api/profiles/{handle}/follow/',
     ...options
 });
 
+/**
+ * Follow (POST) or unfollow (DELETE). Private profiles get a follow request instead.
+ */
 export const profilesFollowCreate = <ThrowOnError extends boolean = false>(options: Options<ProfilesFollowCreateData, ThrowOnError>): RequestResult<ProfilesFollowCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<ProfilesFollowCreateResponses, unknown, ThrowOnError>({
     security: [{ name: 'X-Session-Token', type: 'apiKey' }],
     url: '/api/profiles/{handle}/follow/',

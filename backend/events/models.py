@@ -5,15 +5,17 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import get_language
 
-from moderation.visibility import hidden_profiles, muted_profiles
+from moderation.visibility import hidden_profiles, muted_profiles, private_profiles
 from profiles.models import Profile
 
 
 class EventQuerySet(models.QuerySet):
     def visible_to(self, viewer):
         """Not removed, and not organized by a profile blocked either way or removed."""
-        return self.filter(removed_at__isnull=True, organizer__removed_at__isnull=True).exclude(
-            organizer__in=hidden_profiles(viewer)
+        return (
+            self.filter(removed_at__isnull=True, organizer__removed_at__isnull=True)
+            .exclude(organizer__in=hidden_profiles(viewer))
+            .exclude(organizer__in=private_profiles(viewer))
         )
 
     def in_feeds_of(self, viewer):

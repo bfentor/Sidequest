@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { categoriesList, eventsAttendanceDestroy, eventsAttendanceUpdate, eventsCreate, eventsDestroy, eventsPartialUpdate, eventsRetrieve, feedsFollowingList, feedsNearbyList, feedsUpcomingList, imagesCreate, meBlockedList, meMutedList, mePartialUpdate, meRetrieve, meSettingsPartialUpdate, meSettingsRetrieve, notificationsList, notificationsReadCreate, notificationsUnreadRetrieve, type Options, postsCreate, postsDestroy, postsRetrieve, profilesBlockCreate, profilesBlockDestroy, profilesEventsList, profilesFollowCreate, profilesFollowDestroy, profilesFollowersList, profilesFollowingList, profilesMuteCreate, profilesMuteDestroy, profilesPostsList, profilesRetrieve, pushDevicesCreate, pushDevicesDestroy, reportsCreate } from '../sdk.gen';
-import type { CategoriesListData, CategoriesListResponse, EventsAttendanceDestroyData, EventsAttendanceDestroyResponse, EventsAttendanceUpdateData, EventsAttendanceUpdateResponse, EventsCreateData, EventsCreateResponse, EventsDestroyData, EventsDestroyResponse, EventsPartialUpdateData, EventsPartialUpdateResponse, EventsRetrieveData, EventsRetrieveResponse, FeedsFollowingListData, FeedsFollowingListResponse, FeedsNearbyListData, FeedsNearbyListResponse, FeedsUpcomingListData, FeedsUpcomingListResponse, ImagesCreateData, ImagesCreateResponse, MeBlockedListData, MeBlockedListResponse, MeMutedListData, MeMutedListResponse, MePartialUpdateData, MePartialUpdateResponse, MeRetrieveData, MeRetrieveResponse, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponse, MeSettingsRetrieveData, MeSettingsRetrieveResponse, NotificationsListData, NotificationsListResponse, NotificationsReadCreateData, NotificationsReadCreateResponse, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponse, PostsCreateData, PostsCreateResponse, PostsDestroyData, PostsDestroyResponse, PostsRetrieveData, PostsRetrieveResponse, ProfilesBlockCreateData, ProfilesBlockCreateResponse, ProfilesBlockDestroyData, ProfilesBlockDestroyResponse, ProfilesEventsListData, ProfilesEventsListResponse, ProfilesFollowCreateData, ProfilesFollowCreateResponse, ProfilesFollowDestroyData, ProfilesFollowDestroyResponse, ProfilesFollowersListData, ProfilesFollowersListResponse, ProfilesFollowingListData, ProfilesFollowingListResponse, ProfilesMuteCreateData, ProfilesMuteCreateResponse, ProfilesMuteDestroyData, ProfilesMuteDestroyResponse, ProfilesPostsListData, ProfilesPostsListResponse, ProfilesRetrieveData, ProfilesRetrieveResponse, PushDevicesCreateData, PushDevicesCreateResponse, PushDevicesDestroyData, PushDevicesDestroyResponse, ReportsCreateData, ReportsCreateResponse } from '../types.gen';
+import { categoriesList, eventsAttendanceDestroy, eventsAttendanceUpdate, eventsCreate, eventsDestroy, eventsPartialUpdate, eventsRetrieve, feedsFollowingList, feedsNearbyList, feedsUpcomingList, imagesCreate, meBlockedList, meFollowRequestsCreate, meFollowRequestsDestroy, meFollowRequestsList, meMutedList, mePartialUpdate, meRetrieve, meSettingsPartialUpdate, meSettingsRetrieve, notificationsList, notificationsReadCreate, notificationsUnreadRetrieve, type Options, postsCreate, postsDestroy, postsRetrieve, profilesBlockCreate, profilesBlockDestroy, profilesEventsList, profilesFollowCreate, profilesFollowDestroy, profilesFollowersList, profilesFollowingList, profilesMuteCreate, profilesMuteDestroy, profilesPostsList, profilesRetrieve, pushDevicesCreate, pushDevicesDestroy, reportsCreate } from '../sdk.gen';
+import type { CategoriesListData, CategoriesListResponse, EventsAttendanceDestroyData, EventsAttendanceDestroyResponse, EventsAttendanceUpdateData, EventsAttendanceUpdateResponse, EventsCreateData, EventsCreateResponse, EventsDestroyData, EventsDestroyResponse, EventsPartialUpdateData, EventsPartialUpdateResponse, EventsRetrieveData, EventsRetrieveResponse, FeedsFollowingListData, FeedsFollowingListResponse, FeedsNearbyListData, FeedsNearbyListResponse, FeedsUpcomingListData, FeedsUpcomingListResponse, ImagesCreateData, ImagesCreateResponse, MeBlockedListData, MeBlockedListResponse, MeFollowRequestsCreateData, MeFollowRequestsCreateResponse, MeFollowRequestsDestroyData, MeFollowRequestsDestroyResponse, MeFollowRequestsListData, MeFollowRequestsListResponse, MeMutedListData, MeMutedListResponse, MePartialUpdateData, MePartialUpdateResponse, MeRetrieveData, MeRetrieveResponse, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponse, MeSettingsRetrieveData, MeSettingsRetrieveResponse, NotificationsListData, NotificationsListResponse, NotificationsReadCreateData, NotificationsReadCreateResponse, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponse, PostsCreateData, PostsCreateResponse, PostsDestroyData, PostsDestroyResponse, PostsRetrieveData, PostsRetrieveResponse, ProfilesBlockCreateData, ProfilesBlockCreateResponse, ProfilesBlockDestroyData, ProfilesBlockDestroyResponse, ProfilesEventsListData, ProfilesEventsListResponse, ProfilesFollowCreateData, ProfilesFollowCreateResponse, ProfilesFollowDestroyData, ProfilesFollowDestroyResponse, ProfilesFollowersListData, ProfilesFollowersListResponse, ProfilesFollowingListData, ProfilesFollowingListResponse, ProfilesMuteCreateData, ProfilesMuteCreateResponse, ProfilesMuteDestroyData, ProfilesMuteDestroyResponse, ProfilesPostsListData, ProfilesPostsListResponse, ProfilesRetrieveData, ProfilesRetrieveResponse, PushDevicesCreateData, PushDevicesCreateResponse, PushDevicesDestroyData, PushDevicesDestroyResponse, ReportsCreateData, ReportsCreateResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -407,6 +407,88 @@ export const meBlockedListOptions = (options?: Options<MeBlockedListData>) => qu
     queryKey: meBlockedListQueryKey(options)
 });
 
+export const meFollowRequestsListQueryKey = (options?: Options<MeFollowRequestsListData>) => createQueryKey('meFollowRequestsList', options);
+
+/**
+ * People asking to follow the signed-in user's private profile, newest first.
+ */
+export const meFollowRequestsListOptions = (options?: Options<MeFollowRequestsListData>) => queryOptions<MeFollowRequestsListResponse, DefaultError, MeFollowRequestsListResponse, ReturnType<typeof meFollowRequestsListQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await meFollowRequestsList({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: meFollowRequestsListQueryKey(options)
+});
+
+export const meFollowRequestsListInfiniteQueryKey = (options?: Options<MeFollowRequestsListData>): QueryKey<Options<MeFollowRequestsListData>> => createQueryKey('meFollowRequestsList', options, true);
+
+/**
+ * People asking to follow the signed-in user's private profile, newest first.
+ */
+export const meFollowRequestsListInfiniteOptions = (options?: Options<MeFollowRequestsListData>) => {
+    const opts = infiniteQueryOptions<MeFollowRequestsListResponse, DefaultError, InfiniteData<MeFollowRequestsListResponse>, QueryKey<Options<MeFollowRequestsListData>>, string | Pick<QueryKey<Options<MeFollowRequestsListData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<MeFollowRequestsListData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    cursor: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            const { data } = await meFollowRequestsList({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: meFollowRequestsListInfiniteQueryKey(options)
+    });
+    return opts as Omit<typeof opts, 'initialData'>;
+};
+
+/**
+ * Accept (POST) or decline (DELETE) someone's request to follow you.
+ */
+export const meFollowRequestsDestroyMutation = (options?: Partial<Options<MeFollowRequestsDestroyData>>): UseMutationOptions<MeFollowRequestsDestroyResponse, DefaultError, Options<MeFollowRequestsDestroyData>> => {
+    const mutationOptions: UseMutationOptions<MeFollowRequestsDestroyResponse, DefaultError, Options<MeFollowRequestsDestroyData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await meFollowRequestsDestroy({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Accept (POST) or decline (DELETE) someone's request to follow you.
+ */
+export const meFollowRequestsCreateMutation = (options?: Partial<Options<MeFollowRequestsCreateData>>): UseMutationOptions<MeFollowRequestsCreateResponse, DefaultError, Options<MeFollowRequestsCreateData>> => {
+    const mutationOptions: UseMutationOptions<MeFollowRequestsCreateResponse, DefaultError, Options<MeFollowRequestsCreateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await meFollowRequestsCreate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
 export const meMutedListQueryKey = (options?: Options<MeMutedListData>) => createQueryKey('meMutedList', options);
 
 /**
@@ -686,6 +768,9 @@ export const profilesEventsListInfiniteOptions = (options: Options<ProfilesEvent
     return opts as Omit<typeof opts, 'initialData'>;
 };
 
+/**
+ * Follow (POST) or unfollow (DELETE). Private profiles get a follow request instead.
+ */
 export const profilesFollowDestroyMutation = (options?: Partial<Options<ProfilesFollowDestroyData>>): UseMutationOptions<ProfilesFollowDestroyResponse, DefaultError, Options<ProfilesFollowDestroyData>> => {
     const mutationOptions: UseMutationOptions<ProfilesFollowDestroyResponse, DefaultError, Options<ProfilesFollowDestroyData>> = {
         mutationFn: async (fnOptions) => {
@@ -700,6 +785,9 @@ export const profilesFollowDestroyMutation = (options?: Partial<Options<Profiles
     return mutationOptions;
 };
 
+/**
+ * Follow (POST) or unfollow (DELETE). Private profiles get a follow request instead.
+ */
 export const profilesFollowCreateMutation = (options?: Partial<Options<ProfilesFollowCreateData>>): UseMutationOptions<ProfilesFollowCreateResponse, DefaultError, Options<ProfilesFollowCreateData>> => {
     const mutationOptions: UseMutationOptions<ProfilesFollowCreateResponse, DefaultError, Options<ProfilesFollowCreateData>> = {
         mutationFn: async (fnOptions) => {

@@ -356,6 +356,62 @@ paths:
                 items:
                   $ref: '#/components/schemas/ProfileSummary'
           description: ''
+  /api/me/follow-requests/:
+    get:
+      operationId: me_follow_requests_list
+      description: People asking to follow the signed-in user's private profile, newest
+        first.
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
+      tags:
+      - me
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProfileSummaryList'
+          description: ''
+  /api/me/follow-requests/{handle}/:
+    post:
+      operationId: me_follow_requests_create
+      description: Accept (POST) or decline (DELETE) someone's request to follow you.
+      parameters:
+      - in: path
+        name: handle
+        schema:
+          type: string
+        required: true
+      tags:
+      - me
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '204':
+          description: No response body
+    delete:
+      operationId: me_follow_requests_destroy
+      description: Accept (POST) or decline (DELETE) someone's request to follow you.
+      parameters:
+      - in: path
+        name: handle
+        schema:
+          type: string
+        required: true
+      tags:
+      - me
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/me/muted/:
     get:
       operationId: me_muted_list
@@ -644,6 +700,8 @@ paths:
   /api/profiles/{handle}/follow/:
     post:
       operationId: profiles_follow_create
+      description: Follow (POST) or unfollow (DELETE). Private profiles get a follow
+        request instead.
       parameters:
       - in: path
         name: handle
@@ -655,10 +713,16 @@ paths:
       security:
       - XSessionTokenAuth: []
       responses:
-        '204':
-          description: No response body
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FollowStatus'
+          description: ''
     delete:
       operationId: profiles_follow_destroy
+      description: Follow (POST) or unfollow (DELETE). Private profiles get a follow
+        request instead.
       parameters:
       - in: path
         name: handle
@@ -1029,6 +1093,30 @@ components:
       - ends_at
       - starts_at
       - title
+    FollowStatus:
+      type: object
+      properties:
+        status:
+          allOf:
+          - $ref: '#/components/schemas/FollowStatusStatusEnum'
+          description: |-
+            requested: the profile is private and has to accept you first.
+
+            * `following` - following
+            * `requested` - requested
+            * `none` - none
+      required:
+      - status
+    FollowStatusStatusEnum:
+      enum:
+      - following
+      - requested
+      - none
+      type: string
+      description: |-
+        * `following` - following
+        * `requested` - requested
+        * `none` - none
     Image:
       type: object
       description: How images appear inside other resources.
@@ -1259,6 +1347,8 @@ components:
     NotificationKindEnum:
       enum:
       - new_follower
+      - follow_request
+      - follow_accepted
       - new_event
       - event_changed
       - event_cancelled
@@ -1271,6 +1361,8 @@ components:
       type: string
       description: |-
         * `new_follower` - New followers
+        * `follow_request` - Follow requests
+        * `follow_accepted` - Accepted follow requests
         * `new_event` - New events from people you follow
         * `event_changed` - Changes to events you're going to
         * `event_cancelled` - Cancelled events
@@ -1487,6 +1579,12 @@ components:
             maxLength: 30
           - type: string
             maxLength: 0
+        is_private:
+          type: boolean
+        hide_followers:
+          type: boolean
+        hide_attendance:
+          type: boolean
         interests:
           type: array
           items:
@@ -1595,6 +1693,12 @@ components:
         verified:
           type: boolean
           readOnly: true
+        is_private:
+          type: boolean
+        hide_followers:
+          type: boolean
+        hide_attendance:
+          type: boolean
         interests:
           type: array
           items:
@@ -1613,6 +1717,10 @@ components:
         is_followed:
           type: boolean
           readOnly: true
+        is_requested:
+          type: boolean
+          readOnly: true
+          description: The viewer asked to follow this private profile.
         is_blocked:
           type: boolean
           readOnly: true
@@ -1630,6 +1738,7 @@ components:
       - is_blocked
       - is_followed
       - is_muted
+      - is_requested
       - kind
       - verified
     ProfileKindEnum:
@@ -1741,7 +1850,7 @@ components:
       properties:
         status:
           allOf:
-          - $ref: '#/components/schemas/StatusEnum'
+          - $ref: '#/components/schemas/RsvpStatusEnum'
           description: |-
             Going to a full event puts you on the waitlist.
 
@@ -1749,7 +1858,7 @@ components:
             * `interested` - interested
       required:
       - status
-    StatusEnum:
+    RsvpStatusEnum:
       enum:
       - going
       - interested

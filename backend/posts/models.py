@@ -1,7 +1,7 @@
 from django.db import models
 
 from events.models import Event
-from moderation.visibility import hidden_profiles, muted_profiles
+from moderation.visibility import hidden_profiles, muted_profiles, private_profiles
 from profiles.models import Follow, Profile
 
 
@@ -9,11 +9,14 @@ class PostQuerySet(models.QuerySet):
     def visible_to(self, viewer):
         """Not removed, by a visible author, and sharing nothing the viewer may not see."""
         hidden = hidden_profiles(viewer)
+        private = private_profiles(viewer)
         return (
             self.filter(removed_at__isnull=True, author__removed_at__isnull=True)
             .exclude(author__in=hidden)
+            .exclude(author__in=private)
             .exclude(event__removed_at__isnull=False)
             .exclude(event__organizer__in=hidden)
+            .exclude(event__organizer__in=private)
         )
 
     def in_feeds_of(self, viewer):
