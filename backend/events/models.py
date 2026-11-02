@@ -70,8 +70,9 @@ class EventQuerySet(models.QuerySet):
             .prefetch_related("categories", "co_host_links__profile__avatar")
         )
         if viewer is None:
-            return queryset
-        return queryset.prefetch_related(
+            return queryset.annotate(is_saved=models.Value(False))
+        saved = SavedEvent.objects.filter(event=models.OuterRef("pk"), profile=viewer)
+        return queryset.annotate(is_saved=models.Exists(saved)).prefetch_related(
             models.Prefetch(
                 "attendances",
                 queryset=Attendance.objects.friends_going(viewer),
@@ -281,3 +282,19 @@ class CoHost(models.Model):
 
     def __str__(self):
         return f"{self.profile} co-hosts {self.event}"
+
+
+class SavedEvent(models.Model):
+    """An event someone bookmarked. Private: unlike "interested", nobody else sees it."""
+
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="saved_events")
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="saves")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["profile", "event"], name="unique_saved_event"),
+        ]
+
+    def __str__(self):
+        return f"{self.profile} saved {self.event}"

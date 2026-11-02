@@ -326,7 +326,12 @@
     "title": "Mina evenemang",
     "upcoming": "Kommande",
     "past": "Tidigare",
-    "empty": "Du har inte skapat några evenemang än."
+    "empty": "Du har inte skapat några evenemang än.",
+    "attending": "Ska gå",
+    "saved": "Sparade",
+    "hosting": "Arrangerar",
+    "attendingEmpty": "Evenemang du ska gå på eller är intresserad av visas här.",
+    "savedEmpty": "Spara evenemang med bokmärkesknappen så hittar du dem här."
   },
   "account": {
     "title": "Ditt konto",
@@ -444,5 +449,9 @@
     "title": "Vilka som kommer",
     "seeAll": "Se vilka som kommer",
     "empty": "Ingen att visa än."
+  },
+  "saved": {
+    "save": "Spara evenemang",
+    "unsave": "Ta bort från sparade"
   }
 }

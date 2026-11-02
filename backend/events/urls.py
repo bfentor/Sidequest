@@ -2,12 +2,14 @@ from django.urls import path
 from rest_framework.routers import SimpleRouter
 
 from .views import (
+    AttendingEventsView,
     CategoryListView,
     CoHostAnswerView,
     CoHostInvitationsView,
     EventViewSet,
     GeocodeView,
     ManagedEventsView,
+    SavedEventsView,
 )
 
 router = SimpleRouter()
@@ -17,6 +19,8 @@ urlpatterns = [
     path("categories/", CategoryListView.as_view(), name="category-list"),
     path("geocode/", GeocodeView.as_view(), name="geocode"),
     path("me/events/", ManagedEventsView.as_view(), name="managed-events"),
+    path("me/attending/", AttendingEventsView.as_view(), name="attending-events"),
+    path("me/saved/", SavedEventsView.as_view(), name="saved-events"),
     path("events/<int:pk>/co-host/", CoHostInvitationsView.as_view(), name="event-co-host"),
     path(
         "events/<int:pk>/co-host/<str:handle>/",

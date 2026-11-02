@@ -298,6 +298,43 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/events/{id}/save/:
+    put:
+      operationId: events_save_update
+      description: Save the event for later (PUT), or forget it (DELETE). Only you
+        see what you saved.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this event.
+        required: true
+      tags:
+      - events
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '204':
+          description: No response body
+    delete:
+      operationId: events_save_destroy
+      description: Save the event for later (PUT), or forget it (DELETE). Only you
+        see what you saved.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this event.
+        required: true
+      tags:
+      - events
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/feeds/following/:
     get:
       operationId: feeds_following_list
@@ -711,6 +748,43 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/me/attending/:
+    get:
+      operationId: me_attending_list
+      description: Events the signed-in user is going to, interested in or waitlisted
+        for.
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: when
+        schema:
+          type: string
+          enum:
+          - past
+          - upcoming
+          default: upcoming
+      tags:
+      - me
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEventList'
+          description: ''
   /api/me/blocked/:
     get:
       operationId: me_blocked_list
@@ -731,8 +805,8 @@ paths:
   /api/me/events/:
     get:
       operationId: me_events_list
-      description: 'Events organized by the signed-in user or their organizations:
-        upcoming, or past.'
+      description: Events organized by the signed-in user or their organizations,
+        drafts included.
       parameters:
       - name: limit
         required: false
@@ -921,6 +995,42 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ActingProfile'
+          description: ''
+  /api/me/saved/:
+    get:
+      operationId: me_saved_list
+      description: Events the signed-in user saved.
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: when
+        schema:
+          type: string
+          enum:
+          - past
+          - upcoming
+          default: upcoming
+      tags:
+      - me
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEventList'
           description: ''
   /api/me/settings/:
     get:
@@ -2049,6 +2159,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/AttendanceSummary'
           readOnly: true
+        is_saved:
+          type: boolean
+          readOnly: true
+          description: Whether you saved this event.
         created_at:
           type: string
           format: date-time
@@ -2064,6 +2178,7 @@ components:
       - created_at
       - ends_at
       - id
+      - is_saved
       - organizer
       - series_id
       - starts_at
@@ -2506,6 +2621,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/AttendanceSummary'
           readOnly: true
+        is_saved:
+          type: boolean
+          readOnly: true
+          description: Whether you saved this event.
         created_at:
           type: string
           format: date-time
@@ -2526,6 +2645,7 @@ components:
       - distance_m
       - ends_at
       - id
+      - is_saved
       - organizer
       - series_id
       - starts_at

@@ -21,7 +21,7 @@ from students.services import current_university
 
 from . import attendance as rsvps
 from . import geocoding
-from .models import Attendance, Category, CoHost, Event
+from .models import Attendance, Category, CoHost, Event, SavedEvent
 from .serializers import (
     AttendanceSummarySerializer,
     CategorySerializer,
@@ -156,6 +156,23 @@ class EventViewSet(
             ProfileSummarySerializer(page, many=True, context=context).data
         )
 
+    @extend_schema(request=None, responses={204: None}, methods=["PUT", "DELETE"])
+    @action(
+        detail=True,
+        methods=["put", "delete"],
+        permission_classes=[permissions.IsAuthenticated],
+        throttle_scope="rsvps",
+        http_method_names=["put", "delete", "options"],
+    )
+    def save(self, request, pk=None):
+        """Save the event for later (PUT), or forget it (DELETE). Only you see what you saved."""
+        event = get_object_or_404(Event.objects.visible_to(request.user.profile), pk=pk)
+        if request.method == "PUT":
+            SavedEvent.objects.get_or_create(profile=request.user.profile, event=event)
+        else:
+            SavedEvent.objects.filter(profile=request.user.profile, event=event).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class CategoryListView(generics.ListAPIView):
     """Every category, in display order, named in the request's language."""
@@ -227,17 +244,17 @@ class GeocodeView(APIView):
         return Response(GeocodeResultSerializer(results, many=True).data)
 
 
-class ManagedEventsPagination(LimitOffsetPagination):
+class MyEventsPagination(LimitOffsetPagination):
     default_limit = 30
     max_limit = 100
 
 
-class ManagedEventsView(generics.ListAPIView):
-    """Events organized by the signed-in user or their organizations: upcoming, or past."""
+class MyEventListView(generics.ListAPIView):
+    """Base for the signed-in user's own lists: upcoming (soonest first) or past (latest first)."""
 
     serializer_class = EventSerializer
     permission_classes = [permissions.IsAuthenticated]
-    pagination_class = ManagedEventsPagination
+    pagination_class = MyEventsPagination
 
     @extend_schema(
         parameters=[OpenApiParameter("when", enum=["upcoming", "past"], default="upcoming")]
@@ -245,11 +262,36 @@ class ManagedEventsView(generics.ListAPIView):
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
+    def events_of(self, viewer):
+        raise NotImplementedError
+
     def get_queryset(self):
         viewer = self.request.user.profile
-        managed = Profile.objects.manageable_by(self.request.user)
-        events = Event.objects.filter(organizer__in=managed).for_display(viewer)
+        events = self.events_of(viewer).for_display(viewer)
         now = timezone.now()
         if self.request.query_params.get("when") == "past":
             return events.filter(ends_at__lt=now).order_by("-starts_at", "-id")
         return events.filter(ends_at__gte=now).order_by("starts_at", "id")
+
+
+class ManagedEventsView(MyEventListView):
+    """Events organized by the signed-in user or their organizations, drafts included."""
+
+    def events_of(self, viewer):
+        return Event.objects.filter(organizer__in=Profile.objects.manageable_by(viewer.user))
+
+
+class AttendingEventsView(MyEventListView):
+    """Events the signed-in user is going to, interested in or waitlisted for."""
+
+    def events_of(self, viewer):
+        answered = Attendance.objects.filter(profile=viewer).values("event")
+        return Event.objects.visible_to(viewer).filter(pk__in=answered)
+
+
+class SavedEventsView(MyEventListView):
+    """Events the signed-in user saved."""
+
+    def events_of(self, viewer):
+        saved = SavedEvent.objects.filter(profile=viewer).values("event")
+        return Event.objects.visible_to(viewer).filter(pk__in=saved)

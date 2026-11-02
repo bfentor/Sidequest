@@ -136,6 +136,7 @@ class EventSerializer(serializers.ModelSerializer):
         help_text="In euros; empty for free events.",
     )
     attendance = serializers.SerializerMethodField()
+    is_saved = serializers.SerializerMethodField(help_text="Whether you saved this event.")
     co_hosts = serializers.SerializerMethodField(help_text="Co-hosts who accepted.")
     students_of = serializers.SerializerMethodField(
         help_text="Only verified students of this university can RSVP."
@@ -193,6 +194,7 @@ class EventSerializer(serializers.ModelSerializer):
             "co_host_handles",
             "repeat",
             "attendance",
+            "is_saved",
             "created_at",
             "updated_at",
         ]
@@ -215,6 +217,10 @@ class EventSerializer(serializers.ModelSerializer):
                 _("No profile has the username %(handle)s.") % {"handle": sorted(missing)[0]}
             )
         return profiles
+
+    def get_is_saved(self, event) -> bool:
+        # Annotated by for_display; a just-created event isn't saved yet.
+        return getattr(event, "is_saved", False)
 
     @extend_schema_field(AttendanceSummarySerializer)
     def get_attendance(self, event):

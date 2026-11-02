@@ -326,7 +326,12 @@
     "title": "Omat tapahtumat",
     "upcoming": "Tulevat",
     "past": "Menneet",
-    "empty": "Et ole vielä luonut tapahtumia."
+    "empty": "Et ole vielä luonut tapahtumia.",
+    "attending": "Osallistun",
+    "saved": "Tallennetut",
+    "hosting": "Järjestän",
+    "attendingEmpty": "Tapahtumat, joihin osallistut tai jotka kiinnostavat sinua, näkyvät täällä.",
+    "savedEmpty": "Tallenna tapahtumia kirjanmerkkipainikkeella, niin löydät ne täältä."
   },
   "account": {
     "title": "Tilisi",
@@ -444,5 +449,9 @@
     "title": "Osallistujat",
     "seeAll": "Katso, ketkä osallistuvat",
     "empty": "Ei vielä ketään näytettävää."
+  },
+  "saved": {
+    "save": "Tallenna tapahtuma",
+    "unsave": "Poista tallennetuista"
   }
 }

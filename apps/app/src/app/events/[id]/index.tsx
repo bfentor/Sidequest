@@ -22,6 +22,7 @@ import { ContentMenu } from '@/components/content-menu';
 import { FriendsGoing } from '@/components/friends-going';
 import { RemoteImage } from '@/components/remote-image';
 import { RsvpBar } from '@/components/rsvp-bar';
+import { SaveButton } from '@/components/save-button';
 import { Screen } from '@/components/screen';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -113,16 +114,19 @@ export default function EventScreen() {
           title: event?.title ?? t('event.title'),
           headerRight: event
             ? () => (
-                <ContentMenu
-                  target={{ type: 'event', id: String(event.id) }}
-                  owner={event.organizer}
-                  ownActions={organizerActions(
-                    event,
-                    t,
-                    () => destroy.mutate({ path: { id: event.id } }),
-                    (status) => setStatus.mutate(status),
-                  )}
-                />
+                <View style={styles.headerActions}>
+                  <SaveButton event={event} />
+                  <ContentMenu
+                    target={{ type: 'event', id: String(event.id) }}
+                    owner={event.organizer}
+                    ownActions={organizerActions(
+                      event,
+                      t,
+                      () => destroy.mutate({ path: { id: event.id } }),
+                      (status) => setStatus.mutate(status),
+                    )}
+                  />
+                </View>
               )
             : undefined,
         }}
@@ -256,6 +260,11 @@ function CoHostInvitation({ eventId }: { eventId: number }) {
 }
 
 const styles = StyleSheet.create({
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.three,
+  },
   banner: {
     gap: Spacing.two,
     padding: Spacing.three,

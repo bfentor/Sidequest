@@ -3,6 +3,7 @@ import {
   eventsAttendanceUpdate,
   eventsRetrieveQueryKey,
   feedsUpcomingListInfiniteQueryKey,
+  meAttendingListInfiniteQueryKey,
   type AttendanceSummary,
   type Event,
 } from '@sidequest/api';
@@ -49,6 +50,7 @@ export function RsvpBar({ event }: { event: Event }) {
     onSuccess: (summary) => {
       setAttendance(summary);
       queryClient.invalidateQueries({ queryKey: feedsUpcomingListInfiniteQueryKey() });
+      queryClient.invalidateQueries({ queryKey: meAttendingListInfiniteQueryKey() });
     },
   });
 

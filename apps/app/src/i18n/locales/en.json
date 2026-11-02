@@ -326,7 +326,12 @@
     "title": "My events",
     "upcoming": "Upcoming",
     "past": "Past",
-    "empty": "You haven't created any events yet."
+    "empty": "You haven't created any events yet.",
+    "attending": "Going",
+    "saved": "Saved",
+    "hosting": "Hosting",
+    "attendingEmpty": "Events you're going to or interested in show up here.",
+    "savedEmpty": "Save events with the bookmark button to find them here."
   },
   "account": {
     "title": "Your account",
@@ -444,5 +449,9 @@
     "title": "Who's going",
     "seeAll": "See who's going",
     "empty": "No one to show yet."
+  },
+  "saved": {
+    "save": "Save event",
+    "unsave": "Remove from saved"
   }
 }

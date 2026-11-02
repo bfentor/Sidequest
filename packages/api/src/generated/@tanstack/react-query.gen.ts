@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { categoriesList, eventsAttendanceDestroy, eventsAttendanceUpdate, eventsAttendeesList, eventsCoHostCreate, eventsCoHostDestroy, eventsCoHostList, eventsCreate, eventsDestroy, eventsPartialUpdate, eventsRetrieve, feedsFollowingList, feedsForYouList, feedsNearbyList, feedsTrendingList, feedsUpcomingList, geocodeList, imagesCreate, meAcceptTermsCreate, meAccountDeleteCreate, meBlockedList, meEventsList, meExportRetrieve, meFollowRequestsCreate, meFollowRequestsDestroy, meFollowRequestsList, meInvitationsCreate, meInvitationsDestroy, meInvitationsList, meMutedList, mePartialUpdate, meProfilesList, meRetrieve, meSettingsPartialUpdate, meSettingsRetrieve, meStudentCreate, meStudentDestroy, meStudentRetrieve, meStudentVerifyCreate, meSuggestionsList, notificationsList, notificationsReadCreate, notificationsUnreadRetrieve, type Options, organizationsCreate, organizationsInvitationsList, organizationsMembersCreate, organizationsMembersDestroy, organizationsMembersList, organizationsMembersPartialUpdate, organizationsPartialUpdate, organizationsVerificationCreate, postsCreate, postsDestroy, postsRetrieve, profilesBlockCreate, profilesBlockDestroy, profilesEventsList, profilesFollowCreate, profilesFollowDestroy, profilesFollowersList, profilesFollowingList, profilesMuteCreate, profilesMuteDestroy, profilesPostsList, profilesRetrieve, pushDevicesCreate, pushDevicesDestroy, reportsCreate, searchRetrieve, universitiesList } from '../sdk.gen';
-import type { CategoriesListData, CategoriesListResponse, EventsAttendanceDestroyData, EventsAttendanceDestroyResponse, EventsAttendanceUpdateData, EventsAttendanceUpdateResponse, EventsAttendeesListData, EventsAttendeesListResponse, EventsCoHostCreateData, EventsCoHostCreateResponse, EventsCoHostDestroyData, EventsCoHostDestroyResponse, EventsCoHostListData, EventsCoHostListResponse, EventsCreateData, EventsCreateResponse, EventsDestroyData, EventsDestroyResponse, EventsPartialUpdateData, EventsPartialUpdateResponse, EventsRetrieveData, EventsRetrieveResponse, FeedsFollowingListData, FeedsFollowingListResponse, FeedsForYouListData, FeedsForYouListResponse, FeedsNearbyListData, FeedsNearbyListResponse, FeedsTrendingListData, FeedsTrendingListResponse, FeedsUpcomingListData, FeedsUpcomingListResponse, GeocodeListData, GeocodeListResponse, ImagesCreateData, ImagesCreateResponse, MeAcceptTermsCreateData, MeAcceptTermsCreateResponse, MeAccountDeleteCreateData, MeAccountDeleteCreateResponse, MeBlockedListData, MeBlockedListResponse, MeEventsListData, MeEventsListResponse, MeExportRetrieveData, MeExportRetrieveResponse, MeFollowRequestsCreateData, MeFollowRequestsCreateResponse, MeFollowRequestsDestroyData, MeFollowRequestsDestroyResponse, MeFollowRequestsListData, MeFollowRequestsListResponse, MeInvitationsCreateData, MeInvitationsCreateResponse, MeInvitationsDestroyData, MeInvitationsDestroyResponse, MeInvitationsListData, MeInvitationsListResponse, MeMutedListData, MeMutedListResponse, MePartialUpdateData, MePartialUpdateResponse, MeProfilesListData, MeProfilesListResponse, MeRetrieveData, MeRetrieveResponse, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponse, MeSettingsRetrieveData, MeSettingsRetrieveResponse, MeStudentCreateData, MeStudentCreateResponse, MeStudentDestroyData, MeStudentDestroyResponse, MeStudentRetrieveData, MeStudentRetrieveResponse, MeStudentVerifyCreateData, MeStudentVerifyCreateResponse, MeSuggestionsListData, MeSuggestionsListResponse, NotificationsListData, NotificationsListResponse, NotificationsReadCreateData, NotificationsReadCreateResponse, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponse, OrganizationsCreateData, OrganizationsCreateResponse, OrganizationsInvitationsListData, OrganizationsInvitationsListResponse, OrganizationsMembersCreateData, OrganizationsMembersCreateResponse, OrganizationsMembersDestroyData, OrganizationsMembersDestroyResponse, OrganizationsMembersListData, OrganizationsMembersListResponse, OrganizationsMembersPartialUpdateData, OrganizationsMembersPartialUpdateResponse, OrganizationsPartialUpdateData, OrganizationsPartialUpdateResponse, OrganizationsVerificationCreateData, OrganizationsVerificationCreateResponse, PostsCreateData, PostsCreateResponse, PostsDestroyData, PostsDestroyResponse, PostsRetrieveData, PostsRetrieveResponse, ProfilesBlockCreateData, ProfilesBlockCreateResponse, ProfilesBlockDestroyData, ProfilesBlockDestroyResponse, ProfilesEventsListData, ProfilesEventsListResponse, ProfilesFollowCreateData, ProfilesFollowCreateResponse, ProfilesFollowDestroyData, ProfilesFollowDestroyResponse, ProfilesFollowersListData, ProfilesFollowersListResponse, ProfilesFollowingListData, ProfilesFollowingListResponse, ProfilesMuteCreateData, ProfilesMuteCreateResponse, ProfilesMuteDestroyData, ProfilesMuteDestroyResponse, ProfilesPostsListData, ProfilesPostsListResponse, ProfilesRetrieveData, ProfilesRetrieveResponse, PushDevicesCreateData, PushDevicesCreateResponse, PushDevicesDestroyData, PushDevicesDestroyResponse, ReportsCreateData, ReportsCreateResponse, SearchRetrieveData, SearchRetrieveResponse, UniversitiesListData, UniversitiesListResponse } from '../types.gen';
+import { categoriesList, eventsAttendanceDestroy, eventsAttendanceUpdate, eventsAttendeesList, eventsCoHostCreate, eventsCoHostDestroy, eventsCoHostList, eventsCreate, eventsDestroy, eventsPartialUpdate, eventsRetrieve, eventsSaveDestroy, eventsSaveUpdate, feedsFollowingList, feedsForYouList, feedsNearbyList, feedsTrendingList, feedsUpcomingList, geocodeList, imagesCreate, meAcceptTermsCreate, meAccountDeleteCreate, meAttendingList, meBlockedList, meEventsList, meExportRetrieve, meFollowRequestsCreate, meFollowRequestsDestroy, meFollowRequestsList, meInvitationsCreate, meInvitationsDestroy, meInvitationsList, meMutedList, mePartialUpdate, meProfilesList, meRetrieve, meSavedList, meSettingsPartialUpdate, meSettingsRetrieve, meStudentCreate, meStudentDestroy, meStudentRetrieve, meStudentVerifyCreate, meSuggestionsList, notificationsList, notificationsReadCreate, notificationsUnreadRetrieve, type Options, organizationsCreate, organizationsInvitationsList, organizationsMembersCreate, organizationsMembersDestroy, organizationsMembersList, organizationsMembersPartialUpdate, organizationsPartialUpdate, organizationsVerificationCreate, postsCreate, postsDestroy, postsRetrieve, profilesBlockCreate, profilesBlockDestroy, profilesEventsList, profilesFollowCreate, profilesFollowDestroy, profilesFollowersList, profilesFollowingList, profilesMuteCreate, profilesMuteDestroy, profilesPostsList, profilesRetrieve, pushDevicesCreate, pushDevicesDestroy, reportsCreate, searchRetrieve, universitiesList } from '../sdk.gen';
+import type { CategoriesListData, CategoriesListResponse, EventsAttendanceDestroyData, EventsAttendanceDestroyResponse, EventsAttendanceUpdateData, EventsAttendanceUpdateResponse, EventsAttendeesListData, EventsAttendeesListResponse, EventsCoHostCreateData, EventsCoHostCreateResponse, EventsCoHostDestroyData, EventsCoHostDestroyResponse, EventsCoHostListData, EventsCoHostListResponse, EventsCreateData, EventsCreateResponse, EventsDestroyData, EventsDestroyResponse, EventsPartialUpdateData, EventsPartialUpdateResponse, EventsRetrieveData, EventsRetrieveResponse, EventsSaveDestroyData, EventsSaveDestroyResponse, EventsSaveUpdateData, EventsSaveUpdateResponse, FeedsFollowingListData, FeedsFollowingListResponse, FeedsForYouListData, FeedsForYouListResponse, FeedsNearbyListData, FeedsNearbyListResponse, FeedsTrendingListData, FeedsTrendingListResponse, FeedsUpcomingListData, FeedsUpcomingListResponse, GeocodeListData, GeocodeListResponse, ImagesCreateData, ImagesCreateResponse, MeAcceptTermsCreateData, MeAcceptTermsCreateResponse, MeAccountDeleteCreateData, MeAccountDeleteCreateResponse, MeAttendingListData, MeAttendingListResponse, MeBlockedListData, MeBlockedListResponse, MeEventsListData, MeEventsListResponse, MeExportRetrieveData, MeExportRetrieveResponse, MeFollowRequestsCreateData, MeFollowRequestsCreateResponse, MeFollowRequestsDestroyData, MeFollowRequestsDestroyResponse, MeFollowRequestsListData, MeFollowRequestsListResponse, MeInvitationsCreateData, MeInvitationsCreateResponse, MeInvitationsDestroyData, MeInvitationsDestroyResponse, MeInvitationsListData, MeInvitationsListResponse, MeMutedListData, MeMutedListResponse, MePartialUpdateData, MePartialUpdateResponse, MeProfilesListData, MeProfilesListResponse, MeRetrieveData, MeRetrieveResponse, MeSavedListData, MeSavedListResponse, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponse, MeSettingsRetrieveData, MeSettingsRetrieveResponse, MeStudentCreateData, MeStudentCreateResponse, MeStudentDestroyData, MeStudentDestroyResponse, MeStudentRetrieveData, MeStudentRetrieveResponse, MeStudentVerifyCreateData, MeStudentVerifyCreateResponse, MeSuggestionsListData, MeSuggestionsListResponse, NotificationsListData, NotificationsListResponse, NotificationsReadCreateData, NotificationsReadCreateResponse, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponse, OrganizationsCreateData, OrganizationsCreateResponse, OrganizationsInvitationsListData, OrganizationsInvitationsListResponse, OrganizationsMembersCreateData, OrganizationsMembersCreateResponse, OrganizationsMembersDestroyData, OrganizationsMembersDestroyResponse, OrganizationsMembersListData, OrganizationsMembersListResponse, OrganizationsMembersPartialUpdateData, OrganizationsMembersPartialUpdateResponse, OrganizationsPartialUpdateData, OrganizationsPartialUpdateResponse, OrganizationsVerificationCreateData, OrganizationsVerificationCreateResponse, PostsCreateData, PostsCreateResponse, PostsDestroyData, PostsDestroyResponse, PostsRetrieveData, PostsRetrieveResponse, ProfilesBlockCreateData, ProfilesBlockCreateResponse, ProfilesBlockDestroyData, ProfilesBlockDestroyResponse, ProfilesEventsListData, ProfilesEventsListResponse, ProfilesFollowCreateData, ProfilesFollowCreateResponse, ProfilesFollowDestroyData, ProfilesFollowDestroyResponse, ProfilesFollowersListData, ProfilesFollowersListResponse, ProfilesFollowingListData, ProfilesFollowingListResponse, ProfilesMuteCreateData, ProfilesMuteCreateResponse, ProfilesMuteDestroyData, ProfilesMuteDestroyResponse, ProfilesPostsListData, ProfilesPostsListResponse, ProfilesRetrieveData, ProfilesRetrieveResponse, PushDevicesCreateData, PushDevicesCreateResponse, PushDevicesDestroyData, PushDevicesDestroyResponse, ReportsCreateData, ReportsCreateResponse, SearchRetrieveData, SearchRetrieveResponse, UniversitiesListData, UniversitiesListResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -289,6 +289,40 @@ export const eventsCoHostCreateMutation = (options?: Partial<Options<EventsCoHos
     const mutationOptions: UseMutationOptions<EventsCoHostCreateResponse, DefaultError, Options<EventsCoHostCreateData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await eventsCoHostCreate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Save the event for later (PUT), or forget it (DELETE). Only you see what you saved.
+ */
+export const eventsSaveDestroyMutation = (options?: Partial<Options<EventsSaveDestroyData>>): UseMutationOptions<EventsSaveDestroyResponse, DefaultError, Options<EventsSaveDestroyData>> => {
+    const mutationOptions: UseMutationOptions<EventsSaveDestroyResponse, DefaultError, Options<EventsSaveDestroyData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await eventsSaveDestroy({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Save the event for later (PUT), or forget it (DELETE). Only you see what you saved.
+ */
+export const eventsSaveUpdateMutation = (options?: Partial<Options<EventsSaveUpdateData>>): UseMutationOptions<EventsSaveUpdateResponse, DefaultError, Options<EventsSaveUpdateData>> => {
+    const mutationOptions: UseMutationOptions<EventsSaveUpdateResponse, DefaultError, Options<EventsSaveUpdateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await eventsSaveUpdate({
                 ...options,
                 ...fnOptions,
                 throwOnError: true
@@ -655,6 +689,54 @@ export const meAccountDeleteCreateMutation = (options?: Partial<Options<MeAccoun
     return mutationOptions;
 };
 
+export const meAttendingListQueryKey = (options?: Options<MeAttendingListData>) => createQueryKey('meAttendingList', options);
+
+/**
+ * Events the signed-in user is going to, interested in or waitlisted for.
+ */
+export const meAttendingListOptions = (options?: Options<MeAttendingListData>) => queryOptions<MeAttendingListResponse, DefaultError, MeAttendingListResponse, ReturnType<typeof meAttendingListQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await meAttendingList({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: meAttendingListQueryKey(options)
+});
+
+export const meAttendingListInfiniteQueryKey = (options?: Options<MeAttendingListData>): QueryKey<Options<MeAttendingListData>> => createQueryKey('meAttendingList', options, true);
+
+/**
+ * Events the signed-in user is going to, interested in or waitlisted for.
+ */
+export const meAttendingListInfiniteOptions = (options?: Options<MeAttendingListData>) => {
+    const opts = infiniteQueryOptions<MeAttendingListResponse, DefaultError, InfiniteData<MeAttendingListResponse>, QueryKey<Options<MeAttendingListData>>, number | Pick<QueryKey<Options<MeAttendingListData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<MeAttendingListData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    offset: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            const { data } = await meAttendingList({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: meAttendingListInfiniteQueryKey(options)
+    });
+    return opts as Omit<typeof opts, 'initialData'>;
+};
+
 export const meBlockedListQueryKey = (options?: Options<MeBlockedListData>) => createQueryKey('meBlockedList', options);
 
 /**
@@ -676,7 +758,7 @@ export const meBlockedListOptions = (options?: Options<MeBlockedListData>) => qu
 export const meEventsListQueryKey = (options?: Options<MeEventsListData>) => createQueryKey('meEventsList', options);
 
 /**
- * Events organized by the signed-in user or their organizations: upcoming, or past.
+ * Events organized by the signed-in user or their organizations, drafts included.
  */
 export const meEventsListOptions = (options?: Options<MeEventsListData>) => queryOptions<MeEventsListResponse, DefaultError, MeEventsListResponse, ReturnType<typeof meEventsListQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
@@ -694,7 +776,7 @@ export const meEventsListOptions = (options?: Options<MeEventsListData>) => quer
 export const meEventsListInfiniteQueryKey = (options?: Options<MeEventsListData>): QueryKey<Options<MeEventsListData>> => createQueryKey('meEventsList', options, true);
 
 /**
- * Events organized by the signed-in user or their organizations: upcoming, or past.
+ * Events organized by the signed-in user or their organizations, drafts included.
  */
 export const meEventsListInfiniteOptions = (options?: Options<MeEventsListData>) => {
     const opts = infiniteQueryOptions<MeEventsListResponse, DefaultError, InfiniteData<MeEventsListResponse>, QueryKey<Options<MeEventsListData>>, number | Pick<QueryKey<Options<MeEventsListData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
@@ -908,6 +990,54 @@ export const meProfilesListOptions = (options?: Options<MeProfilesListData>) => 
     },
     queryKey: meProfilesListQueryKey(options)
 });
+
+export const meSavedListQueryKey = (options?: Options<MeSavedListData>) => createQueryKey('meSavedList', options);
+
+/**
+ * Events the signed-in user saved.
+ */
+export const meSavedListOptions = (options?: Options<MeSavedListData>) => queryOptions<MeSavedListResponse, DefaultError, MeSavedListResponse, ReturnType<typeof meSavedListQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await meSavedList({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: meSavedListQueryKey(options)
+});
+
+export const meSavedListInfiniteQueryKey = (options?: Options<MeSavedListData>): QueryKey<Options<MeSavedListData>> => createQueryKey('meSavedList', options, true);
+
+/**
+ * Events the signed-in user saved.
+ */
+export const meSavedListInfiniteOptions = (options?: Options<MeSavedListData>) => {
+    const opts = infiniteQueryOptions<MeSavedListResponse, DefaultError, InfiniteData<MeSavedListResponse>, QueryKey<Options<MeSavedListData>>, number | Pick<QueryKey<Options<MeSavedListData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<MeSavedListData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    offset: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            const { data } = await meSavedList({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: meSavedListInfiniteQueryKey(options)
+    });
+    return opts as Omit<typeof opts, 'initialData'>;
+};
 
 export const meSettingsRetrieveQueryKey = (options?: Options<MeSettingsRetrieveData>) => createQueryKey('meSettingsRetrieve', options);
 

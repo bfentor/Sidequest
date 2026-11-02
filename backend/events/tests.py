@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from posts.models import Post
 
 EVENT = {
@@ -242,3 +244,30 @@ def test_friends_going_and_attendees(api_client, auth_client, user, make_user, m
     assert response.json()["friends_going_count"] == 1
     interested = auth_client.get(f"/api/events/{event.pk}/attendees/", {"status": "interested"})
     assert [p["handle"] for p in interested.json()["results"]] == [user.profile.handle]
+
+
+def test_save_and_list_my_events(auth_client, user, make_user, make_event):
+    from events.models import Attendance
+
+    host = make_user().profile
+    party = make_event(host, title="party")
+    talk = make_event(host, title="talk", starts_in=timedelta(days=3))
+    old = make_event(host, title="old", starts_in=-timedelta(days=3))
+    make_event(host, title="other")
+    Attendance.objects.create(event=talk, profile=user.profile, status="interested")
+    Attendance.objects.create(event=old, profile=user.profile, status="going")
+
+    assert auth_client.put(f"/api/events/{party.pk}/save/").status_code == 204
+    assert auth_client.put(f"/api/events/{party.pk}/save/").status_code == 204
+    assert auth_client.get(f"/api/events/{party.pk}/").json()["is_saved"] is True
+
+    def titles(url, **params):
+        return [e["title"] for e in auth_client.get(url, params).json()["results"]]
+
+    assert titles("/api/me/saved/") == ["party"]
+    assert titles("/api/me/attending/") == ["talk"]
+    assert titles("/api/me/attending/", when="past") == ["old"]
+
+    assert auth_client.delete(f"/api/events/{party.pk}/save/").status_code == 204
+    assert titles("/api/me/saved/") == []
+    assert auth_client.get(f"/api/events/{party.pk}/").json()["is_saved"] is False

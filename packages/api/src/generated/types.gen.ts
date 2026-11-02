@@ -119,6 +119,10 @@ export type Event = {
      */
     readonly co_hosts: Array<ProfileSummary>;
     attendance: AttendanceSummary;
+    /**
+     * Whether you saved this event.
+     */
+    readonly is_saved: boolean;
     readonly created_at: string;
     readonly updated_at: string;
 };
@@ -308,6 +312,10 @@ export type NearbyEvent = {
      */
     readonly co_hosts: Array<ProfileSummary>;
     attendance: AttendanceSummary;
+    /**
+     * Whether you saved this event.
+     */
+    readonly is_saved: boolean;
     readonly created_at: string;
     readonly updated_at: string;
     readonly distance_m: number;
@@ -1158,6 +1166,48 @@ export type EventsCoHostCreateResponses = {
 
 export type EventsCoHostCreateResponse = EventsCoHostCreateResponses[keyof EventsCoHostCreateResponses];
 
+export type EventsSaveDestroyData = {
+    body?: never;
+    path: {
+        /**
+         * A unique integer value identifying this event.
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/api/events/{id}/save/';
+};
+
+export type EventsSaveDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type EventsSaveDestroyResponse = EventsSaveDestroyResponses[keyof EventsSaveDestroyResponses];
+
+export type EventsSaveUpdateData = {
+    body?: never;
+    path: {
+        /**
+         * A unique integer value identifying this event.
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/api/events/{id}/save/';
+};
+
+export type EventsSaveUpdateResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type EventsSaveUpdateResponse = EventsSaveUpdateResponses[keyof EventsSaveUpdateResponses];
+
 export type FeedsFollowingListData = {
     body?: never;
     path?: never;
@@ -1422,6 +1472,29 @@ export type MeAccountDeleteCreateResponses = {
 
 export type MeAccountDeleteCreateResponse = MeAccountDeleteCreateResponses[keyof MeAccountDeleteCreateResponses];
 
+export type MeAttendingListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        when?: 'past' | 'upcoming';
+    };
+    url: '/api/me/attending/';
+};
+
+export type MeAttendingListResponses = {
+    200: PaginatedEventList;
+};
+
+export type MeAttendingListResponse = MeAttendingListResponses[keyof MeAttendingListResponses];
+
 export type MeBlockedListData = {
     body?: never;
     path?: never;
@@ -1601,6 +1674,29 @@ export type MeProfilesListResponses = {
 };
 
 export type MeProfilesListResponse = MeProfilesListResponses[keyof MeProfilesListResponses];
+
+export type MeSavedListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        when?: 'past' | 'upcoming';
+    };
+    url: '/api/me/saved/';
+};
+
+export type MeSavedListResponses = {
+    200: PaginatedEventList;
+};
+
+export type MeSavedListResponse = MeSavedListResponses[keyof MeSavedListResponses];
 
 export type MeSettingsRetrieveData = {
     body?: never;
