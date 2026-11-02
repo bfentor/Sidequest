@@ -87,7 +87,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 - [x] Browse by category
 - [x] Trending or popular events
 - [x] Algorithmic "For you" feed, ranked by interests, who you follow, which friends are going, popularity and how close the event is
-- [ ] "Who to follow" suggestions
+- [x] "Who to follow" suggestions
 - [x] Following feed: show each event once (not both the announcement and later reposts), and optionally hide past events
 
 ## 8. Posts and social features

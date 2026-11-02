@@ -21,6 +21,7 @@ from posts.serializers import PostSerializer
 
 from .models import Follow, FollowRequest, Profile
 from .serializers import FollowStatusSerializer, ProfileSerializer, ProfileSummarySerializer
+from .suggestions import follow_suggestions
 
 
 class ProfileListPagination(CursorPagination):
@@ -239,3 +240,32 @@ class FollowRequestView(APIView):
     def delete(self, request, handle):
         self._request(request, handle).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class SuggestionsQuerySerializer(serializers.Serializer):
+    kind = serializers.ChoiceField(
+        choices=Profile.Kind.choices, required=False, help_text="Only people or organizations."
+    )
+
+
+@extend_schema(parameters=[SuggestionsQuerySerializer])
+class FollowSuggestionsView(generics.ListAPIView):
+    """Up to ten profiles the signed-in user might want to follow."""
+
+    serializer_class = ProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = None
+    limit = 10
+
+    def get_queryset(self):
+        params = SuggestionsQuerySerializer(data=self.request.query_params)
+        params.is_valid(raise_exception=True)
+        viewer = self.request.user.profile
+        profiles = follow_suggestions(viewer)
+        if "kind" in params.validated_data:
+            profiles = profiles.filter(kind=params.validated_data["kind"])
+        return (
+            profiles.with_social_stats(viewer=viewer)
+            .select_related("avatar")
+            .prefetch_related("interests")[: self.limit]
+        )

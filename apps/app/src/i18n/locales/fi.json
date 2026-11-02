@@ -424,5 +424,13 @@
     "weekend": "Viikonloppuna",
     "free": "Maksuton",
     "nothing": "Mikään tapahtuma ei vastaa suodattimia."
+  },
+  "suggestions": {
+    "title": "Ketä seurata",
+    "seeAll": "Näytä kaikki",
+    "hide": "Piilota ehdotukset",
+    "organizations": "Järjestöt",
+    "people": "Ihmiset",
+    "hint": "Ehdotukset perustuvat siihen, ketä seuraamasi ihmiset seuraavat, kiinnostuksen kohteisiisi ja suosioon."
   }
 }

@@ -424,5 +424,13 @@
     "weekend": "I helgen",
     "free": "Gratis",
     "nothing": "Inga evenemang matchar filtren."
+  },
+  "suggestions": {
+    "title": "Vem du kan följa",
+    "seeAll": "Visa alla",
+    "hide": "Dölj förslag",
+    "organizations": "Organisationer",
+    "people": "Personer",
+    "hint": "Förslagen bygger på vem de du följer följer, dina intressen och vad som är populärt."
   }
 }

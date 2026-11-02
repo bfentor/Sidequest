@@ -424,5 +424,13 @@
     "weekend": "This weekend",
     "free": "Free",
     "nothing": "No events match these filters."
+  },
+  "suggestions": {
+    "title": "Who to follow",
+    "seeAll": "See all",
+    "hide": "Hide suggestions",
+    "organizations": "Organizations",
+    "people": "People",
+    "hint": "Suggestions come from who the people you follow follow, your interests and what's popular."
   }
 }
