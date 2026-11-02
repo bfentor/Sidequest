@@ -26,9 +26,9 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 - [ ] Sign in with Google and Apple
 - [x] Student verification through a university email domain, plus a "verified student" badge
 - [x] Change email or password
-- [ ] Two-factor authentication (allauth supports it)
+- [x] Two-factor authentication (allauth supports it)
 - [ ] Onboarding after signup: pick interests, follow suggested organizations, allow location
-- [ ] See and sign out other devices
+- [x] See and sign out other devices
 
 ## 3. Profiles
 

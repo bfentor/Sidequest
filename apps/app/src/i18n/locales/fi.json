@@ -378,5 +378,29 @@
     "verified": "Vahvistettu opiskelija ({{university}}) {{date}} alkaen.",
     "remove": "Poista",
     "badge": "Opiskelija: {{university}}"
+  },
+  "twoFactor": {
+    "title": "Kaksivaiheinen kirjautuminen",
+    "hint": "Syötä todennussovelluksesi koodi tai jokin palautuskoodeistasi.",
+    "code": "Koodi",
+    "expired": "Kirjautuminen on vanhentunut. Aloita alusta.",
+    "confirmPassword": "Vahvista salasanasi jatkaaksesi.",
+    "continue": "Jatka",
+    "scan": "Skannaa tämä todennussovelluksella (esim. Google Authenticator tai 1Password) tai syötä alla oleva avain. Kirjoita sitten sovelluksen näyttämä 6-numeroinen koodi.",
+    "openApp": "Avaa todennussovelluksessa",
+    "turnOn": "Ota käyttöön",
+    "turnOff": "Poista käytöstä",
+    "newCodes": "Uudet palautuskoodit",
+    "recoveryHint": "Säilytä nämä palautuskoodit turvallisessa paikassa. Kukin toimii kerran, jos kadotat puhelimesi.",
+    "on": "Käytössä: kirjautuessa kysytään koodia todennussovelluksesta.",
+    "offHint": "Kysy kirjautuessa salasanan lisäksi koodia todennussovelluksesta.",
+    "disabled": "Kaksivaiheinen kirjautuminen on poistettu käytöstä."
+  },
+  "sessions": {
+    "title": "Missä olet kirjautuneena",
+    "thisDevice": "Tämä laite",
+    "unknownDevice": "Tuntematon laite",
+    "lastSeen": "Viimeksi aktiivinen {{when}}",
+    "signOutOthers": "Kirjaudu ulos kaikkialta muualta"
   }
 }

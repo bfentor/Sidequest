@@ -19,6 +19,7 @@ import { useAuth } from '@/auth/auth-provider';
 import { AccountSection } from '@/components/account-section';
 import { Button } from '@/components/button';
 import { CredentialsSection } from '@/components/credentials-section';
+import { SecuritySection } from '@/components/security-section';
 import { StudentSection } from '@/components/student-section';
 import { ProfileRow } from '@/components/profile-row';
 import { Screen } from '@/components/screen';
@@ -51,6 +52,7 @@ export default function SettingsScreen() {
           <BlockedAndMuted />
           <StudentSection />
           <CredentialsSection />
+          <SecuritySection />
           <AccountSection />
           <Button
             title={t('common.signOut')}

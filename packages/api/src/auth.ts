@@ -7,8 +7,9 @@
  */
 import { client } from './generated/client.gen';
 
-const BASE = '/_allauth/app/v1';
-const SESSION_TOKEN = [{ name: 'X-Session-Token', type: 'apiKey' } as const];
+export const ALLAUTH_BASE = '/_allauth/app/v1';
+const BASE = ALLAUTH_BASE;
+export const SESSION_TOKEN = [{ name: 'X-Session-Token', type: 'apiKey' } as const];
 
 export type AuthError = { message: string; code: string; param?: string };
 
@@ -18,7 +19,7 @@ export type AuthResult =
   | { status: 'pending'; flows: string[]; sessionToken?: string }
   | { status: 'error'; errors: AuthError[] };
 
-type AllauthResponse = {
+export type AllauthResponse = {
   status: number;
   data?: { flows?: { id: string; is_pending?: boolean }[] };
   meta?: { is_authenticated?: boolean; session_token?: string };
@@ -48,7 +49,7 @@ function toResult(body: AllauthResponse): AuthResult {
  * flow (email verification, password reset); without it, the signed-in
  * session's token is sent, if any.
  */
-async function submit(url: string, body: object, flowToken?: string): Promise<AuthResult> {
+export async function submit(url: string, body: object, flowToken?: string): Promise<AuthResult> {
   const { data, error, response } = await client.post<
     { 200: AllauthResponse },
     Record<number, AllauthResponse>
@@ -126,7 +127,7 @@ export function resetPassword(code: string, password: string, flowToken: string)
 }
 
 /** POSTs an account change for the signed-in user; resolves to errors, or null on success. */
-async function changeAccount(url: string, body: object): Promise<AuthError[] | null> {
+export async function changeAccount(url: string, body: object): Promise<AuthError[] | null> {
   const { error, response } = await client.post<
     { 200: AllauthResponse },
     Record<number, AllauthResponse>

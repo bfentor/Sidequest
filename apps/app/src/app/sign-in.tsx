@@ -59,6 +59,8 @@ export default function SignInScreen() {
       goBack();
     } else if (result.status === 'pending' && result.flows.includes('verify_email')) {
       router.replace('/verify-email');
+    } else if (result.status === 'pending' && result.flows.includes('mfa_authenticate')) {
+      router.replace('/two-factor');
     } else {
       setMessage(messageFor(result, t));
     }

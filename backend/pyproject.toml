@@ -5,7 +5,7 @@ description = "Sidequest API server"
 requires-python = ">=3.13"
 dependencies = [
     "django>=6.1.2",
-    "django-allauth[headless]>=65.21.1",
+    "django-allauth[headless,mfa]>=65.21.1",
     "django-cors-headers>=4.9.0",
     "django-environ>=0.14.0",
     "django-storages[s3]>=1.14.6",

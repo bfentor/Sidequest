@@ -54,6 +54,7 @@ function RootStack() {
       <Stack.Screen name="legal/[document]" options={{ title: '' }} />
       <Stack.Screen name="verify-email" options={{ title: t('verifyEmail.title') }} />
       <Stack.Screen name="forgot-password" options={{ title: t('forgotPassword.title') }} />
+      <Stack.Screen name="two-factor" options={{ title: t('twoFactor.title') }} />
       <Stack.Screen name="sign-in" options={{ title: t('common.signIn'), presentation: 'modal' }} />
       <Stack.Screen name="settings" options={{ title: t('common.settings') }} />
       <Stack.Screen name="edit-profile" options={{ title: t('profile.edit') }} />

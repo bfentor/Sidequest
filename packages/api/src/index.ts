@@ -8,4 +8,5 @@ export { configureApi, type ApiConfig } from './config';
 export * from './feeds';
 export * from './notifications';
 export * from './profiles';
+export * from './security';
 export * from './uploads';

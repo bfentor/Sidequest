@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.headless",
+    "allauth.mfa",
+    "allauth.usersessions",
     # Local
     "accounts",
     "images",
@@ -74,6 +76,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    "allauth.usersessions.middleware.UserSessionsMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -143,6 +146,12 @@ ACCOUNT_SIGNUP_FORM_CLASS = "accounts.signup.SignupForm"
 MINIMUM_AGE = env.int("MINIMUM_AGE", default=16)
 # Bump when the terms of service or privacy policy change; people accept again.
 TERMS_VERSION = "2026-11-01"
+
+# Two-factor sign-in with an authenticator app, plus one-time recovery codes.
+MFA_SUPPORTED_TYPES = ["totp", "recovery_codes"]
+MFA_TOTP_ISSUER = "Sidequest"
+# Lets people see where they're signed in and sign out other devices.
+USERSESSIONS_TRACK_ACTIVITY = True
 
 # Every frontend (iOS, Android and web) authenticates with the X-Session-Token
 # header, so only allauth's "app" client is enabled.

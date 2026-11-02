@@ -378,5 +378,29 @@
     "verified": "Verified student at {{university}} since {{date}}.",
     "remove": "Remove",
     "badge": "Student at {{university}}"
+  },
+  "twoFactor": {
+    "title": "Two-factor sign-in",
+    "hint": "Enter the code from your authenticator app, or one of your recovery codes.",
+    "code": "Code",
+    "expired": "This sign-in has expired. Start again.",
+    "confirmPassword": "Confirm your password to continue.",
+    "continue": "Continue",
+    "scan": "Scan this with an authenticator app (such as Google Authenticator or 1Password), or enter the key below. Then type the 6-digit code it shows.",
+    "openApp": "Open in authenticator app",
+    "turnOn": "Turn on",
+    "turnOff": "Turn off",
+    "newCodes": "New recovery codes",
+    "recoveryHint": "Keep these recovery codes somewhere safe. Each works once, if you lose your phone.",
+    "on": "On: signing in asks for a code from your authenticator app.",
+    "offHint": "Ask for a code from an authenticator app when signing in, as well as your password.",
+    "disabled": "Two-factor sign-in is off."
+  },
+  "sessions": {
+    "title": "Where you're signed in",
+    "thisDevice": "This device",
+    "unknownDevice": "Unknown device",
+    "lastSeen": "Last active {{when}}",
+    "signOutOthers": "Sign out everywhere else"
   }
 }

@@ -378,5 +378,29 @@
     "verified": "Verifierad student vid {{university}} sedan {{date}}.",
     "remove": "Ta bort",
     "badge": "Student vid {{university}}"
+  },
+  "twoFactor": {
+    "title": "Tvåstegsinloggning",
+    "hint": "Ange koden från din autentiseringsapp eller en av dina återställningskoder.",
+    "code": "Kod",
+    "expired": "Inloggningen har gått ut. Börja om.",
+    "confirmPassword": "Bekräfta ditt lösenord för att fortsätta.",
+    "continue": "Fortsätt",
+    "scan": "Skanna det här med en autentiseringsapp (t.ex. Google Authenticator eller 1Password) eller ange nyckeln nedan. Skriv sedan den sexsiffriga koden som appen visar.",
+    "openApp": "Öppna i autentiseringsappen",
+    "turnOn": "Slå på",
+    "turnOff": "Stäng av",
+    "newCodes": "Nya återställningskoder",
+    "recoveryHint": "Spara de här återställningskoderna på ett säkert ställe. Var och en fungerar en gång om du tappar bort telefonen.",
+    "on": "På: vid inloggning frågas efter en kod från din autentiseringsapp.",
+    "offHint": "Fråga efter en kod från en autentiseringsapp vid inloggning, utöver lösenordet.",
+    "disabled": "Tvåstegsinloggningen är avstängd."
+  },
+  "sessions": {
+    "title": "Var du är inloggad",
+    "thisDevice": "Den här enheten",
+    "unknownDevice": "Okänd enhet",
+    "lastSeen": "Senast aktiv {{when}}",
+    "signOutOthers": "Logga ut överallt annars"
   }
 }
