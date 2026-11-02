@@ -71,9 +71,7 @@ def for_you(events, viewer: Profile, point=None):
         event=models.OuterRef("pk"), profile__in=followed, accepted_at__isnull=False
     )
     answered = Attendance.objects.filter(event=models.OuterRef("pk"))
-    responses = answered.filter(
-        status__in=[Attendance.Status.GOING, Attendance.Status.INTERESTED]
-    )
+    responses = answered.filter(status__in=[Attendance.Status.GOING, Attendance.Status.INTERESTED])
     friends_going = responses.filter(profile__in=followed, profile__hide_attendance=False)
     days_away = Extract(models.F("starts_at") - timezone.now(), "epoch") / 86400
 
