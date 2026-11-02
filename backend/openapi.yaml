@@ -3035,6 +3035,32 @@ components:
       required:
       - lat
       - lng
+    LinkPreview:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+          readOnly: true
+        title:
+          type: string
+          readOnly: true
+        description:
+          type: string
+          readOnly: true
+        image_url:
+          type: string
+          format: uri
+          readOnly: true
+        site_name:
+          type: string
+          readOnly: true
+      required:
+      - description
+      - image_url
+      - site_name
+      - title
+      - url
     MarkReadRequest:
       type: object
       properties:
@@ -3738,6 +3764,12 @@ components:
           items:
             $ref: '#/components/schemas/Image'
           readOnly: true
+        link_preview:
+          allOf:
+          - $ref: '#/components/schemas/LinkPreview'
+          readOnly: true
+          nullable: true
+          description: The page the first link in the text points to.
         like_count:
           type: integer
           readOnly: true
@@ -3767,6 +3799,7 @@ components:
       - images
       - is_liked
       - like_count
+      - link_preview
     PostRequest:
       type: object
       properties:

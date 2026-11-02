@@ -320,6 +320,14 @@ export type LatLngRequest = {
     lng: number;
 };
 
+export type LinkPreview = {
+    readonly url: string;
+    readonly title: string;
+    readonly description: string;
+    readonly image_url: string;
+    readonly site_name: string;
+};
+
 export type MarkReadRequest = {
     /**
      * Notifications to mark read; all of them when left out.
@@ -573,6 +581,10 @@ export type Post = {
     body?: string;
     event: Event | null;
     readonly images: Array<Image>;
+    /**
+     * The page the first link in the text points to.
+     */
+    link_preview: LinkPreview | null;
     readonly like_count: number;
     /**
      * Whether you liked this post.

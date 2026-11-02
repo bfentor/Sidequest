@@ -13,6 +13,7 @@ from notifications.services import managers_of, notify
 from profiles.models import Profile
 from profiles.permissions import CanActAsOwner
 
+from .links import first_url, preview_for
 from .models import Comment, Post, PostImage, PostLike
 from .serializers import CommentSerializer, EventPhotoSerializer, PostSerializer
 from .text import notify_mentions
@@ -38,12 +39,17 @@ class PostViewSet(
         return Post.objects.visible_to(viewer).for_display(viewer)
 
     def perform_create(self, serializer):
-        post = serializer.save()
+        post = serializer.save(
+            link_preview=preview_for(first_url(serializer.validated_data.get("body")))
+        )
         notify_mentions(post.body, author=post.author, post=post)
 
     def perform_update(self, serializer):
         before = serializer.instance.body
-        post = serializer.save()
+        url = first_url(serializer.validated_data.get("body", before))
+        # Fetched again only when the first link changed.
+        extra = {"link_preview": preview_for(url)} if url != first_url(before) else {}
+        post = serializer.save(**extra)
         notify_mentions(post.body, author=post.author, before=before, post=post)
 
     @extend_schema(request=None, responses={204: None}, methods=["PUT", "DELETE"])

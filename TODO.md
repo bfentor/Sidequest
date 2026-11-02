@@ -98,7 +98,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 - [x] Likes and reactions
 - [x] Comments
 - [x] Reposting or sharing events to your followers
-- [ ] @mentions, hashtags and link previews
+- [x] @mentions, hashtags and link previews
 - [ ] Direct messages (a large feature with heavy moderation needs)
 - [ ] A group chat for each event
 

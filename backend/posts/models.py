@@ -29,7 +29,7 @@ class PostQuerySet(models.QuerySet):
             else models.Value(False)
         )
         return (
-            self.select_related("author__avatar")
+            self.select_related("author__avatar", "link_preview")
             .prefetch_related(
                 models.Prefetch("event", queryset=Event.objects.for_display(viewer)),
                 "image_links__image",
@@ -85,6 +85,10 @@ class Post(models.Model):
     edited_at = models.DateTimeField(null=True, blank=True)
     # Set by moderators; hides the post everywhere.
     removed_at = models.DateTimeField(null=True, blank=True)
+    # The page the first link in the text points to.
+    link_preview = models.ForeignKey(
+        "LinkPreview", on_delete=models.SET_NULL, null=True, blank=True, related_name="+"
+    )
 
     objects = PostQuerySet.as_manager()
 
@@ -93,6 +97,23 @@ class Post(models.Model):
 
     def __str__(self):
         return f"Post by {self.author} at {self.created_at:%Y-%m-%d %H:%M}"
+
+
+class LinkPreview(models.Model):
+    """What a web page says about itself (Open Graph tags), fetched once and shared by posts.
+
+    An empty title means the page couldn't be fetched or described.
+    """
+
+    url = models.URLField(max_length=2000, unique=True)
+    title = models.CharField(max_length=300, blank=True)
+    description = models.TextField(max_length=500, blank=True)
+    image_url = models.URLField(max_length=2000, blank=True)
+    site_name = models.CharField(max_length=100, blank=True)
+    fetched_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.url
 
 
 class PostImage(models.Model):

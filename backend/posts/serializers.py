@@ -9,10 +9,17 @@ from events.serializers import EventSerializer
 from images.serializers import ImageSerializer, OwnImageField
 from profiles.serializers import ActingProfileField, ProfileSummarySerializer
 
-from .models import Comment, Post, PostImage
+from .models import Comment, LinkPreview, Post, PostImage
 
 # Pictures a post may have.
 MAX_IMAGES = 4
+
+
+class LinkPreviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LinkPreview
+        fields = ["url", "title", "description", "image_url", "site_name"]
+        read_only_fields = fields
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -32,6 +39,9 @@ class PostSerializer(serializers.ModelSerializer):
         help_text="Attach (share) an existing event.",
     )
     images = serializers.SerializerMethodField()
+    link_preview = LinkPreviewSerializer(
+        read_only=True, allow_null=True, help_text="The page the first link in the text points to."
+    )
     like_count = serializers.SerializerMethodField()
     comment_count = serializers.SerializerMethodField()
     is_liked = serializers.SerializerMethodField(help_text="Whether you liked this post.")
@@ -55,6 +65,7 @@ class PostSerializer(serializers.ModelSerializer):
             "event_id",
             "images",
             "image_ids",
+            "link_preview",
             "like_count",
             "is_liked",
             "comment_count",

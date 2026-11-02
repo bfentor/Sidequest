@@ -13,6 +13,7 @@ import { Avatar } from './avatar';
 import { ContentMenu } from './content-menu';
 import { EventCard } from './event-card';
 import { LikeButton } from './like-button';
+import { LinkPreview } from './link-preview';
 import { RemoteImage } from './remote-image';
 import { RichText } from './rich-text';
 import { ThemedText } from './themed-text';
@@ -77,6 +78,9 @@ export function PostCard({ post }: { post: Post }) {
             />
           ))}
         </View>
+      ) : null}
+      {post.link_preview && !post.images.length ? (
+        <LinkPreview preview={post.link_preview} />
       ) : null}
       {post.event ? <EventCard event={post.event} /> : null}
       <View style={styles.actions}>
