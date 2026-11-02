@@ -44,10 +44,21 @@ export type ActingProfile = {
 
 export type ActingProfileRoleEnum = 'self' | 'admin' | 'editor';
 
+export type AnnouncementRequest = {
+    message: string;
+};
+
+export type AnnouncementSent = {
+    /**
+     * How many people were notified.
+     */
+    sent: number;
+};
+
 /**
  * * `going` - Going
  * * `interested` - Interested
- * * `waitlisted` - Waitlisted
+ * * `waitlisted` - On the waitlist
  */
 export type AttendanceStatusEnum = 'going' | 'interested' | 'waitlisted';
 
@@ -60,7 +71,7 @@ export type AttendanceSummary = {
      *
      * * `going` - Going
      * * `interested` - Interested
-     * * `waitlisted` - Waitlisted
+     * * `waitlisted` - On the waitlist
      */
     mine: AttendanceStatusEnum | NullEnum | null;
     is_full: boolean;
@@ -719,7 +730,7 @@ export type AttendanceSummaryWritable = {
      *
      * * `going` - Going
      * * `interested` - Interested
-     * * `waitlisted` - Waitlisted
+     * * `waitlisted` - On the waitlist
      */
     mine: AttendanceStatusEnum | NullEnum | null;
     is_full: boolean;
@@ -1135,6 +1146,24 @@ export type EventsPartialUpdateResponses = {
 
 export type EventsPartialUpdateResponse = EventsPartialUpdateResponses[keyof EventsPartialUpdateResponses];
 
+export type EventsAnnouncementsCreateData = {
+    body: AnnouncementRequest;
+    path: {
+        /**
+         * A unique integer value identifying this event.
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/api/events/{id}/announcements/';
+};
+
+export type EventsAnnouncementsCreateResponses = {
+    200: AnnouncementSent;
+};
+
+export type EventsAnnouncementsCreateResponse = EventsAnnouncementsCreateResponses[keyof EventsAnnouncementsCreateResponses];
+
 export type EventsAttendanceDestroyData = {
     body?: never;
     path: {
@@ -1202,6 +1231,27 @@ export type EventsAttendeesListResponses = {
 };
 
 export type EventsAttendeesListResponse = EventsAttendeesListResponses[keyof EventsAttendeesListResponses];
+
+export type EventsAttendeesExportRetrieveData = {
+    body?: never;
+    path: {
+        /**
+         * A unique integer value identifying this event.
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/api/events/{id}/attendees/export/';
+};
+
+export type EventsAttendeesExportRetrieveResponses = {
+    /**
+     * CSV file
+     */
+    200: string;
+};
+
+export type EventsAttendeesExportRetrieveResponse = EventsAttendeesExportRetrieveResponses[keyof EventsAttendeesExportRetrieveResponses];
 
 export type EventsCoHostListData = {
     body?: never;

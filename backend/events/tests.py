@@ -271,3 +271,37 @@ def test_save_and_list_my_events(auth_client, user, make_user, make_event):
     assert auth_client.delete(f"/api/events/{party.pk}/save/").status_code == 204
     assert titles("/api/me/saved/") == []
     assert auth_client.get(f"/api/events/{party.pk}/").json()["is_saved"] is False
+
+
+def test_hosts_announce_and_export(auth_client, api_client, user, make_user, make_event):
+    from events.models import Attendance
+    from notifications.models import Notification
+
+    event = make_event(user.profile, title="party")
+    going, curious = make_user(), make_user()
+    going.profile.display_name = "Äijä Öberg"
+    going.profile.hide_attendance = True
+    going.profile.save()
+    Attendance.objects.create(event=event, profile=going.profile, status="going")
+    Attendance.objects.create(event=event, profile=curious.profile, status="interested")
+
+    response = auth_client.post(
+        f"/api/events/{event.pk}/announcements/", {"message": "Doors at 7"}, format="json"
+    )
+    assert response.json() == {"sent": 2}
+    announcement = Notification.objects.get(recipient=going, kind="announcement")
+    assert announcement.message == "Doors at 7"
+
+    export = auth_client.get(f"/api/events/{event.pk}/attendees/export/")
+    assert export["Content-Type"].startswith("text/csv")
+    lines = export.content.decode("utf-8-sig").splitlines()
+    assert lines[0] == "Name,Username,Status,Answered at"
+    assert lines[1].startswith(f"Äijä Öberg,{going.profile.handle},Going,")
+    assert ",Interested," in lines[2]
+
+    api_client.force_authenticate(curious)
+    assert api_client.get(f"/api/events/{event.pk}/attendees/export/").status_code == 403
+    response = api_client.post(
+        f"/api/events/{event.pk}/announcements/", {"message": "spam"}, format="json"
+    )
+    assert response.status_code == 403

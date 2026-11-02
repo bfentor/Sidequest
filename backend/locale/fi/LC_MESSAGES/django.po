@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sidequest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-02 20:48+0200\n"
-"PO-Revision-Date: 2026-11-02 20:48+0200\n"
+"POT-Creation-Date: 2026-11-02 20:52+0200\n"
+"PO-Revision-Date: 2026-11-02 20:52+0200\n"
 "Last-Translator: Sidequest <dev@sidequest.invalid>\n"
 "Language-Team: Finnish\n"
 "Language: fi\n"
@@ -27,6 +27,15 @@ msgstr "Sidequestin käyttäjän täytyy olla vähintään %(age)s-vuotias."
 
 msgid "The password is wrong."
 msgstr "Salasana on väärä."
+
+msgid "Going"
+msgstr "Osallistuu"
+
+msgid "Interested"
+msgstr "Kiinnostunut"
+
+msgid "On the waitlist"
+msgstr "Jonossa"
 
 #, python-format
 msgid "No profile has the username %(handle)s."
@@ -48,6 +57,18 @@ msgstr "Lisää syntymäaikasi asetuksissa osallistuaksesi tähän tapahtumaan."
 #, python-format
 msgid "This event is for people aged %(age)s or over."
 msgstr "Tapahtuma on vähintään %(age)s-vuotiaille."
+
+msgid "Name"
+msgstr "Nimi"
+
+msgid "Username"
+msgstr "Käyttäjänimi"
+
+msgid "Status"
+msgstr "Tila"
+
+msgid "Answered at"
+msgstr "Vastattu"
 
 msgid "This profile wasn't invited to co-host."
 msgstr "Tätä profiilia ei kutsuttu yhteisjärjestäjäksi."

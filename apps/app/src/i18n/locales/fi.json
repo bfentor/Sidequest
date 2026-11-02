@@ -488,5 +488,14 @@
     "signInToComment": "Kirjaudu sisään kommentoidaksesi",
     "delete": "Poista kommentti",
     "deleteConfirm": "Poistetaanko tämä kommentti?"
+  },
+  "organizerTools": {
+    "announce": "Lähetä tiedote",
+    "export": "Vie osallistujat (CSV)",
+    "announceHint": "Kaikki osallistujat, kiinnostuneet ja jonossa olevat saavat tämän ilmoituksena.",
+    "message": "Viesti",
+    "send": "Lähetä",
+    "sent_one": "Lähetetty {{count}} henkilölle.",
+    "sent_other": "Lähetetty {{count}} henkilölle."
   }
 }

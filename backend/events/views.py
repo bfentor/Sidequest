@@ -1,11 +1,16 @@
+import csv
+import io
+
 from django.db.models import Exists, OuterRef, Q, Subquery
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.utils.translation import gettext as _
-from drf_spectacular.utils import OpenApiParameter, extend_schema
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import OpenApiParameter, OpenApiResponse, extend_schema
 from rest_framework import generics, mixins, permissions, serializers, status, viewsets
 from rest_framework.decorators import action
-from rest_framework.exceptions import ValidationError
+from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 from rest_framework.throttling import ScopedRateThrottle
@@ -42,6 +47,24 @@ class AttendeesQuerySerializer(serializers.Serializer):
 class AttendeesPagination(LimitOffsetPagination):
     default_limit = 30
     max_limit = 100
+
+
+class AnnouncementSerializer(serializers.Serializer):
+    message = serializers.CharField(max_length=500)
+
+
+class AnnouncementSentSerializer(serializers.Serializer):
+    sent = serializers.IntegerField(help_text="How many people were notified.")
+
+
+def require_host(user, event):
+    """Organizer tools are for people acting for the organizer or an accepted co-host."""
+    hosts = [
+        event.organizer_id,
+        *event.co_host_links.filter(accepted_at__isnull=False).values_list("profile", flat=True),
+    ]
+    if not Profile.objects.manageable_by(user).filter(pk__in=hosts).exists():
+        raise PermissionDenied()
 
 
 class EventViewSet(
@@ -172,6 +195,65 @@ class EventViewSet(
         else:
             SavedEvent.objects.filter(profile=request.user.profile, event=event).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @extend_schema(request=AnnouncementSerializer, responses=AnnouncementSentSerializer)
+    @action(
+        detail=True,
+        methods=["post"],
+        permission_classes=[permissions.IsAuthenticated],
+        throttle_scope="announcements",
+    )
+    def announcements(self, request, pk=None):
+        """Send a message to everyone going, interested or waitlisted (hosts only)."""
+        event = get_object_or_404(self.get_queryset(), pk=pk)
+        require_host(request.user, event)
+        serializer = AnnouncementSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        recipients = list(attendees_of(event))
+        notify(
+            recipients,
+            Kind.ANNOUNCEMENT,
+            actor=event.organizer,
+            event=event,
+            message=serializer.validated_data["message"],
+        )
+        return Response({"sent": len(recipients)})
+
+    @extend_schema(
+        responses={(200, "text/csv"): OpenApiResponse(OpenApiTypes.STR, description="CSV file")}
+    )
+    @action(
+        detail=True,
+        methods=["get"],
+        url_path="attendees/export",
+        permission_classes=[permissions.IsAuthenticated],
+    )
+    def export_attendees(self, request, pk=None):
+        """Everyone who answered, as CSV (hosts only). Includes people who hide their attendance."""
+        event = get_object_or_404(self.get_queryset(), pk=pk)
+        require_host(request.user, event)
+        rows = (
+            Attendance.objects.filter(event=event)
+            .select_related("profile")
+            .order_by("status", "created_at")
+        )
+        buffer = io.StringIO()
+        # A byte order mark, so Excel reads the file as UTF-8 (ä, ö, å).
+        buffer.write("\ufeff")
+        writer = csv.writer(buffer)
+        writer.writerow([_("Name"), _("Username"), _("Status"), _("Answered at")])
+        for row in rows:
+            writer.writerow(
+                [
+                    row.profile.display_name,
+                    row.profile.handle,
+                    row.get_status_display(),
+                    timezone.localtime(row.created_at).strftime("%Y-%m-%d %H:%M"),
+                ]
+            )
+        response = HttpResponse(buffer.getvalue(), content_type="text/csv; charset=utf-8")
+        response["Content-Disposition"] = f'attachment; filename="event-{event.pk}-attendees.csv"'
+        return response
 
 
 class CategoryListView(generics.ListAPIView):

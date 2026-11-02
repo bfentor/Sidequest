@@ -2,6 +2,7 @@ import {
   eventsCoHostCreate,
   eventsCoHostDestroy,
   eventsCoHostListOptions,
+  eventsAttendeesExportRetrieve,
   eventsDestroyMutation,
   eventsPartialUpdate,
   eventsRetrieveOptions,
@@ -31,6 +32,23 @@ import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
 import { useFormat } from '@/lib/format';
 import { goBack } from '@/lib/navigation';
+import { saveTextFile } from '@/lib/save-file';
+
+/** Downloads (or shares, on phones) everyone who answered as a CSV file. */
+async function exportAttendees(id: number) {
+  const { data } = await eventsAttendeesExportRetrieve({
+    path: { id },
+    parseAs: 'text',
+    throwOnError: true,
+  });
+  // Decoding the response drops the byte order mark Excel needs to read the file as UTF-8.
+  const csv = String(data);
+  await saveTextFile(
+    `event-${id}-attendees.csv`,
+    csv.startsWith('\ufeff') ? csv : `\ufeff${csv}`,
+    'text/csv',
+  );
+}
 
 /** What an event's organizer (or its organization's members) can do from the "…" menu. */
 function organizerActions(
@@ -65,6 +83,14 @@ function organizerActions(
       : [{ label: t('eventStatus.reactivate'), onPress: () => setStatus('active') }];
   return [
     ...statusActions,
+    {
+      label: t('organizerTools.announce'),
+      onPress: () => router.push({ pathname: '/events/[id]/announce', params: { id: event.id } }),
+    },
+    {
+      label: t('organizerTools.export'),
+      onPress: () => exportAttendees(event.id),
+    },
     {
       label: t('eventForm.edit'),
       onPress: () => router.push({ pathname: '/events/[id]/edit', params: { id: event.id } }),

@@ -208,6 +208,7 @@ REST_FRAMEWORK = {
         "rsvps": "300/hour",
         "likes": "600/hour",
         "comments": "120/hour",
+        "announcements": "10/hour",
         "blocks": "60/hour",
         "reports": "20/hour",
         "uploads": "60/hour",

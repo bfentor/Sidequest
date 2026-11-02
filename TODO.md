@@ -115,8 +115,8 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 ## 10. Organizer tools (mostly for the desktop web app)
 
 - [ ] Organizer dashboard: views, RSVPs and follower growth
-- [ ] Export the attendee list as CSV
-- [ ] Send announcements to people who are going
+- [x] Export the attendee list as CSV
+- [x] Send announcements to people who are going
 - [ ] Bulk import events from CSV, or sync them from an organization's existing calendar
 - [ ] An embeddable event widget for organizations' own websites
 

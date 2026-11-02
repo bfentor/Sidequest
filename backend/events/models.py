@@ -6,6 +6,7 @@ from django.db import models
 from django.db.models.functions import Upper
 from django.utils import timezone
 from django.utils.translation import get_language
+from django.utils.translation import gettext_lazy as _
 
 from moderation.visibility import hidden_profiles, muted_profiles, private_profiles
 from profiles.models import Profile
@@ -246,10 +247,10 @@ class Attendance(models.Model):
     """Someone's RSVP to an event."""
 
     class Status(models.TextChoices):
-        GOING = "going"
-        INTERESTED = "interested"
+        GOING = "going", _("Going")
+        INTERESTED = "interested", _("Interested")
         # Wanted to go when the event was full; promoted in order when a spot opens.
-        WAITLISTED = "waitlisted"
+        WAITLISTED = "waitlisted", _("On the waitlist")
 
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="attendances")
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="attendances")

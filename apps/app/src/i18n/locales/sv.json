@@ -488,5 +488,14 @@
     "signInToComment": "Logga in för att kommentera",
     "delete": "Ta bort kommentar",
     "deleteConfirm": "Ta bort den här kommentaren?"
+  },
+  "organizerTools": {
+    "announce": "Skicka ett meddelande",
+    "export": "Exportera deltagare (CSV)",
+    "announceHint": "Alla som kommer, är intresserade eller står på väntelistan får detta som en notis.",
+    "message": "Meddelande",
+    "send": "Skicka",
+    "sent_one": "Skickat till {{count}} person.",
+    "sent_other": "Skickat till {{count}} personer."
   }
 }

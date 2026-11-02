@@ -137,6 +137,41 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/events/{id}/announcements/:
+    post:
+      operationId: events_announcements_create
+      description: Send a message to everyone going, interested or waitlisted (hosts
+        only).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this event.
+        required: true
+      tags:
+      - events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnnouncementRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AnnouncementRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AnnouncementRequest'
+        required: true
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnnouncementSent'
+          description: ''
   /api/events/{id}/attendance/:
     put:
       operationId: events_attendance_update
@@ -243,6 +278,29 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedProfileSummaryList'
           description: ''
+  /api/events/{id}/attendees/export/:
+    get:
+      operationId: events_attendees_export_retrieve
+      description: Everyone who answered, as CSV (hosts only). Includes people who
+        hide their attendance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this event.
+        required: true
+      tags:
+      - events
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            text/csv:
+              schema:
+                type: string
+          description: CSV file
   /api/events/{id}/co-host/:
     get:
       operationId: events_co_host_list
@@ -2202,6 +2260,23 @@ components:
       - admin
       - editor
       type: string
+    AnnouncementRequest:
+      type: object
+      properties:
+        message:
+          type: string
+          minLength: 1
+          maxLength: 500
+      required:
+      - message
+    AnnouncementSent:
+      type: object
+      properties:
+        sent:
+          type: integer
+          description: How many people were notified.
+      required:
+      - sent
     AttendanceStatusEnum:
       enum:
       - going
@@ -2211,7 +2286,7 @@ components:
       description: |-
         * `going` - Going
         * `interested` - Interested
-        * `waitlisted` - Waitlisted
+        * `waitlisted` - On the waitlist
     AttendanceSummary:
       type: object
       properties:
@@ -2228,7 +2303,7 @@ components:
 
             * `going` - Going
             * `interested` - Interested
-            * `waitlisted` - Waitlisted
+            * `waitlisted` - On the waitlist
           oneOf:
           - $ref: '#/components/schemas/AttendanceStatusEnum'
           - $ref: '#/components/schemas/NullEnum'

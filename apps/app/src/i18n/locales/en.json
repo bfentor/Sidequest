@@ -488,5 +488,14 @@
     "signInToComment": "Sign in to comment",
     "delete": "Delete comment",
     "deleteConfirm": "Delete this comment?"
+  },
+  "organizerTools": {
+    "announce": "Send an announcement",
+    "export": "Export attendees (CSV)",
+    "announceHint": "Everyone going, interested or on the waitlist gets this as a notification.",
+    "message": "Message",
+    "send": "Send",
+    "sent_one": "Sent to {{count}} person.",
+    "sent_other": "Sent to {{count}} people."
   }
 }
