@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { categoriesList, eventsAttendanceDestroy, eventsAttendanceUpdate, eventsAttendeesList, eventsCoHostCreate, eventsCoHostDestroy, eventsCoHostList, eventsCreate, eventsDestroy, eventsPartialUpdate, eventsRetrieve, eventsSaveDestroy, eventsSaveUpdate, feedsFollowingList, feedsForYouList, feedsNearbyList, feedsTrendingList, feedsUpcomingList, geocodeList, imagesCreate, meAcceptTermsCreate, meAccountDeleteCreate, meAttendingList, meBlockedList, meEventsList, meExportRetrieve, meFollowRequestsCreate, meFollowRequestsDestroy, meFollowRequestsList, meInvitationsCreate, meInvitationsDestroy, meInvitationsList, meMutedList, mePartialUpdate, meProfilesList, meRetrieve, meSavedList, meSettingsPartialUpdate, meSettingsRetrieve, meStudentCreate, meStudentDestroy, meStudentRetrieve, meStudentVerifyCreate, meSuggestionsList, notificationsList, notificationsReadCreate, notificationsUnreadRetrieve, type Options, organizationsCreate, organizationsInvitationsList, organizationsMembersCreate, organizationsMembersDestroy, organizationsMembersList, organizationsMembersPartialUpdate, organizationsPartialUpdate, organizationsVerificationCreate, postsCreate, postsDestroy, postsLikeDestroy, postsLikeUpdate, postsPartialUpdate, postsRetrieve, profilesBlockCreate, profilesBlockDestroy, profilesEventsList, profilesFollowCreate, profilesFollowDestroy, profilesFollowersList, profilesFollowingList, profilesMuteCreate, profilesMuteDestroy, profilesPostsList, profilesRetrieve, pushDevicesCreate, pushDevicesDestroy, reportsCreate, searchRetrieve, universitiesList } from '../sdk.gen';
-import type { CategoriesListData, CategoriesListResponse, EventsAttendanceDestroyData, EventsAttendanceDestroyResponse, EventsAttendanceUpdateData, EventsAttendanceUpdateResponse, EventsAttendeesListData, EventsAttendeesListResponse, EventsCoHostCreateData, EventsCoHostCreateResponse, EventsCoHostDestroyData, EventsCoHostDestroyResponse, EventsCoHostListData, EventsCoHostListResponse, EventsCreateData, EventsCreateResponse, EventsDestroyData, EventsDestroyResponse, EventsPartialUpdateData, EventsPartialUpdateResponse, EventsRetrieveData, EventsRetrieveResponse, EventsSaveDestroyData, EventsSaveDestroyResponse, EventsSaveUpdateData, EventsSaveUpdateResponse, FeedsFollowingListData, FeedsFollowingListResponse, FeedsForYouListData, FeedsForYouListResponse, FeedsNearbyListData, FeedsNearbyListResponse, FeedsTrendingListData, FeedsTrendingListResponse, FeedsUpcomingListData, FeedsUpcomingListResponse, GeocodeListData, GeocodeListResponse, ImagesCreateData, ImagesCreateResponse, MeAcceptTermsCreateData, MeAcceptTermsCreateResponse, MeAccountDeleteCreateData, MeAccountDeleteCreateResponse, MeAttendingListData, MeAttendingListResponse, MeBlockedListData, MeBlockedListResponse, MeEventsListData, MeEventsListResponse, MeExportRetrieveData, MeExportRetrieveResponse, MeFollowRequestsCreateData, MeFollowRequestsCreateResponse, MeFollowRequestsDestroyData, MeFollowRequestsDestroyResponse, MeFollowRequestsListData, MeFollowRequestsListResponse, MeInvitationsCreateData, MeInvitationsCreateResponse, MeInvitationsDestroyData, MeInvitationsDestroyResponse, MeInvitationsListData, MeInvitationsListResponse, MeMutedListData, MeMutedListResponse, MePartialUpdateData, MePartialUpdateResponse, MeProfilesListData, MeProfilesListResponse, MeRetrieveData, MeRetrieveResponse, MeSavedListData, MeSavedListResponse, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponse, MeSettingsRetrieveData, MeSettingsRetrieveResponse, MeStudentCreateData, MeStudentCreateResponse, MeStudentDestroyData, MeStudentDestroyResponse, MeStudentRetrieveData, MeStudentRetrieveResponse, MeStudentVerifyCreateData, MeStudentVerifyCreateResponse, MeSuggestionsListData, MeSuggestionsListResponse, NotificationsListData, NotificationsListResponse, NotificationsReadCreateData, NotificationsReadCreateResponse, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponse, OrganizationsCreateData, OrganizationsCreateResponse, OrganizationsInvitationsListData, OrganizationsInvitationsListResponse, OrganizationsMembersCreateData, OrganizationsMembersCreateResponse, OrganizationsMembersDestroyData, OrganizationsMembersDestroyResponse, OrganizationsMembersListData, OrganizationsMembersListResponse, OrganizationsMembersPartialUpdateData, OrganizationsMembersPartialUpdateResponse, OrganizationsPartialUpdateData, OrganizationsPartialUpdateResponse, OrganizationsVerificationCreateData, OrganizationsVerificationCreateResponse, PostsCreateData, PostsCreateResponse, PostsDestroyData, PostsDestroyResponse, PostsLikeDestroyData, PostsLikeDestroyResponse, PostsLikeUpdateData, PostsLikeUpdateResponse, PostsPartialUpdateData, PostsPartialUpdateResponse, PostsRetrieveData, PostsRetrieveResponse, ProfilesBlockCreateData, ProfilesBlockCreateResponse, ProfilesBlockDestroyData, ProfilesBlockDestroyResponse, ProfilesEventsListData, ProfilesEventsListResponse, ProfilesFollowCreateData, ProfilesFollowCreateResponse, ProfilesFollowDestroyData, ProfilesFollowDestroyResponse, ProfilesFollowersListData, ProfilesFollowersListResponse, ProfilesFollowingListData, ProfilesFollowingListResponse, ProfilesMuteCreateData, ProfilesMuteCreateResponse, ProfilesMuteDestroyData, ProfilesMuteDestroyResponse, ProfilesPostsListData, ProfilesPostsListResponse, ProfilesRetrieveData, ProfilesRetrieveResponse, PushDevicesCreateData, PushDevicesCreateResponse, PushDevicesDestroyData, PushDevicesDestroyResponse, ReportsCreateData, ReportsCreateResponse, SearchRetrieveData, SearchRetrieveResponse, UniversitiesListData, UniversitiesListResponse } from '../types.gen';
+import { categoriesList, commentsDestroy, eventsAttendanceDestroy, eventsAttendanceUpdate, eventsAttendeesList, eventsCoHostCreate, eventsCoHostDestroy, eventsCoHostList, eventsCommentsCreate, eventsCommentsList, eventsCreate, eventsDestroy, eventsPartialUpdate, eventsRetrieve, eventsSaveDestroy, eventsSaveUpdate, feedsFollowingList, feedsForYouList, feedsNearbyList, feedsTrendingList, feedsUpcomingList, geocodeList, imagesCreate, meAcceptTermsCreate, meAccountDeleteCreate, meAttendingList, meBlockedList, meEventsList, meExportRetrieve, meFollowRequestsCreate, meFollowRequestsDestroy, meFollowRequestsList, meInvitationsCreate, meInvitationsDestroy, meInvitationsList, meMutedList, mePartialUpdate, meProfilesList, meRetrieve, meSavedList, meSettingsPartialUpdate, meSettingsRetrieve, meStudentCreate, meStudentDestroy, meStudentRetrieve, meStudentVerifyCreate, meSuggestionsList, notificationsList, notificationsReadCreate, notificationsUnreadRetrieve, type Options, organizationsCreate, organizationsInvitationsList, organizationsMembersCreate, organizationsMembersDestroy, organizationsMembersList, organizationsMembersPartialUpdate, organizationsPartialUpdate, organizationsVerificationCreate, postsCommentsCreate, postsCommentsList, postsCreate, postsDestroy, postsLikeDestroy, postsLikeUpdate, postsPartialUpdate, postsRetrieve, profilesBlockCreate, profilesBlockDestroy, profilesEventsList, profilesFollowCreate, profilesFollowDestroy, profilesFollowersList, profilesFollowingList, profilesMuteCreate, profilesMuteDestroy, profilesPostsList, profilesRetrieve, pushDevicesCreate, pushDevicesDestroy, reportsCreate, searchRetrieve, universitiesList } from '../sdk.gen';
+import type { CategoriesListData, CategoriesListResponse, CommentsDestroyData, CommentsDestroyResponse, EventsAttendanceDestroyData, EventsAttendanceDestroyResponse, EventsAttendanceUpdateData, EventsAttendanceUpdateResponse, EventsAttendeesListData, EventsAttendeesListResponse, EventsCoHostCreateData, EventsCoHostCreateResponse, EventsCoHostDestroyData, EventsCoHostDestroyResponse, EventsCoHostListData, EventsCoHostListResponse, EventsCommentsCreateData, EventsCommentsCreateResponse, EventsCommentsListData, EventsCommentsListResponse, EventsCreateData, EventsCreateResponse, EventsDestroyData, EventsDestroyResponse, EventsPartialUpdateData, EventsPartialUpdateResponse, EventsRetrieveData, EventsRetrieveResponse, EventsSaveDestroyData, EventsSaveDestroyResponse, EventsSaveUpdateData, EventsSaveUpdateResponse, FeedsFollowingListData, FeedsFollowingListResponse, FeedsForYouListData, FeedsForYouListResponse, FeedsNearbyListData, FeedsNearbyListResponse, FeedsTrendingListData, FeedsTrendingListResponse, FeedsUpcomingListData, FeedsUpcomingListResponse, GeocodeListData, GeocodeListResponse, ImagesCreateData, ImagesCreateResponse, MeAcceptTermsCreateData, MeAcceptTermsCreateResponse, MeAccountDeleteCreateData, MeAccountDeleteCreateResponse, MeAttendingListData, MeAttendingListResponse, MeBlockedListData, MeBlockedListResponse, MeEventsListData, MeEventsListResponse, MeExportRetrieveData, MeExportRetrieveResponse, MeFollowRequestsCreateData, MeFollowRequestsCreateResponse, MeFollowRequestsDestroyData, MeFollowRequestsDestroyResponse, MeFollowRequestsListData, MeFollowRequestsListResponse, MeInvitationsCreateData, MeInvitationsCreateResponse, MeInvitationsDestroyData, MeInvitationsDestroyResponse, MeInvitationsListData, MeInvitationsListResponse, MeMutedListData, MeMutedListResponse, MePartialUpdateData, MePartialUpdateResponse, MeProfilesListData, MeProfilesListResponse, MeRetrieveData, MeRetrieveResponse, MeSavedListData, MeSavedListResponse, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponse, MeSettingsRetrieveData, MeSettingsRetrieveResponse, MeStudentCreateData, MeStudentCreateResponse, MeStudentDestroyData, MeStudentDestroyResponse, MeStudentRetrieveData, MeStudentRetrieveResponse, MeStudentVerifyCreateData, MeStudentVerifyCreateResponse, MeSuggestionsListData, MeSuggestionsListResponse, NotificationsListData, NotificationsListResponse, NotificationsReadCreateData, NotificationsReadCreateResponse, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponse, OrganizationsCreateData, OrganizationsCreateResponse, OrganizationsInvitationsListData, OrganizationsInvitationsListResponse, OrganizationsMembersCreateData, OrganizationsMembersCreateResponse, OrganizationsMembersDestroyData, OrganizationsMembersDestroyResponse, OrganizationsMembersListData, OrganizationsMembersListResponse, OrganizationsMembersPartialUpdateData, OrganizationsMembersPartialUpdateResponse, OrganizationsPartialUpdateData, OrganizationsPartialUpdateResponse, OrganizationsVerificationCreateData, OrganizationsVerificationCreateResponse, PostsCommentsCreateData, PostsCommentsCreateResponse, PostsCommentsListData, PostsCommentsListResponse, PostsCreateData, PostsCreateResponse, PostsDestroyData, PostsDestroyResponse, PostsLikeDestroyData, PostsLikeDestroyResponse, PostsLikeUpdateData, PostsLikeUpdateResponse, PostsPartialUpdateData, PostsPartialUpdateResponse, PostsRetrieveData, PostsRetrieveResponse, ProfilesBlockCreateData, ProfilesBlockCreateResponse, ProfilesBlockDestroyData, ProfilesBlockDestroyResponse, ProfilesEventsListData, ProfilesEventsListResponse, ProfilesFollowCreateData, ProfilesFollowCreateResponse, ProfilesFollowDestroyData, ProfilesFollowDestroyResponse, ProfilesFollowersListData, ProfilesFollowersListResponse, ProfilesFollowingListData, ProfilesFollowingListResponse, ProfilesMuteCreateData, ProfilesMuteCreateResponse, ProfilesMuteDestroyData, ProfilesMuteDestroyResponse, ProfilesPostsListData, ProfilesPostsListResponse, ProfilesRetrieveData, ProfilesRetrieveResponse, PushDevicesCreateData, PushDevicesCreateResponse, PushDevicesDestroyData, PushDevicesDestroyResponse, ReportsCreateData, ReportsCreateResponse, SearchRetrieveData, SearchRetrieveResponse, UniversitiesListData, UniversitiesListResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -56,6 +56,23 @@ export const categoriesListOptions = (options?: Options<CategoriesListData>) => 
     },
     queryKey: categoriesListQueryKey(options)
 });
+
+/**
+ * Delete a comment you wrote, or one on your post or event.
+ */
+export const commentsDestroyMutation = (options?: Partial<Options<CommentsDestroyData>>): UseMutationOptions<CommentsDestroyResponse, DefaultError, Options<CommentsDestroyData>> => {
+    const mutationOptions: UseMutationOptions<CommentsDestroyResponse, DefaultError, Options<CommentsDestroyData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await commentsDestroy({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
 
 /**
  * Create and manage single events. Listing happens through the feeds.
@@ -289,6 +306,71 @@ export const eventsCoHostCreateMutation = (options?: Partial<Options<EventsCoHos
     const mutationOptions: UseMutationOptions<EventsCoHostCreateResponse, DefaultError, Options<EventsCoHostCreateData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await eventsCoHostCreate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const eventsCommentsListQueryKey = (options: Options<EventsCommentsListData>) => createQueryKey('eventsCommentsList', options);
+
+/**
+ * Questions and comments on an event.
+ */
+export const eventsCommentsListOptions = (options: Options<EventsCommentsListData>) => queryOptions<EventsCommentsListResponse, DefaultError, EventsCommentsListResponse, ReturnType<typeof eventsCommentsListQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await eventsCommentsList({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: eventsCommentsListQueryKey(options)
+});
+
+export const eventsCommentsListInfiniteQueryKey = (options: Options<EventsCommentsListData>): QueryKey<Options<EventsCommentsListData>> => createQueryKey('eventsCommentsList', options, true);
+
+/**
+ * Questions and comments on an event.
+ */
+export const eventsCommentsListInfiniteOptions = (options: Options<EventsCommentsListData>) => {
+    const opts = infiniteQueryOptions<EventsCommentsListResponse, DefaultError, InfiniteData<EventsCommentsListResponse>, QueryKey<Options<EventsCommentsListData>>, string | Pick<QueryKey<Options<EventsCommentsListData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<EventsCommentsListData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    cursor: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            const { data } = await eventsCommentsList({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: eventsCommentsListInfiniteQueryKey(options)
+    });
+    return opts as Omit<typeof opts, 'initialData'>;
+};
+
+/**
+ * Questions and comments on an event.
+ */
+export const eventsCommentsCreateMutation = (options?: Partial<Options<EventsCommentsCreateData>>): UseMutationOptions<EventsCommentsCreateResponse, DefaultError, Options<EventsCommentsCreateData>> => {
+    const mutationOptions: UseMutationOptions<EventsCommentsCreateResponse, DefaultError, Options<EventsCommentsCreateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await eventsCommentsCreate({
                 ...options,
                 ...fnOptions,
                 throwOnError: true
@@ -1442,6 +1524,71 @@ export const postsPartialUpdateMutation = (options?: Partial<Options<PostsPartia
     const mutationOptions: UseMutationOptions<PostsPartialUpdateResponse, DefaultError, Options<PostsPartialUpdateData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await postsPartialUpdate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const postsCommentsListQueryKey = (options: Options<PostsCommentsListData>) => createQueryKey('postsCommentsList', options);
+
+/**
+ * Base for the comments on one post or event, oldest first; writing needs sign-in.
+ */
+export const postsCommentsListOptions = (options: Options<PostsCommentsListData>) => queryOptions<PostsCommentsListResponse, DefaultError, PostsCommentsListResponse, ReturnType<typeof postsCommentsListQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await postsCommentsList({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: postsCommentsListQueryKey(options)
+});
+
+export const postsCommentsListInfiniteQueryKey = (options: Options<PostsCommentsListData>): QueryKey<Options<PostsCommentsListData>> => createQueryKey('postsCommentsList', options, true);
+
+/**
+ * Base for the comments on one post or event, oldest first; writing needs sign-in.
+ */
+export const postsCommentsListInfiniteOptions = (options: Options<PostsCommentsListData>) => {
+    const opts = infiniteQueryOptions<PostsCommentsListResponse, DefaultError, InfiniteData<PostsCommentsListResponse>, QueryKey<Options<PostsCommentsListData>>, string | Pick<QueryKey<Options<PostsCommentsListData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<PostsCommentsListData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    cursor: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            const { data } = await postsCommentsList({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: postsCommentsListInfiniteQueryKey(options)
+    });
+    return opts as Omit<typeof opts, 'initialData'>;
+};
+
+/**
+ * Base for the comments on one post or event, oldest first; writing needs sign-in.
+ */
+export const postsCommentsCreateMutation = (options?: Partial<Options<PostsCommentsCreateData>>): UseMutationOptions<PostsCommentsCreateResponse, DefaultError, Options<PostsCommentsCreateData>> => {
+    const mutationOptions: UseMutationOptions<PostsCommentsCreateResponse, DefaultError, Options<PostsCommentsCreateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await postsCommentsCreate({
                 ...options,
                 ...fnOptions,
                 throwOnError: true

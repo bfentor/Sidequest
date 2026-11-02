@@ -74,7 +74,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 - [x] Add to calendar (iCal, Google Calendar)
 - [x] Shareable event links
 - [x] Reminders before an event
-- [ ] Q&A or comments on events
+- [x] Q&A or comments on events
 - [ ] QR check-in at the door
 - [ ] Photos and feedback after the event
 
@@ -96,7 +96,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 - [x] Images in posts
 - [x] Edit and delete posts
 - [x] Likes and reactions
-- [ ] Comments
+- [x] Comments
 - [x] Reposting or sharing events to your followers
 - [ ] @mentions, hashtags and link previews
 - [ ] Direct messages (a large feature with heavy moderation needs)

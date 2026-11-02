@@ -18,6 +18,7 @@ import type { MenuAction } from '@/components/action-menu';
 import { useAuth } from '@/auth/auth-provider';
 import { Button } from '@/components/button';
 import { CategoryChips } from '@/components/category-chips';
+import { Comments } from '@/components/comments';
 import { ContentMenu } from '@/components/content-menu';
 import { EventActions } from '@/components/event-actions';
 import { FriendsGoing } from '@/components/friends-going';
@@ -199,6 +200,11 @@ export default function EventScreen() {
           </View>
           {event.description ? <ThemedText>{event.description}</ThemedText> : null}
           <CategoryChips slugs={event.categories ?? []} />
+          <Comments
+            parent={{ type: 'event', id: event.id }}
+            title={t('comments.questionsTitle')}
+            placeholder={t('comments.askPlaceholder')}
+          />
         </>
       )}
     </Screen>

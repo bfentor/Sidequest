@@ -2,9 +2,11 @@ import { postsDestroyMutation, type Post } from '@sidequest/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link, router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
+import { SymbolView } from 'expo-symbols';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Spacing } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
 import { useFormat } from '@/lib/format';
 
 import { Avatar } from './avatar';
@@ -17,6 +19,7 @@ import { ThemedText } from './themed-text';
 export function PostCard({ post }: { post: Post }) {
   const format = useFormat();
   const { t } = useTranslation();
+  const theme = useTheme();
   const queryClient = useQueryClient();
   const destroy = useMutation({
     ...postsDestroyMutation(),
@@ -75,7 +78,31 @@ export function PostCard({ post }: { post: Post }) {
         </View>
       ) : null}
       {post.event ? <EventCard event={post.event} /> : null}
-      <LikeButton post={post} />
+      <View style={styles.actions}>
+        <LikeButton post={post} />
+        <Link href={{ pathname: '/posts/[id]', params: { id: post.id } }} asChild>
+          <Pressable
+            role="link"
+            accessibilityLabel={t('comments.title')}
+            hitSlop={8}
+            style={styles.commentLink}>
+            <SymbolView
+              name={{
+                ios: 'bubble.left',
+                android: 'chat_bubble_outline',
+                web: 'chat_bubble_outline',
+              }}
+              size={20}
+              tintColor={theme.textSecondary}
+            />
+            {post.comment_count > 0 ? (
+              <ThemedText type="small" themeColor="textSecondary">
+                {post.comment_count}
+              </ThemedText>
+            ) : null}
+          </Pressable>
+        </Link>
+      </View>
     </View>
   );
 }
@@ -117,5 +144,15 @@ const styles = StyleSheet.create({
   },
   onlyImage: {
     aspectRatio: 4 / 3,
+  },
+  actions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.four,
+  },
+  commentLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.one,
   },
 });

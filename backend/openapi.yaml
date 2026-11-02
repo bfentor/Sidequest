@@ -21,6 +21,23 @@ paths:
                 items:
                   $ref: '#/components/schemas/Category'
           description: ''
+  /api/comments/{id}/:
+    delete:
+      operationId: comments_destroy
+      description: Delete a comment you wrote, or one on your post or event.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - comments
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/events/:
     post:
       operationId: events_create
@@ -298,6 +315,66 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/events/{id}/comments/:
+    get:
+      operationId: events_comments_list
+      description: Questions and comments on an event.
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - events
+      security:
+      - XSessionTokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCommentList'
+          description: ''
+    post:
+      operationId: events_comments_create
+      description: Questions and comments on an event.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CommentRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CommentRequest'
+        required: true
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+          description: ''
   /api/events/{id}/save/:
     put:
       operationId: events_save_update
@@ -1586,6 +1663,68 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/posts/{id}/comments/:
+    get:
+      operationId: posts_comments_list
+      description: Base for the comments on one post or event, oldest first; writing
+        needs sign-in.
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - posts
+      security:
+      - XSessionTokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCommentList'
+          description: ''
+    post:
+      operationId: posts_comments_create
+      description: Base for the comments on one post or event, oldest first; writing
+        needs sign-in.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - posts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CommentRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CommentRequest'
+        required: true
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+          description: ''
   /api/posts/{id}/like/:
     put:
       operationId: posts_like_update
@@ -2129,6 +2268,49 @@ components:
       - icon
       - name
       - slug
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        author:
+          allOf:
+          - $ref: '#/components/schemas/ProfileSummary'
+          readOnly: true
+        body:
+          type: string
+          maxLength: 1000
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        can_delete:
+          type: boolean
+          readOnly: true
+          description: 'Whether you may delete it: you wrote it, or it''s on your
+            post or event.'
+      required:
+      - author
+      - body
+      - can_delete
+      - created_at
+      - id
+    CommentRequest:
+      type: object
+      properties:
+        author_handle:
+          type: string
+          minLength: 1
+          writeOnly: true
+          description: Comment as this profile (yourself or an organization you belong
+            to). Defaults to your own profile.
+        body:
+          type: string
+          minLength: 1
+          maxLength: 1000
+      required:
+      - body
     Event:
       type: object
       properties:
@@ -2853,6 +3035,25 @@ components:
       required:
       - display_name
       - handle
+    PaginatedCommentList:
+      type: object
+      required:
+      - results
+      properties:
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
     PaginatedEventList:
       type: object
       required:
@@ -3206,6 +3407,9 @@ components:
           type: boolean
           readOnly: true
           description: Whether you liked this post.
+        comment_count:
+          type: integer
+          readOnly: true
         created_at:
           type: string
           format: date-time
@@ -3217,6 +3421,7 @@ components:
           nullable: true
       required:
       - author
+      - comment_count
       - created_at
       - edited_at
       - event
@@ -3575,11 +3780,13 @@ components:
       - post
       - event
       - profile
+      - comment
       type: string
       description: |-
         * `post` - post
         * `event` - event
         * `profile` - profile
+        * `comment` - comment
     University:
       type: object
       properties:

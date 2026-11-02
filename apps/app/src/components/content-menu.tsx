@@ -1,4 +1,8 @@
-import { profilesBlockCreateMutation, profilesMuteCreateMutation } from '@sidequest/api';
+import {
+  profilesBlockCreateMutation,
+  profilesMuteCreateMutation,
+  type TargetTypeEnum,
+} from '@sidequest/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import { useState } from 'react';
@@ -10,7 +14,7 @@ import { useActingProfiles } from '@/hooks/use-acting-profiles';
 import { ActionMenu, type MenuAction } from './action-menu';
 import { IconButton } from './icon-button';
 
-export type ReportTarget = { type: 'post' | 'event' | 'profile'; id: string };
+export type ReportTarget = { type: TargetTypeEnum; id: string };
 
 type ContentMenuProps = {
   /** What "Report" reports. */
@@ -19,10 +23,17 @@ type ContentMenuProps = {
   owner: { handle: string };
   /** Shown instead when the content is the signed-in user's own (e.g. delete). */
   ownActions?: MenuAction[];
+  /** Shown first when it isn't, e.g. deleting someone's comment on your post. */
+  extraActions?: MenuAction[];
 };
 
 /** The "…" menu on posts, events and profiles: report, mute and block, or the owner's actions. */
-export function ContentMenu({ target, owner, ownActions = [] }: ContentMenuProps) {
+export function ContentMenu({
+  target,
+  owner,
+  ownActions = [],
+  extraActions = [],
+}: ContentMenuProps) {
   const { t } = useTranslation();
   const { status } = useAuth();
   // Your own content, or an organization's you belong to.
@@ -42,6 +53,7 @@ export function ContentMenu({ target, owner, ownActions = [] }: ContentMenuProps
   const actions: MenuAction[] = mine
     ? ownActions
     : [
+        ...extraActions,
         {
           label: t('moderation.report'),
           onPress: whenSignedIn(() => router.push({ pathname: '/report', params: target })),

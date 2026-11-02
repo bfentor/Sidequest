@@ -475,5 +475,18 @@
     "calendarFile": "Calendar file (Apple, Outlook…)",
     "googleCalendar": "Google Calendar",
     "postAbout": "Post about this event"
+  },
+  "comments": {
+    "title": "Comments",
+    "questionsTitle": "Questions and comments",
+    "placeholder": "Write a comment",
+    "askPlaceholder": "Ask the organizer or comment",
+    "send": "Send",
+    "commentAs": "Comment as",
+    "more": "Show more",
+    "none": "Nothing here yet.",
+    "signInToComment": "Sign in to comment",
+    "delete": "Delete comment",
+    "deleteConfirm": "Delete this comment?"
   }
 }

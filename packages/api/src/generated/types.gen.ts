@@ -83,6 +83,21 @@ export type Category = {
     readonly icon: string;
 };
 
+export type Comment = {
+    readonly id: number;
+    author: ProfileSummary;
+    body: string;
+    readonly created_at: string;
+    /**
+     * Whether you may delete it: you wrote it, or it's on your post or event.
+     */
+    readonly can_delete: boolean;
+};
+
+export type CommentRequest = {
+    body: string;
+};
+
 export type Event = {
     readonly id: number;
     organizer: ProfileSummary;
@@ -371,6 +386,12 @@ export type OrganizationCreateRequest = {
     bio?: string;
 };
 
+export type PaginatedCommentList = {
+    next?: string | null;
+    previous?: string | null;
+    results: Array<Comment>;
+};
+
 export type PaginatedEventList = {
     count: number;
     next?: string | null;
@@ -488,6 +509,7 @@ export type Post = {
      * Whether you liked this post.
      */
     readonly is_liked: boolean;
+    readonly comment_count: number;
     readonly created_at: string;
     readonly edited_at: string | null;
 };
@@ -642,8 +664,9 @@ export type StudentStatus = {
  * * `post` - post
  * * `event` - event
  * * `profile` - profile
+ * * `comment` - comment
  */
-export type TargetTypeEnum = 'post' | 'event' | 'profile';
+export type TargetTypeEnum = 'post' | 'event' | 'profile' | 'comment';
 
 export type University = {
     readonly id: number;
@@ -708,6 +731,18 @@ export type AttendanceSummaryWritable = {
      * How many people you follow are going (who share their attendance).
      */
     friends_going_count: number;
+};
+
+export type CommentWritable = {
+    body: string;
+};
+
+export type CommentRequestWritable = {
+    /**
+     * Comment as this profile (yourself or an organization you belong to). Defaults to your own profile.
+     */
+    author_handle?: string;
+    body: string;
 };
 
 export type EventWritable = {
@@ -804,6 +839,12 @@ export type NearbyEventWritable = {
      * Leave out to publish now; empty for a draft; a future time to schedule.
      */
     published_at?: string | null;
+};
+
+export type PaginatedCommentListWritable = {
+    next?: string | null;
+    previous?: string | null;
+    results: Array<CommentWritable>;
 };
 
 export type PaginatedEventListWritable = {
@@ -1006,6 +1047,24 @@ export type CategoriesListResponses = {
 
 export type CategoriesListResponse = CategoriesListResponses[keyof CategoriesListResponses];
 
+export type CommentsDestroyData = {
+    body?: never;
+    path: {
+        id: number;
+    };
+    query?: never;
+    url: '/api/comments/{id}/';
+};
+
+export type CommentsDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type CommentsDestroyResponse = CommentsDestroyResponses[keyof CommentsDestroyResponses];
+
 export type EventsCreateData = {
     body: EventRequestWritable;
     path?: never;
@@ -1196,6 +1255,41 @@ export type EventsCoHostCreateResponses = {
 };
 
 export type EventsCoHostCreateResponse = EventsCoHostCreateResponses[keyof EventsCoHostCreateResponses];
+
+export type EventsCommentsListData = {
+    body?: never;
+    path: {
+        id: number;
+    };
+    query?: {
+        /**
+         * The pagination cursor value.
+         */
+        cursor?: string;
+    };
+    url: '/api/events/{id}/comments/';
+};
+
+export type EventsCommentsListResponses = {
+    200: PaginatedCommentList;
+};
+
+export type EventsCommentsListResponse = EventsCommentsListResponses[keyof EventsCommentsListResponses];
+
+export type EventsCommentsCreateData = {
+    body: CommentRequestWritable;
+    path: {
+        id: number;
+    };
+    query?: never;
+    url: '/api/events/{id}/comments/';
+};
+
+export type EventsCommentsCreateResponses = {
+    201: Comment;
+};
+
+export type EventsCommentsCreateResponse = EventsCommentsCreateResponses[keyof EventsCommentsCreateResponses];
 
 export type EventsSaveDestroyData = {
     body?: never;
@@ -2067,6 +2161,41 @@ export type PostsPartialUpdateResponses = {
 };
 
 export type PostsPartialUpdateResponse = PostsPartialUpdateResponses[keyof PostsPartialUpdateResponses];
+
+export type PostsCommentsListData = {
+    body?: never;
+    path: {
+        id: number;
+    };
+    query?: {
+        /**
+         * The pagination cursor value.
+         */
+        cursor?: string;
+    };
+    url: '/api/posts/{id}/comments/';
+};
+
+export type PostsCommentsListResponses = {
+    200: PaginatedCommentList;
+};
+
+export type PostsCommentsListResponse = PostsCommentsListResponses[keyof PostsCommentsListResponses];
+
+export type PostsCommentsCreateData = {
+    body: CommentRequestWritable;
+    path: {
+        id: number;
+    };
+    query?: never;
+    url: '/api/posts/{id}/comments/';
+};
+
+export type PostsCommentsCreateResponses = {
+    201: Comment;
+};
+
+export type PostsCommentsCreateResponse = PostsCommentsCreateResponses[keyof PostsCommentsCreateResponses];
 
 export type PostsLikeDestroyData = {
     body?: never;

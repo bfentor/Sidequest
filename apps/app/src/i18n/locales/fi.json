@@ -475,5 +475,18 @@
     "calendarFile": "Kalenteritiedosto (Apple, Outlook…)",
     "googleCalendar": "Google-kalenteri",
     "postAbout": "Julkaise tästä tapahtumasta"
+  },
+  "comments": {
+    "title": "Kommentit",
+    "questionsTitle": "Kysymykset ja kommentit",
+    "placeholder": "Kirjoita kommentti",
+    "askPlaceholder": "Kysy järjestäjältä tai kommentoi",
+    "send": "Lähetä",
+    "commentAs": "Kommentoi nimellä",
+    "more": "Näytä lisää",
+    "none": "Täällä ei ole vielä mitään.",
+    "signInToComment": "Kirjaudu sisään kommentoidaksesi",
+    "delete": "Poista kommentti",
+    "deleteConfirm": "Poistetaanko tämä kommentti?"
   }
 }

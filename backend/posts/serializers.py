@@ -9,7 +9,7 @@ from events.serializers import EventSerializer
 from images.serializers import ImageSerializer, OwnImageField
 from profiles.serializers import ActingProfileField, ProfileSummarySerializer
 
-from .models import Post, PostImage
+from .models import Comment, Post, PostImage
 
 # Pictures a post may have.
 MAX_IMAGES = 4
@@ -33,6 +33,7 @@ class PostSerializer(serializers.ModelSerializer):
     )
     images = serializers.SerializerMethodField()
     like_count = serializers.SerializerMethodField()
+    comment_count = serializers.SerializerMethodField()
     is_liked = serializers.SerializerMethodField(help_text="Whether you liked this post.")
     image_ids = serializers.ListField(
         child=OwnImageField(),
@@ -56,6 +57,7 @@ class PostSerializer(serializers.ModelSerializer):
             "image_ids",
             "like_count",
             "is_liked",
+            "comment_count",
             "created_at",
             "edited_at",
         ]
@@ -69,6 +71,9 @@ class PostSerializer(serializers.ModelSerializer):
     # Annotated by for_display; a just-created post has none yet.
     def get_like_count(self, post) -> int:
         return getattr(post, "like_count", 0)
+
+    def get_comment_count(self, post) -> int:
+        return getattr(post, "comment_count", 0)
 
     def get_is_liked(self, post) -> bool:
         return getattr(post, "is_liked", False)
@@ -115,3 +120,28 @@ class PostSerializer(serializers.ModelSerializer):
         if images is not None or validated_data.get("body", instance.body) != instance.body:
             validated_data["edited_at"] = timezone.now()
         return super().update(instance, validated_data)
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    author = ProfileSummarySerializer(read_only=True)
+    author_handle = ActingProfileField(
+        source="author",
+        help_text="Comment as this profile (yourself or an organization you belong to). "
+        "Defaults to your own profile.",
+    )
+    can_delete = serializers.SerializerMethodField(
+        help_text="Whether you may delete it: you wrote it, or it's on your post or event."
+    )
+
+    class Meta:
+        model = Comment
+        fields = ["id", "author", "author_handle", "body", "created_at", "can_delete"]
+
+    def get_can_delete(self, comment) -> bool:
+        managed = self.context.get("managed_profile_ids", set())
+        return comment.author_id in managed or comment.owner.pk in managed
+
+    def validate_body(self, body):
+        if not body.strip():
+            raise serializers.ValidationError(_("Write something first."))
+        return body.strip()

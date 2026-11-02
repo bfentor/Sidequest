@@ -1,9 +1,16 @@
 import pytest
+from rest_framework.test import APIClient
 
 from images.models import Image
 from images.tests import photo, upload
 
 from .models import Post
+
+
+def client_for(user):
+    client = APIClient()
+    client.force_authenticate(user)
+    return client
 
 
 @pytest.fixture(autouse=True)
@@ -79,3 +86,46 @@ def test_like_and_unlike(auth_client, api_client, user, make_user):
 
     assert auth_client.delete(f"/api/posts/{post.pk}/like/").status_code == 204
     assert auth_client.get(f"/api/posts/{post.pk}/").json()["like_count"] == 0
+
+
+def test_comments_on_posts_and_events(auth_client, api_client, user, make_user, make_event):
+    from moderation.models import Block
+    from notifications.models import Notification
+
+    author = make_user()
+    post = Post.objects.create(author=author.profile, body="hi")
+    event = make_event(author.profile, title="party")
+
+    response = auth_client.post(
+        f"/api/posts/{post.pk}/comments/", {"body": " nice "}, format="json"
+    )
+    assert response.status_code == 201, response.json()
+    assert response.json()["body"] == "nice"
+    assert response.json()["can_delete"] is True
+    auth_client.post(f"/api/events/{event.pk}/comments/", {"body": "Is it free?"}, format="json")
+    assert Notification.objects.filter(recipient=author, kind="comment").count() == 2
+    assert (
+        auth_client.post(
+            f"/api/posts/{post.pk}/comments/", {"body": "  "}, format="json"
+        ).status_code
+        == 400
+    )
+
+    comments = api_client.get(f"/api/posts/{post.pk}/comments/").json()["results"]
+    assert [(c["body"], c["can_delete"]) for c in comments] == [("nice", False)]
+    assert api_client.get(f"/api/posts/{post.pk}/").json()["comment_count"] == 1
+    questions = api_client.get(f"/api/events/{event.pk}/comments/").json()["results"]
+    assert [c["body"] for c in questions] == ["Is it free?"]
+
+    # Someone who blocked the commenter doesn't see their comments.
+    api_client.force_authenticate(author)
+    Block.objects.create(blocker=author.profile, blocked=user.profile)
+    assert api_client.get(f"/api/posts/{post.pk}/comments/").json()["results"] == []
+    Block.objects.all().delete()
+
+    # The post's author may delete comments on it; strangers may not.
+    comment_id = comments[0]["id"]
+    stranger = client_for(make_user())
+    assert stranger.delete(f"/api/comments/{comment_id}/").status_code == 403
+    assert api_client.delete(f"/api/comments/{comment_id}/").status_code == 204
+    assert auth_client.get(f"/api/posts/{post.pk}/").json()["comment_count"] == 0

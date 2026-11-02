@@ -475,5 +475,18 @@
     "calendarFile": "Kalenderfil (Apple, Outlook…)",
     "googleCalendar": "Google Kalender",
     "postAbout": "Gör ett inlägg om evenemanget"
+  },
+  "comments": {
+    "title": "Kommentarer",
+    "questionsTitle": "Frågor och kommentarer",
+    "placeholder": "Skriv en kommentar",
+    "askPlaceholder": "Fråga arrangören eller kommentera",
+    "send": "Skicka",
+    "commentAs": "Kommentera som",
+    "more": "Visa fler",
+    "none": "Inget här än.",
+    "signInToComment": "Logga in för att kommentera",
+    "delete": "Ta bort kommentar",
+    "deleteConfirm": "Ta bort den här kommentaren?"
   }
 }

@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from events.models import Event
-from posts.models import Post
+from posts.models import Comment, Post
 from profiles.models import Profile
 
 from .models import Report
@@ -22,7 +22,16 @@ def _find_profile(key, viewer):
     return Profile.objects.visible_to(viewer).filter(handle=key).first()
 
 
-TARGET_FINDERS = {"post": _find_post, "event": _find_event, "profile": _find_profile}
+def _find_comment(key, viewer):
+    return Comment.objects.visible_to(viewer).filter(pk=key).first() if key.isdigit() else None
+
+
+TARGET_FINDERS = {
+    "post": _find_post,
+    "event": _find_event,
+    "profile": _find_profile,
+    "comment": _find_comment,
+}
 
 
 class ReportSerializer(serializers.ModelSerializer):
