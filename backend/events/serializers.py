@@ -25,6 +25,10 @@ class CategorySerializer(serializers.ModelSerializer):
         read_only_fields = fields
 
 
+# How many friends going an event shows by name.
+FRIENDS_SHOWN = 3
+
+
 class AttendanceSummarySerializer(serializers.Serializer):
     going = serializers.IntegerField()
     interested = serializers.IntegerField()
@@ -35,10 +39,19 @@ class AttendanceSummarySerializer(serializers.Serializer):
         help_text="The signed-in user's RSVP, if any.",
     )
     is_full = serializers.BooleanField()
+    friends_going = ProfileSummarySerializer(
+        many=True, help_text=f"Up to {FRIENDS_SHOWN} people you follow who are going."
+    )
+    friends_going_count = serializers.IntegerField(
+        help_text="How many people you follow are going (who share their attendance)."
+    )
 
 
-def attendance_summary(event, viewer):
-    """Counts from `with_attendance` annotations, or queried for a single event."""
+def attendance_summary(event, viewer, context):
+    """Counts from `with_attendance` annotations, or queried for a single event.
+
+    `context` is the serializer context, for the friends' avatar URLs.
+    """
     if hasattr(event, "going_count"):
         going, interested = event.going_count, event.interested_count
         waitlisted, mine = event.waitlist_count, event.my_status
@@ -53,12 +66,24 @@ def attendance_summary(event, viewer):
             if viewer is not None
             else None
         )
+    if viewer is None:
+        friends = []
+    elif hasattr(event, "friend_attendances"):
+        friends = event.friend_attendances
+    else:
+        friends = list(Attendance.objects.friends_going(viewer).filter(event=event))
     return {
         "going": going,
         "interested": interested,
         "waitlisted": waitlisted,
         "mine": mine,
         "is_full": event.capacity is not None and going >= event.capacity,
+        "friends_going": ProfileSummarySerializer(
+            [attendance.profile for attendance in friends[:FRIENDS_SHOWN]],
+            many=True,
+            context=context,
+        ).data,
+        "friends_going_count": len(friends),
     }
 
 
@@ -195,7 +220,7 @@ class EventSerializer(serializers.ModelSerializer):
     def get_attendance(self, event):
         request = self.context.get("request")
         viewer = request.user.profile if request and request.user.is_authenticated else None
-        return attendance_summary(event, viewer)
+        return attendance_summary(event, viewer, self.context)
 
     def validate(self, attrs):
         starts_at = attrs.get("starts_at", getattr(self.instance, "starts_at", None))

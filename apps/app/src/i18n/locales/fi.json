@@ -433,5 +433,16 @@
     "organizations": "Järjestöt",
     "people": "Ihmiset",
     "hint": "Ehdotukset perustuvat siihen, ketä seuraamasi ihmiset seuraavat, kiinnostuksen kohteisiisi ja suosioon."
+  },
+  "friendsGoing": {
+    "one": "{{name}} osallistuu",
+    "two": "{{name}} ja {{other}} osallistuvat",
+    "more_one": "{{name}} ja {{count}} muu seuraamasi osallistuvat",
+    "more_other": "{{name}} ja {{count}} muuta seuraamaasi osallistuvat"
+  },
+  "attendees": {
+    "title": "Osallistujat",
+    "seeAll": "Katso, ketkä osallistuvat",
+    "empty": "Ei vielä ketään näytettävää."
   }
 }

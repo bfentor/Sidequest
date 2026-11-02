@@ -1,8 +1,9 @@
+from django.db.models import Exists, OuterRef, Q, Subquery
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from drf_spectacular.utils import OpenApiParameter, extend_schema
-from rest_framework import generics, mixins, permissions, status, viewsets
+from rest_framework import generics, mixins, permissions, serializers, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.pagination import LimitOffsetPagination
@@ -10,17 +11,17 @@ from rest_framework.response import Response
 from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 
-from moderation.visibility import viewer_profile
+from moderation.visibility import hidden_profiles, private_profiles, viewer_profile
 from notifications.models import Kind
 from notifications.services import attendees_of, notify
-from profiles.models import Profile
+from profiles.models import Follow, Profile
 from profiles.permissions import CanActAsOwner
 from profiles.serializers import ProfileSummarySerializer
 from students.services import current_university
 
 from . import attendance as rsvps
 from . import geocoding
-from .models import Category, CoHost, Event
+from .models import Attendance, Category, CoHost, Event
 from .serializers import (
     AttendanceSummarySerializer,
     CategorySerializer,
@@ -29,6 +30,18 @@ from .serializers import (
     RsvpSerializer,
     attendance_summary,
 )
+
+
+class AttendeesQuerySerializer(serializers.Serializer):
+    status = serializers.ChoiceField(
+        choices=[Attendance.Status.GOING, Attendance.Status.INTERESTED],
+        default=Attendance.Status.GOING,
+    )
+
+
+class AttendeesPagination(LimitOffsetPagination):
+    default_limit = 30
+    max_limit = 100
 
 
 class EventViewSet(
@@ -106,7 +119,42 @@ class EventViewSet(
             rsvps.rsvp(event, profile, serializer.validated_data["status"])
         else:
             rsvps.cancel(event, profile)
-        return Response(attendance_summary(self.get_queryset().get(pk=pk), profile))
+        event = self.get_queryset().get(pk=pk)
+        return Response(attendance_summary(event, profile, self.get_serializer_context()))
+
+    @extend_schema(
+        parameters=[AttendeesQuerySerializer], responses=ProfileSummarySerializer(many=True)
+    )
+    @action(detail=True, methods=["get"], pagination_class=AttendeesPagination)
+    def attendees(self, request, pk=None):
+        """Who's going (or interested): people you follow first, then the latest RSVPs.
+
+        Leaves out people who hide their attendance (except yourself), blocked
+        profiles and private profiles you don't follow.
+        """
+        event = get_object_or_404(Event.objects.visible_to(viewer_profile(request)), pk=pk)
+        params = AttendeesQuerySerializer(data=request.query_params)
+        params.is_valid(raise_exception=True)
+        viewer = viewer_profile(request)
+        rsvps_of = Attendance.objects.filter(event=event, status=params.validated_data["status"])
+        profiles = (
+            Profile.objects.filter(pk__in=rsvps_of.values("profile"), removed_at__isnull=True)
+            .exclude(pk__in=hidden_profiles(viewer))
+            .exclude(pk__in=private_profiles(viewer))
+            .annotate(
+                rsvp_at=Subquery(rsvps_of.filter(profile=OuterRef("pk")).values("updated_at")[:1]),
+                followed=Exists(Follow.objects.filter(follower=viewer, followee=OuterRef("pk"))),
+            )
+            .select_related("avatar")
+            .order_by("-followed", "-rsvp_at", "pk")
+        )
+        shares = Q(hide_attendance=False)
+        profiles = profiles.filter(shares | Q(pk=viewer.pk) if viewer else shares)
+        page = self.paginate_queryset(profiles)
+        context = self.get_serializer_context()
+        return self.get_paginated_response(
+            ProfileSummarySerializer(page, many=True, context=context).data
+        )
 
 
 class CategoryListView(generics.ListAPIView):

@@ -64,10 +64,19 @@ class EventQuerySet(models.QuerySet):
 
     def for_display(self, viewer):
         """Everything an event's serializer shows, fetched in as few queries as possible."""
-        return (
+        queryset = (
             self.with_attendance(viewer)
             .select_related("organizer__avatar", "cover", "students_of")
             .prefetch_related("categories", "co_host_links__profile__avatar")
+        )
+        if viewer is None:
+            return queryset
+        return queryset.prefetch_related(
+            models.Prefetch(
+                "attendances",
+                queryset=Attendance.objects.friends_going(viewer),
+                to_attr="friend_attendances",
+            )
         )
 
     def filtered(self, *, categories=(), starts_after=None, starts_before=None, free=False):
@@ -214,6 +223,22 @@ class Event(models.Model):
         return self.title
 
 
+class AttendanceQuerySet(models.QuerySet):
+    def friends_going(self, viewer):
+        """Going RSVPs of profiles the viewer follows, unless they hide their attendance."""
+        return (
+            self.filter(
+                status=Attendance.Status.GOING,
+                profile__followed_by__follower=viewer,
+                profile__hide_attendance=False,
+                profile__removed_at__isnull=True,
+            )
+            .exclude(profile__in=hidden_profiles(viewer))
+            .select_related("profile__avatar")
+            .order_by("-updated_at")
+        )
+
+
 class Attendance(models.Model):
     """Someone's RSVP to an event."""
 
@@ -228,6 +253,8 @@ class Attendance(models.Model):
     status = models.CharField(max_length=20, choices=Status.choices)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    objects = AttendanceQuerySet.as_manager()
 
     class Meta:
         constraints = [

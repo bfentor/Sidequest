@@ -19,6 +19,7 @@ import { useAuth } from '@/auth/auth-provider';
 import { Button } from '@/components/button';
 import { CategoryChips } from '@/components/category-chips';
 import { ContentMenu } from '@/components/content-menu';
+import { FriendsGoing } from '@/components/friends-going';
 import { RemoteImage } from '@/components/remote-image';
 import { RsvpBar } from '@/components/rsvp-bar';
 import { Screen } from '@/components/screen';
@@ -158,6 +159,14 @@ export default function EventScreen() {
             </ThemedText>
           ) : null}
           {event.status === 'cancelled' ? null : <RsvpBar event={event} />}
+          <FriendsGoing attendance={event.attendance} />
+          {event.attendance.going + event.attendance.interested > 0 ? (
+            <Link href={{ pathname: '/events/[id]/attendees', params: { id: event.id } }}>
+              <ThemedText type="small" themeColor="tint">
+                {t('attendees.seeAll')}
+              </ThemedText>
+            </Link>
+          ) : null}
           {event.venue_name || event.address ? (
             <ThemedText>{[event.venue_name, event.address].filter(Boolean).join(', ')}</ThemedText>
           ) : null}

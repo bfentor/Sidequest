@@ -68,7 +68,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 ## 6. Going to events
 
 - [x] RSVP as "going" or "interested", with attendee counts
-- [ ] "Friends who are going"
+- [x] "Friends who are going"
 - [ ] My events: a calendar or list of events I'm going to
 - [ ] Saved or bookmarked events
 - [ ] Add to calendar (iCal, Google Calendar)

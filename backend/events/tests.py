@@ -90,6 +90,8 @@ def test_rsvp_going_and_interested(auth_client, make_user, make_event):
         "waitlisted": 0,
         "mine": "interested",
         "is_full": False,
+        "friends_going": [],
+        "friends_going_count": 0,
     }
 
     detail = auth_client.get(f"/api/events/{event.pk}/").json()
@@ -202,3 +204,41 @@ def test_managed_events_include_organizations(auth_client, user, make_organizati
     events = auth_client.get("/api/me/events/").json()["results"]
 
     assert sorted(e["title"] for e in events) == ["club's", "mine"]
+
+
+def test_friends_going_and_attendees(api_client, auth_client, user, make_user, make_event):
+    from events.models import Attendance
+    from moderation.models import Block
+    from profiles.models import Follow
+
+    host = make_user().profile
+    event = make_event(host, title="party")
+    friend, shy_friend, stranger, blocker, private = (make_user().profile for _ in range(5))
+    shy_friend.hide_attendance = True
+    shy_friend.save()
+    private.is_private = True
+    private.save()
+    for followee in (friend, shy_friend):
+        Follow.objects.create(follower=user.profile, followee=followee)
+    Block.objects.create(blocker=blocker, blocked=user.profile)
+    for profile in (stranger, friend, shy_friend, blocker, private):
+        Attendance.objects.create(event=event, profile=profile, status="going")
+
+    attendance = auth_client.get(f"/api/events/{event.pk}/").json()["attendance"]
+    assert [p["handle"] for p in attendance["friends_going"]] == [friend.handle]
+    assert attendance["friends_going_count"] == 1
+    assert attendance["going"] == 5
+
+    feed = auth_client.get("/api/feeds/upcoming/").json()["results"]
+    assert feed[0]["attendance"]["friends_going_count"] == 1
+
+    attendees = auth_client.get(f"/api/events/{event.pk}/attendees/").json()
+    assert [p["handle"] for p in attendees["results"]] == [friend.handle, stranger.handle]
+    assert api_client.get(f"/api/events/{event.pk}/").json()["attendance"]["friends_going"] == []
+
+    response = auth_client.put(
+        f"/api/events/{event.pk}/attendance/", {"status": "interested"}, format="json"
+    )
+    assert response.json()["friends_going_count"] == 1
+    interested = auth_client.get(f"/api/events/{event.pk}/attendees/", {"status": "interested"})
+    assert [p["handle"] for p in interested.json()["results"]] == [user.profile.handle]

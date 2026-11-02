@@ -433,5 +433,16 @@
     "organizations": "Organisationer",
     "people": "Personer",
     "hint": "Förslagen bygger på vem de du följer följer, dina intressen och vad som är populärt."
+  },
+  "friendsGoing": {
+    "one": "{{name}} kommer",
+    "two": "{{name}} och {{other}} kommer",
+    "more_one": "{{name}} och {{count}} annan du följer kommer",
+    "more_other": "{{name}} och {{count}} andra du följer kommer"
+  },
+  "attendees": {
+    "title": "Vilka som kommer",
+    "seeAll": "Se vilka som kommer",
+    "empty": "Ingen att visa än."
   }
 }

@@ -6,6 +6,7 @@ import { Pressable, StyleSheet } from 'react-native';
 import { Spacing } from '@/constants/theme';
 import { useFormat } from '@/lib/format';
 
+import { FriendsGoing } from './friends-going';
 import { ThemedText } from './themed-text';
 import { ThemedView } from './themed-view';
 
@@ -51,6 +52,7 @@ export function EventCard({ event, distanceM }: EventCardProps) {
               .filter(Boolean)
               .join(' · ')}
           </ThemedText>
+          <FriendsGoing attendance={event.attendance} />
         </ThemedView>
       </Pressable>
     </Link>

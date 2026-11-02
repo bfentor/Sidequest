@@ -433,5 +433,16 @@
     "organizations": "Organizations",
     "people": "People",
     "hint": "Suggestions come from who the people you follow follow, your interests and what's popular."
+  },
+  "friendsGoing": {
+    "one": "{{name}} is going",
+    "two": "{{name}} and {{other}} are going",
+    "more_one": "{{name}} and {{count}} other you follow are going",
+    "more_other": "{{name}} and {{count}} others you follow are going"
+  },
+  "attendees": {
+    "title": "Who's going",
+    "seeAll": "See who's going",
+    "empty": "No one to show yet."
   }
 }

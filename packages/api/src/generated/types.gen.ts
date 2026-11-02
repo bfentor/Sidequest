@@ -64,6 +64,14 @@ export type AttendanceSummary = {
      */
     mine: AttendanceStatusEnum | NullEnum | null;
     is_full: boolean;
+    /**
+     * Up to 3 people you follow who are going.
+     */
+    friends_going: Array<ProfileSummary>;
+    /**
+     * How many people you follow are going (who share their attendance).
+     */
+    friends_going_count: number;
 };
 
 export type Category = {
@@ -382,6 +390,7 @@ export type PaginatedPostList = {
 };
 
 export type PaginatedProfileSummaryList = {
+    count: number;
     next?: string | null;
     previous?: string | null;
     results: Array<ProfileSummary>;
@@ -659,6 +668,29 @@ export type AccountSettingsWritable = {
     };
 };
 
+export type AttendanceSummaryWritable = {
+    going: number;
+    interested: number;
+    waitlisted: number;
+    /**
+     * The signed-in user's RSVP, if any.
+     *
+     * * `going` - Going
+     * * `interested` - Interested
+     * * `waitlisted` - Waitlisted
+     */
+    mine: AttendanceStatusEnum | NullEnum | null;
+    is_full: boolean;
+    /**
+     * Up to 3 people you follow who are going.
+     */
+    friends_going: Array<unknown>;
+    /**
+     * How many people you follow are going (who share their attendance).
+     */
+    friends_going_count: number;
+};
+
 export type EventWritable = {
     title: string;
     description?: string;
@@ -782,6 +814,7 @@ export type PaginatedPostListWritable = {
 };
 
 export type PaginatedProfileSummaryListWritable = {
+    count: number;
     next?: string | null;
     previous?: string | null;
     results: Array<unknown>;
@@ -1039,6 +1072,38 @@ export type EventsAttendanceUpdateResponses = {
 };
 
 export type EventsAttendanceUpdateResponse = EventsAttendanceUpdateResponses[keyof EventsAttendanceUpdateResponses];
+
+export type EventsAttendeesListData = {
+    body?: never;
+    path: {
+        /**
+         * A unique integer value identifying this event.
+         */
+        id: number;
+    };
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * * `going` - going
+         * * `interested` - interested
+         */
+        status?: 'going' | 'interested';
+    };
+    url: '/api/events/{id}/attendees/';
+};
+
+export type EventsAttendeesListResponses = {
+    200: PaginatedProfileSummaryList;
+};
+
+export type EventsAttendeesListResponse = EventsAttendeesListResponses[keyof EventsAttendeesListResponses];
 
 export type EventsCoHostListData = {
     body?: never;
