@@ -2,7 +2,7 @@ import * as api from '@sidequest/api';
 import { useQueryClient } from '@tanstack/react-query';
 import { createContext, use, useEffect, useState, type PropsWithChildren } from 'react';
 
-import { disablePush } from '@/notifications/push';
+import { disablePush, forgetPushToken } from '@/notifications/push';
 
 import { session } from './session';
 
@@ -13,6 +13,8 @@ type AuthContextValue = {
   signIn: (credentials: Credentials) => Promise<api.AuthResult>;
   signUp: (credentials: Credentials) => Promise<api.AuthResult>;
   signOut: () => Promise<void>;
+  /** Drops the local session without asking the server, e.g. after deleting the account. */
+  forgetSession: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -42,6 +44,13 @@ export function AuthProvider({ children }: PropsWithChildren) {
     return result;
   }
 
+  async function forgetSession() {
+    await forgetPushToken();
+    await session.clear();
+    queryClient.clear();
+    setStatus('signed-out');
+  }
+
   const value: AuthContextValue = {
     status,
     signIn: (credentials) => authenticate(api.signIn(credentials)),
@@ -50,10 +59,9 @@ export function AuthProvider({ children }: PropsWithChildren) {
       // While the session is still valid, so the API can forget this phone.
       await disablePush();
       await api.signOut();
-      await session.clear();
-      queryClient.clear();
-      setStatus('signed-out');
+      await forgetSession();
     },
+    forgetSession,
   };
 
   return <AuthContext value={value}>{children}</AuthContext>;

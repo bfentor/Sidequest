@@ -306,5 +306,15 @@
     "upcoming": "Kommande",
     "past": "Tidigare",
     "empty": "Du har inte skapat några evenemang än."
+  },
+  "account": {
+    "title": "Ditt konto",
+    "exportHint": "Ladda ner en kopia av allt Sidequest sparar om dig.",
+    "export": "Ladda ner mina uppgifter",
+    "delete": "Radera konto",
+    "deleteConfirmTitle": "Radera ditt konto?",
+    "deleteConfirmMessage": "Din profil, dina inlägg, evenemang, anmälningar och följningar raderas för gott. Organisationer du sköter går över till en annan medlem. Bekräfta med ditt lösenord.",
+    "deleteForever": "Radera för alltid",
+    "wrongPassword": "Lösenordet är fel."
   }
 }

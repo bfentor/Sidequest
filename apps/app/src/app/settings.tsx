@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet, Switch, View } from 'react-native';
 
 import { useAuth } from '@/auth/auth-provider';
+import { AccountSection } from '@/components/account-section';
 import { Button } from '@/components/button';
 import { ProfileRow } from '@/components/profile-row';
 import { Screen } from '@/components/screen';
@@ -36,6 +37,7 @@ export default function SettingsScreen() {
         <>
           <PushSettings />
           <BlockedAndMuted />
+          <AccountSection />
           <Button
             title={t('common.signOut')}
             variant="secondary"

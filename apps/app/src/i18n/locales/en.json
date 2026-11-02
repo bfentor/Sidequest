@@ -306,5 +306,15 @@
     "upcoming": "Upcoming",
     "past": "Past",
     "empty": "You haven't created any events yet."
+  },
+  "account": {
+    "title": "Your account",
+    "exportHint": "Download a copy of everything Sidequest stores about you.",
+    "export": "Download my data",
+    "delete": "Delete account",
+    "deleteConfirmTitle": "Delete your account?",
+    "deleteConfirmMessage": "Your profile, posts, events, RSVPs and follows are deleted for good. Organizations you run pass to another member. Enter your password to confirm.",
+    "deleteForever": "Delete forever",
+    "wrongPassword": "The password is wrong."
   }
 }

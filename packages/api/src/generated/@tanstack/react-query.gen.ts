@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { categoriesList, eventsAttendanceDestroy, eventsAttendanceUpdate, eventsCoHostCreate, eventsCoHostDestroy, eventsCoHostList, eventsCreate, eventsDestroy, eventsPartialUpdate, eventsRetrieve, feedsFollowingList, feedsNearbyList, feedsUpcomingList, geocodeList, imagesCreate, meBlockedList, meEventsList, meFollowRequestsCreate, meFollowRequestsDestroy, meFollowRequestsList, meInvitationsCreate, meInvitationsDestroy, meInvitationsList, meMutedList, mePartialUpdate, meProfilesList, meRetrieve, meSettingsPartialUpdate, meSettingsRetrieve, notificationsList, notificationsReadCreate, notificationsUnreadRetrieve, type Options, organizationsCreate, organizationsInvitationsList, organizationsMembersCreate, organizationsMembersDestroy, organizationsMembersList, organizationsMembersPartialUpdate, organizationsPartialUpdate, organizationsVerificationCreate, postsCreate, postsDestroy, postsRetrieve, profilesBlockCreate, profilesBlockDestroy, profilesEventsList, profilesFollowCreate, profilesFollowDestroy, profilesFollowersList, profilesFollowingList, profilesMuteCreate, profilesMuteDestroy, profilesPostsList, profilesRetrieve, pushDevicesCreate, pushDevicesDestroy, reportsCreate } from '../sdk.gen';
-import type { CategoriesListData, CategoriesListResponse, EventsAttendanceDestroyData, EventsAttendanceDestroyResponse, EventsAttendanceUpdateData, EventsAttendanceUpdateResponse, EventsCoHostCreateData, EventsCoHostCreateResponse, EventsCoHostDestroyData, EventsCoHostDestroyResponse, EventsCoHostListData, EventsCoHostListResponse, EventsCreateData, EventsCreateResponse, EventsDestroyData, EventsDestroyResponse, EventsPartialUpdateData, EventsPartialUpdateResponse, EventsRetrieveData, EventsRetrieveResponse, FeedsFollowingListData, FeedsFollowingListResponse, FeedsNearbyListData, FeedsNearbyListResponse, FeedsUpcomingListData, FeedsUpcomingListResponse, GeocodeListData, GeocodeListResponse, ImagesCreateData, ImagesCreateResponse, MeBlockedListData, MeBlockedListResponse, MeEventsListData, MeEventsListResponse, MeFollowRequestsCreateData, MeFollowRequestsCreateResponse, MeFollowRequestsDestroyData, MeFollowRequestsDestroyResponse, MeFollowRequestsListData, MeFollowRequestsListResponse, MeInvitationsCreateData, MeInvitationsCreateResponse, MeInvitationsDestroyData, MeInvitationsDestroyResponse, MeInvitationsListData, MeInvitationsListResponse, MeMutedListData, MeMutedListResponse, MePartialUpdateData, MePartialUpdateResponse, MeProfilesListData, MeProfilesListResponse, MeRetrieveData, MeRetrieveResponse, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponse, MeSettingsRetrieveData, MeSettingsRetrieveResponse, NotificationsListData, NotificationsListResponse, NotificationsReadCreateData, NotificationsReadCreateResponse, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponse, OrganizationsCreateData, OrganizationsCreateResponse, OrganizationsInvitationsListData, OrganizationsInvitationsListResponse, OrganizationsMembersCreateData, OrganizationsMembersCreateResponse, OrganizationsMembersDestroyData, OrganizationsMembersDestroyResponse, OrganizationsMembersListData, OrganizationsMembersListResponse, OrganizationsMembersPartialUpdateData, OrganizationsMembersPartialUpdateResponse, OrganizationsPartialUpdateData, OrganizationsPartialUpdateResponse, OrganizationsVerificationCreateData, OrganizationsVerificationCreateResponse, PostsCreateData, PostsCreateResponse, PostsDestroyData, PostsDestroyResponse, PostsRetrieveData, PostsRetrieveResponse, ProfilesBlockCreateData, ProfilesBlockCreateResponse, ProfilesBlockDestroyData, ProfilesBlockDestroyResponse, ProfilesEventsListData, ProfilesEventsListResponse, ProfilesFollowCreateData, ProfilesFollowCreateResponse, ProfilesFollowDestroyData, ProfilesFollowDestroyResponse, ProfilesFollowersListData, ProfilesFollowersListResponse, ProfilesFollowingListData, ProfilesFollowingListResponse, ProfilesMuteCreateData, ProfilesMuteCreateResponse, ProfilesMuteDestroyData, ProfilesMuteDestroyResponse, ProfilesPostsListData, ProfilesPostsListResponse, ProfilesRetrieveData, ProfilesRetrieveResponse, PushDevicesCreateData, PushDevicesCreateResponse, PushDevicesDestroyData, PushDevicesDestroyResponse, ReportsCreateData, ReportsCreateResponse } from '../types.gen';
+import { categoriesList, eventsAttendanceDestroy, eventsAttendanceUpdate, eventsCoHostCreate, eventsCoHostDestroy, eventsCoHostList, eventsCreate, eventsDestroy, eventsPartialUpdate, eventsRetrieve, feedsFollowingList, feedsNearbyList, feedsUpcomingList, geocodeList, imagesCreate, meAccountDeleteCreate, meBlockedList, meEventsList, meExportRetrieve, meFollowRequestsCreate, meFollowRequestsDestroy, meFollowRequestsList, meInvitationsCreate, meInvitationsDestroy, meInvitationsList, meMutedList, mePartialUpdate, meProfilesList, meRetrieve, meSettingsPartialUpdate, meSettingsRetrieve, notificationsList, notificationsReadCreate, notificationsUnreadRetrieve, type Options, organizationsCreate, organizationsInvitationsList, organizationsMembersCreate, organizationsMembersDestroy, organizationsMembersList, organizationsMembersPartialUpdate, organizationsPartialUpdate, organizationsVerificationCreate, postsCreate, postsDestroy, postsRetrieve, profilesBlockCreate, profilesBlockDestroy, profilesEventsList, profilesFollowCreate, profilesFollowDestroy, profilesFollowersList, profilesFollowingList, profilesMuteCreate, profilesMuteDestroy, profilesPostsList, profilesRetrieve, pushDevicesCreate, pushDevicesDestroy, reportsCreate } from '../sdk.gen';
+import type { CategoriesListData, CategoriesListResponse, EventsAttendanceDestroyData, EventsAttendanceDestroyResponse, EventsAttendanceUpdateData, EventsAttendanceUpdateResponse, EventsCoHostCreateData, EventsCoHostCreateResponse, EventsCoHostDestroyData, EventsCoHostDestroyResponse, EventsCoHostListData, EventsCoHostListResponse, EventsCreateData, EventsCreateResponse, EventsDestroyData, EventsDestroyResponse, EventsPartialUpdateData, EventsPartialUpdateResponse, EventsRetrieveData, EventsRetrieveResponse, FeedsFollowingListData, FeedsFollowingListResponse, FeedsNearbyListData, FeedsNearbyListResponse, FeedsUpcomingListData, FeedsUpcomingListResponse, GeocodeListData, GeocodeListResponse, ImagesCreateData, ImagesCreateResponse, MeAccountDeleteCreateData, MeAccountDeleteCreateResponse, MeBlockedListData, MeBlockedListResponse, MeEventsListData, MeEventsListResponse, MeExportRetrieveData, MeExportRetrieveResponse, MeFollowRequestsCreateData, MeFollowRequestsCreateResponse, MeFollowRequestsDestroyData, MeFollowRequestsDestroyResponse, MeFollowRequestsListData, MeFollowRequestsListResponse, MeInvitationsCreateData, MeInvitationsCreateResponse, MeInvitationsDestroyData, MeInvitationsDestroyResponse, MeInvitationsListData, MeInvitationsListResponse, MeMutedListData, MeMutedListResponse, MePartialUpdateData, MePartialUpdateResponse, MeProfilesListData, MeProfilesListResponse, MeRetrieveData, MeRetrieveResponse, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponse, MeSettingsRetrieveData, MeSettingsRetrieveResponse, NotificationsListData, NotificationsListResponse, NotificationsReadCreateData, NotificationsReadCreateResponse, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponse, OrganizationsCreateData, OrganizationsCreateResponse, OrganizationsInvitationsListData, OrganizationsInvitationsListResponse, OrganizationsMembersCreateData, OrganizationsMembersCreateResponse, OrganizationsMembersDestroyData, OrganizationsMembersDestroyResponse, OrganizationsMembersListData, OrganizationsMembersListResponse, OrganizationsMembersPartialUpdateData, OrganizationsMembersPartialUpdateResponse, OrganizationsPartialUpdateData, OrganizationsPartialUpdateResponse, OrganizationsVerificationCreateData, OrganizationsVerificationCreateResponse, PostsCreateData, PostsCreateResponse, PostsDestroyData, PostsDestroyResponse, PostsRetrieveData, PostsRetrieveResponse, ProfilesBlockCreateData, ProfilesBlockCreateResponse, ProfilesBlockDestroyData, ProfilesBlockDestroyResponse, ProfilesEventsListData, ProfilesEventsListResponse, ProfilesFollowCreateData, ProfilesFollowCreateResponse, ProfilesFollowDestroyData, ProfilesFollowDestroyResponse, ProfilesFollowersListData, ProfilesFollowersListResponse, ProfilesFollowingListData, ProfilesFollowingListResponse, ProfilesMuteCreateData, ProfilesMuteCreateResponse, ProfilesMuteDestroyData, ProfilesMuteDestroyResponse, ProfilesPostsListData, ProfilesPostsListResponse, ProfilesRetrieveData, ProfilesRetrieveResponse, PushDevicesCreateData, PushDevicesCreateResponse, PushDevicesDestroyData, PushDevicesDestroyResponse, ReportsCreateData, ReportsCreateResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -463,6 +463,23 @@ export const mePartialUpdateMutation = (options?: Partial<Options<MePartialUpdat
     return mutationOptions;
 };
 
+/**
+ * Permanently delete the signed-in user's account and everything personal in it.
+ */
+export const meAccountDeleteCreateMutation = (options?: Partial<Options<MeAccountDeleteCreateData>>): UseMutationOptions<MeAccountDeleteCreateResponse, DefaultError, Options<MeAccountDeleteCreateData>> => {
+    const mutationOptions: UseMutationOptions<MeAccountDeleteCreateResponse, DefaultError, Options<MeAccountDeleteCreateData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await meAccountDeleteCreate({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
 export const meBlockedListQueryKey = (options?: Options<MeBlockedListData>) => createQueryKey('meBlockedList', options);
 
 /**
@@ -528,6 +545,24 @@ export const meEventsListInfiniteOptions = (options?: Options<MeEventsListData>)
     });
     return opts as Omit<typeof opts, 'initialData'>;
 };
+
+export const meExportRetrieveQueryKey = (options?: Options<MeExportRetrieveData>) => createQueryKey('meExportRetrieve', options);
+
+/**
+ * Everything stored about the signed-in user, as a JSON file.
+ */
+export const meExportRetrieveOptions = (options?: Options<MeExportRetrieveData>) => queryOptions<MeExportRetrieveResponse, DefaultError, MeExportRetrieveResponse, ReturnType<typeof meExportRetrieveQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await meExportRetrieve({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: meExportRetrieveQueryKey(options)
+});
 
 export const meFollowRequestsListQueryKey = (options?: Options<MeFollowRequestsListData>) => createQueryKey('meFollowRequestsList', options);
 

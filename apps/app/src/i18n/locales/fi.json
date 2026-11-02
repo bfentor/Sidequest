@@ -306,5 +306,15 @@
     "upcoming": "Tulevat",
     "past": "Menneet",
     "empty": "Et ole vielä luonut tapahtumia."
+  },
+  "account": {
+    "title": "Tilisi",
+    "exportHint": "Lataa kopio kaikesta, mitä Sidequest on tallentanut sinusta.",
+    "export": "Lataa tietoni",
+    "delete": "Poista tili",
+    "deleteConfirmTitle": "Poistetaanko tilisi?",
+    "deleteConfirmMessage": "Profiilisi, julkaisusi, tapahtumasi, ilmoittautumisesi ja seurauksesi poistetaan pysyvästi. Ylläpitämäsi järjestöt siirtyvät toiselle jäsenelle. Vahvista salasanallasi.",
+    "deleteForever": "Poista pysyvästi",
+    "wrongPassword": "Salasana on väärä."
   }
 }

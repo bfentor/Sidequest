@@ -52,6 +52,11 @@ export async function disablePush() {
   const token = await preferences.get(TOKEN_KEY);
   if (token) {
     await pushDevicesDestroy({ path: { token } });
-    await preferences.remove(TOKEN_KEY);
   }
+  await forgetPushToken();
+}
+
+/** Forgets this phone's registration locally (the server already did, e.g. account deleted). */
+export async function forgetPushToken() {
+  await preferences.remove(TOKEN_KEY);
 }

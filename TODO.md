@@ -8,7 +8,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 
 ## 1. Required before launch
 
-- [ ] **[store]** Delete your account from inside the app (Apple requires it)
+- [x] **[store]** Delete your account from inside the app (Apple requires it)
 - [x] **[store]** Report posts, events and profiles
 - [x] **[store]** Block and mute users
 - [x] **[store]** Moderation queue where reported content gets reviewed and removed
@@ -16,7 +16,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 - [ ] **[store]** Sign in with Apple, if any other social login is added
 - [ ] Email verification
 - [ ] Password reset screens (backend part done)
-- [ ] GDPR: export my data, and delete my data
+- [x] GDPR: export my data, and delete my data
 
 ## 2. Accounts and sign-in
 

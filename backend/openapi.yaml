@@ -435,6 +435,30 @@ paths:
               schema:
                 $ref: '#/components/schemas/Profile'
           description: ''
+  /api/me/account/delete/:
+    post:
+      operationId: me_account_delete_create
+      description: Permanently delete the signed-in user's account and everything
+        personal in it.
+      tags:
+      - me
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordRequest'
+        required: true
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/me/blocked/:
     get:
       operationId: me_blocked_list
@@ -488,6 +512,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedEventList'
+          description: ''
+  /api/me/export/:
+    get:
+      operationId: me_export_retrieve
+      description: Everything stored about the signed-in user, as a JSON file.
+      tags:
+      - me
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
           description: ''
   /api/me/follow-requests/:
     get:
@@ -2246,6 +2286,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ProfileSummary'
+    PasswordRequest:
+      type: object
+      properties:
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - password
     PatchedAccountSettingsRequest:
       type: object
       properties:

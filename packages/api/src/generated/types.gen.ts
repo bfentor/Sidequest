@@ -362,6 +362,10 @@ export type PaginatedProfileSummaryList = {
     results: Array<ProfileSummary>;
 };
 
+export type PasswordRequest = {
+    password: string;
+};
+
 export type PatchedAccountSettingsRequest = {
     language?: LanguageEnum;
     /**
@@ -1118,6 +1122,22 @@ export type MePartialUpdateResponses = {
 
 export type MePartialUpdateResponse = MePartialUpdateResponses[keyof MePartialUpdateResponses];
 
+export type MeAccountDeleteCreateData = {
+    body: PasswordRequest;
+    path?: never;
+    query?: never;
+    url: '/api/me/account/delete/';
+};
+
+export type MeAccountDeleteCreateResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type MeAccountDeleteCreateResponse = MeAccountDeleteCreateResponses[keyof MeAccountDeleteCreateResponses];
+
 export type MeBlockedListData = {
     body?: never;
     path?: never;
@@ -1153,6 +1173,21 @@ export type MeEventsListResponses = {
 };
 
 export type MeEventsListResponse = MeEventsListResponses[keyof MeEventsListResponses];
+
+export type MeExportRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/me/export/';
+};
+
+export type MeExportRetrieveResponses = {
+    200: {
+        [key: string]: unknown;
+    };
+};
+
+export type MeExportRetrieveResponse = MeExportRetrieveResponses[keyof MeExportRetrieveResponses];
 
 export type MeFollowRequestsListData = {
     body?: never;

@@ -2,7 +2,7 @@
 
 import { type Client, type ClientMeta, formDataBodySerializer, type Options as Options2, type RequestResult, type TDataShape } from './client';
 import { client } from './client.gen';
-import type { CategoriesListData, CategoriesListResponses, EventsAttendanceDestroyData, EventsAttendanceDestroyResponses, EventsAttendanceUpdateData, EventsAttendanceUpdateResponses, EventsCoHostCreateData, EventsCoHostCreateResponses, EventsCoHostDestroyData, EventsCoHostDestroyResponses, EventsCoHostListData, EventsCoHostListResponses, EventsCreateData, EventsCreateResponses, EventsDestroyData, EventsDestroyResponses, EventsPartialUpdateData, EventsPartialUpdateResponses, EventsRetrieveData, EventsRetrieveResponses, FeedsFollowingListData, FeedsFollowingListResponses, FeedsNearbyListData, FeedsNearbyListResponses, FeedsUpcomingListData, FeedsUpcomingListResponses, GeocodeListData, GeocodeListResponses, ImagesCreateData, ImagesCreateResponses, MeBlockedListData, MeBlockedListResponses, MeEventsListData, MeEventsListResponses, MeFollowRequestsCreateData, MeFollowRequestsCreateResponses, MeFollowRequestsDestroyData, MeFollowRequestsDestroyResponses, MeFollowRequestsListData, MeFollowRequestsListResponses, MeInvitationsCreateData, MeInvitationsCreateResponses, MeInvitationsDestroyData, MeInvitationsDestroyResponses, MeInvitationsListData, MeInvitationsListResponses, MeMutedListData, MeMutedListResponses, MePartialUpdateData, MePartialUpdateResponses, MeProfilesListData, MeProfilesListResponses, MeRetrieveData, MeRetrieveResponses, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponses, MeSettingsRetrieveData, MeSettingsRetrieveResponses, NotificationsListData, NotificationsListResponses, NotificationsReadCreateData, NotificationsReadCreateResponses, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponses, OrganizationsCreateData, OrganizationsCreateResponses, OrganizationsInvitationsListData, OrganizationsInvitationsListResponses, OrganizationsMembersCreateData, OrganizationsMembersCreateResponses, OrganizationsMembersDestroyData, OrganizationsMembersDestroyResponses, OrganizationsMembersListData, OrganizationsMembersListResponses, OrganizationsMembersPartialUpdateData, OrganizationsMembersPartialUpdateResponses, OrganizationsPartialUpdateData, OrganizationsPartialUpdateResponses, OrganizationsVerificationCreateData, OrganizationsVerificationCreateResponses, PostsCreateData, PostsCreateResponses, PostsDestroyData, PostsDestroyResponses, PostsRetrieveData, PostsRetrieveResponses, ProfilesBlockCreateData, ProfilesBlockCreateResponses, ProfilesBlockDestroyData, ProfilesBlockDestroyResponses, ProfilesEventsListData, ProfilesEventsListResponses, ProfilesFollowCreateData, ProfilesFollowCreateResponses, ProfilesFollowDestroyData, ProfilesFollowDestroyResponses, ProfilesFollowersListData, ProfilesFollowersListResponses, ProfilesFollowingListData, ProfilesFollowingListResponses, ProfilesMuteCreateData, ProfilesMuteCreateResponses, ProfilesMuteDestroyData, ProfilesMuteDestroyResponses, ProfilesPostsListData, ProfilesPostsListResponses, ProfilesRetrieveData, ProfilesRetrieveResponses, PushDevicesCreateData, PushDevicesCreateResponses, PushDevicesDestroyData, PushDevicesDestroyResponses, ReportsCreateData, ReportsCreateResponses } from './types.gen';
+import type { CategoriesListData, CategoriesListResponses, EventsAttendanceDestroyData, EventsAttendanceDestroyResponses, EventsAttendanceUpdateData, EventsAttendanceUpdateResponses, EventsCoHostCreateData, EventsCoHostCreateResponses, EventsCoHostDestroyData, EventsCoHostDestroyResponses, EventsCoHostListData, EventsCoHostListResponses, EventsCreateData, EventsCreateResponses, EventsDestroyData, EventsDestroyResponses, EventsPartialUpdateData, EventsPartialUpdateResponses, EventsRetrieveData, EventsRetrieveResponses, FeedsFollowingListData, FeedsFollowingListResponses, FeedsNearbyListData, FeedsNearbyListResponses, FeedsUpcomingListData, FeedsUpcomingListResponses, GeocodeListData, GeocodeListResponses, ImagesCreateData, ImagesCreateResponses, MeAccountDeleteCreateData, MeAccountDeleteCreateResponses, MeBlockedListData, MeBlockedListResponses, MeEventsListData, MeEventsListResponses, MeExportRetrieveData, MeExportRetrieveResponses, MeFollowRequestsCreateData, MeFollowRequestsCreateResponses, MeFollowRequestsDestroyData, MeFollowRequestsDestroyResponses, MeFollowRequestsListData, MeFollowRequestsListResponses, MeInvitationsCreateData, MeInvitationsCreateResponses, MeInvitationsDestroyData, MeInvitationsDestroyResponses, MeInvitationsListData, MeInvitationsListResponses, MeMutedListData, MeMutedListResponses, MePartialUpdateData, MePartialUpdateResponses, MeProfilesListData, MeProfilesListResponses, MeRetrieveData, MeRetrieveResponses, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponses, MeSettingsRetrieveData, MeSettingsRetrieveResponses, NotificationsListData, NotificationsListResponses, NotificationsReadCreateData, NotificationsReadCreateResponses, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponses, OrganizationsCreateData, OrganizationsCreateResponses, OrganizationsInvitationsListData, OrganizationsInvitationsListResponses, OrganizationsMembersCreateData, OrganizationsMembersCreateResponses, OrganizationsMembersDestroyData, OrganizationsMembersDestroyResponses, OrganizationsMembersListData, OrganizationsMembersListResponses, OrganizationsMembersPartialUpdateData, OrganizationsMembersPartialUpdateResponses, OrganizationsPartialUpdateData, OrganizationsPartialUpdateResponses, OrganizationsVerificationCreateData, OrganizationsVerificationCreateResponses, PostsCreateData, PostsCreateResponses, PostsDestroyData, PostsDestroyResponses, PostsRetrieveData, PostsRetrieveResponses, ProfilesBlockCreateData, ProfilesBlockCreateResponses, ProfilesBlockDestroyData, ProfilesBlockDestroyResponses, ProfilesEventsListData, ProfilesEventsListResponses, ProfilesFollowCreateData, ProfilesFollowCreateResponses, ProfilesFollowDestroyData, ProfilesFollowDestroyResponses, ProfilesFollowersListData, ProfilesFollowersListResponses, ProfilesFollowingListData, ProfilesFollowingListResponses, ProfilesMuteCreateData, ProfilesMuteCreateResponses, ProfilesMuteDestroyData, ProfilesMuteDestroyResponses, ProfilesPostsListData, ProfilesPostsListResponses, ProfilesRetrieveData, ProfilesRetrieveResponses, PushDevicesCreateData, PushDevicesCreateResponses, PushDevicesDestroyData, PushDevicesDestroyResponses, ReportsCreateData, ReportsCreateResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -199,6 +199,19 @@ export const mePartialUpdate = <ThrowOnError extends boolean = false>(options?: 
 });
 
 /**
+ * Permanently delete the signed-in user's account and everything personal in it.
+ */
+export const meAccountDeleteCreate = <ThrowOnError extends boolean = false>(options: Options<MeAccountDeleteCreateData, ThrowOnError>): RequestResult<MeAccountDeleteCreateResponses, unknown, ThrowOnError> => (options.client ?? client).post<MeAccountDeleteCreateResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/me/account/delete/',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
  * Profiles the signed-in user has blocked.
  */
 export const meBlockedList = <ThrowOnError extends boolean = false>(options?: Options<MeBlockedListData, ThrowOnError>): RequestResult<MeBlockedListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<MeBlockedListResponses, unknown, ThrowOnError>({
@@ -213,6 +226,15 @@ export const meBlockedList = <ThrowOnError extends boolean = false>(options?: Op
 export const meEventsList = <ThrowOnError extends boolean = false>(options?: Options<MeEventsListData, ThrowOnError>): RequestResult<MeEventsListResponses, unknown, ThrowOnError> => (options?.client ?? client).get<MeEventsListResponses, unknown, ThrowOnError>({
     security: [{ name: 'X-Session-Token', type: 'apiKey' }],
     url: '/api/me/events/',
+    ...options
+});
+
+/**
+ * Everything stored about the signed-in user, as a JSON file.
+ */
+export const meExportRetrieve = <ThrowOnError extends boolean = false>(options?: Options<MeExportRetrieveData, ThrowOnError>): RequestResult<MeExportRetrieveResponses, unknown, ThrowOnError> => (options?.client ?? client).get<MeExportRetrieveResponses, unknown, ThrowOnError>({
+    security: [{ name: 'X-Session-Token', type: 'apiKey' }],
+    url: '/api/me/export/',
     ...options
 });
 

@@ -12,3 +12,5 @@ export async function enablePush(): Promise<boolean> {
 export async function refreshPushRegistration() {}
 
 export async function disablePush() {}
+
+export async function forgetPushToken() {}
