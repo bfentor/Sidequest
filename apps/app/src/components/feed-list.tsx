@@ -28,6 +28,8 @@ type FeedListProps<T> = {
   keyExtractor: (item: T) => string;
   header?: ReactElement;
   emptyText: string;
+  /** Set when a navigation header already handles the top inset. */
+  hasHeader?: boolean;
 };
 
 /** Infinite-scrolling, pull-to-refresh list for any of the feeds. */
@@ -37,6 +39,7 @@ export function FeedList<T>({
   keyExtractor,
   header,
   emptyText,
+  hasHeader,
 }: FeedListProps<T>) {
   const theme = useTheme();
   const { t } = useTranslation();
@@ -86,7 +89,7 @@ export function FeedList<T>({
       contentContainerStyle={[
         screenStyles.content,
         {
-          paddingTop: insets.top + Spacing.four,
+          paddingTop: (hasHeader ? 0 : insets.top) + Spacing.four,
           paddingBottom: insets.bottom + BottomTabInset + Spacing.four,
         },
       ]}

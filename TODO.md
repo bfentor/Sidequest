@@ -29,13 +29,13 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 
 ## 3. Profiles
 
-- [ ] **[API ready]** Edit profile screen: display name, handle, bio
-- [ ] Profile picture upload (needs file storage) and a cover image
-- [ ] Extra fields: university, faculty, study year, pronouns, interests, links (Instagram, website)
-- [ ] **[API ready]** Other people's profile pages with a follow button
-- [ ] Followers and following lists
+- [x] **[API ready]** Edit profile screen: display name, handle, bio
+- [x] Profile picture upload (needs file storage) and a cover image
+- [x] Extra fields: university, faculty, study year, pronouns, interests, links (Instagram, website)
+- [x] **[API ready]** Other people's profile pages with a follow button
+- [x] Followers and following lists
 - [ ] Privacy settings: private account (follow requests), hide followers, hide attended events
-- [ ] Verified badge for official organizations
+- [x] Verified badge for official organizations
 
 ## 4. Organizations
 

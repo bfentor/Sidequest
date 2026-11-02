@@ -7,6 +7,9 @@ from django.utils.translation import gettext_lazy as _
 handle_validator = RegexValidator(
     r"^[a-z0-9_]+$", _("Use only lowercase letters, numbers and underscores.")
 )
+instagram_validator = RegexValidator(
+    r"^[A-Za-z0-9_.]{1,30}$", _("Enter an Instagram username without the @.")
+)
 
 
 class ProfileQuerySet(models.QuerySet):
@@ -65,8 +68,20 @@ class Profile(models.Model):
     avatar = models.ForeignKey(
         "images.Image", on_delete=models.SET_NULL, null=True, blank=True, related_name="avatar_of"
     )
+    cover = models.ForeignKey(
+        "images.Image", on_delete=models.SET_NULL, null=True, blank=True, related_name="cover_of"
+    )
     # What the person likes; used for recommendations.
     interests = models.ManyToManyField("events.Category", blank=True, related_name="interested")
+    # Optional details people can show on their profile.
+    pronouns = models.CharField(max_length=30, blank=True)
+    university = models.CharField(max_length=100, blank=True)
+    faculty = models.CharField(max_length=100, blank=True)
+    study_year = models.PositiveSmallIntegerField(null=True, blank=True)
+    website = models.URLField(blank=True)
+    instagram = models.CharField(max_length=30, blank=True, validators=[instagram_validator])
+    # Set by moderators for official organizations (student unions, guilds, clubs).
+    verified = models.BooleanField(default=False)
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,

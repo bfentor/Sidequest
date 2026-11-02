@@ -41,6 +41,8 @@ function describe(notification: Notification, t: TFunction) {
 function open(notification: Notification) {
   if (notification.event) {
     router.push({ pathname: '/events/[id]', params: { id: notification.event.id } });
+  } else if (notification.actor) {
+    router.push({ pathname: '/profiles/[handle]', params: { handle: notification.actor.handle } });
   }
 }
 

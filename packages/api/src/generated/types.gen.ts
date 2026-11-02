@@ -201,6 +201,12 @@ export type PaginatedPostList = {
     results: Array<Post>;
 };
 
+export type PaginatedProfileSummaryList = {
+    next?: string | null;
+    previous?: string | null;
+    results: Array<ProfileSummary>;
+};
+
 export type PatchedAccountSettingsRequest = {
     language?: LanguageEnum;
     /**
@@ -230,6 +236,12 @@ export type PatchedProfileRequest = {
     handle?: string;
     display_name?: string;
     bio?: string;
+    pronouns?: string;
+    university?: string;
+    faculty?: string;
+    study_year?: number | null;
+    website?: string | string;
+    instagram?: string | string;
     /**
      * Category slugs (GET /api/categories/).
      */
@@ -257,6 +269,14 @@ export type Profile = {
     kind: ProfileKindEnum;
     bio?: string;
     avatar: Image | null;
+    cover: Image | null;
+    pronouns?: string;
+    university?: string;
+    faculty?: string;
+    study_year?: number | null;
+    website?: string | string;
+    instagram?: string | string;
+    readonly verified: boolean;
     /**
      * Category slugs (GET /api/categories/).
      */
@@ -283,6 +303,7 @@ export type ProfileSummary = {
     readonly display_name: string;
     kind: ProfileKindEnum;
     avatar: Image | null;
+    readonly verified: boolean;
 };
 
 export type PushDeviceRequest = {
@@ -407,6 +428,12 @@ export type PaginatedPostListWritable = {
     results: Array<PostWritable>;
 };
 
+export type PaginatedProfileSummaryListWritable = {
+    next?: string | null;
+    previous?: string | null;
+    results: Array<unknown>;
+};
+
 export type PatchedEventRequestWritable = {
     /**
      * Publish as this profile (yourself or an organization you belong to). Defaults to your own profile. Only used on create.
@@ -434,6 +461,16 @@ export type PatchedProfileRequestWritable = {
      * An image uploaded with POST /api/images/.
      */
     avatar_id?: number | null;
+    /**
+     * An image uploaded with POST /api/images/.
+     */
+    cover_id?: number | null;
+    pronouns?: string;
+    university?: string;
+    faculty?: string;
+    study_year?: number | null;
+    website?: string | string;
+    instagram?: string | string;
     /**
      * Category slugs (GET /api/categories/).
      */
@@ -463,6 +500,12 @@ export type ProfileWritable = {
     handle: string;
     display_name: string;
     bio?: string;
+    pronouns?: string;
+    university?: string;
+    faculty?: string;
+    study_year?: number | null;
+    website?: string | string;
+    instagram?: string | string;
     /**
      * Category slugs (GET /api/categories/).
      */
@@ -902,6 +945,34 @@ export type ProfilesBlockCreateResponses = {
 
 export type ProfilesBlockCreateResponse = ProfilesBlockCreateResponses[keyof ProfilesBlockCreateResponses];
 
+export type ProfilesEventsListData = {
+    body?: never;
+    path: {
+        handle: string;
+    };
+    query?: {
+        /**
+         * Number of results to return per page.
+         */
+        limit?: number;
+        /**
+         * The initial index from which to return the results.
+         */
+        offset?: number;
+        /**
+         * Which events.
+         */
+        when?: 'past' | 'upcoming';
+    };
+    url: '/api/profiles/{handle}/events/';
+};
+
+export type ProfilesEventsListResponses = {
+    200: PaginatedEventList;
+};
+
+export type ProfilesEventsListResponse = ProfilesEventsListResponses[keyof ProfilesEventsListResponses];
+
 export type ProfilesFollowDestroyData = {
     body?: never;
     path: {
@@ -938,6 +1009,46 @@ export type ProfilesFollowCreateResponses = {
 
 export type ProfilesFollowCreateResponse = ProfilesFollowCreateResponses[keyof ProfilesFollowCreateResponses];
 
+export type ProfilesFollowersListData = {
+    body?: never;
+    path: {
+        handle: string;
+    };
+    query?: {
+        /**
+         * The pagination cursor value.
+         */
+        cursor?: string;
+    };
+    url: '/api/profiles/{handle}/followers/';
+};
+
+export type ProfilesFollowersListResponses = {
+    200: PaginatedProfileSummaryList;
+};
+
+export type ProfilesFollowersListResponse = ProfilesFollowersListResponses[keyof ProfilesFollowersListResponses];
+
+export type ProfilesFollowingListData = {
+    body?: never;
+    path: {
+        handle: string;
+    };
+    query?: {
+        /**
+         * The pagination cursor value.
+         */
+        cursor?: string;
+    };
+    url: '/api/profiles/{handle}/following/';
+};
+
+export type ProfilesFollowingListResponses = {
+    200: PaginatedProfileSummaryList;
+};
+
+export type ProfilesFollowingListResponse = ProfilesFollowingListResponses[keyof ProfilesFollowingListResponses];
+
 export type ProfilesMuteDestroyData = {
     body?: never;
     path: {
@@ -973,6 +1084,26 @@ export type ProfilesMuteCreateResponses = {
 };
 
 export type ProfilesMuteCreateResponse = ProfilesMuteCreateResponses[keyof ProfilesMuteCreateResponses];
+
+export type ProfilesPostsListData = {
+    body?: never;
+    path: {
+        handle: string;
+    };
+    query?: {
+        /**
+         * The pagination cursor value.
+         */
+        cursor?: string;
+    };
+    url: '/api/profiles/{handle}/posts/';
+};
+
+export type ProfilesPostsListResponses = {
+    200: PaginatedPostList;
+};
+
+export type ProfilesPostsListResponse = ProfilesPostsListResponses[keyof ProfilesPostsListResponses];
 
 export type PushDevicesCreateData = {
     body: PushDeviceRequest;

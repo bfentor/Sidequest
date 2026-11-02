@@ -1,71 +1,57 @@
-import { meRetrieveOptions } from '@sidequest/api';
-import { useQuery } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 
 import { useAuth } from '@/auth/auth-provider';
 import { Button } from '@/components/button';
+import { ProfileView } from '@/components/profile-view';
 import { Screen } from '@/components/screen';
 import { ThemedText } from '@/components/themed-text';
-import { Spacing } from '@/constants/theme';
+import { useMe } from '@/hooks/use-me';
 
-export default function ProfileScreen() {
+export default function ProfileTab() {
   const { status } = useAuth();
   const { t } = useTranslation();
+  const me = useMe();
+
+  if (me) {
+    return (
+      <ProfileView
+        handle={me.handle}
+        actions={() => (
+          <>
+            <View style={{ flex: 1 }}>
+              <Button title={t('profile.edit')} onPress={() => router.push('/edit-profile')} />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Button
+                title={t('common.settings')}
+                variant="secondary"
+                onPress={() => router.push('/settings')}
+              />
+            </View>
+          </>
+        )}
+      />
+    );
+  }
 
   return (
     <Screen>
       <ThemedText type="subtitle">{t('tabs.profile')}</ThemedText>
-      {status === 'loading' ? (
-        <ActivityIndicator />
-      ) : status === 'signed-in' ? (
-        <MyProfile />
-      ) : (
+      {status === 'signed-out' ? (
         <>
           <ThemedText themeColor="textSecondary">{t('profile.signInPrompt')}</ThemedText>
           <Button title={t('common.signIn')} onPress={() => router.push('/sign-in')} />
+          <Button
+            title={t('common.settings')}
+            variant="secondary"
+            onPress={() => router.push('/settings')}
+          />
         </>
+      ) : (
+        <ActivityIndicator />
       )}
-      <Button
-        title={t('common.settings')}
-        variant="secondary"
-        onPress={() => router.push('/settings')}
-      />
     </Screen>
   );
 }
-
-function MyProfile() {
-  const { signOut } = useAuth();
-  const { t } = useTranslation();
-  const { data: me, isPending } = useQuery(meRetrieveOptions());
-
-  if (isPending || !me) {
-    return <ActivityIndicator />;
-  }
-
-  return (
-    <>
-      <View>
-        <ThemedText type="heading">{me.display_name}</ThemedText>
-        <ThemedText themeColor="textSecondary">@{me.handle}</ThemedText>
-      </View>
-      {me.bio ? <ThemedText>{me.bio}</ThemedText> : null}
-      <View style={styles.stats}>
-        <ThemedText type="small">{t('profile.followers', { count: me.follower_count })}</ThemedText>
-        <ThemedText type="small">
-          {t('profile.following', { count: me.following_count })}
-        </ThemedText>
-      </View>
-      <Button title={t('common.signOut')} variant="secondary" onPress={signOut} />
-    </>
-  );
-}
-
-const styles = StyleSheet.create({
-  stats: {
-    flexDirection: 'row',
-    gap: Spacing.four,
-  },
-});

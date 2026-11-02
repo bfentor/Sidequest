@@ -55,3 +55,61 @@ def test_errors_follow_the_requested_language(auth_client, user):
         f"/api/profiles/{user.profile.handle}/follow/", headers={"Accept-Language": "fi"}
     )
     assert response.json() == ["Et voi seurata itseäsi."]
+
+
+def test_profile_details_and_verified_is_read_only(auth_client, user):
+    response = auth_client.patch(
+        "/api/me/",
+        {
+            "pronouns": "they/them",
+            "university": "LUT",
+            "study_year": 2,
+            "instagram": "me_x",
+            "verified": True,
+        },
+        format="json",
+    )
+    assert response.status_code == 200
+    body = response.json()
+    assert (body["pronouns"], body["university"], body["study_year"]) == ("they/them", "LUT", 2)
+    assert body["verified"] is False
+
+    assert auth_client.patch("/api/me/", {"instagram": "@nope"}).status_code == 400
+    assert auth_client.patch("/api/me/", {"study_year": 0}).status_code == 400
+
+
+def test_followers_and_following_lists(auth_client, user, make_user):
+    fans = [make_user() for _ in range(2)]
+    for fan in fans:
+        Follow.objects.create(follower=fan.profile, followee=user.profile)
+    idol = make_user()
+    Follow.objects.create(follower=user.profile, followee=idol.profile)
+
+    followers = auth_client.get(f"/api/profiles/{user.profile.handle}/followers/").json()
+    following = auth_client.get(f"/api/profiles/{user.profile.handle}/following/").json()
+
+    assert [p["handle"] for p in followers["results"]] == [f.profile.handle for f in reversed(fans)]
+    assert [p["handle"] for p in following["results"]] == [idol.profile.handle]
+
+
+def test_profile_events_upcoming_and_past(api_client, user, make_event):
+    from datetime import timedelta
+
+    make_event(user.profile, title="next", starts_in=timedelta(days=1))
+    make_event(user.profile, title="last week", starts_in=-timedelta(days=7))
+
+    def titles(when):
+        url = f"/api/profiles/{user.profile.handle}/events/?when={when}"
+        return [e["title"] for e in api_client.get(url).json()["results"]]
+
+    assert titles("upcoming") == ["next"]
+    assert titles("past") == ["last week"]
+
+
+def test_profile_posts(api_client, user):
+    from posts.models import Post
+
+    Post.objects.create(author=user.profile, body="first")
+    Post.objects.create(author=user.profile, body="second")
+    posts = api_client.get(f"/api/profiles/{user.profile.handle}/posts/").json()["results"]
+    assert [p["body"] for p in posts] == ["second", "first"]

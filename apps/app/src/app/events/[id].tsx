@@ -1,6 +1,6 @@
 import { eventsRetrieveOptions } from '@sidequest/api';
 import { useQuery } from '@tanstack/react-query';
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator } from 'react-native';
 
@@ -46,12 +46,15 @@ export default function EventScreen() {
             {format.eventTime(event.starts_at, event.ends_at)}
           </ThemedText>
           <ThemedText type="subtitle">{event.title}</ThemedText>
-          <ThemedText themeColor="textSecondary">
-            {t('event.byOrganizerWithHandle', {
-              name: event.organizer.display_name,
-              handle: event.organizer.handle,
-            })}
-          </ThemedText>
+          <Link
+            href={{ pathname: '/profiles/[handle]', params: { handle: event.organizer.handle } }}>
+            <ThemedText themeColor="textSecondary">
+              {t('event.byOrganizerWithHandle', {
+                name: event.organizer.display_name,
+                handle: event.organizer.handle,
+              })}
+            </ThemedText>
+          </Link>
           <RsvpBar event={event} />
           {event.venue_name || event.address ? (
             <ThemedText>{[event.venue_name, event.address].filter(Boolean).join(', ')}</ThemedText>

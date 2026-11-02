@@ -1,7 +1,8 @@
 import { postsDestroyMutation, type Post } from '@sidequest/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { Link } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Spacing } from '@/constants/theme';
 import { useFormat } from '@/lib/format';
@@ -23,13 +24,19 @@ export function PostCard({ post }: { post: Post }) {
   return (
     <View style={styles.post}>
       <View style={styles.header}>
-        <Avatar name={post.author.display_name} image={post.author.avatar} size={36} />
-        <View style={styles.byline}>
-          <ThemedText type="smallBold">{post.author.display_name}</ThemedText>
-          <ThemedText type="small" themeColor="textSecondary">
-            @{post.author.handle} · {format.dateTime(post.created_at)}
-          </ThemedText>
-        </View>
+        <Link
+          href={{ pathname: '/profiles/[handle]', params: { handle: post.author.handle } }}
+          asChild>
+          <Pressable style={styles.author}>
+            <Avatar name={post.author.display_name} image={post.author.avatar} size={36} />
+            <View style={styles.byline}>
+              <ThemedText type="smallBold">{post.author.display_name}</ThemedText>
+              <ThemedText type="small" themeColor="textSecondary">
+                @{post.author.handle} · {format.dateTime(post.created_at)}
+              </ThemedText>
+            </View>
+          </Pressable>
+        </Link>
         <ContentMenu
           target={{ type: 'post', id: String(post.id) }}
           owner={post.author}
@@ -59,6 +66,12 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.two,
   },
   header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.two,
+  },
+  author: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     gap: Spacing.two,

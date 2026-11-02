@@ -16,7 +16,8 @@
     "done": "Valmis",
     "delete": "Poista",
     "moreActions": "Lisää toimintoja",
-    "cannotBeUndone": "Tätä ei voi perua."
+    "cannotBeUndone": "Tätä ei voi perua.",
+    "save": "Tallenna"
   },
   "errors": {
     "network": "Palvelimeen ei saatu yhteyttä.",
@@ -43,7 +44,25 @@
     "signInPrompt": "Kirjaudu sisään seurataksesi ihmisiä ja järjestöjä sekä julkaistaksesi omia tapahtumia.",
     "followers_one": "{{count}} seuraaja",
     "followers_other": "{{count}} seuraajaa",
-    "following": "seuraa {{count}}"
+    "following": "seuraa {{count}}",
+    "edit": "Muokkaa profiilia",
+    "follow": "Seuraa",
+    "followingButton": "Seurataan",
+    "verified": "Vahvistettu",
+    "studyYear": "{{year}}. vuosi",
+    "notFound": "Profiili ei ole saatavilla.",
+    "tabs": {
+      "posts": "Julkaisut",
+      "events": "Tapahtumat",
+      "past": "Menneet"
+    },
+    "noPosts": "Ei vielä julkaisuja.",
+    "noEvents": "Ei tulevia tapahtumia.",
+    "noPastEvents": "Ei menneitä tapahtumia.",
+    "followersTitle": "Seuraajat",
+    "followingTitle": "Seurattavat",
+    "noFollowers": "Ei vielä seuraajia.",
+    "noFollowing": "Ei vielä seuraa ketään."
   },
   "event": {
     "title": "Tapahtuma",
@@ -141,5 +160,20 @@
     "mention": "{{name}} mainitsi sinut.",
     "comment": "{{name}} kommentoi.",
     "reaction": "{{name}} tykkäsi julkaisustasi."
+  },
+  "editProfile": {
+    "changeCover": "Vaihda kansikuva",
+    "changeAvatar": "Vaihda kuva",
+    "removeAvatar": "Poista kuva",
+    "displayName": "Nimi",
+    "handle": "Käyttäjänimi",
+    "bio": "Esittely",
+    "pronouns": "Pronominit",
+    "university": "Yliopisto",
+    "faculty": "Tiedekunta tai koulutusohjelma",
+    "studyYear": "Vuosikurssi",
+    "website": "Verkkosivusto",
+    "instagram": "Instagram-käyttäjänimi",
+    "interests": "Kiinnostuksen kohteet"
   }
 }

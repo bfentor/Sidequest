@@ -597,6 +597,50 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/profiles/{handle}/events/:
+    get:
+      operationId: profiles_events_list
+      description: 'Events this profile organizes: upcoming soonest first, or past
+        newest first.'
+      parameters:
+      - in: path
+        name: handle
+        schema:
+          type: string
+        required: true
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: when
+        schema:
+          type: string
+          enum:
+          - past
+          - upcoming
+          default: upcoming
+        description: Which events.
+      tags:
+      - profiles
+      security:
+      - XSessionTokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEventList'
+          description: ''
   /api/profiles/{handle}/follow/:
     post:
       operationId: profiles_follow_create
@@ -628,6 +672,62 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/profiles/{handle}/followers/:
+    get:
+      operationId: profiles_followers_list
+      description: Profiles following this one, most recent first.
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
+      - in: path
+        name: handle
+        schema:
+          type: string
+        required: true
+      tags:
+      - profiles
+      security:
+      - XSessionTokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProfileSummaryList'
+          description: ''
+  /api/profiles/{handle}/following/:
+    get:
+      operationId: profiles_following_list
+      description: Profiles this one follows, most recent first.
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
+      - in: path
+        name: handle
+        schema:
+          type: string
+        required: true
+      tags:
+      - profiles
+      security:
+      - XSessionTokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProfileSummaryList'
+          description: ''
   /api/profiles/{handle}/mute/:
     post:
       operationId: profiles_mute_create
@@ -661,6 +761,34 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/profiles/{handle}/posts/:
+    get:
+      operationId: profiles_posts_list
+      description: This profile's posts, newest first.
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
+      - in: path
+        name: handle
+        schema:
+          type: string
+        required: true
+      tags:
+      - profiles
+      security:
+      - XSessionTokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPostList'
+          description: ''
   /api/push-devices/:
     post:
       operationId: push_devices_create
@@ -1235,6 +1363,25 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Post'
+    PaginatedProfileSummaryList:
+      type: object
+      required:
+      - results
+      properties:
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProfileSummary'
     PatchedAccountSettingsRequest:
       type: object
       properties:
@@ -1307,6 +1454,39 @@ components:
           writeOnly: true
           nullable: true
           description: An image uploaded with POST /api/images/.
+        cover_id:
+          type: integer
+          writeOnly: true
+          nullable: true
+          description: An image uploaded with POST /api/images/.
+        pronouns:
+          type: string
+          maxLength: 30
+        university:
+          type: string
+          maxLength: 100
+        faculty:
+          type: string
+          maxLength: 100
+        study_year:
+          type: integer
+          maximum: 10
+          minimum: 1
+          nullable: true
+        website:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        instagram:
+          oneOf:
+          - type: string
+            pattern: ^[A-Za-z0-9_.]{1,30}$
+            maxLength: 30
+          - type: string
+            maxLength: 0
         interests:
           type: array
           items:
@@ -1379,6 +1559,42 @@ components:
           - $ref: '#/components/schemas/Image'
           readOnly: true
           nullable: true
+        cover:
+          allOf:
+          - $ref: '#/components/schemas/Image'
+          readOnly: true
+          nullable: true
+        pronouns:
+          type: string
+          maxLength: 30
+        university:
+          type: string
+          maxLength: 100
+        faculty:
+          type: string
+          maxLength: 100
+        study_year:
+          type: integer
+          maximum: 10
+          minimum: 1
+          nullable: true
+        website:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 200
+          - type: string
+            maxLength: 0
+        instagram:
+          oneOf:
+          - type: string
+            pattern: ^[A-Za-z0-9_.]{1,30}$
+            maxLength: 30
+          - type: string
+            maxLength: 0
+        verified:
+          type: boolean
+          readOnly: true
         interests:
           type: array
           items:
@@ -1405,6 +1621,7 @@ components:
           readOnly: true
       required:
       - avatar
+      - cover
       - created_at
       - display_name
       - follower_count
@@ -1414,6 +1631,7 @@ components:
       - is_followed
       - is_muted
       - kind
+      - verified
     ProfileKindEnum:
       enum:
       - person
@@ -1441,11 +1659,15 @@ components:
           - $ref: '#/components/schemas/Image'
           readOnly: true
           nullable: true
+        verified:
+          type: boolean
+          readOnly: true
       required:
       - avatar
       - display_name
       - handle
       - kind
+      - verified
     PushDeviceRequest:
       type: object
       properties:

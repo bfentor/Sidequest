@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { categoriesList, eventsAttendanceDestroy, eventsAttendanceUpdate, eventsCreate, eventsDestroy, eventsPartialUpdate, eventsRetrieve, feedsFollowingList, feedsNearbyList, feedsUpcomingList, imagesCreate, meBlockedList, meMutedList, mePartialUpdate, meRetrieve, meSettingsPartialUpdate, meSettingsRetrieve, notificationsList, notificationsReadCreate, notificationsUnreadRetrieve, type Options, postsCreate, postsDestroy, postsRetrieve, profilesBlockCreate, profilesBlockDestroy, profilesFollowCreate, profilesFollowDestroy, profilesMuteCreate, profilesMuteDestroy, profilesRetrieve, pushDevicesCreate, pushDevicesDestroy, reportsCreate } from '../sdk.gen';
-import type { CategoriesListData, CategoriesListResponse, EventsAttendanceDestroyData, EventsAttendanceDestroyResponse, EventsAttendanceUpdateData, EventsAttendanceUpdateResponse, EventsCreateData, EventsCreateResponse, EventsDestroyData, EventsDestroyResponse, EventsPartialUpdateData, EventsPartialUpdateResponse, EventsRetrieveData, EventsRetrieveResponse, FeedsFollowingListData, FeedsFollowingListResponse, FeedsNearbyListData, FeedsNearbyListResponse, FeedsUpcomingListData, FeedsUpcomingListResponse, ImagesCreateData, ImagesCreateResponse, MeBlockedListData, MeBlockedListResponse, MeMutedListData, MeMutedListResponse, MePartialUpdateData, MePartialUpdateResponse, MeRetrieveData, MeRetrieveResponse, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponse, MeSettingsRetrieveData, MeSettingsRetrieveResponse, NotificationsListData, NotificationsListResponse, NotificationsReadCreateData, NotificationsReadCreateResponse, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponse, PostsCreateData, PostsCreateResponse, PostsDestroyData, PostsDestroyResponse, PostsRetrieveData, PostsRetrieveResponse, ProfilesBlockCreateData, ProfilesBlockCreateResponse, ProfilesBlockDestroyData, ProfilesBlockDestroyResponse, ProfilesFollowCreateData, ProfilesFollowCreateResponse, ProfilesFollowDestroyData, ProfilesFollowDestroyResponse, ProfilesMuteCreateData, ProfilesMuteCreateResponse, ProfilesMuteDestroyData, ProfilesMuteDestroyResponse, ProfilesRetrieveData, ProfilesRetrieveResponse, PushDevicesCreateData, PushDevicesCreateResponse, PushDevicesDestroyData, PushDevicesDestroyResponse, ReportsCreateData, ReportsCreateResponse } from '../types.gen';
+import { categoriesList, eventsAttendanceDestroy, eventsAttendanceUpdate, eventsCreate, eventsDestroy, eventsPartialUpdate, eventsRetrieve, feedsFollowingList, feedsNearbyList, feedsUpcomingList, imagesCreate, meBlockedList, meMutedList, mePartialUpdate, meRetrieve, meSettingsPartialUpdate, meSettingsRetrieve, notificationsList, notificationsReadCreate, notificationsUnreadRetrieve, type Options, postsCreate, postsDestroy, postsRetrieve, profilesBlockCreate, profilesBlockDestroy, profilesEventsList, profilesFollowCreate, profilesFollowDestroy, profilesFollowersList, profilesFollowingList, profilesMuteCreate, profilesMuteDestroy, profilesPostsList, profilesRetrieve, pushDevicesCreate, pushDevicesDestroy, reportsCreate } from '../sdk.gen';
+import type { CategoriesListData, CategoriesListResponse, EventsAttendanceDestroyData, EventsAttendanceDestroyResponse, EventsAttendanceUpdateData, EventsAttendanceUpdateResponse, EventsCreateData, EventsCreateResponse, EventsDestroyData, EventsDestroyResponse, EventsPartialUpdateData, EventsPartialUpdateResponse, EventsRetrieveData, EventsRetrieveResponse, FeedsFollowingListData, FeedsFollowingListResponse, FeedsNearbyListData, FeedsNearbyListResponse, FeedsUpcomingListData, FeedsUpcomingListResponse, ImagesCreateData, ImagesCreateResponse, MeBlockedListData, MeBlockedListResponse, MeMutedListData, MeMutedListResponse, MePartialUpdateData, MePartialUpdateResponse, MeRetrieveData, MeRetrieveResponse, MeSettingsPartialUpdateData, MeSettingsPartialUpdateResponse, MeSettingsRetrieveData, MeSettingsRetrieveResponse, NotificationsListData, NotificationsListResponse, NotificationsReadCreateData, NotificationsReadCreateResponse, NotificationsUnreadRetrieveData, NotificationsUnreadRetrieveResponse, PostsCreateData, PostsCreateResponse, PostsDestroyData, PostsDestroyResponse, PostsRetrieveData, PostsRetrieveResponse, ProfilesBlockCreateData, ProfilesBlockCreateResponse, ProfilesBlockDestroyData, ProfilesBlockDestroyResponse, ProfilesEventsListData, ProfilesEventsListResponse, ProfilesFollowCreateData, ProfilesFollowCreateResponse, ProfilesFollowDestroyData, ProfilesFollowDestroyResponse, ProfilesFollowersListData, ProfilesFollowersListResponse, ProfilesFollowingListData, ProfilesFollowingListResponse, ProfilesMuteCreateData, ProfilesMuteCreateResponse, ProfilesMuteDestroyData, ProfilesMuteDestroyResponse, ProfilesPostsListData, ProfilesPostsListResponse, ProfilesRetrieveData, ProfilesRetrieveResponse, PushDevicesCreateData, PushDevicesCreateResponse, PushDevicesDestroyData, PushDevicesDestroyResponse, ReportsCreateData, ReportsCreateResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -638,6 +638,54 @@ export const profilesBlockCreateMutation = (options?: Partial<Options<ProfilesBl
     return mutationOptions;
 };
 
+export const profilesEventsListQueryKey = (options: Options<ProfilesEventsListData>) => createQueryKey('profilesEventsList', options);
+
+/**
+ * Events this profile organizes: upcoming soonest first, or past newest first.
+ */
+export const profilesEventsListOptions = (options: Options<ProfilesEventsListData>) => queryOptions<ProfilesEventsListResponse, DefaultError, ProfilesEventsListResponse, ReturnType<typeof profilesEventsListQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await profilesEventsList({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: profilesEventsListQueryKey(options)
+});
+
+export const profilesEventsListInfiniteQueryKey = (options: Options<ProfilesEventsListData>): QueryKey<Options<ProfilesEventsListData>> => createQueryKey('profilesEventsList', options, true);
+
+/**
+ * Events this profile organizes: upcoming soonest first, or past newest first.
+ */
+export const profilesEventsListInfiniteOptions = (options: Options<ProfilesEventsListData>) => {
+    const opts = infiniteQueryOptions<ProfilesEventsListResponse, DefaultError, InfiniteData<ProfilesEventsListResponse>, QueryKey<Options<ProfilesEventsListData>>, number | Pick<QueryKey<Options<ProfilesEventsListData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<ProfilesEventsListData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    offset: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            const { data } = await profilesEventsList({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: profilesEventsListInfiniteQueryKey(options)
+    });
+    return opts as Omit<typeof opts, 'initialData'>;
+};
+
 export const profilesFollowDestroyMutation = (options?: Partial<Options<ProfilesFollowDestroyData>>): UseMutationOptions<ProfilesFollowDestroyResponse, DefaultError, Options<ProfilesFollowDestroyData>> => {
     const mutationOptions: UseMutationOptions<ProfilesFollowDestroyResponse, DefaultError, Options<ProfilesFollowDestroyData>> = {
         mutationFn: async (fnOptions) => {
@@ -664,6 +712,102 @@ export const profilesFollowCreateMutation = (options?: Partial<Options<ProfilesF
         }
     };
     return mutationOptions;
+};
+
+export const profilesFollowersListQueryKey = (options: Options<ProfilesFollowersListData>) => createQueryKey('profilesFollowersList', options);
+
+/**
+ * Profiles following this one, most recent first.
+ */
+export const profilesFollowersListOptions = (options: Options<ProfilesFollowersListData>) => queryOptions<ProfilesFollowersListResponse, DefaultError, ProfilesFollowersListResponse, ReturnType<typeof profilesFollowersListQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await profilesFollowersList({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: profilesFollowersListQueryKey(options)
+});
+
+export const profilesFollowersListInfiniteQueryKey = (options: Options<ProfilesFollowersListData>): QueryKey<Options<ProfilesFollowersListData>> => createQueryKey('profilesFollowersList', options, true);
+
+/**
+ * Profiles following this one, most recent first.
+ */
+export const profilesFollowersListInfiniteOptions = (options: Options<ProfilesFollowersListData>) => {
+    const opts = infiniteQueryOptions<ProfilesFollowersListResponse, DefaultError, InfiniteData<ProfilesFollowersListResponse>, QueryKey<Options<ProfilesFollowersListData>>, string | Pick<QueryKey<Options<ProfilesFollowersListData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<ProfilesFollowersListData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    cursor: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            const { data } = await profilesFollowersList({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: profilesFollowersListInfiniteQueryKey(options)
+    });
+    return opts as Omit<typeof opts, 'initialData'>;
+};
+
+export const profilesFollowingListQueryKey = (options: Options<ProfilesFollowingListData>) => createQueryKey('profilesFollowingList', options);
+
+/**
+ * Profiles this one follows, most recent first.
+ */
+export const profilesFollowingListOptions = (options: Options<ProfilesFollowingListData>) => queryOptions<ProfilesFollowingListResponse, DefaultError, ProfilesFollowingListResponse, ReturnType<typeof profilesFollowingListQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await profilesFollowingList({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: profilesFollowingListQueryKey(options)
+});
+
+export const profilesFollowingListInfiniteQueryKey = (options: Options<ProfilesFollowingListData>): QueryKey<Options<ProfilesFollowingListData>> => createQueryKey('profilesFollowingList', options, true);
+
+/**
+ * Profiles this one follows, most recent first.
+ */
+export const profilesFollowingListInfiniteOptions = (options: Options<ProfilesFollowingListData>) => {
+    const opts = infiniteQueryOptions<ProfilesFollowingListResponse, DefaultError, InfiniteData<ProfilesFollowingListResponse>, QueryKey<Options<ProfilesFollowingListData>>, string | Pick<QueryKey<Options<ProfilesFollowingListData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<ProfilesFollowingListData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    cursor: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            const { data } = await profilesFollowingList({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: profilesFollowingListInfiniteQueryKey(options)
+    });
+    return opts as Omit<typeof opts, 'initialData'>;
 };
 
 /**
@@ -698,6 +842,54 @@ export const profilesMuteCreateMutation = (options?: Partial<Options<ProfilesMut
         }
     };
     return mutationOptions;
+};
+
+export const profilesPostsListQueryKey = (options: Options<ProfilesPostsListData>) => createQueryKey('profilesPostsList', options);
+
+/**
+ * This profile's posts, newest first.
+ */
+export const profilesPostsListOptions = (options: Options<ProfilesPostsListData>) => queryOptions<ProfilesPostsListResponse, DefaultError, ProfilesPostsListResponse, ReturnType<typeof profilesPostsListQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await profilesPostsList({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: profilesPostsListQueryKey(options)
+});
+
+export const profilesPostsListInfiniteQueryKey = (options: Options<ProfilesPostsListData>): QueryKey<Options<ProfilesPostsListData>> => createQueryKey('profilesPostsList', options, true);
+
+/**
+ * This profile's posts, newest first.
+ */
+export const profilesPostsListInfiniteOptions = (options: Options<ProfilesPostsListData>) => {
+    const opts = infiniteQueryOptions<ProfilesPostsListResponse, DefaultError, InfiniteData<ProfilesPostsListResponse>, QueryKey<Options<ProfilesPostsListData>>, string | Pick<QueryKey<Options<ProfilesPostsListData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<ProfilesPostsListData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    cursor: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            const { data } = await profilesPostsList({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: profilesPostsListInfiniteQueryKey(options)
+    });
+    return opts as Omit<typeof opts, 'initialData'>;
 };
 
 /**

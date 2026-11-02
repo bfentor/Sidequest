@@ -16,7 +16,8 @@
     "done": "Klar",
     "delete": "Ta bort",
     "moreActions": "Fler åtgärder",
-    "cannotBeUndone": "Det här går inte att ångra."
+    "cannotBeUndone": "Det här går inte att ångra.",
+    "save": "Spara"
   },
   "errors": {
     "network": "Kunde inte nå servern.",
@@ -43,7 +44,25 @@
     "signInPrompt": "Logga in för att följa personer och organisationer och för att publicera egna evenemang.",
     "followers_one": "{{count}} följare",
     "followers_other": "{{count}} följare",
-    "following": "följer {{count}}"
+    "following": "följer {{count}}",
+    "edit": "Redigera profil",
+    "follow": "Följ",
+    "followingButton": "Följer",
+    "verified": "Verifierad",
+    "studyYear": "Årskurs {{year}}",
+    "notFound": "Den här profilen är inte tillgänglig.",
+    "tabs": {
+      "posts": "Inlägg",
+      "events": "Evenemang",
+      "past": "Tidigare"
+    },
+    "noPosts": "Inga inlägg än.",
+    "noEvents": "Inga kommande evenemang.",
+    "noPastEvents": "Inga tidigare evenemang.",
+    "followersTitle": "Följare",
+    "followingTitle": "Följer",
+    "noFollowers": "Inga följare än.",
+    "noFollowing": "Följer ingen än."
   },
   "event": {
     "title": "Evenemang",
@@ -141,5 +160,20 @@
     "mention": "{{name}} nämnde dig.",
     "comment": "{{name}} kommenterade.",
     "reaction": "{{name}} gillade ditt inlägg."
+  },
+  "editProfile": {
+    "changeCover": "Byt omslagsbild",
+    "changeAvatar": "Byt bild",
+    "removeAvatar": "Ta bort bild",
+    "displayName": "Namn",
+    "handle": "Användarnamn",
+    "bio": "Om mig",
+    "pronouns": "Pronomen",
+    "university": "Universitet",
+    "faculty": "Fakultet eller utbildningsprogram",
+    "studyYear": "Årskurs",
+    "website": "Webbplats",
+    "instagram": "Instagram-användarnamn",
+    "interests": "Intressen"
   }
 }

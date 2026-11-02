@@ -15,17 +15,19 @@ import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet, Switch, View } from 'react-native';
 
 import { useAuth } from '@/auth/auth-provider';
-import { Avatar } from '@/components/avatar';
 import { Button } from '@/components/button';
+import { ProfileRow } from '@/components/profile-row';
 import { Screen } from '@/components/screen';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { chooseLanguage, LANGUAGES, storedLanguage, type Language } from '@/i18n';
+import { goBack } from '@/lib/navigation';
 
 export default function SettingsScreen() {
-  const { status } = useAuth();
+  const { status, signOut } = useAuth();
+  const { t } = useTranslation();
 
   return (
     <Screen hasHeader>
@@ -34,6 +36,14 @@ export default function SettingsScreen() {
         <>
           <PushSettings />
           <BlockedAndMuted />
+          <Button
+            title={t('common.signOut')}
+            variant="secondary"
+            onPress={async () => {
+              await signOut();
+              goBack('/');
+            }}
+          />
         </>
       ) : null}
     </Screen>
@@ -139,20 +149,17 @@ function ProfileSection({
         <ThemedText themeColor="textSecondary">{emptyText}</ThemedText>
       ) : null}
       {profiles?.map((profile) => (
-        <View key={profile.handle} style={styles.profileRow}>
-          <Avatar name={profile.display_name} image={profile.avatar} size={36} />
-          <View style={styles.profileName}>
-            <ThemedText type="smallBold">{profile.display_name}</ThemedText>
-            <ThemedText type="small" themeColor="textSecondary">
-              @{profile.handle}
-            </ThemedText>
-          </View>
-          <Button
-            title={actionLabel}
-            variant="secondary"
-            onPress={() => onAction(profile.handle)}
-          />
-        </View>
+        <ProfileRow
+          key={profile.handle}
+          profile={profile}
+          action={
+            <Button
+              title={actionLabel}
+              variant="secondary"
+              onPress={() => onAction(profile.handle)}
+            />
+          }
+        />
       ))}
     </View>
   );
@@ -215,14 +222,6 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.6,
-  },
-  profileRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Spacing.two,
-  },
-  profileName: {
-    flex: 1,
   },
   switchRow: {
     flexDirection: 'row',

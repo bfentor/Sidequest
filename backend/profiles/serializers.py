@@ -13,7 +13,7 @@ class ProfileSummarySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ["handle", "display_name", "kind", "avatar"]
+        fields = ["handle", "display_name", "kind", "avatar", "verified"]
         read_only_fields = fields
 
 
@@ -27,6 +27,17 @@ class ProfileSerializer(serializers.ModelSerializer):
         required=False,
         allow_null=True,
         help_text="An image uploaded with POST /api/images/.",
+    )
+    cover = ImageSerializer(read_only=True, allow_null=True)
+    cover_id = OwnImageField(
+        source="cover",
+        write_only=True,
+        required=False,
+        allow_null=True,
+        help_text="An image uploaded with POST /api/images/.",
+    )
+    study_year = serializers.IntegerField(
+        min_value=1, max_value=10, allow_null=True, required=False
     )
     interests = serializers.SlugRelatedField(
         slug_field="slug",
@@ -50,6 +61,15 @@ class ProfileSerializer(serializers.ModelSerializer):
             "bio",
             "avatar",
             "avatar_id",
+            "cover",
+            "cover_id",
+            "pronouns",
+            "university",
+            "faculty",
+            "study_year",
+            "website",
+            "instagram",
+            "verified",
             "interests",
             "created_at",
             "follower_count",
@@ -58,7 +78,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             "is_blocked",
             "is_muted",
         ]
-        read_only_fields = ["kind", "created_at"]
+        read_only_fields = ["kind", "created_at", "verified"]
 
 
 class CurrentProfileDefault:

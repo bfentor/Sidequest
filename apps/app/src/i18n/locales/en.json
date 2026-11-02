@@ -16,7 +16,8 @@
     "done": "Done",
     "delete": "Delete",
     "moreActions": "More actions",
-    "cannotBeUndone": "This can't be undone."
+    "cannotBeUndone": "This can't be undone.",
+    "save": "Save"
   },
   "errors": {
     "network": "Could not reach the server.",
@@ -43,7 +44,25 @@
     "signInPrompt": "Sign in to follow people and organizations, and to publish your own events.",
     "followers_one": "{{count}} follower",
     "followers_other": "{{count}} followers",
-    "following": "{{count}} following"
+    "following": "{{count}} following",
+    "edit": "Edit profile",
+    "follow": "Follow",
+    "followingButton": "Following",
+    "verified": "Verified",
+    "studyYear": "Year {{year}}",
+    "notFound": "This profile isn't available.",
+    "tabs": {
+      "posts": "Posts",
+      "events": "Events",
+      "past": "Past"
+    },
+    "noPosts": "No posts yet.",
+    "noEvents": "No upcoming events.",
+    "noPastEvents": "No past events.",
+    "followersTitle": "Followers",
+    "followingTitle": "Following",
+    "noFollowers": "No followers yet.",
+    "noFollowing": "Not following anyone yet."
   },
   "event": {
     "title": "Event",
@@ -141,5 +160,20 @@
     "mention": "{{name}} mentioned you.",
     "comment": "{{name}} commented.",
     "reaction": "{{name}} liked your post."
+  },
+  "editProfile": {
+    "changeCover": "Change cover picture",
+    "changeAvatar": "Change picture",
+    "removeAvatar": "Remove picture",
+    "displayName": "Name",
+    "handle": "Username",
+    "bio": "Bio",
+    "pronouns": "Pronouns",
+    "university": "University",
+    "faculty": "Faculty or programme",
+    "studyYear": "Year of study",
+    "website": "Website",
+    "instagram": "Instagram username",
+    "interests": "Interests"
   }
 }
