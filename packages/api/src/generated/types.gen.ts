@@ -4,6 +4,28 @@ export type ClientOptions = {
     baseUrl: `${string}://${string}` | (string & {});
 };
 
+/**
+ * * `going` - Going
+ * * `interested` - Interested
+ * * `waitlisted` - Waitlisted
+ */
+export type AttendanceStatusEnum = 'going' | 'interested' | 'waitlisted';
+
+export type AttendanceSummary = {
+    going: number;
+    interested: number;
+    waitlisted: number;
+    /**
+     * The signed-in user's RSVP, if any.
+     *
+     * * `going` - Going
+     * * `interested` - Interested
+     * * `waitlisted` - Waitlisted
+     */
+    mine: AttendanceStatusEnum | NullEnum | null;
+    is_full: boolean;
+};
+
 export type Category = {
     readonly slug: string;
     /**
@@ -24,6 +46,8 @@ export type Event = {
     address?: string;
     location?: LatLng | null;
     categories?: Array<string>;
+    capacity?: number | null;
+    attendance: AttendanceSummary;
     readonly created_at: string;
     readonly updated_at: string;
 };
@@ -37,6 +61,7 @@ export type EventRequest = {
     address?: string;
     location?: LatLngRequest | null;
     categories?: Array<string>;
+    capacity?: number | null;
 };
 
 /**
@@ -66,12 +91,6 @@ export type ImageUploadRequest = {
     file: Blob | File;
 };
 
-/**
- * * `person` - Person
- * * `organization` - Organization
- */
-export type KindEnum = 'person' | 'organization';
-
 export type LatLng = {
     lat: number;
     lng: number;
@@ -93,10 +112,14 @@ export type NearbyEvent = {
     address?: string;
     location?: LatLng | null;
     categories?: Array<string>;
+    capacity?: number | null;
+    attendance: AttendanceSummary;
     readonly created_at: string;
     readonly updated_at: string;
     readonly distance_m: number;
 };
+
+export type NullEnum = never;
 
 export type PaginatedEventList = {
     next?: string | null;
@@ -126,6 +149,7 @@ export type PatchedEventRequest = {
     address?: string;
     location?: LatLngRequest | null;
     categories?: Array<string>;
+    capacity?: number | null;
 };
 
 /**
@@ -159,7 +183,7 @@ export type PostRequest = {
 export type Profile = {
     handle: string;
     display_name: string;
-    kind: KindEnum;
+    kind: ProfileKindEnum;
     bio?: string;
     avatar: Image | null;
     /**
@@ -175,13 +199,26 @@ export type Profile = {
 };
 
 /**
+ * * `person` - Person
+ * * `organization` - Organization
+ */
+export type ProfileKindEnum = 'person' | 'organization';
+
+/**
  * Compact profile representation embedded in events and posts.
  */
 export type ProfileSummary = {
     readonly handle: string;
     readonly display_name: string;
-    kind: KindEnum;
+    kind: ProfileKindEnum;
     avatar: Image | null;
+};
+
+export type Report = {
+    readonly id: number;
+    reason: ReportReasonEnum;
+    details?: string;
+    readonly created_at: string;
 };
 
 /**
@@ -193,19 +230,28 @@ export type ProfileSummary = {
  * * `false_information` - False information
  * * `other` - Something else
  */
-export type ReasonEnum = 'spam' | 'harassment' | 'hate' | 'sexual' | 'violence' | 'false_information' | 'other';
-
-export type Report = {
-    readonly id: number;
-    reason: ReasonEnum;
-    details?: string;
-    readonly created_at: string;
-};
+export type ReportReasonEnum = 'spam' | 'harassment' | 'hate' | 'sexual' | 'violence' | 'false_information' | 'other';
 
 export type ReportRequest = {
-    reason: ReasonEnum;
+    reason: ReportReasonEnum;
     details?: string;
 };
+
+export type RsvpRequest = {
+    /**
+     * Going to a full event puts you on the waitlist.
+     *
+     * * `going` - going
+     * * `interested` - interested
+     */
+    status: StatusEnum;
+};
+
+/**
+ * * `going` - going
+ * * `interested` - interested
+ */
+export type StatusEnum = 'going' | 'interested';
 
 /**
  * * `post` - post
@@ -223,6 +269,7 @@ export type EventWritable = {
     address?: string;
     location?: LatLng | null;
     categories?: Array<string>;
+    capacity?: number | null;
 };
 
 export type EventRequestWritable = {
@@ -238,6 +285,7 @@ export type EventRequestWritable = {
     address?: string;
     location?: LatLngRequest | null;
     categories?: Array<string>;
+    capacity?: number | null;
 };
 
 export type NearbyEventWritable = {
@@ -249,6 +297,7 @@ export type NearbyEventWritable = {
     address?: string;
     location?: LatLng | null;
     categories?: Array<string>;
+    capacity?: number | null;
 };
 
 export type PaginatedEventListWritable = {
@@ -283,6 +332,7 @@ export type PatchedEventRequestWritable = {
     address?: string;
     location?: LatLngRequest | null;
     categories?: Array<string>;
+    capacity?: number | null;
 };
 
 /**
@@ -332,7 +382,7 @@ export type ProfileWritable = {
 };
 
 export type ReportWritable = {
-    reason: ReasonEnum;
+    reason: ReportReasonEnum;
     details?: string;
 };
 
@@ -342,7 +392,7 @@ export type ReportRequestWritable = {
      * The post's or event's id, or the profile's handle.
      */
     target_id: string;
-    reason: ReasonEnum;
+    reason: ReportReasonEnum;
     details?: string;
 };
 
@@ -428,6 +478,42 @@ export type EventsPartialUpdateResponses = {
 };
 
 export type EventsPartialUpdateResponse = EventsPartialUpdateResponses[keyof EventsPartialUpdateResponses];
+
+export type EventsAttendanceDestroyData = {
+    body?: never;
+    path: {
+        /**
+         * A unique integer value identifying this event.
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/api/events/{id}/attendance/';
+};
+
+export type EventsAttendanceDestroyResponses = {
+    200: AttendanceSummary;
+};
+
+export type EventsAttendanceDestroyResponse = EventsAttendanceDestroyResponses[keyof EventsAttendanceDestroyResponses];
+
+export type EventsAttendanceUpdateData = {
+    body: RsvpRequest;
+    path: {
+        /**
+         * A unique integer value identifying this event.
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/api/events/{id}/attendance/';
+};
+
+export type EventsAttendanceUpdateResponses = {
+    200: AttendanceSummary;
+};
+
+export type EventsAttendanceUpdateResponse = EventsAttendanceUpdateResponses[keyof EventsAttendanceUpdateResponses];
 
 export type FeedsFollowingListData = {
     body?: never;

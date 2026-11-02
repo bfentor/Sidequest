@@ -95,5 +95,18 @@
     "mutedAccounts": "Mykistetyt tilit",
     "noneBlocked": "Et ole estänyt ketään.",
     "noneMuted": "Et ole mykistänyt ketään."
+  },
+  "rsvp": {
+    "going": "Osallistun",
+    "interested": "Kiinnostaa",
+    "waitlisted": "Jonossa",
+    "goingCount_one": "{{count}} osallistuu",
+    "goingCount_other": "{{count}} osallistuu",
+    "interestedCount_one": "{{count}} kiinnostunut",
+    "interestedCount_other": "{{count}} kiinnostunutta",
+    "capacity_one": "{{count}} paikka",
+    "capacity_other": "{{count}} paikkaa",
+    "fullHint": "Tapahtuma on täynnä. Jos valitset Osallistun, pääset jonoon.",
+    "waitlistHint": "Saat paikan automaattisesti, jos joku peruu."
   }
 }

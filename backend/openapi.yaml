@@ -120,6 +120,61 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/events/{id}/attendance/:
+    put:
+      operationId: events_attendance_update
+      description: RSVP to the event.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this event.
+        required: true
+      tags:
+      - events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RsvpRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RsvpRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RsvpRequest'
+        required: true
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttendanceSummary'
+          description: ''
+    delete:
+      operationId: events_attendance_destroy
+      description: Withdraw your RSVP.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this event.
+        required: true
+      tags:
+      - events
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttendanceSummary'
+          description: ''
   /api/feeds/following/:
     get:
       operationId: feeds_following_list
@@ -534,6 +589,44 @@ paths:
           description: ''
 components:
   schemas:
+    AttendanceStatusEnum:
+      enum:
+      - going
+      - interested
+      - waitlisted
+      type: string
+      description: |-
+        * `going` - Going
+        * `interested` - Interested
+        * `waitlisted` - Waitlisted
+    AttendanceSummary:
+      type: object
+      properties:
+        going:
+          type: integer
+        interested:
+          type: integer
+        waitlisted:
+          type: integer
+        mine:
+          nullable: true
+          description: |-
+            The signed-in user's RSVP, if any.
+
+            * `going` - Going
+            * `interested` - Interested
+            * `waitlisted` - Waitlisted
+          oneOf:
+          - $ref: '#/components/schemas/AttendanceStatusEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        is_full:
+          type: boolean
+      required:
+      - going
+      - interested
+      - is_full
+      - mine
+      - waitlisted
     Category:
       type: object
       properties:
@@ -587,6 +680,14 @@ components:
           type: array
           items:
             type: string
+        capacity:
+          type: integer
+          minimum: 1
+          nullable: true
+        attendance:
+          allOf:
+          - $ref: '#/components/schemas/AttendanceSummary'
+          readOnly: true
         created_at:
           type: string
           format: date-time
@@ -596,6 +697,7 @@ components:
           format: date-time
           readOnly: true
       required:
+      - attendance
       - created_at
       - ends_at
       - id
@@ -639,6 +741,10 @@ components:
           items:
             type: string
             minLength: 1
+        capacity:
+          type: integer
+          minimum: 1
+          nullable: true
       required:
       - ends_at
       - starts_at
@@ -695,14 +801,6 @@ components:
           writeOnly: true
       required:
       - file
-    KindEnum:
-      enum:
-      - person
-      - organization
-      type: string
-      description: |-
-        * `person` - Person
-        * `organization` - Organization
     LatLng:
       type: object
       properties:
@@ -770,6 +868,14 @@ components:
           type: array
           items:
             type: string
+        capacity:
+          type: integer
+          minimum: 1
+          nullable: true
+        attendance:
+          allOf:
+          - $ref: '#/components/schemas/AttendanceSummary'
+          readOnly: true
         created_at:
           type: string
           format: date-time
@@ -783,6 +889,7 @@ components:
           format: double
           readOnly: true
       required:
+      - attendance
       - created_at
       - distance_m
       - ends_at
@@ -791,6 +898,9 @@ components:
       - starts_at
       - title
       - updated_at
+    NullEnum:
+      enum:
+      - null
     PaginatedEventList:
       type: object
       required:
@@ -888,6 +998,10 @@ components:
           items:
             type: string
             minLength: 1
+        capacity:
+          type: integer
+          minimum: 1
+          nullable: true
     PatchedProfileRequest:
       type: object
       description: Full profile. Expects a queryset annotated with `with_social_stats`.
@@ -971,7 +1085,7 @@ components:
           maxLength: 80
         kind:
           allOf:
-          - $ref: '#/components/schemas/KindEnum'
+          - $ref: '#/components/schemas/ProfileKindEnum'
           readOnly: true
         bio:
           type: string
@@ -1016,6 +1130,14 @@ components:
       - is_followed
       - is_muted
       - kind
+    ProfileKindEnum:
+      enum:
+      - person
+      - organization
+      type: string
+      description: |-
+        * `person` - Person
+        * `organization` - Organization
     ProfileSummary:
       type: object
       description: Compact profile representation embedded in events and posts.
@@ -1028,7 +1150,7 @@ components:
           readOnly: true
         kind:
           allOf:
-          - $ref: '#/components/schemas/KindEnum'
+          - $ref: '#/components/schemas/ProfileKindEnum'
           readOnly: true
         avatar:
           allOf:
@@ -1040,7 +1162,26 @@ components:
       - display_name
       - handle
       - kind
-    ReasonEnum:
+    Report:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        reason:
+          $ref: '#/components/schemas/ReportReasonEnum'
+        details:
+          type: string
+          maxLength: 1000
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - reason
+    ReportReasonEnum:
       enum:
       - spam
       - harassment
@@ -1058,25 +1199,6 @@ components:
         * `violence` - Violence or dangerous activity
         * `false_information` - False information
         * `other` - Something else
-    Report:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        reason:
-          $ref: '#/components/schemas/ReasonEnum'
-        details:
-          type: string
-          maxLength: 1000
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - id
-      - reason
     ReportRequest:
       type: object
       properties:
@@ -1090,7 +1212,7 @@ components:
           minLength: 1
           description: The post's or event's id, or the profile's handle.
         reason:
-          $ref: '#/components/schemas/ReasonEnum'
+          $ref: '#/components/schemas/ReportReasonEnum'
         details:
           type: string
           maxLength: 1000
@@ -1098,6 +1220,27 @@ components:
       - reason
       - target_id
       - target_type
+    RsvpRequest:
+      type: object
+      properties:
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
+          description: |-
+            Going to a full event puts you on the waitlist.
+
+            * `going` - going
+            * `interested` - interested
+      required:
+      - status
+    StatusEnum:
+      enum:
+      - going
+      - interested
+      type: string
+      description: |-
+        * `going` - going
+        * `interested` - interested
     TargetTypeEnum:
       enum:
       - post

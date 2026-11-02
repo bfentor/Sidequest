@@ -95,5 +95,18 @@
     "mutedAccounts": "Muted accounts",
     "noneBlocked": "You haven't blocked anyone.",
     "noneMuted": "You haven't muted anyone."
+  },
+  "rsvp": {
+    "going": "Going",
+    "interested": "Interested",
+    "waitlisted": "On the waitlist",
+    "goingCount_one": "{{count}} going",
+    "goingCount_other": "{{count}} going",
+    "interestedCount_one": "{{count}} interested",
+    "interestedCount_other": "{{count}} interested",
+    "capacity_one": "{{count}} spot",
+    "capacity_other": "{{count}} spots",
+    "fullHint": "This event is full. Choosing Going puts you on the waitlist.",
+    "waitlistHint": "You'll get a spot automatically if someone cancels."
   }
 }

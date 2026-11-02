@@ -21,6 +21,7 @@ export function EventCard({ event, distanceM }: EventCardProps) {
   const place = [event.venue_name, distanceM !== undefined && format.distance(distanceM)]
     .filter(Boolean)
     .join(' · ');
+  const going = event.attendance.going;
 
   return (
     <Link href={{ pathname: '/events/[id]', params: { id: event.id } }} asChild>
@@ -36,7 +37,12 @@ export function EventCard({ event, distanceM }: EventCardProps) {
             </ThemedText>
           ) : null}
           <ThemedText type="small" themeColor="textSecondary">
-            {t('common.byOrganizer', { name: event.organizer.display_name })}
+            {[
+              t('common.byOrganizer', { name: event.organizer.display_name }),
+              going > 0 ? t('rsvp.goingCount', { count: going }) : null,
+            ]
+              .filter(Boolean)
+              .join(' · ')}
           </ThemedText>
         </ThemedView>
       </Pressable>

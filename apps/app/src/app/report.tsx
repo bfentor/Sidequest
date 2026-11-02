@@ -1,4 +1,4 @@
-import { reportsCreateMutation, type ReasonEnum } from '@sidequest/api';
+import { reportsCreateMutation, type ReportReasonEnum } from '@sidequest/api';
 import { useMutation } from '@tanstack/react-query';
 import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
@@ -15,7 +15,7 @@ import { Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { goBack } from '@/lib/navigation';
 
-const REASONS: ReasonEnum[] = [
+const REASONS: ReportReasonEnum[] = [
   'spam',
   'harassment',
   'hate',
@@ -29,7 +29,7 @@ export default function ReportScreen() {
   const { type, id } = useLocalSearchParams<ReportTarget>();
   const { t } = useTranslation();
   const theme = useTheme();
-  const [reason, setReason] = useState<ReasonEnum | null>(null);
+  const [reason, setReason] = useState<ReportReasonEnum | null>(null);
   const [details, setDetails] = useState('');
   const report = useMutation(reportsCreateMutation());
 

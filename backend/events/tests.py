@@ -73,3 +73,61 @@ def test_set_interests(auth_client):
     response = auth_client.patch("/api/me/", {"interests": ["music", "tech"]}, format="json")
     assert response.status_code == 200
     assert sorted(response.json()["interests"]) == ["music", "tech"]
+
+
+def rsvp(client, event, status):
+    return client.put(f"/api/events/{event.pk}/attendance/", {"status": status}, format="json")
+
+
+def test_rsvp_going_and_interested(auth_client, make_user, make_event):
+    event = make_event(make_user().profile)
+
+    assert rsvp(auth_client, event, "going").json()["mine"] == "going"
+    summary = rsvp(auth_client, event, "interested").json()
+    assert summary == {
+        "going": 0,
+        "interested": 1,
+        "waitlisted": 0,
+        "mine": "interested",
+        "is_full": False,
+    }
+
+    detail = auth_client.get(f"/api/events/{event.pk}/").json()
+    assert detail["attendance"]["mine"] == "interested"
+
+    assert auth_client.delete(f"/api/events/{event.pk}/attendance/").json()["mine"] is None
+
+
+def test_full_event_waitlists_and_promotes_in_order(api_client, make_user, make_event):
+    event = make_event(make_user().profile, capacity=1)
+    first, second, third = (make_user() for _ in range(3))
+
+    def as_user(user, status):
+        api_client.force_authenticate(user)
+        return rsvp(api_client, event, status).json()
+
+    assert as_user(first, "going")["mine"] == "going"
+    assert as_user(second, "going")["mine"] == "waitlisted"
+    assert as_user(third, "going")["mine"] == "waitlisted"
+
+    api_client.force_authenticate(first)
+    summary = api_client.delete(f"/api/events/{event.pk}/attendance/").json()
+
+    assert summary["going"] == 1 and summary["waitlisted"] == 1 and summary["is_full"]
+    assert event.attendances.get(profile=second.profile).status == "going"
+    assert event.attendances.get(profile=third.profile).status == "waitlisted"
+
+
+def test_feeds_include_attendance(auth_client, user, make_user, make_event):
+    event = make_event(make_user().profile)
+    rsvp(auth_client, event, "going")
+
+    item = auth_client.get("/api/feeds/upcoming/").json()["results"][0]
+
+    assert item["attendance"]["going"] == 1
+    assert item["attendance"]["mine"] == "going"
+
+
+def test_rsvp_requires_sign_in(api_client, make_user, make_event):
+    event = make_event(make_user().profile)
+    assert rsvp(api_client, event, "going").status_code in (401, 403)

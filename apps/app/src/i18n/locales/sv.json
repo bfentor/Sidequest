@@ -95,5 +95,18 @@
     "mutedAccounts": "Tystade konton",
     "noneBlocked": "Du har inte blockerat någon.",
     "noneMuted": "Du har inte tystat någon."
+  },
+  "rsvp": {
+    "going": "Kommer",
+    "interested": "Intresserad",
+    "waitlisted": "På väntelistan",
+    "goingCount_one": "{{count}} kommer",
+    "goingCount_other": "{{count}} kommer",
+    "interestedCount_one": "{{count}} intresserad",
+    "interestedCount_other": "{{count}} intresserade",
+    "capacity_one": "{{count}} plats",
+    "capacity_other": "{{count}} platser",
+    "fullHint": "Evenemanget är fullt. Väljer du Kommer hamnar du på väntelistan.",
+    "waitlistHint": "Du får en plats automatiskt om någon avbokar."
   }
 }

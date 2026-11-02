@@ -29,6 +29,7 @@ class UpcomingFeedView(generics.ListAPIView):
         return (
             Event.objects.not_ended()
             .in_feeds_of(viewer)
+            .with_attendance(viewer)
             .select_related("organizer__avatar")
             .prefetch_related("categories")
         )
@@ -55,9 +56,11 @@ class NearbyFeedView(generics.ListAPIView):
         params = NearbyQuerySerializer(data=self.request.query_params)
         params.is_valid(raise_exception=True)
         point = Point(params.validated_data["lng"], params.validated_data["lat"], srid=4326)
+        viewer = viewer_profile(self.request)
         return (
             Event.objects.not_ended()
-            .in_feeds_of(viewer_profile(self.request))
+            .in_feeds_of(viewer)
+            .with_attendance(viewer)
             .near(point, params.validated_data["radius_km"])
             .select_related("organizer__avatar")
             .prefetch_related("categories")

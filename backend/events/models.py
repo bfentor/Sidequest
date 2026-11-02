@@ -20,6 +20,23 @@ class EventQuerySet(models.QuerySet):
         """Like visible_to, also leaving out profiles the viewer muted."""
         return self.visible_to(viewer).exclude(organizer__in=muted_profiles(viewer))
 
+    def with_attendance(self, viewer):
+        """Annotate attendance counts and the viewer's own status (None if not attending)."""
+        going = models.Q(attendances__status=Attendance.Status.GOING)
+        queryset = self.annotate(
+            going_count=models.Count("attendances", filter=going),
+            interested_count=models.Count(
+                "attendances", filter=models.Q(attendances__status=Attendance.Status.INTERESTED)
+            ),
+            waitlist_count=models.Count(
+                "attendances", filter=models.Q(attendances__status=Attendance.Status.WAITLISTED)
+            ),
+        )
+        if viewer is None:
+            return queryset.annotate(my_status=models.Value(None, models.CharField()))
+        mine = Attendance.objects.filter(event=models.OuterRef("pk"), profile=viewer)
+        return queryset.annotate(my_status=models.Subquery(mine.values("status")[:1]))
+
     def not_ended(self):
         """Events that are ongoing or yet to start."""
         return self.filter(ends_at__gte=timezone.now())
@@ -72,6 +89,8 @@ class Event(models.Model):
     # Empty for online events, which then don't appear in the nearby feed.
     location = gis_models.PointField(geography=True, srid=4326, null=True, blank=True)
     categories = models.ManyToManyField(Category, blank=True, related_name="events")
+    # How many can attend; empty for no limit. Beyond it, people join the waitlist.
+    capacity = models.PositiveIntegerField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     # Set by moderators; hides the event everywhere.
@@ -93,3 +112,28 @@ class Event(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Attendance(models.Model):
+    """Someone's RSVP to an event."""
+
+    class Status(models.TextChoices):
+        GOING = "going"
+        INTERESTED = "interested"
+        # Wanted to go when the event was full; promoted in order when a spot opens.
+        WAITLISTED = "waitlisted"
+
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="attendances")
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="attendances")
+    status = models.CharField(max_length=20, choices=Status.choices)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["event", "profile"], name="unique_attendance"),
+        ]
+        indexes = [models.Index(fields=["event", "status", "updated_at"])]
+
+    def __str__(self):
+        return f"{self.profile} {self.status} {self.event}"

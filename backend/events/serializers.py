@@ -1,10 +1,11 @@
 from django.utils.translation import gettext_lazy as _
+from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
 from profiles.serializers import ActingProfileField, ProfileSummarySerializer
 
 from .fields import LatLngField
-from .models import Category, Event
+from .models import Attendance, Category, Event
 from .services import publish_event
 
 
@@ -15,6 +16,50 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ["slug", "name", "icon"]
         read_only_fields = fields
+
+
+class AttendanceSummarySerializer(serializers.Serializer):
+    going = serializers.IntegerField()
+    interested = serializers.IntegerField()
+    waitlisted = serializers.IntegerField()
+    mine = serializers.ChoiceField(
+        choices=Attendance.Status.choices,
+        allow_null=True,
+        help_text="The signed-in user's RSVP, if any.",
+    )
+    is_full = serializers.BooleanField()
+
+
+def attendance_summary(event, viewer):
+    """Counts from `with_attendance` annotations, or queried for a single event."""
+    if hasattr(event, "going_count"):
+        going, interested = event.going_count, event.interested_count
+        waitlisted, mine = event.waitlist_count, event.my_status
+    else:
+        counts = {status: 0 for status in Attendance.Status.values}
+        for status in event.attendances.values_list("status", flat=True):
+            counts[status] += 1
+        going, interested = counts["going"], counts["interested"]
+        waitlisted = counts["waitlisted"]
+        mine = (
+            event.attendances.filter(profile=viewer).values_list("status", flat=True).first()
+            if viewer is not None
+            else None
+        )
+    return {
+        "going": going,
+        "interested": interested,
+        "waitlisted": waitlisted,
+        "mine": mine,
+        "is_full": event.capacity is not None and going >= event.capacity,
+    }
+
+
+class RsvpSerializer(serializers.Serializer):
+    status = serializers.ChoiceField(
+        choices=[Attendance.Status.GOING, Attendance.Status.INTERESTED],
+        help_text="Going to a full event puts you on the waitlist.",
+    )
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -28,6 +73,8 @@ class EventSerializer(serializers.ModelSerializer):
     categories = serializers.SlugRelatedField(
         slug_field="slug", many=True, queryset=Category.objects.all(), required=False
     )
+    capacity = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    attendance = serializers.SerializerMethodField()
 
     class Meta:
         model = Event
@@ -43,9 +90,17 @@ class EventSerializer(serializers.ModelSerializer):
             "address",
             "location",
             "categories",
+            "capacity",
+            "attendance",
             "created_at",
             "updated_at",
         ]
+
+    @extend_schema_field(AttendanceSummarySerializer)
+    def get_attendance(self, event):
+        request = self.context.get("request")
+        viewer = request.user.profile if request and request.user.is_authenticated else None
+        return attendance_summary(event, viewer)
 
     def validate(self, attrs):
         starts_at = attrs.get("starts_at", getattr(self.instance, "starts_at", None))

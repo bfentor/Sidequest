@@ -162,6 +162,7 @@ REST_FRAMEWORK = {
         "posts": "30/hour",
         "events": "20/hour",
         "follows": "200/hour",
+        "rsvps": "300/hour",
         "blocks": "60/hour",
         "reports": "20/hour",
         "uploads": "60/hour",
@@ -175,6 +176,12 @@ SPECTACULAR_SETTINGS = {
     # Separate request/response components so generated clients know which
     # fields are read-only.
     "COMPONENT_SPLIT_REQUEST": True,
+    # Readable names for enums in the generated TypeScript client.
+    "ENUM_NAME_OVERRIDES": {
+        "AttendanceStatusEnum": "events.models.Attendance.Status",
+        "ProfileKindEnum": "profiles.models.Profile.Kind",
+        "ReportReasonEnum": "moderation.models.Report.Reason",
+    },
 }
 
 CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=[])

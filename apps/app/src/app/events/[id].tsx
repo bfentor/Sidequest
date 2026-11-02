@@ -6,6 +6,7 @@ import { ActivityIndicator } from 'react-native';
 
 import { CategoryChips } from '@/components/category-chips';
 import { ContentMenu } from '@/components/content-menu';
+import { RsvpBar } from '@/components/rsvp-bar';
 import { Screen } from '@/components/screen';
 import { ThemedText } from '@/components/themed-text';
 import { useFormat } from '@/lib/format';
@@ -51,6 +52,7 @@ export default function EventScreen() {
               handle: event.organizer.handle,
             })}
           </ThemedText>
+          <RsvpBar event={event} />
           {event.venue_name || event.address ? (
             <ThemedText>{[event.venue_name, event.address].filter(Boolean).join(', ')}</ThemedText>
           ) : null}
