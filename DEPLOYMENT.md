@@ -217,7 +217,6 @@ server {
 server {
     listen 443 ssl;
     listen [::]:443 ssl;
-    http2 on;
     server_name sidequest.fentorweb.hu sidequest-api.fentorweb.hu sidequest-deploy.fentorweb.hu;
 
     ssl_certificate     /etc/ssl/cloudflare/fentorweb.hu.pem;
@@ -240,8 +239,27 @@ server {
 }
 ```
 
-On an nginx older than 1.25.1, write `listen 443 ssl http2;` instead of the
-separate `http2 on;` line.
+There's no `http2` here on purpose: Cloudflare already speaks HTTP/2 to
+visitors, and on nginx before 1.25.1 it's an option of the whole port, so it
+would change the server's other sites on 443 too.
+
+### Or with certbot instead of the Origin Certificate
+
+If you'd rather use Let's Encrypt like the server's other sites, save only the
+`map` and a single port-80 `server` block with the same `server_name`,
+`client_max_body_size` and `location` (no certificate lines), reload nginx,
+then run:
+
+```
+sudo certbot --nginx -d sidequest.fentorweb.hu -d sidequest-api.fentorweb.hu -d sidequest-deploy.fentorweb.hu
+```
+
+Certbot adds the HTTPS part and the redirect itself. Let's Encrypt checks each
+name over plain HTTP, though, which Cloudflare's proxy can get in the way of
+(e.g. with SSL/TLS › Edge Certificates › **Always Use HTTPS** on), now and at
+every renewal (every 60 days or so). If it fails, either switch those three
+records to "DNS only" while certbot runs, or use the Origin Certificate, which
+never needs renewing.
 
 ## Running a command in the API
 
