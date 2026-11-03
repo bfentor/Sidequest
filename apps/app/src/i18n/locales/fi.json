@@ -149,7 +149,8 @@
     "loadFailed": "Julkaisua ei voitu ladata.",
     "like": "Tykkää",
     "unlike": "Peru tykkäys",
-    "title": "Julkaisu"
+    "title": "Julkaisu",
+    "picture": "Kuva {{number}}/{{count}} käyttäjän {{name}} julkaisussa"
   },
   "moderation": {
     "report": "Ilmoita",

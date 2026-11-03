@@ -32,6 +32,9 @@ export function Avatar({ name, image, size = 40 }: AvatarProps) {
         source={{ uri: image.url }}
         cachePolicy="memory-disk"
         accessibilityIgnoresInvertColors
+        // Decorative: the name is always next to it. (On the web, an empty label is an empty alt.)
+        accessible={false}
+        accessibilityLabel=""
         style={[shape, { backgroundColor: theme.backgroundElement }]}
       />
     );

@@ -17,7 +17,7 @@ export function ProfileRow({ profile, action }: { profile: ProfileSummary; actio
   return (
     <View style={styles.row}>
       <Link href={{ pathname: '/profiles/[handle]', params: { handle: profile.handle } }} asChild>
-        <Pressable style={styles.link}>
+        <Pressable role="link" style={styles.link}>
           <Avatar name={profile.display_name} image={profile.avatar} size={40} />
           <View style={styles.name}>
             <View style={styles.nameLine}>

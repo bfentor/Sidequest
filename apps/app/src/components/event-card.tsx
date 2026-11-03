@@ -75,7 +75,9 @@ export function EventCard({ event, distanceM }: EventCardProps) {
   }
   return (
     <Link href={{ pathname: '/events/[id]', params: { id: event.id } }} asChild>
-      <Pressable style={({ pressed }) => pressed && styles.pressed}>{card}</Pressable>
+      <Pressable role="link" style={({ pressed }) => pressed && styles.pressed}>
+        {card}
+      </Pressable>
     </Link>
   );
 }

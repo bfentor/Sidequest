@@ -149,7 +149,8 @@
     "loadFailed": "Inlägget kunde inte laddas.",
     "like": "Gilla",
     "unlike": "Sluta gilla",
-    "title": "Inlägg"
+    "title": "Inlägg",
+    "picture": "Bild {{number}} av {{count}} i inlägget av {{name}}"
   },
   "moderation": {
     "report": "Anmäl",

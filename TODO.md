@@ -137,7 +137,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 ## 13. Language and accessibility
 
 - [x] Finnish, Swedish and English translations
-- [ ] Screen reader labels, support for the system text size setting, and reduced motion
+- [x] Screen reader labels, support for the system text size setting, and reduced motion
 
 ## 14. Infrastructure and operations
 

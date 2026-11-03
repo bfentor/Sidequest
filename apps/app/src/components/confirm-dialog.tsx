@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Modal, Pressable, StyleSheet, View } from 'react-native';
 
 import { Spacing } from '@/constants/theme';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
 import { Button } from './button';
 import { ThemedText } from './themed-text';
@@ -27,10 +28,15 @@ export function ConfirmDialog({
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) {
+  const reducedMotion = useReducedMotion();
   const { t } = useTranslation();
 
   return (
-    <Modal visible={visible} transparent animationType="fade" onRequestClose={onCancel}>
+    <Modal
+      visible={visible}
+      transparent
+      animationType={reducedMotion ? 'none' : 'fade'}
+      onRequestClose={onCancel}>
       <Pressable style={styles.backdrop} onPress={onCancel}>
         <ThemedView style={styles.dialog} role="alertdialog" onStartShouldSetResponder={() => true}>
           <ThemedText type="heading">{title}</ThemedText>

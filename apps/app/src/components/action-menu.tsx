@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
 import { ConfirmDialog } from './confirm-dialog';
 import { ThemedText } from './themed-text';
@@ -27,6 +28,7 @@ type ActionMenuProps = {
 
 /** A list of actions in a sheet: at the bottom on phones, centred on wide screens. */
 export function ActionMenu({ visible, onClose, actions, title }: ActionMenuProps) {
+  const reducedMotion = useReducedMotion();
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const { t } = useTranslation();
@@ -34,7 +36,11 @@ export function ActionMenu({ visible, onClose, actions, title }: ActionMenuProps
 
   return (
     <>
-      <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
+      <Modal
+        visible={visible}
+        transparent
+        animationType={reducedMotion ? 'none' : 'fade'}
+        onRequestClose={onClose}>
         <Pressable
           style={styles.backdrop}
           onPress={onClose}

@@ -16,6 +16,7 @@ import { toIsoDate } from '@/lib/dates';
 import { useFormat } from '@/lib/format';
 import { goBack } from '@/lib/navigation';
 import { saveTextFile } from '@/lib/save-file';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
 import { Button } from './button';
 import { DateTimeField } from './date-time-field';
@@ -99,6 +100,7 @@ function BirthDate() {
 }
 
 function DeleteAccountDialog({ visible, onClose }: { visible: boolean; onClose: () => void }) {
+  const reducedMotion = useReducedMotion();
   const { t } = useTranslation();
   const { forgetSession } = useAuth();
   const [password, setPassword] = useState('');
@@ -121,7 +123,11 @@ function DeleteAccountDialog({ visible, onClose }: { visible: boolean; onClose: 
   });
 
   return (
-    <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
+    <Modal
+      visible={visible}
+      transparent
+      animationType={reducedMotion ? 'none' : 'fade'}
+      onRequestClose={onClose}>
       <View style={styles.backdrop}>
         <ThemedView style={styles.dialog} role="alertdialog">
           <ThemedText type="heading">{t('account.deleteConfirmTitle')}</ThemedText>

@@ -10,6 +10,7 @@ import { Modal, StyleSheet, View } from 'react-native';
 
 import { useAuth } from '@/auth/auth-provider';
 import { Spacing } from '@/constants/theme';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
 import { Button } from './button';
 import { ThemedText } from './themed-text';
@@ -17,6 +18,7 @@ import { ThemedView } from './themed-view';
 
 /** Asks signed-in people to accept the terms again after they change. */
 export function TermsGate() {
+  const reducedMotion = useReducedMotion();
   const { t } = useTranslation();
   const { status, signOut } = useAuth();
   const queryClient = useQueryClient();
@@ -32,7 +34,7 @@ export function TermsGate() {
     settings.data.terms_version !== settings.data.current_terms_version;
 
   return (
-    <Modal visible={outdated} transparent animationType="fade">
+    <Modal visible={outdated} transparent animationType={reducedMotion ? 'none' : 'fade'}>
       <View style={styles.backdrop}>
         <ThemedView style={styles.dialog} role="alertdialog">
           <ThemedText type="heading">{t('legal.updatedTitle')}</ThemedText>

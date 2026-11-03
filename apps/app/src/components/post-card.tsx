@@ -34,7 +34,7 @@ export function PostCard({ post }: { post: Post }) {
         <Link
           href={{ pathname: '/profiles/[handle]', params: { handle: post.author.handle } }}
           asChild>
-          <Pressable style={styles.author}>
+          <Pressable role="link" style={styles.author}>
             <Avatar name={post.author.display_name} image={post.author.avatar} size={36} />
             <View style={styles.byline}>
               <ThemedText type="smallBold">{post.author.display_name}</ThemedText>
@@ -69,10 +69,15 @@ export function PostCard({ post }: { post: Post }) {
       {post.body ? <RichText>{post.body}</RichText> : null}
       {post.images.length ? (
         <View style={styles.images}>
-          {post.images.map((image) => (
+          {post.images.map((image, index) => (
             <RemoteImage
               key={image.id}
               image={image}
+              accessibilityLabel={t('posts.picture', {
+                number: index + 1,
+                count: post.images.length,
+                name: post.author.display_name,
+              })}
               contentFit="cover"
               style={[styles.image, post.images.length === 1 && styles.onlyImage]}
             />

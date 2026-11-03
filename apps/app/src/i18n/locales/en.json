@@ -149,7 +149,8 @@
     "loadFailed": "Couldn't load this post.",
     "like": "Like",
     "unlike": "Unlike",
-    "title": "Post"
+    "title": "Post",
+    "picture": "Picture {{number}} of {{count}} in {{name}}'s post"
   },
   "moderation": {
     "report": "Report",

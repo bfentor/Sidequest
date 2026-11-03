@@ -8,6 +8,7 @@ import { Button } from '@/components/button';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
 import { TABS } from './tabs';
 
@@ -28,6 +29,7 @@ function isTyping(event: KeyboardEvent) {
  * Esc closes the side panel, ? lists them all.
  */
 export function KeyboardShortcuts({ onEscape }: { onEscape: () => void }) {
+  const reducedMotion = useReducedMotion();
   const { t } = useTranslation();
   const { status } = useAuth();
   const [helpOpen, setHelpOpen] = useState(false);
@@ -68,7 +70,7 @@ export function KeyboardShortcuts({ onEscape }: { onEscape: () => void }) {
     <Modal
       visible={helpOpen}
       transparent
-      animationType="fade"
+      animationType={reducedMotion ? 'none' : 'fade'}
       onRequestClose={() => setHelpOpen(false)}>
       <Pressable style={styles.backdrop} onPress={() => setHelpOpen(false)}>
         <ThemedView style={styles.dialog} role="dialog" aria-label={t('shortcuts.title')}>

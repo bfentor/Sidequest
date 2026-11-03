@@ -17,10 +17,30 @@ export type ThemedTextProps = TextProps & {
   themeColor?: ThemeColor;
 };
 
+// Screen titles and section titles, for screen readers to jump between.
+const HEADING_LEVELS: Partial<Record<NonNullable<ThemedTextProps['type']>, number>> = {
+  subtitle: 1,
+  heading: 2,
+};
+// How far display-size text grows with the system text size (body text grows freely).
+const MAX_SCALE: Partial<Record<NonNullable<ThemedTextProps['type']>, number>> = {
+  title: 1.3,
+  subtitle: 1.5,
+};
+
 export function ThemedText({ style, type = 'default', themeColor, ...rest }: ThemedTextProps) {
   const theme = useTheme();
+  const level = HEADING_LEVELS[type];
 
-  return <Text style={[{ color: theme[themeColor ?? 'text'] }, styles[type], style]} {...rest} />;
+  return (
+    <Text
+      role={level ? 'heading' : undefined}
+      aria-level={level}
+      maxFontSizeMultiplier={MAX_SCALE[type]}
+      style={[{ color: theme[themeColor ?? 'text'] }, styles[type], style]}
+      {...rest}
+    />
+  );
 }
 
 const styles = StyleSheet.create({
