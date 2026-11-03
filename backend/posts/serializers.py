@@ -7,6 +7,7 @@ from rest_framework import serializers
 from events.models import Event
 from events.serializers import EventSerializer
 from images.serializers import ImageSerializer, OwnImageField
+from moderation import filters
 from profiles.serializers import ActingProfileField, ProfileSummarySerializer
 
 from .models import Comment, LinkPreview, Post, PostImage
@@ -105,6 +106,13 @@ class PostSerializer(serializers.ModelSerializer):
         )
         if not body.strip() and event is None and not has_images:
             raise serializers.ValidationError(_("A post needs text, a picture or an event."))
+        if "body" in attrs:
+            author = post.author if post else attrs["author"]
+            earlier = Post.objects.filter(author=author).exclude(pk=post.pk if post else None)
+            try:
+                filters.check(body, recent=earlier)
+            except serializers.ValidationError as error:
+                raise serializers.ValidationError({"body": error.detail}) from error
         return attrs
 
     def _set_images(self, post, images):
@@ -156,6 +164,14 @@ class CommentSerializer(serializers.ModelSerializer):
         if not body.strip():
             raise serializers.ValidationError(_("Write something first."))
         return body.strip()
+
+    def validate(self, attrs):
+        earlier = Comment.objects.filter(author=attrs["author"])
+        try:
+            filters.check(attrs["body"], recent=earlier)
+        except serializers.ValidationError as error:
+            raise serializers.ValidationError({"body": error.detail}) from error
+        return attrs
 
 
 class EventPhotoSerializer(serializers.ModelSerializer):

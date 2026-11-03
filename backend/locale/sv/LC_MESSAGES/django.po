@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sidequest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-03 09:16+0200\n"
+"POT-Creation-Date: 2026-11-03 09:30+0200\n"
 "PO-Revision-Date: 2026-11-02 20:52+0200\n"
 "Last-Translator: Sidequest <dev@sidequest.invalid>\n"
 "Language-Team: Swedish\n"
@@ -88,6 +88,15 @@ msgstr "Den här profilen bjöds inte in som medarrangör."
 msgid "The picture is too large (at most 10 MB)."
 msgstr "Bilden är för stor (högst 10 MB)."
 
+msgid "That's a lot of links. Keep it to five or fewer."
+msgstr "Det är många länkar. Håll dig till högst fem."
+
+msgid "This contains words that aren't allowed here."
+msgstr "Det här innehåller ord som inte är tillåtna här."
+
+msgid "You just posted this."
+msgstr "Du har just publicerat det här."
+
 msgid "Spam"
 msgstr "Skräppost"
 
@@ -126,6 +135,12 @@ msgstr "Återställde innehåll"
 
 msgid "Dismissed reports"
 msgstr "Avvisade anmälningar"
+
+msgid "Block: don't allow the text"
+msgstr "Blockera: tillåt inte texten"
+
+msgid "Flag: allow it, and report it to moderators"
+msgstr "Flagga: tillåt den, men rapportera den till moderatorerna"
 
 msgid "This content no longer exists."
 msgstr "Det här innehållet finns inte längre."

@@ -15,6 +15,7 @@ from django.db import transaction
 from django.utils import timezone
 
 from config.fetch import fetch_text
+from moderation import filters
 from notifications.models import Kind
 from notifications.services import attendees_of, notify
 
@@ -145,6 +146,7 @@ def sync(source):
                 )
                 if not first_sync:
                     announce(event)
+                filters.flag(event, f"{event.title}\n{event.description}")
                 created += 1
                 continue
             changes = {

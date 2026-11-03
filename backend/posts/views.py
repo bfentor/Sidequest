@@ -7,6 +7,7 @@ from rest_framework.pagination import CursorPagination, LimitOffsetPagination
 from rest_framework.response import Response
 
 from events.models import Event
+from moderation import filters
 from moderation.visibility import viewer_profile
 from notifications.models import Kind
 from notifications.services import managers_of, notify
@@ -43,6 +44,7 @@ class PostViewSet(
             link_preview=preview_for(first_url(serializer.validated_data.get("body")))
         )
         notify_mentions(post.body, author=post.author, post=post)
+        filters.flag(post, post.body)
 
     def perform_update(self, serializer):
         before = serializer.instance.body
@@ -51,6 +53,7 @@ class PostViewSet(
         extra = {"link_preview": preview_for(url)} if url != first_url(before) else {}
         post = serializer.save(**extra)
         notify_mentions(post.body, author=post.author, before=before, post=post)
+        filters.flag(post, post.body)
 
     @extend_schema(request=None, responses={204: None}, methods=["PUT", "DELETE"])
     @action(
@@ -119,6 +122,7 @@ class CommentListView(generics.ListCreateAPIView):
             **{self.parent_field: parent},
         )
         notify_mentions(comment.body, author=comment.author, **{self.parent_field: parent})
+        filters.flag(comment, comment.body)
 
 
 class PostCommentsView(CommentListView):

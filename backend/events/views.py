@@ -16,6 +16,7 @@ from rest_framework.response import Response
 from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 
+from moderation import filters
 from moderation.visibility import hidden_profiles, private_profiles, viewer_profile
 from notifications.models import Kind
 from notifications.services import attendees_of, notify
@@ -126,6 +127,14 @@ class EventViewSet(
     def get_queryset(self):
         viewer = viewer_profile(self.request)
         return Event.objects.visible_to(viewer).for_display(viewer)
+
+    def perform_create(self, serializer):
+        event = serializer.save()
+        filters.flag(event, f"{event.title}\n{event.description}")
+
+    def perform_update(self, serializer):
+        event = serializer.save()
+        filters.flag(event, f"{event.title}\n{event.description}")
 
     def perform_destroy(self, event):
         # The notification can't point at a deleted event, so it keeps the title.

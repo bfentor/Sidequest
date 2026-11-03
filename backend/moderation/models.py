@@ -104,3 +104,31 @@ class ModerationAction(models.Model):
 
     def __str__(self):
         return f"{self.get_kind_display()}: {self.content_type.model} {self.object_id}"
+
+
+class FilteredTerm(models.Model):
+    """A word or phrase moderators don't want in posts, comments and events.
+
+    Matched as a whole word, in any letter case. Blocking terms stop the text
+    from being saved; flagging terms let it through and file a report for the
+    moderation queue, for words that are only sometimes a problem.
+    """
+
+    class Action(models.TextChoices):
+        BLOCK = "block", _("Block: don't allow the text")
+        FLAG = "flag", _("Flag: allow it, and report it to moderators")
+
+    term = models.CharField(max_length=100, unique=True)
+    action = models.CharField(max_length=10, choices=Action.choices, default=Action.FLAG)
+    note = models.CharField(max_length=200, blank=True, help_text="Why it's on the list.")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["term"]
+
+    def __str__(self):
+        return self.term
+
+    def save(self, *args, **kwargs):
+        self.term = self.term.strip().lower()
+        super().save(*args, **kwargs)

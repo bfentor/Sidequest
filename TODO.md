@@ -130,7 +130,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 ## 12. Safety and abuse prevention
 
 - [x] Rate limiting on posting, following and signup
-- [ ] Spam and profanity filters, and moderation of uploaded images
+- [ ] Spam and profanity filters, and moderation of uploaded images (text filters done; images need a moderation service to be chosen)
 - [x] Audit log of moderation actions
 - [x] Age gate or minimum age
 

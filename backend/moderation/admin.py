@@ -3,7 +3,7 @@ from django.urls import NoReverseMatch, reverse
 from django.utils.html import format_html
 
 from . import services
-from .models import Block, ModerationAction, Mute, Report
+from .models import Block, FilteredTerm, ModerationAction, Mute, Report
 
 
 def _target_link(obj):
@@ -113,3 +113,12 @@ class RemovableAdminMixin:
     def restore_selected(self, request, queryset):
         for obj in queryset.filter(removed_at__isnull=False):
             services.restore(obj, request.user, note="Restored from the admin")
+
+
+@admin.register(FilteredTerm)
+class FilteredTermAdmin(admin.ModelAdmin):
+    """Words that block or flag posts, comments and events (moderation/filters.py)."""
+
+    list_display = ["term", "action", "note", "created_at"]
+    list_filter = ["action"]
+    search_fields = ["term", "note"]

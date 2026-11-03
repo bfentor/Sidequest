@@ -4,6 +4,7 @@ from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
 from images.serializers import ImageSerializer, OwnImageField
+from moderation import filters
 from notifications.models import Kind
 from notifications.services import attendees_of, notify
 from profiles.models import Profile
@@ -233,6 +234,11 @@ class EventSerializer(serializers.ModelSerializer):
         ends_at = attrs.get("ends_at", getattr(self.instance, "ends_at", None))
         if starts_at and ends_at and ends_at <= starts_at:
             raise serializers.ValidationError({"ends_at": _("Must be after the start time.")})
+        for field in ("title", "description"):
+            try:
+                filters.check(attrs.get(field, ""))
+            except serializers.ValidationError as error:
+                raise serializers.ValidationError({field: error.detail}) from error
         return attrs
 
     def create(self, validated_data):

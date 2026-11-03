@@ -60,9 +60,12 @@ def test_posts_get_a_cached_preview(auth_client, monkeypatch):
         return url, PAGE
 
     monkeypatch.setattr(links, "fetch_html", fake_fetch)
-    body = {"body": "Tonight: https://guild.fi/events/1"}
-    first = auth_client.post("/api/posts/", body, format="json").json()
-    second = auth_client.post("/api/posts/", body, format="json").json()
+    first = auth_client.post(
+        "/api/posts/", {"body": "Tonight: https://guild.fi/events/1"}, format="json"
+    ).json()
+    second = auth_client.post(
+        "/api/posts/", {"body": "Still on: https://guild.fi/events/1"}, format="json"
+    ).json()
 
     assert first["link_preview"]["title"] == "Sauna night"
     assert second["link_preview"] == first["link_preview"]

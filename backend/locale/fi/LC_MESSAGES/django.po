@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sidequest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-03 09:16+0200\n"
+"POT-Creation-Date: 2026-11-03 09:30+0200\n"
 "PO-Revision-Date: 2026-11-02 20:52+0200\n"
 "Last-Translator: Sidequest <dev@sidequest.invalid>\n"
 "Language-Team: Finnish\n"
@@ -88,6 +88,15 @@ msgstr "Tätä profiilia ei kutsuttu yhteisjärjestäjäksi."
 msgid "The picture is too large (at most 10 MB)."
 msgstr "Kuva on liian suuri (enintään 10 Mt)."
 
+msgid "That's a lot of links. Keep it to five or fewer."
+msgstr "Siinä on paljon linkkejä. Käytä enintään viittä."
+
+msgid "This contains words that aren't allowed here."
+msgstr "Tässä on sanoja, jotka eivät ole täällä sallittuja."
+
+msgid "You just posted this."
+msgstr "Julkaisit juuri tämän."
+
 msgid "Spam"
 msgstr "Roskaposti"
 
@@ -126,6 +135,12 @@ msgstr "Palautti sisällön"
 
 msgid "Dismissed reports"
 msgstr "Hylkäsi ilmoitukset"
+
+msgid "Block: don't allow the text"
+msgstr "Estä: älä salli tekstiä"
+
+msgid "Flag: allow it, and report it to moderators"
+msgstr "Merkitse: salli, mutta ilmoita moderaattoreille"
 
 msgid "This content no longer exists."
 msgstr "Tätä sisältöä ei ole enää olemassa."
