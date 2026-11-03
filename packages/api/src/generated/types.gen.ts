@@ -1837,6 +1837,21 @@ export type FeedsUpcomingListResponses = {
 
 export type FeedsUpcomingListResponse = FeedsUpcomingListResponses[keyof FeedsUpcomingListResponses];
 
+export type FlagsRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/flags/';
+};
+
+export type FlagsRetrieveResponses = {
+    200: {
+        [key: string]: boolean;
+    };
+};
+
+export type FlagsRetrieveResponse = FlagsRetrieveResponses[keyof FlagsRetrieveResponses];
+
 export type GeocodeListData = {
     body?: never;
     path?: never;

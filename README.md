@@ -32,6 +32,7 @@ Each Django app has a single responsibility:
 | `events` | `Event`, with an optional geographic `location`. Publishing an event also creates an announcement `Post`, so followers see it. |
 | `posts` | `Post`: a text update, a linked event, or both. |
 | `feeds` | The three feed endpoints. No models. |
+| `flags` | Feature flags, managed in the admin: switch a feature on for testers, staff, a share of people or everyone. The app asks with `useFlag('name')`. |
 
 Authorship and following always point at a `Profile`, so people and organizations behave the same everywhere. Clients choose which profile to act as with `organizer_handle` / `author_handle`, which defaults to your own profile. They may use any profile they manage.
 

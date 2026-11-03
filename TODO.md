@@ -149,7 +149,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 - [ ] Backups and a staging environment
 - [ ] App icon, splash screen, branding and app store listing assets
 - [x] End-to-end tests in CI
-- [ ] Feature flags
+- [x] Feature flags
 - [x] Semantic versioning on commit
 
 ## 15. Speed and offline use

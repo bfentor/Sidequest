@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     "feeds",
     "students",
     "search",
+    "flags",
 ]
 
 MIDDLEWARE = [

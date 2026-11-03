@@ -927,6 +927,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedEventList'
           description: ''
+  /api/flags/:
+    get:
+      operationId: flags_retrieve
+      description: 'Which feature flags are on for you, as {"name": true}. Flags left
+        out are off.'
+      tags:
+      - flags
+      security:
+      - XSessionTokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: boolean
+          description: ''
   /api/geocode/:
     get:
       operationId: geocode_list
