@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { AuthProvider, useAuth } from '@/auth/auth-provider';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { restoreAppearance } from '@/lib/appearance';
 import { createPersistOptions, createQueryClient } from '@/lib/query-cache';
 import { applyPreferredLanguage, type Language } from '@/i18n';
 import { OnboardingGate } from '@/components/onboarding-gate';
@@ -111,6 +112,7 @@ function LanguageSync() {
 
   useEffect(() => {
     applyPreferredLanguage();
+    restoreAppearance();
   }, []);
 
   useEffect(() => {

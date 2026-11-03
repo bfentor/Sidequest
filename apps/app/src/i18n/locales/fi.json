@@ -132,7 +132,10 @@
     },
     "emailTitle": "Sähköpostipäivitykset",
     "emailDigest": "Lähetä minulle viikoittain kooste tulevista tapahtumista",
-    "emailDigestHint": "Joka maanantai: tämän viikon tapahtumat, joihin olet menossa tai joista olet kiinnostunut, sekä seuraamiesi uudet tapahtumat."
+    "emailDigestHint": "Joka maanantai: tämän viikon tapahtumat, joihin olet menossa tai joista olet kiinnostunut, sekä seuraamiesi uudet tapahtumat.",
+    "appearance": "Ulkoasu",
+    "appearanceLight": "Vaalea",
+    "appearanceDark": "Tumma"
   },
   "posts": {
     "delete": "Poista julkaisu",

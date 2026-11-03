@@ -132,7 +132,10 @@
     },
     "emailTitle": "Email updates",
     "emailDigest": "Email me a weekly summary of upcoming events",
-    "emailDigestHint": "Every Monday: events you're going to or interested in this week, and new ones from people you follow."
+    "emailDigestHint": "Every Monday: events you're going to or interested in this week, and new ones from people you follow.",
+    "appearance": "Appearance",
+    "appearanceLight": "Light",
+    "appearanceDark": "Dark"
   },
   "posts": {
     "delete": "Delete post",

@@ -132,7 +132,10 @@
     },
     "emailTitle": "Uppdateringar via e-post",
     "emailDigest": "Mejla mig en veckosammanfattning av kommande evenemang",
-    "emailDigestHint": "Varje måndag: veckans evenemang som du ska gå på eller är intresserad av, och nya från dem du följer."
+    "emailDigestHint": "Varje måndag: veckans evenemang som du ska gå på eller är intresserad av, och nya från dem du följer.",
+    "appearance": "Utseende",
+    "appearanceLight": "Ljust",
+    "appearanceDark": "Mörkt"
   },
   "posts": {
     "delete": "Ta bort inlägg",

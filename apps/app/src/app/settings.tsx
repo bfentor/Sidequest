@@ -28,6 +28,7 @@ import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { chooseLanguage, LANGUAGES, storedLanguage, type Language } from '@/i18n';
+import { setAppearance, useAppearance, type Appearance } from '@/lib/appearance';
 import { goBack } from '@/lib/navigation';
 
 export default function SettingsScreen() {
@@ -37,6 +38,7 @@ export default function SettingsScreen() {
   return (
     <Screen hasHeader>
       <LanguagePicker />
+      <AppearancePicker />
       <View style={styles.section}>
         <ThemedText type="heading">{t('legal.about')}</ThemedText>
         <Link href={{ pathname: '/legal/[document]', params: { document: 'terms' } }}>
@@ -253,6 +255,39 @@ function LanguagePicker() {
                 setChoice(option.code);
                 chooseLanguage(option.code);
               }}
+              style={({ pressed }) => [styles.option, pressed && styles.pressed]}>
+              <ThemedText style={selected && { color: theme.tint }}>{option.name}</ThemedText>
+              {selected ? <ThemedText style={{ color: theme.tint }}>✓</ThemedText> : null}
+            </Pressable>
+          );
+        })}
+      </ThemedView>
+    </View>
+  );
+}
+
+function AppearancePicker() {
+  const { t } = useTranslation();
+  const theme = useTheme();
+  const appearance = useAppearance();
+  const options: { value: Appearance; name: string }[] = [
+    { value: 'system', name: t('settings.languageAutomatic') },
+    { value: 'light', name: t('settings.appearanceLight') },
+    { value: 'dark', name: t('settings.appearanceDark') },
+  ];
+
+  return (
+    <View style={styles.section}>
+      <ThemedText type="heading">{t('settings.appearance')}</ThemedText>
+      <ThemedView type="backgroundElement" style={styles.group}>
+        {options.map((option) => {
+          const selected = option.value === appearance;
+          return (
+            <Pressable
+              key={option.value}
+              role="radio"
+              aria-checked={selected}
+              onPress={() => setAppearance(option.value)}
               style={({ pressed }) => [styles.option, pressed && styles.pressed]}>
               <ThemedText style={selected && { color: theme.tint }}>{option.name}</ThemedText>
               {selected ? <ThemedText style={{ color: theme.tint }}>✓</ThemedText> : null}
