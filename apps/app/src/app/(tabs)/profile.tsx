@@ -1,9 +1,10 @@
 import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 
 import { useAuth } from '@/auth/auth-provider';
 import { Button } from '@/components/button';
+import { ProfileAction } from '@/components/profile-header';
 import { ProfileView } from '@/components/profile-view';
 import { Screen } from '@/components/screen';
 import { ThemedText } from '@/components/themed-text';
@@ -20,30 +21,30 @@ export default function ProfileTab() {
         handle={me.handle}
         actions={() => (
           <>
-            <View style={{ flex: 1 }}>
+            <ProfileAction>
               <Button title={t('profile.edit')} onPress={() => router.push('/edit-profile')} />
-            </View>
-            <View style={{ flex: 1 }}>
+            </ProfileAction>
+            <ProfileAction>
               <Button
                 title={t('myEvents.title')}
                 variant="secondary"
                 onPress={() => router.push('/my-events')}
               />
-            </View>
-            <View style={{ flex: 1 }}>
+            </ProfileAction>
+            <ProfileAction>
               <Button
                 title={t('organizations.title')}
                 variant="secondary"
                 onPress={() => router.push('/organizations')}
               />
-            </View>
-            <View style={{ flex: 1 }}>
+            </ProfileAction>
+            <ProfileAction>
               <Button
                 title={t('common.settings')}
                 variant="secondary"
                 onPress={() => router.push('/settings')}
               />
-            </View>
+            </ProfileAction>
           </>
         )}
       />

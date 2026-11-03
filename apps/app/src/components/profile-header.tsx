@@ -19,6 +19,11 @@ type ProfileHeaderProps = {
   actions?: ReactNode;
 };
 
+/** One of the buttons under a profile's header (Follow, Edit profile…), sized to share the row. */
+export function ProfileAction({ children }: { children: ReactNode }) {
+  return <View style={styles.action}>{children}</View>;
+}
+
 export function ProfileHeader({ profile, actions }: ProfileHeaderProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -141,6 +146,12 @@ const styles = StyleSheet.create({
   },
   actions: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: Spacing.two,
+  },
+  action: {
+    flexGrow: 1,
+    // Two to a row on phones, all in one row on wider screens.
+    flexBasis: 140,
   },
 });

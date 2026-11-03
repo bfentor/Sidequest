@@ -1,11 +1,11 @@
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
 
 import { Button } from '@/components/button';
 
 import { ContentMenu } from '@/components/content-menu';
 import { FollowButton } from '@/components/follow-button';
+import { ProfileAction } from '@/components/profile-header';
 import { ProfileView } from '@/components/profile-view';
 import { useActingProfiles } from '@/hooks/use-acting-profiles';
 
@@ -30,11 +30,11 @@ export default function ProfileScreen() {
         hasHeader
         actions={(profile) => (
           <>
-            <View style={{ flex: 1 }}>
+            <ProfileAction>
               <FollowButton profile={profile} />
-            </View>
+            </ProfileAction>
             {acting && acting.role !== 'self' ? (
-              <View style={{ flex: 1 }}>
+              <ProfileAction>
                 <Button
                   title={t('dashboard.title')}
                   variant="secondary"
@@ -42,10 +42,10 @@ export default function ProfileScreen() {
                     router.push({ pathname: '/profiles/[handle]/dashboard', params: { handle } })
                   }
                 />
-              </View>
+              </ProfileAction>
             ) : null}
             {isAdmin ? (
-              <View style={{ flex: 1 }}>
+              <ProfileAction>
                 <Button
                   title={t('organizations.manage')}
                   variant="secondary"
@@ -53,7 +53,7 @@ export default function ProfileScreen() {
                     router.push({ pathname: '/organizations/[handle]/manage', params: { handle } })
                   }
                 />
-              </View>
+              </ProfileAction>
             ) : null}
           </>
         )}

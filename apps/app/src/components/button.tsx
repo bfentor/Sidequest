@@ -35,7 +35,7 @@ export function Button({ title, onPress, variant = 'primary', disabled, loading 
       {loading ? (
         <ActivityIndicator color={foreground} />
       ) : (
-        <ThemedText type="smallBold" style={{ color: foreground }}>
+        <ThemedText type="smallBold" style={{ color: foreground, textAlign: 'center' }}>
           {title}
         </ThemedText>
       )}
@@ -49,6 +49,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     minHeight: 44,
     paddingHorizontal: Spacing.four,
+    // Room around labels that wrap onto two lines on narrow screens.
+    paddingVertical: Spacing.two,
     borderRadius: Spacing.three,
   },
   dimmed: {
