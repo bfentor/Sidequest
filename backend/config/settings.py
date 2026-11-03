@@ -135,9 +135,11 @@ ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*"]
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 # Email addresses are verified with a code (easy to type on a phone) before
-# the first sign-in. Set ACCOUNT_EMAIL_VERIFICATION=optional for local development.
+# the first sign-in. ACCOUNT_EMAIL_VERIFICATION=optional (local development, or
+# staging without an email service) signs people in straight away instead;
+# allauth only allows codes when verification is mandatory.
 ACCOUNT_EMAIL_VERIFICATION = env("ACCOUNT_EMAIL_VERIFICATION", default="mandatory")
-ACCOUNT_EMAIL_VERIFICATION_BY_CODE_ENABLED = True
+ACCOUNT_EMAIL_VERIFICATION_BY_CODE_ENABLED = ACCOUNT_EMAIL_VERIFICATION == "mandatory"
 ACCOUNT_PASSWORD_RESET_BY_CODE_ENABLED = True
 ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
 # Changing the email address replaces the old one once the new one is verified.
