@@ -131,9 +131,11 @@ function TabButton({ icon, children, badge = 0, isFocused, ...props }: TabButton
     <Pressable {...props}>
       <div className={classes.tabButton}>
         <SymbolView name={{ web: icon }} tintColor={color} size={24} />
-        <ThemedText type="smallBold" style={{ color }}>
-          {children}
-        </ThemedText>
+        <span className={classes.label}>
+          <ThemedText type="smallBold" style={{ color }}>
+            {children}
+          </ThemedText>
+        </span>
         {badge > 0 ? (
           <span className={classes.badge} style={{ backgroundColor: theme.tint }}>
             {badge > 99 ? '99+' : badge}
