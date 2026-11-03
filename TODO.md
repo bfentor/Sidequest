@@ -6,6 +6,23 @@ Markers:
 
 Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 
+## 0. Waiting on a decision (notes from 3 November 2026)
+
+What's left needs a choice, an account or content from us before it can be built.
+
+- **Direct messages and event group chats** (section 8): who can message whom, how long messages are kept, how reporting works.
+- **Sign in with Google and Apple** (sections 1–2): needs Google and Apple developer accounts and OAuth client IDs.
+- **Moderating uploaded images** (section 12): choose a service (e.g. AWS Rekognition, Google SafeSearch, Sightengine). The text filter is done; moderators fill its word list in the admin (Filtered terms), which ships empty.
+- **Terms of service, privacy policy and minimum age** (section 1).
+- **Infrastructure** (section 14): hosting, an email service (the weekly digest and unsubscribe links need it), analytics, backups, store artwork.
+- **Error tracking in the app**: the API already reports to Sentry; the app needs `@sentry/react-native`, a new build and a Sentry project.
+- **Background jobs**: we use scheduled management commands (CRONJOBS.md) instead of Celery; tick it off if that's enough.
+- **Weekly email digest is opt-in.** Turning it on by default is a one-line change, but it would email every existing account.
+- **Link preview pictures load straight from the linked site**, which sees viewers' IP addresses; the API could serve them instead.
+- **Paid features** (section 16).
+
+Before deploying the latest work: add the `sync_calendars` scheduled job and set `API_URL` (DEPLOYMENT.md); `EXPO_PUBLIC_APP_STORE_URL` and `EXPO_PUBLIC_PLAY_STORE_URL` are optional and show the website's store buttons once set.
+
 ## 1. Required before launch
 
 - [x] **[store]** Delete your account from inside the app (Apple requires it)
