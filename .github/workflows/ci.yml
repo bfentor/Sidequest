@@ -1,9 +1,10 @@
 name: CI
 
+# Checks pull requests. Shipping to testing doesn't wait for it: Coolify
+# deploys staging by itself when testing changes (DEPLOYMENT.md).
 on:
-  push:
-    branches: [testing, main]
   pull_request:
+  workflow_dispatch:
 
 jobs:
   backend:

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # git ship: commit everything with a Conventional Commits message, then ship
-# the current branch to testing (which deploys staging once CI passes).
+# the current branch to testing, which Coolify then deploys to staging.
 #
 #   git add -A
 #   git commit -m "<type>(<scope>): <description>"
@@ -64,4 +64,4 @@ git push origin testing
 git checkout "$branch"
 
 echo
-echo "Shipped $branch to testing. Staging deploys once CI passes."
+echo "Shipped $branch to testing. Coolify is deploying it to staging now."

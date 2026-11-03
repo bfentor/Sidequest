@@ -1,16 +1,17 @@
 name: Release
 
-# After each push to testing, release-please opens or updates a pull request
-# titled "chore: release X.Y.Z". It bumps the version everywhere it appears
+# Run by hand (Actions › Release › Run workflow) when it's time for a release:
+# release-please opens or updates a pull request titled "chore: release X.Y.Z". It bumps the version everywhere it appears
 # (release-please-config.json) and adds the commits since the last release to
 # CHANGELOG.md. Merging that pull request tags the release and creates a
 # GitHub Release. The version comes from the commit messages:
 #   fix: …  → patch    feat: …  → minor    feat!: … / BREAKING CHANGE → major
 # (Before 1.0.0, breaking changes bump the minor version instead.)
 
+# Needs Settings › Actions › General › "Allow GitHub Actions to create and
+# approve pull requests".
 on:
-  push:
-    branches: [testing]
+  workflow_dispatch:
 
 permissions:
   contents: write
