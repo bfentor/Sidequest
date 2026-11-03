@@ -52,26 +52,35 @@
   background-color: rgba(127, 127, 127, 0.12);
 }
 
-/* Phones: the five tabs share the width, with small labels cut short if need be. */
+/* The bottom bar (phones and small tablets): five items of exactly equal width. */
 @media (max-width: 767px) {
+  .nav {
+    justify-content: stretch;
+  }
+
   .nav > * {
     flex: 1 1 0;
+    justify-content: center;
     min-width: 0;
   }
 
+  /* Fills its share of the bar, so the icon and label sit in its middle. */
   .tabButton {
     position: relative;
-    padding: 6px 2px;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 8px 4px;
   }
 
   .label {
+    display: block;
     max-width: 100%;
   }
 
   .label > div {
+    display: block;
     overflow: hidden;
-    font-size: 11px;
-    line-height: 14px;
+    text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
@@ -79,8 +88,24 @@
   /* On the icon's corner, so it doesn't make the bar taller. */
   .badge {
     position: absolute;
-    top: 2px;
+    top: 4px;
     left: calc(50% + 6px);
+  }
+}
+
+/* Phones: icons only. The labels stay for screen readers, which announce each tab by them. */
+@media (max-width: 599px) {
+  .tabButton {
+    padding: 12px 0;
+  }
+
+  .label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 }
 
