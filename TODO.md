@@ -117,8 +117,8 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 - [x] Organizer dashboard: views, RSVPs and follower growth
 - [x] Export the attendee list as CSV
 - [x] Send announcements to people who are going
-- [x] Bulk import events from CSV, or sync them from an organization's existing calendar (calendar sync done; CSV not needed for now)
-- [ ] An embeddable event widget for organizations' own websites
+- [x] Bulk import events from CSV, or sync them from an organization's existing calendar (calendar sync done; CSV import not built)
+- [x] An embeddable event widget for organizations' own websites
 
 ## 11. Web
 

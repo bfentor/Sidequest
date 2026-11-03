@@ -569,5 +569,12 @@
     "pending": "Ei vielä synkronoitu.",
     "errorFetch": "Kalenteria ei saatu haettua. Tarkista osoite ja että kalenteri on julkinen.",
     "errorParse": "Tämä osoite ei ole iCal-kalenteri. Etsi iCal (.ics) -osoite kalenterisi jakoasetuksista."
+  },
+  "embed": {
+    "title": "Tulevat tapahtumat: {{name}}",
+    "empty": "Tulevia tapahtumia ei juuri nyt ole.",
+    "seeAll": "Näytä kaikki Sidequestissa",
+    "dashboardTitle": "Verkkosivuillasi",
+    "dashboardHint": "Liitä tämä verkkosivuillesi, niin tulevat tapahtumasi näkyvät siellä. Se päivittyy itsestään."
   }
 }

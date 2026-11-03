@@ -49,6 +49,7 @@ function RootStack() {
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="embed/[handle]" options={{ headerShown: false }} />
       <Stack.Screen name="events/[id]/index" options={{ title: t('event.title') }} />
       <Stack.Screen name="events/[id]/edit" options={{ title: t('eventForm.edit') }} />
       <Stack.Screen name="events/[id]/attendees" options={{ title: t('attendees.title') }} />

@@ -569,5 +569,12 @@
     "pending": "Not synced yet.",
     "errorFetch": "Couldn't fetch this calendar. Check the address, and that the calendar is public.",
     "errorParse": "This address isn't an iCal calendar. Look for the iCal (.ics) address in your calendar's sharing settings."
+  },
+  "embed": {
+    "title": "Upcoming events from {{name}}",
+    "empty": "No upcoming events right now.",
+    "seeAll": "See all on Sidequest",
+    "dashboardTitle": "On your website",
+    "dashboardHint": "Paste this into your website to show your upcoming events there. It updates by itself."
   }
 }

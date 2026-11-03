@@ -569,5 +569,12 @@
     "pending": "Inte synkroniserad än.",
     "errorFetch": "Kalendern kunde inte hämtas. Kontrollera adressen och att kalendern är offentlig.",
     "errorParse": "Den här adressen är inte en iCal-kalender. Leta efter iCal-adressen (.ics) i kalenderns delningsinställningar."
+  },
+  "embed": {
+    "title": "Kommande evenemang: {{name}}",
+    "empty": "Inga kommande evenemang just nu.",
+    "seeAll": "Se alla på Sidequest",
+    "dashboardTitle": "På din webbplats",
+    "dashboardHint": "Klistra in det här på din webbplats för att visa dina kommande evenemang där. Det uppdateras av sig självt."
   }
 }

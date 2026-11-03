@@ -5,8 +5,9 @@ import { useEffect } from 'react';
 
 import { useAuth } from '@/auth/auth-provider';
 
-// Screens that belong to signing in or that onboarding links to; the gate waits until they're left.
-const PASSTHROUGH = ['/onboarding', '/sign-in', '/verify-email', '/two-factor', '/legal'];
+// Screens that belong to signing in or that onboarding links to (the gate waits until they're
+// left), and the widget other websites embed.
+const PASSTHROUGH = ['/onboarding', '/sign-in', '/verify-email', '/two-factor', '/legal', '/embed'];
 
 /** Opens the first-run steps for accounts that haven't been through them yet. */
 export function OnboardingGate() {

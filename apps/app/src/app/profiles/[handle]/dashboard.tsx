@@ -8,7 +8,9 @@ import { Button } from '@/components/button';
 import { Screen } from '@/components/screen';
 import { StatTile } from '@/components/stat-tile';
 import { ThemedText } from '@/components/themed-text';
+import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
+import { WEB_URL } from '@/lib/config';
 import { useFormat } from '@/lib/format';
 
 /** How a profile you act for is doing: views, RSVPs and followers over 30 days, and per event. */
@@ -100,6 +102,13 @@ export default function DashboardScreen() {
       ) : (
         <ThemedText themeColor="textSecondary">{t('dashboard.noEvents')}</ThemedText>
       )}
+      <ThemedText type="heading">{t('embed.dashboardTitle')}</ThemedText>
+      <ThemedText themeColor="textSecondary">{t('embed.dashboardHint')}</ThemedText>
+      <ThemedView type="backgroundElement" style={styles.snippet}>
+        <ThemedText type="code" selectable>
+          {`<iframe src="${WEB_URL}/embed/${handle}" title="Sidequest" width="100%" height="480" style="border:0"></iframe>`}
+        </ThemedText>
+      </ThemedView>
       <Button
         title={t('calendarSync.open')}
         variant="secondary"
@@ -128,6 +137,10 @@ const styles = StyleSheet.create({
   },
   name: {
     flex: 1,
+  },
+  snippet: {
+    padding: Spacing.three,
+    borderRadius: Spacing.two,
   },
   number: {
     width: 76,
