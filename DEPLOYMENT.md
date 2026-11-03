@@ -13,7 +13,10 @@ from the `testing` branch.
                      │ Cloudflare  │  DNS and proxy for fentorweb.hu
                      └──────┬──────┘
                      ┌──────▼──────┐
-                     │   Traefik   │  Coolify's proxy (Let's Encrypt certificates)
+                     │    nginx    │  the server's own proxy (HTTPS), shared with other sites
+                     └──────┬──────┘
+                     ┌──────▼──────┐
+                     │   Traefik   │  Coolify's proxy, on 127.0.0.1:8880 only
                      └──┬───────┬──┘
      sidequest.fentorweb.hu   sidequest-api.fentorweb.hu
           ┌─────▼─────┐       ┌─────▼─────┐
@@ -61,15 +64,30 @@ migration must not break it:
 The server still has LUT Kyyti's old, stopped app and its database, kept as a
 fallback. Leave both alone.
 
-1. Check that nothing listens on ports 80, 443 and 8000, which Coolify needs:
-   `sudo ss -ltnp | grep -E ':(80|443|8000) '`. If the old Kyyti nginx still
-   runs, stop and disable it: `sudo systemctl disable --now nginx`.
+The server's nginx stays where it is: it serves other sites on ports 80 and
+443, and passes the Sidequest names on to Coolify's Traefik, which listens only
+on `127.0.0.1:8880` (see "4. nginx" below).
+
+1. Check that the ports Coolify uses itself are free: 8000 (its dashboard),
+   6001 and 6002 (live updates and the terminal) and 8880 (Traefik):
+   `sudo ss -ltnp | grep -E ':(8000|6001|6002|8880) '`.
 2. Install Coolify (Docker comes with it):
    ```
    curl -fsSL https://cdn.coollabs.io/coolify/install.sh | sudo bash
    ```
+   Its proxy (Traefik) can't start yet, because nginx has ports 80 and 443.
+   That's expected; step 3 moves it.
 3. Open `http://<server>:8000` and create the admin account **right away**:
-   until then, anyone can.
+   until then, anyone can. Then Servers › localhost › Proxy: stop the proxy,
+   and in its configuration
+   - replace the `80:80` and `443:443` port mappings with one,
+     `127.0.0.1:8880:80`, so Traefik is reachable only through nginx;
+   - add `--entrypoints.http.forwardedHeaders.trustedIPs=127.0.0.1/32,172.16.0.0/12`
+     to its command. Traefik then keeps nginx's `X-Forwarded-Proto: https`
+     instead of replacing it with `http`; without it, the API would hand out
+     `http://` links to pictures, which browsers block on an HTTPS page.
+
+   Start the proxy again.
 
 ## 2. DNS in Cloudflare (fentorweb.hu)
 
@@ -82,16 +100,21 @@ change. Point the records at the name instead of an IP:
 | CNAME | `sidequest-api` | `bfentorddns.zapto.org` | Proxied |
 | CNAME | `sidequest-deploy` | `bfentorddns.zapto.org` | Proxied (Coolify's dashboard) |
 
-SSL/TLS mode: **Full (strict)**. Ports 80 and 443 must reach the server.
+SSL/TLS mode: **Full (strict)**. Ports 80 and 443 already reach nginx.
 
-If the server is behind a home router and you'd rather not forward ports, use a
-**Cloudflare Tunnel** instead: Zero Trust › Networks › Tunnels, install
-`cloudflared` on the server, and route the three names to
-`http://localhost:80` (Traefik). Then no DNS records or open ports are needed.
+For nginx's side of HTTPS, create a **Cloudflare Origin Certificate**: SSL/TLS ›
+Origin Server › Create Certificate, for `*.fentorweb.hu` and `fentorweb.hu`
+(valid 15 years, nothing to renew; Cloudflare trusts it, browsers only ever see
+Cloudflare's certificate). Save the certificate and key on the server, e.g. in
+`/etc/ssl/cloudflare/fentorweb.hu.pem` and `.key` (key readable by root only).
 
 ## 3. In Coolify
 
-1. Settings › Instance's Domain: `https://sidequest-deploy.fentorweb.hu`. Turn
+HTTPS ends at nginx, so every domain entered in Coolify starts with `http://`:
+with `https://`, Traefik would try to get its own certificates and fail.
+Visitors still only ever use HTTPS (Cloudflare and nginx see to it).
+
+1. Settings › Instance's Domain: `http://sidequest-deploy.fentorweb.hu`. Turn
    on two-factor authentication in your profile.
 2. Settings › Notifications: at least failed deployments and backups.
 3. Storages (S3) › Add: an S3-compatible bucket in the EU for backups.
@@ -110,7 +133,7 @@ If the server is behind a home router and you'd rather not forward ports, use a
 - Branch `testing`, Build Pack **Dockerfile**, base directory `/backend`,
   Dockerfile `/Dockerfile`.
 - Ports Exposes `8000`; leave Ports Mappings empty (needed for zero-downtime deploys).
-- Domain: `https://sidequest-api.fentorweb.hu`.
+- Domain: `http://sidequest-api.fentorweb.hu`.
 - Healthcheck: on, path `/healthz`, port `8000`, start period `120` seconds.
 - Turn **off** automatic deploys on push: the GitHub Action deploys once CI passes.
 
@@ -141,7 +164,7 @@ Scheduled tasks: the ones in [CRONJOBS.md](CRONJOBS.md).
 
 - Branch `testing`, Build Pack **Dockerfile**, base directory `/`,
   Dockerfile `/apps/web-server/Dockerfile`.
-- Ports Exposes `3000`. Domain: `https://sidequest.fentorweb.hu`.
+- Ports Exposes `3000`. Domain: `http://sidequest.fentorweb.hu`.
 - Healthcheck: path `/healthz`, port `3000`.
 - Automatic deploys on push: off.
 - Environment variables `EXPO_PUBLIC_API_URL` = `https://sidequest-api.fentorweb.hu`
@@ -168,6 +191,57 @@ Scheduled tasks: the ones in [CRONJOBS.md](CRONJOBS.md).
 Then run **Deploy with Coolify** from the Actions tab once (or `git ship` from
 your branch), and create the admin account in the API's Terminal in Coolify:
 `python manage.py createsuperuser`.
+
+## 4. nginx
+
+One server block sends all three names to Traefik, which routes them on to the
+right app (and keeps deploys without downtime). Save it as
+`/etc/nginx/sites-available/sidequest`, link it into `sites-enabled`, then
+`sudo nginx -t && sudo systemctl reload nginx`:
+
+```nginx
+# Sidequest (staging), deployed with Coolify: nginx handles HTTPS, Coolify's
+# Traefik (127.0.0.1:8880) picks the app by name. See DEPLOYMENT.md.
+map $http_upgrade $sidequest_connection {
+    default upgrade;
+    ''      close;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name sidequest.fentorweb.hu sidequest-api.fentorweb.hu sidequest-deploy.fentorweb.hu;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
+    server_name sidequest.fentorweb.hu sidequest-api.fentorweb.hu sidequest-deploy.fentorweb.hu;
+
+    ssl_certificate     /etc/ssl/cloudflare/fentorweb.hu.pem;
+    ssl_certificate_key /etc/ssl/cloudflare/fentorweb.hu.key;
+
+    # Pictures are uploaded up to 10 MB (nginx allows only 1 MB by default).
+    client_max_body_size 12m;
+
+    location / {
+        proxy_pass http://127.0.0.1:8880;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        # Coolify's dashboard keeps live connections (websockets) open.
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $sidequest_connection;
+        proxy_read_timeout 300s;
+    }
+}
+```
+
+On an nginx older than 1.25.1, write `listen 443 ssl http2;` instead of the
+separate `http2 on;` line.
 
 ## Running a command in the API
 
