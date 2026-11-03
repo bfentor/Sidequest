@@ -125,7 +125,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 - [x] Public event pages that search engines can index, with link previews when shared on WhatsApp, Instagram and similar
 - [x] A landing page for people who don't have the app
 - [x] Installable as a web app (PWA)
-- [ ] Keyboard shortcuts and a wider desktop layout (for example a side panel with event details)
+- [x] Keyboard shortcuts and a wider desktop layout (for example a side panel with event details)
 
 ## 12. Safety and abuse prevention
 

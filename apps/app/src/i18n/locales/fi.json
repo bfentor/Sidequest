@@ -84,7 +84,9 @@
     "tickets": "Liput",
     "withCoHosts": "yhdessä: {{names}}",
     "coHostInvite": "{{name}} on kutsuttu tapahtuman yhteisjärjestäjäksi.",
-    "minAge": "K{{age}}"
+    "minAge": "K{{age}}",
+    "openPage": "Avaa omana sivunaan",
+    "closePanel": "Sulje"
   },
   "auth": {
     "signInTitle": "Tervetuloa takaisin",
@@ -586,5 +588,13 @@
     "signUp": "Rekisteröidy, se on ilmaista",
     "appStore": "Lataa App Storesta",
     "playStore": "Hanki Google Playsta"
+  },
+  "shortcuts": {
+    "title": "Pikanäppäimet",
+    "search": "Haku",
+    "newEvent": "Uusi tapahtuma",
+    "tabs": "Siirry välilehdelle Tulossa–Profiili",
+    "close": "Sulje sivupaneeli tai ikkuna",
+    "help": "Näytä nämä pikanäppäimet"
   }
 }

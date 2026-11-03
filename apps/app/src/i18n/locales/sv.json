@@ -84,7 +84,9 @@
     "tickets": "Biljetter",
     "withCoHosts": "tillsammans med {{names}}",
     "coHostInvite": "{{name}} är inbjuden som medarrangör.",
-    "minAge": "{{age}}+"
+    "minAge": "{{age}}+",
+    "openPage": "Öppna som egen sida",
+    "closePanel": "Stäng"
   },
   "auth": {
     "signInTitle": "Välkommen tillbaka",
@@ -586,5 +588,13 @@
     "signUp": "Registrera dig, det är gratis",
     "appStore": "Ladda ned i App Store",
     "playStore": "Ladda ned på Google Play"
+  },
+  "shortcuts": {
+    "title": "Kortkommandon",
+    "search": "Sök",
+    "newEvent": "Nytt evenemang",
+    "tabs": "Gå till en flik, från Kommande till Profil",
+    "close": "Stäng sidopanelen eller en dialog",
+    "help": "Visa de här kortkommandona"
   }
 }

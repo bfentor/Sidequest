@@ -84,7 +84,9 @@
     "tickets": "Tickets",
     "withCoHosts": "with {{names}}",
     "coHostInvite": "{{name}} is invited to co-host this event.",
-    "minAge": "{{age}}+"
+    "minAge": "{{age}}+",
+    "openPage": "Open as a page",
+    "closePanel": "Close"
   },
   "auth": {
     "signInTitle": "Welcome back",
@@ -586,5 +588,13 @@
     "signUp": "Sign up, it's free",
     "appStore": "Download on the App Store",
     "playStore": "Get it on Google Play"
+  },
+  "shortcuts": {
+    "title": "Keyboard shortcuts",
+    "search": "Search",
+    "newEvent": "New event",
+    "tabs": "Go to a tab, from Upcoming to Profile",
+    "close": "Close the side panel or a dialog",
+    "help": "Show these shortcuts"
   }
 }
