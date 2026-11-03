@@ -1,5 +1,6 @@
 import { meSettingsPartialUpdate } from '@sidequest/api';
-import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -7,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { AuthProvider, useAuth } from '@/auth/auth-provider';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { createPersistOptions, createQueryClient } from '@/lib/query-cache';
 import { applyPreferredLanguage, type Language } from '@/i18n';
 import { OnboardingGate } from '@/components/onboarding-gate';
 import { TermsGate } from '@/components/terms-gate';
@@ -14,7 +16,8 @@ import { NotificationHandler } from '@/notifications/notification-handler';
 
 export default function RootLayout() {
   const scheme = useColorScheme() === 'dark' ? 'dark' : 'light';
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(createQueryClient);
+  const [persistOptions] = useState(createPersistOptions);
 
   const base = scheme === 'dark' ? DarkTheme : DefaultTheme;
   const navigationTheme = {
@@ -29,7 +32,7 @@ export default function RootLayout() {
   };
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
       <AuthProvider>
         <LanguageSync />
         <NotificationHandler />
@@ -39,7 +42,7 @@ export default function RootLayout() {
           <OnboardingGate />
         </ThemeProvider>
       </AuthProvider>
-    </QueryClientProvider>
+    </PersistQueryClientProvider>
   );
 }
 

@@ -94,7 +94,13 @@ export async function signOut() {
  * `unknown` means the server couldn't be asked (e.g. offline); keep the token.
  */
 export async function checkSession(): Promise<'valid' | 'invalid' | 'unknown'> {
-  const { response } = await client.get({ url: `${BASE}/auth/session`, security: SESSION_TOKEN });
+  let response: Response | undefined;
+  try {
+    ({ response } = await client.get({ url: `${BASE}/auth/session`, security: SESSION_TOKEN }));
+  } catch {
+    // Offline or unreachable: keep the session, and check again next time.
+    return 'unknown';
+  }
   switch (response?.status) {
     case 200:
       return 'valid';

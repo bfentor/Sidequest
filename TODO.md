@@ -154,7 +154,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 
 ## 15. Speed and offline use
 
-- [ ] Cached feeds, so the app opens instantly and works offline
+- [x] Cached feeds, so the app opens instantly and works offline
 - [x] Image caching (expo-image keeps pictures in memory and on disk)
 - [x] Skeleton loaders instead of spinners
 - [x] Instant UI updates for follows and RSVPs, without waiting for the server

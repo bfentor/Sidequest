@@ -39,11 +39,13 @@ export function AuthProvider({ children }: PropsWithChildren) {
     async function restore() {
       if ((await session.restore()) && (await api.checkSession()) === 'invalid') {
         await session.clear();
+        // Saved from the expired session; not for whoever signs in next.
+        queryClient.clear();
       }
       setStatus(session.token() ? 'signed-in' : 'signed-out');
     }
     restore();
-  }, []);
+  }, [queryClient]);
 
   async function authenticate(request: Promise<api.AuthResult>) {
     const result = await request;
