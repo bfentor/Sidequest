@@ -17,7 +17,8 @@
     "delete": "Delete",
     "moreActions": "More actions",
     "cannotBeUndone": "This can't be undone.",
-    "save": "Save"
+    "save": "Save",
+    "loading": "Loading…"
   },
   "errors": {
     "network": "Could not reach the server.",

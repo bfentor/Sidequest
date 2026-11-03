@@ -17,7 +17,8 @@
     "delete": "Ta bort",
     "moreActions": "Fler åtgärder",
     "cannotBeUndone": "Det här går inte att ångra.",
-    "save": "Spara"
+    "save": "Spara",
+    "loading": "Laddar…"
   },
   "errors": {
     "network": "Kunde inte nå servern.",

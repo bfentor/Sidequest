@@ -8,7 +8,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { useState, type ReactElement, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, View } from 'react-native';
+import { View } from 'react-native';
 
 import { Spacing } from '@/constants/theme';
 import { useMe } from '@/hooks/use-me';
@@ -19,6 +19,7 @@ import { PostCard } from './post-card';
 import { ProfileHeader } from './profile-header';
 import { ProfileRow } from './profile-row';
 import { Screen } from './screen';
+import { SkeletonPage } from './skeleton';
 import { SegmentedControl } from './segmented-control';
 import { ThemedText } from './themed-text';
 
@@ -45,7 +46,7 @@ export function ProfileView({ handle, actions, hasHeader }: ProfileViewProps) {
         {profile.isError ? (
           <ThemedText themeColor="textSecondary">{t('profile.notFound')}</ThemedText>
         ) : (
-          <ActivityIndicator />
+          <SkeletonPage />
         )}
       </Screen>
     );

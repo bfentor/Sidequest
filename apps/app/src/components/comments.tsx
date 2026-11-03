@@ -13,7 +13,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link, router } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 
 import { useAuth } from '@/auth/auth-provider';
 import { Spacing } from '@/constants/theme';
@@ -21,6 +21,7 @@ import { useTheme } from '@/hooks/use-theme';
 import { useFormat } from '@/lib/format';
 
 import { RichText } from './rich-text';
+import { SkeletonList } from './skeleton';
 import { ActingAsPicker } from './acting-as-picker';
 import { Avatar } from './avatar';
 import { Button } from './button';
@@ -129,7 +130,7 @@ export function Comments({ parent, title, placeholder }: CommentsProps) {
   return (
     <View style={styles.section}>
       <ThemedText type="heading">{title}</ThemedText>
-      {comments.isPending ? <ActivityIndicator /> : null}
+      {comments.isPending ? <SkeletonList count={2} /> : null}
       {all.map((comment) => (
         <CommentRow key={comment.id} comment={comment} onDelete={() => remove.mutate(comment.id)} />
       ))}

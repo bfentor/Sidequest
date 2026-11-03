@@ -8,6 +8,7 @@ import { useTheme } from '@/hooks/use-theme';
 
 import { Button } from './button';
 import { screenStyles } from './screen';
+import { SkeletonList } from './skeleton';
 import { ThemedText } from './themed-text';
 
 /** The parts of a TanStack infinite query over paginated results that a feed needs. */
@@ -54,7 +55,9 @@ export function FeedList<T>({
       ListHeaderComponent={header}
       ListEmptyComponent={
         query.isPending ? (
-          <ActivityIndicator style={styles.status} />
+          <View style={styles.skeleton}>
+            <SkeletonList />
+          </View>
         ) : query.isError ? (
           <View style={styles.status}>
             <ThemedText themeColor="textSecondary">{t('feed.loadFailed')}</ThemedText>
@@ -98,6 +101,9 @@ export function FeedList<T>({
 }
 
 const styles = StyleSheet.create({
+  skeleton: {
+    paddingTop: Spacing.three,
+  },
   status: {
     alignItems: 'center',
     gap: Spacing.three,

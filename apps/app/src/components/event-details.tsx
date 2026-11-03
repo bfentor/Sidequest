@@ -15,7 +15,7 @@ import { Link, router } from 'expo-router';
 import type { TFunction } from 'i18next';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Linking, Pressable, StyleSheet, View } from 'react-native';
+import { Linking, Pressable, StyleSheet, View } from 'react-native';
 
 import { useAuth } from '@/auth/auth-provider';
 import { Spacing } from '@/constants/theme';
@@ -34,6 +34,7 @@ import { FriendsGoing } from './friends-going';
 import { RemoteImage } from './remote-image';
 import { RsvpBar } from './rsvp-bar';
 import { SaveButton } from './save-button';
+import { SkeletonPage } from './skeleton';
 import { ThemedText } from './themed-text';
 import { ThemedView } from './themed-view';
 
@@ -172,7 +173,7 @@ export function EventDetails({ id }: { id: number }) {
   return (
     <>
       {isPending ? (
-        <ActivityIndicator />
+        <SkeletonPage />
       ) : isError ? (
         <ThemedText themeColor="textSecondary">{t('event.loadFailed')}</ThemedText>
       ) : (

@@ -156,7 +156,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 
 - [ ] Cached feeds, so the app opens instantly and works offline
 - [x] Image caching (expo-image keeps pictures in memory and on disk)
-- [ ] Skeleton loaders instead of spinners
+- [x] Skeleton loaders instead of spinners
 - [x] Instant UI updates for follows and RSVPs, without waiting for the server
 
 ## 16. Making money (later)

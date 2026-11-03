@@ -17,7 +17,8 @@
     "delete": "Poista",
     "moreActions": "Lisää toimintoja",
     "cannotBeUndone": "Tätä ei voi perua.",
-    "save": "Tallenna"
+    "save": "Tallenna",
+    "loading": "Ladataan…"
   },
   "errors": {
     "network": "Palvelimeen ei saatu yhteyttä.",
