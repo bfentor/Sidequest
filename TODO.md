@@ -148,7 +148,7 @@ Delete what you don't want, tick off what's done (`- [x]`), and reorder freely.
 - [ ] Background jobs (Celery) for reminders and digests
 - [ ] Backups and a staging environment
 - [ ] App icon, splash screen, branding and app store listing assets
-- [ ] End-to-end tests in CI
+- [x] End-to-end tests in CI
 - [ ] Feature flags
 - [x] Semantic versioning on commit
 

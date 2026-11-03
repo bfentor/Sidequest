@@ -44,6 +44,8 @@ class Command(BaseCommand):
             "birth_date": date(2002, 5, 17),
             "terms_version": settings.TERMS_VERSION,
             "terms_accepted_at": timezone.now(),
+            # Straight to the app, without the first-run steps.
+            "onboarded_at": timezone.now(),
         }
         demo = User.objects.create_user(
             email="demo@sidequest.test", password=DEMO_PASSWORD, **adult

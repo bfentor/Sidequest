@@ -16,6 +16,7 @@ The app has three feeds:
 apps/app/          Expo (React Native) app: iOS, Android and web
 apps/web-server/   Node server for the exported web build (production only)
 packages/api/      Typed API client, generated from the backend's OpenAPI schema
+e2e/               End-to-end tests (Playwright): the web build and the API, in a browser
 backend/           Django + Django REST Framework + PostGIS
 docker-compose.yml PostGIS and the API for local development
 ```
@@ -121,6 +122,17 @@ npm run format:check && npm run typecheck && npm run lint
 ```
 
 TypeScript, JSON and YAML are formatted with Prettier (`npm run format`); Python with ruff (`uv run ruff format .`).
+
+### End-to-end tests
+
+`e2e/` drives the exported web app against the API with the demo data, on a desktop and a phone-sized screen. CI runs them on every pull request. To run them locally, with the API on port 8000 (`DJANGO_DEBUG=1`, `CORS_ALLOWED_ORIGINS=http://localhost:3000`, and `manage.py seed_demo` done), preferably on a database of its own:
+
+```sh
+cd apps/app && EXPO_PUBLIC_API_URL=http://localhost:8000 EXPO_PUBLIC_WEB_URL=http://localhost:3000 npx expo export -p web && cd ../..
+PORT=3000 node apps/web-server/server.js &
+npx playwright install chromium   # once
+npm run e2e
+```
 
 ## Releasing
 
