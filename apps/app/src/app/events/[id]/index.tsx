@@ -6,6 +6,7 @@ import {
   eventsDestroyMutation,
   eventsPartialUpdate,
   eventsRetrieveOptions,
+  eventsViewCreate,
   type Event,
   type EventStatusEnum,
 } from '@sidequest/api';
@@ -13,6 +14,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link, router, Stack, useLocalSearchParams } from 'expo-router';
 import type { GenerateMetadataFunction } from 'expo-server';
 import type { TFunction } from 'i18next';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Linking, Pressable, StyleSheet, View } from 'react-native';
 
@@ -134,6 +136,10 @@ export default function EventScreen() {
     isPending,
     isError,
   } = useQuery(eventsRetrieveOptions({ path: { id: Number(id) } }));
+  useEffect(() => {
+    // Counted for the hosts' dashboard; the API ignores the hosts' own views.
+    eventsViewCreate({ path: { id: Number(id) } });
+  }, [id]);
   const destroy = useMutation({
     ...eventsDestroyMutation(),
     onSuccess: () => {

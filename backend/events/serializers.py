@@ -289,3 +289,32 @@ class NearbyEventSerializer(EventSerializer):
 
     def get_distance_m(self, event) -> float:
         return event.distance.m
+
+
+class EventStatsSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    title = serializers.CharField()
+    starts_at = serializers.DateTimeField()
+    views = serializers.IntegerField(
+        help_text="Times its page was opened, by anyone but its hosts."
+    )
+    going = serializers.IntegerField()
+    interested = serializers.IntegerField()
+
+
+class ProfileStatsSerializer(serializers.Serializer):
+    days = serializers.ListField(
+        child=serializers.DateField(), help_text="The last 30 days, oldest first."
+    )
+    views = serializers.ListField(
+        child=serializers.IntegerField(), help_text="Views of the profile's events, per day."
+    )
+    rsvps = serializers.ListField(
+        child=serializers.IntegerField(),
+        help_text="New going or interested answers to its events, per day.",
+    )
+    new_followers = serializers.ListField(child=serializers.IntegerField())
+    followers = serializers.IntegerField(help_text="Followers now.")
+    events = EventStatsSerializer(
+        many=True, help_text="Events from the last 30 days on, newest first."
+    )

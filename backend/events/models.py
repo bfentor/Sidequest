@@ -325,3 +325,22 @@ class EventFeedback(models.Model):
 
     def __str__(self):
         return f"{self.profile} rated {self.event} {self.rating}/5"
+
+
+class EventViewDay(models.Model):
+    """How many times an event's page was opened on one day (Helsinki time).
+
+    Only a count: who looked isn't stored. Hosts' own views aren't counted.
+    """
+
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="view_days")
+    date = models.DateField()
+    count = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["event", "date"], name="unique_event_view_day"),
+        ]
+
+    def __str__(self):
+        return f"{self.event} on {self.date}: {self.count}"

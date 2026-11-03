@@ -195,6 +195,18 @@ export type EventRequest = {
     published_at?: string | null;
 };
 
+export type EventStats = {
+    id: number;
+    title: string;
+    starts_at: string;
+    /**
+     * Times its page was opened, by anyone but its hosts.
+     */
+    views: number;
+    going: number;
+    interested: number;
+};
+
 /**
  * * `active` - Active
  * * `postponed` - Postponed
@@ -652,6 +664,30 @@ export type Profile = {
  * * `organization` - Organization
  */
 export type ProfileKindEnum = 'person' | 'organization';
+
+export type ProfileStats = {
+    /**
+     * The last 30 days, oldest first.
+     */
+    days: Array<string>;
+    /**
+     * Views of the profile's events, per day.
+     */
+    views: Array<number>;
+    /**
+     * New going or interested answers to its events, per day.
+     */
+    rsvps: Array<number>;
+    new_followers: Array<number>;
+    /**
+     * Followers now.
+     */
+    followers: number;
+    /**
+     * Events from the last 30 days on, newest first.
+     */
+    events: Array<EventStats>;
+};
 
 /**
  * Compact profile representation embedded in events and posts.
@@ -1553,6 +1589,27 @@ export type EventsSaveUpdateResponses = {
 };
 
 export type EventsSaveUpdateResponse = EventsSaveUpdateResponses[keyof EventsSaveUpdateResponses];
+
+export type EventsViewCreateData = {
+    body?: never;
+    path: {
+        /**
+         * A unique integer value identifying this event.
+         */
+        id: number;
+    };
+    query?: never;
+    url: '/api/events/{id}/view/';
+};
+
+export type EventsViewCreateResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type EventsViewCreateResponse = EventsViewCreateResponses[keyof EventsViewCreateResponses];
 
 export type FeedsFollowingListData = {
     body?: never;
@@ -2687,6 +2744,21 @@ export type ProfilesPostsListResponses = {
 };
 
 export type ProfilesPostsListResponse = ProfilesPostsListResponses[keyof ProfilesPostsListResponses];
+
+export type ProfilesStatsRetrieveData = {
+    body?: never;
+    path: {
+        handle: string;
+    };
+    query?: never;
+    url: '/api/profiles/{handle}/stats/';
+};
+
+export type ProfilesStatsRetrieveResponses = {
+    200: ProfileStats;
+};
+
+export type ProfilesStatsRetrieveResponse = ProfilesStatsRetrieveResponses[keyof ProfilesStatsRetrieveResponses];
 
 export type PushDevicesCreateData = {
     body: PushDeviceRequest;

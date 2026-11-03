@@ -542,5 +542,18 @@
   },
   "hashtags": {
     "empty": "No posts with this hashtag yet."
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "views": "Views",
+    "rsvps": "RSVPs",
+    "followers": "Followers",
+    "last30": "Last 30 days",
+    "newFollowers": "+{{count}} in 30 days",
+    "day": "{{date}}: {{count}}",
+    "chartLabel": "{{title}}, last 30 days: {{total}} in total",
+    "events": "Events",
+    "event": "Event",
+    "noEvents": "No events in the last 30 days."
   }
 }

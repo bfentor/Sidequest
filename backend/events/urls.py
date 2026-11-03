@@ -9,6 +9,7 @@ from .views import (
     EventViewSet,
     GeocodeView,
     ManagedEventsView,
+    ProfileStatsView,
     SavedEventsView,
 )
 
@@ -21,6 +22,7 @@ urlpatterns = [
     path("me/events/", ManagedEventsView.as_view(), name="managed-events"),
     path("me/attending/", AttendingEventsView.as_view(), name="attending-events"),
     path("me/saved/", SavedEventsView.as_view(), name="saved-events"),
+    path("profiles/<str:handle>/stats/", ProfileStatsView.as_view(), name="profile-stats"),
     path("events/<int:pk>/co-host/", CoHostInvitationsView.as_view(), name="event-co-host"),
     path(
         "events/<int:pk>/co-host/<str:handle>/",

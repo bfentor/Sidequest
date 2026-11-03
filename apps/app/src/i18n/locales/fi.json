@@ -542,5 +542,18 @@
   },
   "hashtags": {
     "empty": "Tällä aihetunnisteella ei ole vielä julkaisuja."
+  },
+  "dashboard": {
+    "title": "Tilastot",
+    "views": "Katselut",
+    "rsvps": "Ilmoittautumiset",
+    "followers": "Seuraajat",
+    "last30": "Viimeiset 30 päivää",
+    "newFollowers": "+{{count}} 30 päivässä",
+    "day": "{{date}}: {{count}}",
+    "chartLabel": "{{title}}, viimeiset 30 päivää: yhteensä {{total}}",
+    "events": "Tapahtumat",
+    "event": "Tapahtuma",
+    "noEvents": "Ei tapahtumia viimeisten 30 päivän ajalta."
   }
 }

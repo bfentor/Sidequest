@@ -12,9 +12,8 @@ import { useActingProfiles } from '@/hooks/use-acting-profiles';
 export default function ProfileScreen() {
   const { handle } = useLocalSearchParams<{ handle: string }>();
   const { t } = useTranslation();
-  const isAdmin = useActingProfiles().some(
-    (profile) => profile.handle === handle && profile.role === 'admin',
-  );
+  const acting = useActingProfiles().find((profile) => profile.handle === handle);
+  const isAdmin = acting?.role === 'admin';
 
   return (
     <>
@@ -34,6 +33,17 @@ export default function ProfileScreen() {
             <View style={{ flex: 1 }}>
               <FollowButton profile={profile} />
             </View>
+            {acting && acting.role !== 'self' ? (
+              <View style={{ flex: 1 }}>
+                <Button
+                  title={t('dashboard.title')}
+                  variant="secondary"
+                  onPress={() =>
+                    router.push({ pathname: '/profiles/[handle]/dashboard', params: { handle } })
+                  }
+                />
+              </View>
+            ) : null}
             {isAdmin ? (
               <View style={{ flex: 1 }}>
                 <Button

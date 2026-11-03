@@ -588,6 +588,25 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/events/{id}/view/:
+    post:
+      operationId: events_view_create
+      description: Count that someone opened the event's page (for its hosts' dashboard).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this event.
+        required: true
+      tags:
+      - events
+      security:
+      - XSessionTokenAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
   /api/feeds/following/:
     get:
       operationId: feeds_following_list
@@ -2220,6 +2239,28 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedPostList'
           description: ''
+  /api/profiles/{handle}/stats/:
+    get:
+      operationId: profiles_stats_retrieve
+      description: Views, RSVPs and follower growth for a profile you act for, over
+        the last 30 days.
+      parameters:
+      - in: path
+        name: handle
+        schema:
+          type: string
+        required: true
+      tags:
+      - profiles
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileStats'
+          description: ''
   /api/push-devices/:
     post:
       operationId: push_devices_create
@@ -2783,6 +2824,30 @@ components:
       - ends_at
       - starts_at
       - title
+    EventStats:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        starts_at:
+          type: string
+          format: date-time
+        views:
+          type: integer
+          description: Times its page was opened, by anyone but its hosts.
+        going:
+          type: integer
+        interested:
+          type: integer
+      required:
+      - going
+      - id
+      - interested
+      - starts_at
+      - title
+      - views
     EventStatusEnum:
       enum:
       - active
@@ -3953,6 +4018,44 @@ components:
       description: |-
         * `person` - Person
         * `organization` - Organization
+    ProfileStats:
+      type: object
+      properties:
+        days:
+          type: array
+          items:
+            type: string
+            format: date
+          description: The last 30 days, oldest first.
+        views:
+          type: array
+          items:
+            type: integer
+          description: Views of the profile's events, per day.
+        rsvps:
+          type: array
+          items:
+            type: integer
+          description: New going or interested answers to its events, per day.
+        new_followers:
+          type: array
+          items:
+            type: integer
+        followers:
+          type: integer
+          description: Followers now.
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventStats'
+          description: Events from the last 30 days on, newest first.
+      required:
+      - days
+      - events
+      - followers
+      - new_followers
+      - rsvps
+      - views
     ProfileSummary:
       type: object
       description: Compact profile representation embedded in events and posts.

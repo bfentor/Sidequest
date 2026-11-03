@@ -542,5 +542,18 @@
   },
   "hashtags": {
     "empty": "Inga inlägg med den här hashtaggen än."
+  },
+  "dashboard": {
+    "title": "Statistik",
+    "views": "Visningar",
+    "rsvps": "Anmälningar",
+    "followers": "Följare",
+    "last30": "Senaste 30 dagarna",
+    "newFollowers": "+{{count}} på 30 dagar",
+    "day": "{{date}}: {{count}}",
+    "chartLabel": "{{title}}, senaste 30 dagarna: totalt {{total}}",
+    "events": "Evenemang",
+    "event": "Evenemang",
+    "noEvents": "Inga evenemang under de senaste 30 dagarna."
   }
 }

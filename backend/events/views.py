@@ -32,10 +32,12 @@ from .serializers import (
     CategorySerializer,
     EventSerializer,
     GeocodeResultSerializer,
+    ProfileStatsSerializer,
     RsvpSerializer,
     attendance_summary,
 )
 from .services import feedback_open
+from .stats import count_view, profile_stats
 
 
 class AttendeesQuerySerializer(serializers.Serializer):
@@ -248,6 +250,19 @@ class EventViewSet(
         )
         return Response({"sent": len(recipients)})
 
+    @extend_schema(request=None, responses={204: None})
+    @action(
+        detail=True,
+        methods=["post"],
+        permission_classes=[permissions.AllowAny],
+        throttle_scope="views",
+    )
+    def view(self, request, pk=None):
+        """Count that someone opened the event's page (for its hosts' dashboard)."""
+        event = get_object_or_404(Event.objects.visible_to(viewer_profile(request)), pk=pk)
+        count_view(event, viewer_profile(request))
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
     @extend_schema(responses=MyFeedbackSerializer, methods=["GET"])
     @extend_schema(request=FeedbackSerializer, responses=MyFeedbackSerializer, methods=["PUT"])
     @action(
@@ -336,6 +351,17 @@ class EventViewSet(
         response = HttpResponse(buffer.getvalue(), content_type="text/csv; charset=utf-8")
         response["Content-Disposition"] = f'attachment; filename="event-{event.pk}-attendees.csv"'
         return response
+
+
+class ProfileStatsView(APIView):
+    """Views, RSVPs and follower growth for a profile you act for, over the last 30 days."""
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    @extend_schema(responses=ProfileStatsSerializer)
+    def get(self, request, handle):
+        profile = get_object_or_404(Profile.objects.manageable_by(request.user), handle=handle)
+        return Response(ProfileStatsSerializer(profile_stats(profile)).data)
 
 
 class CategoryListView(generics.ListAPIView):
