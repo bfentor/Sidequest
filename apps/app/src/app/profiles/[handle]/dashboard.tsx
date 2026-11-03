@@ -1,9 +1,10 @@
 import { profilesStatsRetrieveOptions } from '@sidequest/api';
 import { useQuery } from '@tanstack/react-query';
-import { Link, useLocalSearchParams } from 'expo-router';
+import { Link, router, useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
+import { Button } from '@/components/button';
 import { Screen } from '@/components/screen';
 import { StatTile } from '@/components/stat-tile';
 import { ThemedText } from '@/components/themed-text';
@@ -99,6 +100,13 @@ export default function DashboardScreen() {
       ) : (
         <ThemedText themeColor="textSecondary">{t('dashboard.noEvents')}</ThemedText>
       )}
+      <Button
+        title={t('calendarSync.open')}
+        variant="secondary"
+        onPress={() =>
+          router.push({ pathname: '/profiles/[handle]/calendars', params: { handle } })
+        }
+      />
     </Screen>
   );
 }

@@ -555,5 +555,19 @@
     "events": "Events",
     "event": "Event",
     "noEvents": "No events in the last 30 days."
+  },
+  "calendarSync": {
+    "title": "Calendar sync",
+    "open": "Import events from a calendar",
+    "intro": "Bring in the events from a calendar you already keep, like Google Calendar or Outlook. New and changed events come over every hour. Make changes in your calendar: edits made here are replaced by the next sync.",
+    "help": "In Google Calendar: Settings › your calendar › Integrate calendar › Public address in iCal format. The calendar must be public.",
+    "address": "iCal address",
+    "add": "Add calendar",
+    "remove": "Stop syncing",
+    "synced_one": "Synced {{when}} · {{count}} upcoming event",
+    "synced_other": "Synced {{when}} · {{count}} upcoming events",
+    "pending": "Not synced yet.",
+    "errorFetch": "Couldn't fetch this calendar. Check the address, and that the calendar is public.",
+    "errorParse": "This address isn't an iCal calendar. Look for the iCal (.ics) address in your calendar's sharing settings."
   }
 }

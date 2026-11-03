@@ -1,5 +1,7 @@
 import pytest
 
+from config import fetch
+
 from . import links
 from .links import fetch_html, first_url, parse
 
@@ -46,7 +48,7 @@ def test_private_addresses_and_odd_ports_are_never_fetched(url, monkeypatch):
     def fail(*args, **kwargs):
         raise AssertionError("connected")
 
-    monkeypatch.setattr(links.socket, "create_connection", fail)
+    monkeypatch.setattr(fetch.socket, "create_connection", fail)
     assert fetch_html(url) is None
 
 

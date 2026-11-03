@@ -2039,6 +2039,94 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/profiles/{handle}/calendars/:
+    get:
+      operationId: profiles_calendars_list
+      description: |-
+        Calendars (iCal feeds) whose events a profile you act for imports and keeps in sync.
+
+        Adding one syncs it straight away; after that it syncs every hour. Events
+        changed in Sidequest are overwritten by the next sync, so edit them in the
+        calendar.
+      parameters:
+      - in: path
+        name: handle
+        schema:
+          type: string
+        required: true
+      tags:
+      - profiles
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CalendarSource'
+          description: ''
+    post:
+      operationId: profiles_calendars_create
+      description: |-
+        Calendars (iCal feeds) whose events a profile you act for imports and keeps in sync.
+
+        Adding one syncs it straight away; after that it syncs every hour. Events
+        changed in Sidequest are overwritten by the next sync, so edit them in the
+        calendar.
+      parameters:
+      - in: path
+        name: handle
+        schema:
+          type: string
+        required: true
+      tags:
+      - profiles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CalendarSourceRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CalendarSourceRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CalendarSourceRequest'
+        required: true
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalendarSource'
+          description: ''
+  /api/profiles/{handle}/calendars/{id}/:
+    delete:
+      operationId: profiles_calendars_destroy
+      description: Stop syncing a calendar. Events already imported stay, as ordinary
+        events.
+      parameters:
+      - in: path
+        name: handle
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - profiles
+      security:
+      - XSessionTokenAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/profiles/{handle}/events/:
     get:
       operationId: profiles_events_list
@@ -2518,6 +2606,48 @@ components:
       - is_full
       - mine
       - waitlisted
+    CalendarSource:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          description: The calendar's iCal address (https:// or webcal://), e.g. a
+            Google Calendar's public address in iCal format.
+          maxLength: 2000
+        synced_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        error:
+          type: string
+          readOnly: true
+          description: 'Why the last sync failed: ''fetch'' (unreachable or not public)
+            or ''parse'' (not an iCal calendar). Empty when it worked.'
+        event_count:
+          type: integer
+          readOnly: true
+          description: Upcoming events from it.
+      required:
+      - error
+      - event_count
+      - id
+      - synced_at
+      - url
+    CalendarSourceRequest:
+      type: object
+      properties:
+        url:
+          type: string
+          minLength: 1
+          description: The calendar's iCal address (https:// or webcal://), e.g. a
+            Google Calendar's public address in iCal format.
+          maxLength: 2000
+      required:
+      - url
     Category:
       type: object
       properties:

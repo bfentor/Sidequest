@@ -12,7 +12,7 @@ from students.models import University
 from students.serializers import UniversitySerializer
 
 from .fields import LatLngField
-from .models import Attendance, Category, CoHost, Event
+from .models import Attendance, CalendarSource, Category, CoHost, Event
 from .services import REPEAT_FREQUENCIES, announce, invite_co_hosts, publish_event
 
 
@@ -318,3 +318,31 @@ class ProfileStatsSerializer(serializers.Serializer):
     events = EventStatsSerializer(
         many=True, help_text="Events from the last 30 days on, newest first."
     )
+
+
+class CalendarSourceSerializer(serializers.ModelSerializer):
+    url = serializers.CharField(
+        max_length=2000,
+        help_text="The calendar's iCal address (https:// or webcal://), e.g. a Google "
+        "Calendar's public address in iCal format.",
+    )
+    error = serializers.CharField(
+        read_only=True,
+        help_text="Why the last sync failed: 'fetch' (unreachable or not public) or "
+        "'parse' (not an iCal calendar). Empty when it worked.",
+    )
+    event_count = serializers.SerializerMethodField(help_text="Upcoming events from it.")
+
+    class Meta:
+        model = CalendarSource
+        fields = ["id", "url", "synced_at", "error", "event_count"]
+        read_only_fields = ["synced_at"]
+
+    def get_event_count(self, source) -> int:
+        return source.events.filter(ends_at__gt=timezone.now()).count()
+
+    def validate_url(self, url):
+        url = url.strip()
+        if not url.startswith(("https://", "http://", "webcal://")):
+            raise serializers.ValidationError(_("Enter the calendar's iCal address."))
+        return url

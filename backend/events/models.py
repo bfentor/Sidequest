@@ -209,6 +209,11 @@ class Event(models.Model):
     co_hosts = models.ManyToManyField(
         Profile, through="CoHost", blank=True, related_name="co_hosted_events"
     )
+    # For events imported from a calendar feed: which one, and the event's ID there.
+    source = models.ForeignKey(
+        "CalendarSource", on_delete=models.SET_NULL, null=True, blank=True, related_name="events"
+    )
+    source_uid = models.CharField(max_length=500, blank=True)
 
     objects = EventQuerySet.as_manager()
 
@@ -223,6 +228,11 @@ class Event(models.Model):
             models.CheckConstraint(
                 condition=models.Q(ends_at__gt=models.F("starts_at")),
                 name="event_ends_after_start",
+            ),
+            models.UniqueConstraint(
+                fields=["source", "source_uid"],
+                condition=models.Q(source__isnull=False),
+                name="unique_event_per_source_uid",
             ),
         ]
 
@@ -344,3 +354,25 @@ class EventViewDay(models.Model):
 
     def __str__(self):
         return f"{self.event} on {self.date}: {self.count}"
+
+
+class CalendarSource(models.Model):
+    """An iCal feed (e.g. a Google Calendar's public address) kept in sync as a profile's events."""
+
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="calendar_sources")
+    url = models.URLField(max_length=2000)
+    added_by = models.ForeignKey(
+        "accounts.User", on_delete=models.SET_NULL, null=True, blank=True, related_name="+"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    synced_at = models.DateTimeField(null=True, blank=True)
+    # Why the last sync failed (a code from events.calendars.SyncError); empty when it worked.
+    error = models.CharField(max_length=20, blank=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["profile", "url"], name="unique_calendar_source"),
+        ]
+
+    def __str__(self):
+        return f"{self.url} for {self.profile}"

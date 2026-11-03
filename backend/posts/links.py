@@ -1,39 +1,25 @@
 """Link previews: the title, description and picture of the first web link in a post.
 
-Fetching addresses people typed is a classic way to make a server reach
-places it shouldn't (server-side request forgery), so every request here,
-including each redirect, goes only to public IP addresses on the standard
-ports, and connects to exactly the address that was checked.
+The page is fetched with config.fetch, which keeps people from using
+previews to make the server reach private addresses.
 """
 
-import http.client
-import ipaddress
-import logging
 import re
-import socket
-import ssl
 from datetime import timedelta
 from html.parser import HTMLParser
 from urllib.parse import urljoin, urlsplit
 
 from django.utils import timezone
 
-from .models import LinkPreview
+from config.fetch import fetch_text
 
-logger = logging.getLogger(__name__)
+from .models import LinkPreview
 
 # The same as the app's link pattern (components/rich-text.tsx).
 URL = re.compile(r"https?://[^\s<>]*[^\s<>.,;:!?)\]'\"]")
-USER_AGENT = "Sidequest link previews (+https://sidequest.fentorweb.hu)"
-TIMEOUT_SECONDS = 3
 MAX_BYTES = 512 * 1024
-MAX_REDIRECTS = 3
 # Cached previews older than this are fetched again when another post links there.
 REFRESH_AFTER = timedelta(days=7)
-
-
-class Blocked(Exception):
-    """The address isn't one link previews may fetch."""
 
 
 def first_url(text):
@@ -41,78 +27,9 @@ def first_url(text):
     return match.group(0) if match else None
 
 
-def public_address(host, port):
-    """One of the host's IP addresses, if all of them are public; raises Blocked otherwise."""
-    try:
-        infos = socket.getaddrinfo(host, port, type=socket.SOCK_STREAM)
-    except (socket.gaierror, UnicodeError) as error:
-        raise Blocked(f"can't resolve {host}") from error
-    addresses = {info[4][0] for info in infos}
-    if not addresses or not all(ipaddress.ip_address(a).is_global for a in addresses):
-        raise Blocked(f"{host} isn't public")
-    return sorted(addresses)[0]
-
-
-class _PinnedHTTPConnection(http.client.HTTPConnection):
-    """Connects to a checked IP address, whatever the host name resolves to by then."""
-
-    def __init__(self, host, address, **kwargs):
-        super().__init__(host, **kwargs)
-        self.address = address
-
-    def connect(self):
-        self.sock = socket.create_connection((self.address, self.port), self.timeout)
-
-
-class _PinnedHTTPSConnection(http.client.HTTPSConnection):
-    def __init__(self, host, address, **kwargs):
-        super().__init__(host, context=ssl.create_default_context(), **kwargs)
-        self.address = address
-
-    def connect(self):
-        sock = socket.create_connection((self.address, self.port), self.timeout)
-        # Certificates are still checked against the host name.
-        self.sock = self._context.wrap_socket(sock, server_hostname=self.host)
-
-
 def fetch_html(url):
-    """The page at `url` as (final URL, HTML), or None if it can't or mustn't be fetched."""
-    for _ in range(MAX_REDIRECTS + 1):
-        parts = urlsplit(url)
-        default_port = {"http": 80, "https": 443}.get(parts.scheme)
-        if default_port is None or not parts.hostname or parts.port not in (None, default_port):
-            return None
-        try:
-            address = public_address(parts.hostname, default_port)
-        except Blocked:
-            return None
-        connection_class = (
-            _PinnedHTTPSConnection if parts.scheme == "https" else _PinnedHTTPConnection
-        )
-        connection = connection_class(parts.hostname, address, timeout=TIMEOUT_SECONDS)
-        path = parts.path or "/"
-        if parts.query:
-            path += f"?{parts.query}"
-        try:
-            connection.request(
-                "GET", path, headers={"User-Agent": USER_AGENT, "Accept": "text/html"}
-            )
-            response = connection.getresponse()
-            if response.status in (301, 302, 303, 307, 308) and response.getheader("Location"):
-                url = urljoin(url, response.getheader("Location"))
-                continue
-            content_type = response.getheader("Content-Type", "")
-            if response.status != 200 or "html" not in content_type:
-                return None
-            body = response.read(MAX_BYTES)
-            charset = response.headers.get_content_charset() or "utf-8"
-            return url, body.decode(charset, errors="replace")
-        except (OSError, http.client.HTTPException, LookupError) as error:
-            logger.info("Link preview of %s failed: %s", url, error)
-            return None
-        finally:
-            connection.close()
-    return None
+    """The page at `url` as (final URL, HTML), or None."""
+    return fetch_text(url, accept="text/html", kinds=("html",), max_bytes=MAX_BYTES)
 
 
 class _MetaParser(HTMLParser):

@@ -555,5 +555,19 @@
     "events": "Evenemang",
     "event": "Evenemang",
     "noEvents": "Inga evenemang under de senaste 30 dagarna."
+  },
+  "calendarSync": {
+    "title": "Kalendersynkronisering",
+    "open": "Importera evenemang från en kalender",
+    "intro": "Hämta evenemangen från en kalender du redan använder, som Google Kalender eller Outlook. Nya och ändrade evenemang förs över varje timme. Gör ändringar i din kalender: ändringar som görs här ersätts vid nästa synkronisering.",
+    "help": "I Google Kalender: Inställningar › din kalender › Integrera kalender › Offentlig adress i iCal-format. Kalendern måste vara offentlig.",
+    "address": "iCal-adress",
+    "add": "Lägg till kalender",
+    "remove": "Sluta synkronisera",
+    "synced_one": "Synkroniserad {{when}} · {{count}} kommande evenemang",
+    "synced_other": "Synkroniserad {{when}} · {{count}} kommande evenemang",
+    "pending": "Inte synkroniserad än.",
+    "errorFetch": "Kalendern kunde inte hämtas. Kontrollera adressen och att kalendern är offentlig.",
+    "errorParse": "Den här adressen är inte en iCal-kalender. Leta efter iCal-adressen (.ics) i kalenderns delningsinställningar."
   }
 }

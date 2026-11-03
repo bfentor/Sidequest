@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Sidequest\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-03 01:25+0200\n"
+"POT-Creation-Date: 2026-11-03 09:16+0200\n"
 "PO-Revision-Date: 2026-11-02 20:52+0200\n"
 "Last-Translator: Sidequest <dev@sidequest.invalid>\n"
 "Language-Team: Swedish\n"
@@ -44,6 +44,9 @@ msgstr "Ingen profil har användarnamnet %(handle)s."
 msgid "Must be after the start time."
 msgstr "Måste vara efter starttiden."
 
+msgid "Enter the calendar's iCal address."
+msgstr "Ange kalenderns iCal-adress."
+
 msgid "This event was cancelled."
 msgstr "Evenemanget är inställt."
 
@@ -72,6 +75,12 @@ msgstr "Status"
 
 msgid "Answered at"
 msgstr "Svarade"
+
+msgid "A profile can sync at most five calendars."
+msgstr "En profil kan synkronisera högst fem kalendrar."
+
+msgid "This calendar is already being synced."
+msgstr "Den här kalendern synkroniseras redan."
 
 msgid "This profile wasn't invited to co-host."
 msgstr "Den här profilen bjöds inte in som medarrangör."

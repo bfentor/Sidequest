@@ -555,5 +555,19 @@
     "events": "Tapahtumat",
     "event": "Tapahtuma",
     "noEvents": "Ei tapahtumia viimeisten 30 päivän ajalta."
+  },
+  "calendarSync": {
+    "title": "Kalenterin synkronointi",
+    "open": "Tuo tapahtumat kalenterista",
+    "intro": "Tuo tapahtumat kalenterista, jota jo käytät, kuten Google-kalenterista tai Outlookista. Uudet ja muuttuneet tapahtumat siirtyvät tunnin välein. Tee muutokset kalenteriisi: täällä tehdyt muokkaukset korvautuvat seuraavassa synkronoinnissa.",
+    "help": "Google-kalenterissa: Asetukset › kalenterisi › Integroi kalenteri › Julkinen osoite iCal-muodossa. Kalenterin on oltava julkinen.",
+    "address": "iCal-osoite",
+    "add": "Lisää kalenteri",
+    "remove": "Lopeta synkronointi",
+    "synced_one": "Synkronoitu {{when}} · {{count}} tuleva tapahtuma",
+    "synced_other": "Synkronoitu {{when}} · {{count}} tulevaa tapahtumaa",
+    "pending": "Ei vielä synkronoitu.",
+    "errorFetch": "Kalenteria ei saatu haettua. Tarkista osoite ja että kalenteri on julkinen.",
+    "errorParse": "Tämä osoite ei ole iCal-kalenteri. Etsi iCal (.ics) -osoite kalenterisi jakoasetuksista."
   }
 }

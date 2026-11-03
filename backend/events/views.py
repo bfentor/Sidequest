@@ -26,9 +26,19 @@ from students.services import current_university
 
 from . import attendance as rsvps
 from . import geocoding
-from .models import Attendance, Category, CoHost, Event, EventFeedback, SavedEvent
+from .calendars import SyncError, sync
+from .models import (
+    Attendance,
+    CalendarSource,
+    Category,
+    CoHost,
+    Event,
+    EventFeedback,
+    SavedEvent,
+)
 from .serializers import (
     AttendanceSummarySerializer,
+    CalendarSourceSerializer,
     CategorySerializer,
     EventSerializer,
     GeocodeResultSerializer,
@@ -362,6 +372,55 @@ class ProfileStatsView(APIView):
     def get(self, request, handle):
         profile = get_object_or_404(Profile.objects.manageable_by(request.user), handle=handle)
         return Response(ProfileStatsSerializer(profile_stats(profile)).data)
+
+
+class CalendarSourcesView(generics.ListCreateAPIView):
+    """Calendars (iCal feeds) whose events a profile you act for imports and keeps in sync.
+
+    Adding one syncs it straight away; after that it syncs every hour. Events
+    changed in Sidequest are overwritten by the next sync, so edit them in the
+    calendar.
+    """
+
+    serializer_class = CalendarSourceSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = None
+    throttle_scope = "events"
+    # A profile can have at most this many.
+    LIMIT = 5
+
+    def profile(self):
+        return get_object_or_404(
+            Profile.objects.manageable_by(self.request.user), handle=self.kwargs["handle"]
+        )
+
+    def get_queryset(self):
+        return CalendarSource.objects.filter(profile=self.profile()).order_by("created_at")
+
+    def perform_create(self, serializer):
+        profile = self.profile()
+        if profile.calendar_sources.count() >= self.LIMIT:
+            raise ValidationError(_("A profile can sync at most five calendars."))
+        if profile.calendar_sources.filter(url=serializer.validated_data["url"]).exists():
+            raise ValidationError(_("This calendar is already being synced."))
+        source = serializer.save(profile=profile, added_by=self.request.user)
+        try:
+            sync(source)
+        except SyncError:
+            pass  # Kept, with the error, so hosts can see what went wrong and remove it.
+
+
+class CalendarSourceView(generics.DestroyAPIView):
+    """Stop syncing a calendar. Events already imported stay, as ordinary events."""
+
+    serializer_class = CalendarSourceSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return CalendarSource.objects.filter(
+            profile__in=Profile.objects.manageable_by(self.request.user),
+            profile__handle=self.kwargs["handle"],
+        )
 
 
 class CategoryListView(generics.ListAPIView):

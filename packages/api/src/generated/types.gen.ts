@@ -93,6 +93,30 @@ export type AttendanceSummary = {
     friends_going_count: number;
 };
 
+export type CalendarSource = {
+    readonly id: number;
+    /**
+     * The calendar's iCal address (https:// or webcal://), e.g. a Google Calendar's public address in iCal format.
+     */
+    url: string;
+    readonly synced_at: string | null;
+    /**
+     * Why the last sync failed: 'fetch' (unreachable or not public) or 'parse' (not an iCal calendar). Empty when it worked.
+     */
+    readonly error: string;
+    /**
+     * Upcoming events from it.
+     */
+    readonly event_count: number;
+};
+
+export type CalendarSourceRequest = {
+    /**
+     * The calendar's iCal address (https:// or webcal://), e.g. a Google Calendar's public address in iCal format.
+     */
+    url: string;
+};
+
 export type Category = {
     readonly slug: string;
     /**
@@ -864,6 +888,13 @@ export type AttendanceSummaryWritable = {
      * How many people you follow are going (who share their attendance).
      */
     friends_going_count: number;
+};
+
+export type CalendarSourceWritable = {
+    /**
+     * The calendar's iCal address (https:// or webcal://), e.g. a Google Calendar's public address in iCal format.
+     */
+    url: string;
 };
 
 export type CommentWritable = {
@@ -2587,6 +2618,55 @@ export type ProfilesBlockCreateResponses = {
 };
 
 export type ProfilesBlockCreateResponse = ProfilesBlockCreateResponses[keyof ProfilesBlockCreateResponses];
+
+export type ProfilesCalendarsListData = {
+    body?: never;
+    path: {
+        handle: string;
+    };
+    query?: never;
+    url: '/api/profiles/{handle}/calendars/';
+};
+
+export type ProfilesCalendarsListResponses = {
+    200: Array<CalendarSource>;
+};
+
+export type ProfilesCalendarsListResponse = ProfilesCalendarsListResponses[keyof ProfilesCalendarsListResponses];
+
+export type ProfilesCalendarsCreateData = {
+    body: CalendarSourceRequest;
+    path: {
+        handle: string;
+    };
+    query?: never;
+    url: '/api/profiles/{handle}/calendars/';
+};
+
+export type ProfilesCalendarsCreateResponses = {
+    201: CalendarSource;
+};
+
+export type ProfilesCalendarsCreateResponse = ProfilesCalendarsCreateResponses[keyof ProfilesCalendarsCreateResponses];
+
+export type ProfilesCalendarsDestroyData = {
+    body?: never;
+    path: {
+        handle: string;
+        id: number;
+    };
+    query?: never;
+    url: '/api/profiles/{handle}/calendars/{id}/';
+};
+
+export type ProfilesCalendarsDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type ProfilesCalendarsDestroyResponse = ProfilesCalendarsDestroyResponses[keyof ProfilesCalendarsDestroyResponses];
 
 export type ProfilesEventsListData = {
     body?: never;
