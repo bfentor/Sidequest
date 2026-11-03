@@ -1,5 +1,5 @@
 import type { AuthResult } from '@sidequest/api';
-import { Link, router } from 'expo-router';
+import { Link, router, useLocalSearchParams } from 'expo-router';
 import type { TFunction } from 'i18next';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -34,7 +34,9 @@ function messageFor(result: AuthResult, t: TFunction) {
 export default function SignInScreen() {
   const { signIn, signUp } = useAuth();
   const { t } = useTranslation();
-  const [mode, setMode] = useState<Mode>('sign-in');
+  // `?mode=sign-up` opens the sign-up form (e.g. from the web landing page).
+  const params = useLocalSearchParams<{ mode?: Mode }>();
+  const [mode, setMode] = useState<Mode>(params.mode === 'sign-up' ? 'sign-up' : 'sign-in');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   // A plausible starting point for the birth date picker; people adjust it.

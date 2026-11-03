@@ -576,5 +576,15 @@
     "seeAll": "Näytä kaikki Sidequestissa",
     "dashboardTitle": "Verkkosivuillasi",
     "dashboardHint": "Liitä tämä verkkosivuillesi, niin tulevat tapahtumasi näkyvät siellä. Se päivittyy itsestään."
+  },
+  "welcome": {
+    "title": "Kaikki opiskelijatapahtumat yhdessä paikassa",
+    "tagline": "Sidequest näyttää, mitä kampuksesi ympärillä tapahtuu: bileitä, urheilua, kerhoja, uratapahtumia ja paljon muuta niitä järjestäviltä ylioppilaskunnilta, killoilta ja kerhoilta.",
+    "pointNearby": "Löydä tapahtumia läheltäsi tänä iltana tai viikonloppuna",
+    "pointFollow": "Seuraa kiltaasi ja kerhojasi, niin et missaa niiden tapahtumia",
+    "pointFriends": "Ilmoittaudu ja näe, ketkä kavereistasi ovat menossa",
+    "signUp": "Rekisteröidy, se on ilmaista",
+    "appStore": "Lataa App Storesta",
+    "playStore": "Hanki Google Playsta"
   }
 }

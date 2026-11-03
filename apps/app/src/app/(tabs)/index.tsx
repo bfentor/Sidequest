@@ -17,6 +17,7 @@ import { FeedList, type FeedQuery } from '@/components/feed-list';
 import { IconButton } from '@/components/icon-button';
 import { SegmentedControl } from '@/components/segmented-control';
 import { ThemedText } from '@/components/themed-text';
+import { Welcome } from '@/components/welcome';
 import { Spacing } from '@/constants/theme';
 import { useCurrentPosition } from '@/hooks/use-current-position';
 
@@ -73,6 +74,7 @@ export default function UpcomingScreen() {
 
   const header = (
     <View style={styles.headerBlock}>
+      <Welcome />
       <View style={styles.header}>
         <ThemedText type="subtitle">{t('tabs.upcoming')}</ThemedText>
         <View style={styles.actions}>

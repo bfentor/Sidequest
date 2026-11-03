@@ -576,5 +576,15 @@
     "seeAll": "Se alla på Sidequest",
     "dashboardTitle": "På din webbplats",
     "dashboardHint": "Klistra in det här på din webbplats för att visa dina kommande evenemang där. Det uppdateras av sig självt."
+  },
+  "welcome": {
+    "title": "Alla studentevenemang på ett ställe",
+    "tagline": "Sidequest visar vad som händer runt ditt campus: fester, idrott, klubbar, karriärevenemang och mycket mer, från studentkårerna, gillena och klubbarna som ordnar dem.",
+    "pointNearby": "Hitta evenemang nära dig, i kväll eller i helgen",
+    "pointFollow": "Följ ditt gille och dina klubbar så missar du aldrig deras evenemang",
+    "pointFriends": "Anmäl dig och se vilka vänner som ska gå",
+    "signUp": "Registrera dig, det är gratis",
+    "appStore": "Ladda ned i App Store",
+    "playStore": "Ladda ned på Google Play"
   }
 }

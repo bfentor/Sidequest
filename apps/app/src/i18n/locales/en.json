@@ -576,5 +576,15 @@
     "seeAll": "See all on Sidequest",
     "dashboardTitle": "On your website",
     "dashboardHint": "Paste this into your website to show your upcoming events there. It updates by itself."
+  },
+  "welcome": {
+    "title": "Every student event, in one place",
+    "tagline": "Sidequest shows what's on around your campus: parties, sports, clubs, career events and more, from the student unions, guilds and clubs that run them.",
+    "pointNearby": "Find events near you, tonight or this weekend",
+    "pointFollow": "Follow your guild and clubs so you never miss their events",
+    "pointFriends": "RSVP, and see which friends are going",
+    "signUp": "Sign up, it's free",
+    "appStore": "Download on the App Store",
+    "playStore": "Get it on Google Play"
   }
 }
