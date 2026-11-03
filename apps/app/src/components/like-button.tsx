@@ -1,10 +1,4 @@
-import {
-  feedsFollowingListInfiniteQueryKey,
-  postsLikeDestroy,
-  postsLikeUpdate,
-  postsRetrieveQueryKey,
-  type Post,
-} from '@sidequest/api';
+import { postsLikeDestroy, postsLikeUpdate, type Post } from '@sidequest/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
@@ -14,32 +8,36 @@ import { SymbolView } from 'expo-symbols';
 import { useAuth } from '@/auth/auth-provider';
 import { Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
+import { updateCachedPost } from '@/lib/post-cache';
 
 import { ThemedText } from './themed-text';
 
-/** Heart toggle with the like count; shows the new state while the request runs. */
+/** Heart toggle with the like count; every copy of the post shows the change straight away. */
 export function LikeButton({ post }: { post: Post }) {
   const { t } = useTranslation();
   const { status } = useAuth();
   const theme = useTheme();
   const queryClient = useQueryClient();
+  const show = (liked: boolean) =>
+    updateCachedPost(queryClient, post.id, (cached) => ({
+      ...cached,
+      is_liked: liked,
+      like_count: Math.max(0, cached.like_count + (liked ? 1 : 0) - (cached.is_liked ? 1 : 0)),
+    }));
   const toggle = useMutation({
     mutationFn: async (like: boolean) => {
       const options = { path: { id: post.id }, throwOnError: true } as const;
       await (like ? postsLikeUpdate(options) : postsLikeDestroy(options));
     },
-    onSettled: () =>
-      Promise.all([
-        queryClient.invalidateQueries({ queryKey: feedsFollowingListInfiniteQueryKey() }),
-        queryClient.invalidateQueries({
-          queryKey: postsRetrieveQueryKey({ path: { id: post.id } }),
-        }),
-      ]),
+    onMutate: (like) => {
+      show(like);
+      return { previous: post.is_liked };
+    },
+    onError: (_error, _like, context) => context && show(context.previous),
   });
 
-  // While the request runs (and the feed refetches), show what was tapped.
-  const liked = toggle.isPending ? toggle.variables : post.is_liked;
-  const count = post.like_count + Number(liked) - Number(post.is_liked);
+  const liked = post.is_liked;
+  const count = post.like_count;
 
   return (
     <Pressable
