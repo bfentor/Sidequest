@@ -135,7 +135,10 @@
     "emailDigestHint": "Joka maanantai: tämän viikon tapahtumat, joihin olet menossa tai joista olet kiinnostunut, sekä seuraamiesi uudet tapahtumat.",
     "appearance": "Ulkoasu",
     "appearanceLight": "Vaalea",
-    "appearanceDark": "Tumma"
+    "appearanceDark": "Tumma",
+    "buildApp": "Sovellus {{version}}",
+    "buildApi": "API {{version}} · {{host}}",
+    "buildUpdate": "Päivitys {{id}}, {{date}}"
   },
   "posts": {
     "delete": "Poista julkaisu",

@@ -21,6 +21,7 @@ def test_reads_are_not_rate_limited(auth_client, make_user, monkeypatch):
     assert statuses == {200}
 
 
-def test_healthz_reports_version(api_client, db, settings):
+def test_healthz_reports_version_and_commit(api_client, db, settings):
+    settings.APP_COMMIT = "abc1234"
     response = api_client.get("/healthz")
-    assert response.json() == {"status": "ok", "version": settings.APP_VERSION}
+    assert response.json() == {"status": "ok", "version": settings.APP_VERSION, "commit": "abc1234"}

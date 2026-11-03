@@ -1,3 +1,6 @@
+/// <reference types="node" />
+import { execSync } from 'node:child_process';
+
 import type { ConfigContext, ExpoConfig } from 'expo/config';
 
 /**
@@ -23,6 +26,24 @@ function currentVariant(): Variant {
   return variant as Variant;
 }
 
+/**
+ * The commit being built, shown in Settings: Coolify passes SOURCE_COMMIT to
+ * the web image, EAS and GitHub Actions set theirs, and on a developer's
+ * machine Git knows. Empty if none of them does.
+ */
+function buildCommit(): string {
+  const fromBuild =
+    process.env.SOURCE_COMMIT || process.env.EAS_BUILD_GIT_COMMIT_HASH || process.env.GITHUB_SHA;
+  if (fromBuild) return fromBuild;
+  try {
+    return execSync('git rev-parse HEAD', { stdio: ['ignore', 'pipe', 'ignore'] })
+      .toString()
+      .trim();
+  } catch {
+    return '';
+  }
+}
+
 export default ({ config }: ConfigContext): ExpoConfig => {
   const variant = VARIANTS[currentVariant()];
   // Written by `eas init`; over-the-air updates need it.
@@ -42,5 +63,6 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     // Updates only reach builds with the same native code, whatever the version number says.
     runtimeVersion: { policy: 'fingerprint' },
     updates: projectId ? { url: `https://u.expo.dev/${projectId}` } : config.updates,
+    extra: { ...config.extra, commit: buildCommit() },
   };
 };

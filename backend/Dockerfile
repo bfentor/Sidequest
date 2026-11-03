@@ -31,6 +31,11 @@ RUN export DJANGO_SECRET_KEY=build DATABASE_URL=postgis://build@localhost/build 
     && python manage.py collectstatic --noinput \
     && python manage.py compilemessages --ignore=.venv
 
+# The commit, reported by /healthz (Coolify passes it). Late in the file, so
+# a new commit doesn't throw away the cached layers above.
+ARG SOURCE_COMMIT
+ENV SOURCE_COMMIT=$SOURCE_COMMIT
+
 RUN useradd --uid 10001 --no-create-home app && chown -R app /app
 USER app
 

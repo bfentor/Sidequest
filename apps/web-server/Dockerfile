@@ -19,6 +19,9 @@ ARG EXPO_PUBLIC_API_URL
 ARG EXPO_PUBLIC_WEB_URL
 ENV EXPO_PUBLIC_API_URL=$EXPO_PUBLIC_API_URL
 ENV EXPO_PUBLIC_WEB_URL=$EXPO_PUBLIC_WEB_URL
+# The commit, shown in Settings (Coolify passes it; app.config.ts reads it).
+ARG SOURCE_COMMIT
+ENV SOURCE_COMMIT=$SOURCE_COMMIT
 RUN cd apps/app && npx expo export --platform web
 
 # --- Serve it ---

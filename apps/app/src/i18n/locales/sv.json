@@ -135,7 +135,10 @@
     "emailDigestHint": "Varje måndag: veckans evenemang som du ska gå på eller är intresserad av, och nya från dem du följer.",
     "appearance": "Utseende",
     "appearanceLight": "Ljust",
-    "appearanceDark": "Mörkt"
+    "appearanceDark": "Mörkt",
+    "buildApp": "Appen {{version}}",
+    "buildApi": "API {{version}} · {{host}}",
+    "buildUpdate": "Uppdatering {{id}} från {{date}}"
   },
   "posts": {
     "delete": "Ta bort inlägg",

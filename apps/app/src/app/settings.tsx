@@ -17,6 +17,7 @@ import { Pressable, StyleSheet, Switch, View } from 'react-native';
 
 import { useAuth } from '@/auth/auth-provider';
 import { AccountSection } from '@/components/account-section';
+import { BuildInfo } from '@/components/build-info';
 import { Button } from '@/components/button';
 import { CredentialsSection } from '@/components/credentials-section';
 import { SecuritySection } from '@/components/security-section';
@@ -47,6 +48,7 @@ export default function SettingsScreen() {
         <Link href={{ pathname: '/legal/[document]', params: { document: 'privacy' } }}>
           <ThemedText themeColor="tint">{t('legal.privacy')}</ThemedText>
         </Link>
+        <BuildInfo />
       </View>
       {status === 'signed-in' ? (
         <>

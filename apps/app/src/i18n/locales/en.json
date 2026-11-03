@@ -135,7 +135,10 @@
     "emailDigestHint": "Every Monday: events you're going to or interested in this week, and new ones from people you follow.",
     "appearance": "Appearance",
     "appearanceLight": "Light",
-    "appearanceDark": "Dark"
+    "appearanceDark": "Dark",
+    "buildApp": "App {{version}}",
+    "buildApi": "API {{version}} · {{host}}",
+    "buildUpdate": "Update {{id}} from {{date}}"
   },
   "posts": {
     "delete": "Delete post",

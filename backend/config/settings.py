@@ -5,6 +5,8 @@ All environment-specific values come from environment variables (or a local
 development, CI and production.
 """
 
+import os
+import subprocess
 import tomllib
 from pathlib import Path
 
@@ -15,6 +17,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 with open(BASE_DIR / "pyproject.toml", "rb") as pyproject:
     APP_VERSION = tomllib.load(pyproject)["project"]["version"]
+
+
+def _git_commit():
+    """The checked-out commit, when running from a Git working copy (development)."""
+    try:
+        return subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=BASE_DIR, capture_output=True, text=True, check=True
+        ).stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        return ""
+
+
+# Which commit is running: Coolify passes SOURCE_COMMIT to the image (backend/Dockerfile).
+APP_COMMIT = os.environ.get("SOURCE_COMMIT") or _git_commit()
 
 env = environ.Env()
 env_file = BASE_DIR / ".env"
