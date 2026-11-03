@@ -128,6 +128,7 @@ Environment variables:
 | `CACHE_URL` | `dbcache://django_cache`, so rate limits are shared by all of the API's processes (the table is created on start) |
 | `ALLAUTH_TRUSTED_CLIENT_IP_HEADER` | `CF-Connecting-IP` (the visitor's address behind Cloudflare, for sign-in rate limits) |
 | `MAILER_BACKEND` | Leave unset (emails go to the log) until an email service is chosen |
+| `ACCOUNT_EMAIL_VERIFICATION` | `optional` until an email service is set up: without one, sign-up codes only reach the API's log, so testers couldn't finish signing up. Remove it (back to mandatory) once emails are sent |
 | `EXPO_ACCESS_TOKEN` | Optional: needed only if "enhanced push security" is turned on for the Expo project |
 | `SENTRY_DSN`, `SENTRY_ENVIRONMENT` | Optional: Sentry's DSN, and `staging` |
 | `AWS_STORAGE_BUCKET_NAME`, `AWS_S3_ENDPOINT_URL`, `AWS_S3_REGION_NAME`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` | Optional: object storage for uploads. Without them, uploads are stored in the container, so also add Persistent Storage › Directory Mount `/srv/sidequest/staging/media` → `/app/media` |
@@ -161,8 +162,12 @@ Scheduled tasks: the ones in [CRONJOBS.md](CRONJOBS.md).
 4. Settings › General › Pull Requests: allow only **squash merging**, so a pull
    request's title becomes its commit message (release-please reads it).
 
-Then run **Deploy with Coolify** from the Actions tab once, and create the admin
-account in the API's Terminal in Coolify: `python manage.py createsuperuser`.
+5. Create the `testing` branch once, which `git ship` merges into and staging
+   deploys from: `git push origin master:testing`.
+
+Then run **Deploy with Coolify** from the Actions tab once (or `git ship` from
+your branch), and create the admin account in the API's Terminal in Coolify:
+`python manage.py createsuperuser`.
 
 ## Running a command in the API
 
