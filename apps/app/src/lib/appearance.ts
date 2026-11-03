@@ -7,7 +7,21 @@ export type Appearance = 'system' | 'light' | 'dark';
 
 const PREFERENCE_KEY = 'appearance';
 const listeners = new Set<() => void>();
-let current: Appearance = 'system';
+
+/**
+ * On the web the choice can be read right away (localStorage is synchronous), so the first
+ * render after loading already uses it. Phones read it in restoreAppearance().
+ */
+function storedOnWeb(): Appearance {
+  try {
+    const stored = globalThis.localStorage?.getItem(`sidequest.${PREFERENCE_KEY}`);
+    return stored === 'light' || stored === 'dark' ? stored : 'system';
+  } catch {
+    return 'system';
+  }
+}
+
+let current: Appearance = storedOnWeb();
 
 function apply(appearance: Appearance) {
   current = appearance;
