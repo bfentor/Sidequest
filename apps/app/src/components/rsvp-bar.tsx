@@ -20,6 +20,21 @@ import { ThemedText } from './themed-text';
 
 type Wants = 'going' | 'interested' | null;
 
+/** The counts as they'll be once `wants` replaces the current answer (a full event waitlists). */
+function expected(attendance: AttendanceSummary, wants: Wants): AttendanceSummary {
+  const next: AttendanceSummary = { ...attendance, mine: wants };
+  const old = attendance.mine;
+  if (old === 'going' || old === 'interested' || old === 'waitlisted') {
+    next[old] = Math.max(0, next[old] - 1);
+  }
+  const bucket = wants === 'going' && attendance.is_full ? 'waitlisted' : wants;
+  if (bucket) {
+    next[bucket] += 1;
+    next.mine = bucket;
+  }
+  return next;
+}
+
 /** Going / Interested buttons for an event, updated instantly and confirmed by the server. */
 export function RsvpBar({ event }: { event: Event }) {
   const { t } = useTranslation();
@@ -42,8 +57,8 @@ export function RsvpBar({ event }: { event: Event }) {
     },
     onMutate: (wants) => {
       const previous = attendance;
-      // Show the choice right away; the server's answer replaces it (e.g. waitlisted).
-      setAttendance({ ...attendance, mine: wants });
+      // Show the choice and counts right away; the server's answer replaces them.
+      setAttendance(expected(attendance, wants));
       return { previous };
     },
     onError: (_error, _wants, context) => context && setAttendance(context.previous),
