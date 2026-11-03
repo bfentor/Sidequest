@@ -97,7 +97,9 @@ jobs:
           uv run python manage.py migrate
           uv run python manage.py compilemessages --ignore=.venv
           uv run python manage.py seed_demo
-          uv run python manage.py runserver 8000 --noreload > ../api.log 2>&1 &
+          # The project's Python directly: a uv process left running would hold uv's cache lock,
+          # and setup-uv's clean-up at the end of the job would wait for it and fail.
+          .venv/bin/python manage.py runserver 8000 --noreload > ../api.log 2>&1 &
       - run: npm ci
       - name: Web app, built and served as in production
         run: |

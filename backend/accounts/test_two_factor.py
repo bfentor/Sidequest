@@ -16,7 +16,15 @@ PASSWORD = "a-long-passphrase"
 
 
 def totp(secret):
-    """The current code an authenticator app would show (RFC 6238)."""
+    """The current code an authenticator app would show (RFC 6238).
+
+    Codes last 30 seconds and the server allows no leeway, so near the end of
+    a period this waits for the next one: the code mustn't expire before the
+    server checks it.
+    """
+    remaining = 30 - time.time() % 30
+    if remaining < 3:
+        time.sleep(remaining + 0.1)
     key = base64.b32decode(secret + "=" * (-len(secret) % 8))
     digest = hmac.new(key, struct.pack(">Q", int(time.time()) // 30), hashlib.sha1).digest()
     offset = digest[-1] & 15
@@ -73,13 +81,15 @@ def test_sign_in_with_two_factor_and_recovery_codes(api_client, signed_in):
     ).json()["data"]["unused_codes"]
     assert len(codes) == 10
 
-    for code in (totp(secret), codes[0]):
+    for use_recovery_code in (False, True):
         login = api_client.post(
             f"{BASE}/auth/login", {"email": "m@uni.example", "password": PASSWORD}, format="json"
         ).json()
         assert any(
             f["id"] == "mfa_authenticate" and f.get("is_pending") for f in login["data"]["flows"]
         )
+        # Made only now: checking the password above is slow on purpose.
+        code = codes[0] if use_recovery_code else totp(secret)
         done = api_client.post(
             f"{BASE}/auth/2fa/authenticate",
             {"code": code},
